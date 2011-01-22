@@ -243,18 +243,8 @@ namespace Skybound.Gecko
 	{
 		internal GeckoElement(nsIDOMHTMLElement element) : base(element)
 		{
-			this.DomElement = element;					
-			try
-			{
-				this.DomNSElement = (nsIDOMNSElement)element;
-			}catch(Exception e)
-			{
-				// TODO: fix me (this may be caused by slightly different xulrunner versions?)
-				Debug.WriteLine(e);
-				Debug.WriteLine(String.Format("element is nsIDOMNSElement : {0} ", element is nsIDOMNSElement));
-				Debug.WriteLine(String.Format("element is nsIDOMHTMLElement : {0} ", element is nsIDOMHTMLElement));
-				Debug.WriteLine(String.Format("element is nsIDOMNSHTMLElement {0} ", element is nsIDOMNSHTMLElement));
-			}
+			this.DomElement = element;			
+			this.DomNSElement = (nsIDOMNSElement)element;
 			this.DomNSHTMLElement = (nsIDOMNSHTMLElement)element;
 			
 #if !__MonoCS__ // TODO FIXME: ChangeWrapperHandleStrength not implemented in mono
@@ -701,7 +691,7 @@ namespace Skybound.Gecko
 			return DomDocument.IsSupported(new nsAString(feature), new nsAString(version));
 		}
 		
-		#if GECKO_1_9
+		#if GECKO_1_9 || GECKO_1_9_1
 		/// <summary>
 		/// Gets the currently focused element.
 		/// </summary>
