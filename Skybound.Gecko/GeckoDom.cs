@@ -1000,7 +1000,7 @@ namespace Skybound.Gecko
 		#endregion
 	}
 	
-	class GeckoHtmlElementCollection : GeckoElementCollection
+	public class GeckoHtmlElementCollection : GeckoElementCollection
 	{
 		internal GeckoHtmlElementCollection(nsIDOMHTMLCollection col) : base(null)
 		{
