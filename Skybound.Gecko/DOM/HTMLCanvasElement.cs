@@ -18,12 +18,12 @@ namespace Skybound.Gecko.DOM
 		{
 			this.DOMHTMLElement = element as nsIDOMHTMLCanvasElement;
 		}
-		public int Width {
+		public uint Width {
 			get { return DOMHTMLElement.GetWidthAttribute(); }
 			set { DOMHTMLElement.SetWidthAttribute(value); }
 		}
 
-		public int Height {
+		public uint Height {
 			get { return DOMHTMLElement.GetHeightAttribute(); }
 			set { DOMHTMLElement.SetHeightAttribute(value); }
 		}

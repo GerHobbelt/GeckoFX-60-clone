@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIHttpProtocolHandler </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7516a8d3-0a6f-4476-88f5-fb9973450c5f")]
+	[Guid("9814fdf0-5ac3-11e0-80e3-0800200c9a66")]
 	public interface nsIHttpProtocolHandler : nsIProxiedProtocolHandler
 	{
 		
@@ -161,14 +161,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetOscpuAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aOscpu);
-		
-		/// <summary>
-        /// Get the translation of the application. The value for language
-        /// is usually a 2-letter code such as "en" and occasionally a
-        /// five-character code to indicate a language subtype, such as "zh_CN".
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetLanguageAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aLanguage);
 		
 		/// <summary>
         /// Get the application comment misc portion.

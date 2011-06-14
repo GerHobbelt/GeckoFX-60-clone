@@ -200,7 +200,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMWebGLRenderingContext </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2f21ca21-9720-4eee-ad94-27eefe4f72dc")]
+	[Guid("44119fc2-b5f0-4acc-b836-5d28cc43e8fb")]
 	public interface nsIDOMWebGLRenderingContext
 	{
 		
@@ -1283,14 +1283,6 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISupports GetExtension([MarshalAs(UnmanagedType.LPStruct)] nsAString name);
-	}
-	
-	/// <summary>nsIDOMWebGLRenderingContext_MOZILLA_2_0_BRANCH </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("23182042-3d92-407d-9b9b-37c9886398f7")]
-	public interface nsIDOMWebGLRenderingContext_MOZILLA_2_0_BRANCH
-	{
 		
 		/// <summary>Member GetSupportedExtensions </summary>
 		/// <returns>A nsIVariant</returns>

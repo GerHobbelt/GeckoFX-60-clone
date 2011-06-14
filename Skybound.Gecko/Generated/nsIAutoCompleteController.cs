@@ -158,7 +158,7 @@ namespace Skybound.Gecko
 		nsAString GetCommentAt(int index);
 		
 		/// <summary>
-        /// Get a the style hint for the result at a given index in the last completed search
+        /// Get the style hint for the result at a given index in the last completed search
         /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStruct)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

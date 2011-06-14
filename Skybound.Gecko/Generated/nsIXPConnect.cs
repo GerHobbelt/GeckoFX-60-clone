@@ -393,7 +393,7 @@ namespace Skybound.Gecko
 	/// <summary> </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("fb780ace-dced-432b-bb82-8df7d4f919c8")]
+	[Guid("f99ffb06-4e7b-4bab-83d4-7d573235a08a")]
 	public interface nsIXPConnect
 	{
 		
@@ -550,7 +550,7 @@ namespace Skybound.Gecko
 		nsIStackFrame CreateStackFrameLocation(uint aLanguage, [MarshalAs(UnmanagedType.LPStr)] string aFilename, [MarshalAs(UnmanagedType.LPStr)] string aFunctionName, int aLineNumber, [MarshalAs(UnmanagedType.Interface)] nsIStackFrame aCaller);
 		
 		/// <summary>
-        /// Deprecated do-nothing function.
+        /// @deprecated do-nothing function.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SyncJSContexts();
@@ -589,8 +589,7 @@ namespace Skybound.Gecko
         /// Set fallback JSContext to use when xpconnect can't find an appropriate
         /// context to use to execute JavaScript.
         ///
-        /// NOTE: This method is DEPRECATED.
-        /// Use nsIThreadJSContextStack::safeJSContext instead.
+        /// @deprecated Use nsIThreadJSContextStack::safeJSContext instead.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSafeJSContextForCurrentThread(System.IntPtr cx);
@@ -651,21 +650,6 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIVariant JSToVariant(System.IntPtr ctx, System.IntPtr value);
-		
-		/// <summary>
-        /// Preconfigure XPCNativeWrapper automation so that when a scripted
-        /// caller whose filename starts with filenamePrefix accesses a wrapped
-        /// native that is not flagged as "system", the wrapped native will be
-        /// automatically wrapped with an XPCNativeWrapper.
-        ///
-        /// @param aFilenamePrefix the UTF-8 filename prefix to match, which
-        /// should end with a slash (/) character
-        /// @param aWantNativeWrappers whether XPConnect should produce native
-        /// wrappers for scripts whose paths begin
-        /// with this prefix
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FlagSystemFilenamePrefix([MarshalAs(UnmanagedType.LPStr)] string aFilenamePrefix, [MarshalAs(UnmanagedType.Bool)] bool aWantNativeWrappers);
 		
 		/// <summary>
         /// Restore an old prototype for wrapped natives of type

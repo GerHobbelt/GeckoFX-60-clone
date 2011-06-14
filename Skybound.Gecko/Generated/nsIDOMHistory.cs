@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMHistory </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("208f2af7-9f2e-497c-8a53-9e7803280898")]
+	[Guid("d5a3006b-dd6b-4ba3-81be-6559f8889e60")]
 	public interface nsIDOMHistory
 	{
 		
@@ -87,14 +87,6 @@ namespace Skybound.Gecko
 		/// <param name='aURL'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ReplaceState([MarshalAs(UnmanagedType.Interface)] nsIVariant aData, [MarshalAs(UnmanagedType.LPStruct)] nsAString aTitle, [MarshalAs(UnmanagedType.LPStruct)] nsAString aURL);
-	}
-	
-	/// <summary>nsIDOMHistory_MOZILLA_2_0_BRANCH </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("949fcdc1-664b-4a4b-939a-7144c94b48ac")]
-	public interface nsIDOMHistory_MOZILLA_2_0_BRANCH
-	{
 		
 		/// <summary>Member GetStateAttribute </summary>
 		/// <returns>A nsIVariant</returns>

@@ -28,8 +28,8 @@ namespace Skybound.Gecko
 	
 	
 	/// <summary>
-    /// Debugger service.  It's not a good idea to have more than one active client of
-    /// the debugger service.
+    /// Debugger service. It is not a good idea to have more than one active client
+    /// of the debugger service.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -181,7 +181,7 @@ namespace Skybound.Gecko
 		void GetImplementationStringAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aImplementationString);
 		
 		/// <summary>
-        /// |true| if the debugger service has been turned on.  This does not
+        /// |true| if the debugger service has been turned on. This does not
         /// necessarily mean another app is actively using the service, as the
         /// autostart pref may have turned the service on.
         /// </summary>
@@ -197,12 +197,12 @@ namespace Skybound.Gecko
 		void On();
 		
 		/// <summary>
-        /// Turn on the debugger.  This function should only be called from JavaScript
-        /// code.  The debugger will be enabled on the runtime the call is made on,
-        /// as determined by nsIXPCNativeCallContext.
+        /// Turn on the debugger. This function should only be called from
+        /// JavaScript code. The debugger will be enabled on the runtime the call is
+        /// made on, as determined by nsIXPCNativeCallContext.
         ///
-        /// The debugger will be activated asynchronously, because there can be no JS
-        /// on the stack when code is to be re-compiled for debug mode.
+        /// The debugger will be activated asynchronously, because there can be no
+        /// JS on the stack when code is to be re-compiled for debug mode.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AsyncOn(jsdIActivationCallback callback);
@@ -227,10 +227,8 @@ namespace Skybound.Gecko
 		void RecompileForDebugMode(System.IntPtr cx, System.IntPtr comp, [MarshalAs(UnmanagedType.Bool)] bool mode);
 		
 		/// <summary>
-        /// Turn the debugger off.  This will invalidate all of your jsdIEphemeral
-        /// derived objects, and clear all of your breakpoints.  In theory you
-        /// should be able to turn the debugger back on at some later time without
-        /// any problems.
+        /// Turn the debugger off. This will invalidate all of your jsdIEphemeral
+        /// derived objects, and clear all of your breakpoints.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Off();
@@ -244,8 +242,8 @@ namespace Skybound.Gecko
 		uint GetPauseDepthAttribute();
 		
 		/// <summary>
-        /// Temporarily disable the debugger.  Hooks will not be called while the
-        /// debugger is paused.  Multiple calls to pause will increase the "pause
+        /// Temporarily disable the debugger. Hooks will not be called while the
+        /// debugger is paused. Multiple calls to pause will increase the "pause
         /// depth", and equal number of unPause calles must be made to resume
         /// normal debugging.
         ///
@@ -276,16 +274,16 @@ namespace Skybound.Gecko
 		void ClearProfileData();
 		
 		/// <summary>
-        /// Adds an execution hook filter.  These filters are consulted each time one
-        /// of the jsdIExecutionHooks is about to be called.  Filters are matched in
-        /// a first in, first compared fashion.  The first filter to match determines
-        /// whether or not the hook is called.  Use swapFilter to reorder existing
+        /// Adds an execution hook filter. These filters are consulted each time one
+        /// of the jsdIExecutionHooks is about to be called. Filters are matched in
+        /// a first in, first compared fashion. The first filter to match determines
+        /// whether or not the hook is called. Use swapFilter to reorder existing
         /// filters, and removeFilter to remove them.
         ///
         /// If |filter| is already present this method throws NS_ERROR_INVALID_ARG.
         ///
         /// @param filter Object representing the filter to add.
-        /// @param after  Insert |filter| after this one.  Pass null to insert at
+        /// @param after  Insert |filter| after this one. Pass null to insert at
         /// the beginning.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -302,7 +300,7 @@ namespace Skybound.Gecko
         ///
         /// If |filter| is not present this method throws NS_ERROR_INVALID_ARG.
         ///
-        /// @param filter Object representing the filter to remove.  Must be the exact
+        /// @param filter Object representing the filter to remove. Must be the exact
         /// object passed to addFilter, not just a new object with the same
         /// properties.
         /// </summary>
@@ -320,8 +318,8 @@ namespace Skybound.Gecko
 		void SwapFilters(jsdIFilter filter_a, jsdIFilter filter_b);
 		
 		/// <summary>
-        /// Enumerate registered filters.  This routine refreshes each filter before
-        /// passing them on to the enumeration function.  Calling this with a null
+        /// Enumerate registered filters. This routine refreshes each filter before
+        /// passing them on to the enumeration function. Calling this with a null
         /// |enumerator| is equivalent to jsdIService::refreshFilters.
         ///
         /// @param enumerator jsdIFilterEnumerator instance to be called back for the
@@ -332,8 +330,8 @@ namespace Skybound.Gecko
 		
 		/// <summary>
         /// Force the debugger to resync its internal filter cache with the
-        /// actual values in the jsdIFilter objects.  To refresh a single filter
-        /// use jsdIService::swapFilters.  This method is equivalent to
+        /// actual values in the jsdIFilter objects. To refresh a single filter
+        /// use jsdIService::swapFilters. This method is equivalent to
         /// jsdIService::enumerateFilters with a null enumerator.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -352,7 +350,7 @@ namespace Skybound.Gecko
 		void EnumerateContexts(jsdIContextEnumerator enumerator);
 		
 		/// <summary>
-        /// Enumerate all scripts the debugger knows about.  Any scripts created
+        /// Enumerate all scripts the debugger knows about. Any scripts created
         /// before you turned the debugger on, or after turning the debugger off
         /// will not be available unless the autostart perf is set.
         ///
@@ -385,7 +383,7 @@ namespace Skybound.Gecko
         /// network queue has been pushed, but before the
         /// UI loop starts.
         /// @return depth returns the current number of times the event loop has been
-        /// nested.  your code can use it for sanity checks.
+        /// nested. your code can use it for sanity checks.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint EnterNestedEventLoop(jsdINestCallback callback);
@@ -395,7 +393,7 @@ namespace Skybound.Gecko
         /// and pop the network event queue.
         ///
         /// @return depth returns the current number of times the event loop has been
-        /// nested.  your code can use it for sanity checks.
+        /// nested. your code can use it for sanity checks.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint ExitNestedEventLoop();
@@ -411,7 +409,7 @@ namespace Skybound.Gecko
 	
 	/// <summary>
     /// Object representing a pattern of global object and/or url the debugger should
-    /// ignore.  The debugger service itself will not modify properties of these
+    /// ignore. The debugger service itself will not modify properties of these
     /// objects.
     /// </summary>
 	[ComImport()]
@@ -433,8 +431,8 @@ namespace Skybound.Gecko
 		void SetFlagsAttribute(uint aFlags);
 		
 		/// <summary>
-        /// An nsISupports version of the global object to be filtered.  A null glob
-        /// matches all hooks.  This attribute must be QI'able to the
+        /// An nsISupports version of the global object to be filtered. A null glob
+        /// matches all hooks. This attribute must be QI'able to the
         /// (non-scriptable) nsIScriptGlobalObject interface.
         ///
         /// The jsdIService caches this value internally, so if it changes you must
@@ -445,8 +443,8 @@ namespace Skybound.Gecko
 		nsISupports GetGlobalObjectAttribute();
 		
 		/// <summary>
-        /// An nsISupports version of the global object to be filtered.  A null glob
-        /// matches all hooks.  This attribute must be QI'able to the
+        /// An nsISupports version of the global object to be filtered. A null glob
+        /// matches all hooks. This attribute must be QI'able to the
         /// (non-scriptable) nsIScriptGlobalObject interface.
         ///
         /// The jsdIService caches this value internally, so if it changes you must
@@ -456,11 +454,11 @@ namespace Skybound.Gecko
 		void SetGlobalObjectAttribute([MarshalAs(UnmanagedType.Interface)] nsISupports aGlobalObject);
 		
 		/// <summary>
-        /// String representing the url pattern to be filtered.  Supports limited
-        /// glob matching, at the beginning and end of the pattern only.  For example,
+        /// String representing the url pattern to be filtered. Supports limited
+        /// glob matching, at the beginning and end of the pattern only. For example,
         /// "chrome://venkman*" filters all urls that start with chrome/venkman,
         /// "*.cgi" filters all cgi's, and "http://myserver/utils.js" filters only
-        /// the utils.js file on "myserver".   A null urlPattern matches all urls.
+        /// the utils.js file on "myserver". A null urlPattern matches all urls.
         ///
         /// The jsdIService caches this value internally, to if it changes you must
         /// swap the filter with itself using jsdIService::swapFilters.
@@ -469,11 +467,11 @@ namespace Skybound.Gecko
 		void GetUrlPatternAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aUrlPattern);
 		
 		/// <summary>
-        /// String representing the url pattern to be filtered.  Supports limited
-        /// glob matching, at the beginning and end of the pattern only.  For example,
+        /// String representing the url pattern to be filtered. Supports limited
+        /// glob matching, at the beginning and end of the pattern only. For example,
         /// "chrome://venkman*" filters all urls that start with chrome/venkman,
         /// "*.cgi" filters all cgi's, and "http://myserver/utils.js" filters only
-        /// the utils.js file on "myserver".   A null urlPattern matches all urls.
+        /// the utils.js file on "myserver". A null urlPattern matches all urls.
         ///
         /// The jsdIService caches this value internally, to if it changes you must
         /// swap the filter with itself using jsdIService::swapFilters.
@@ -482,7 +480,7 @@ namespace Skybound.Gecko
 		void SetUrlPatternAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aUrlPattern);
 		
 		/// <summary>
-        /// Line number for the start of this filter.  Line numbers are one based.
+        /// Line number for the start of this filter. Line numbers are one based.
         /// Assigning a 0 to this attribute will tell the debugger to ignore the
         /// entire file.
         /// </summary>
@@ -490,7 +488,7 @@ namespace Skybound.Gecko
 		uint GetStartLineAttribute();
 		
 		/// <summary>
-        /// Line number for the start of this filter.  Line numbers are one based.
+        /// Line number for the start of this filter. Line numbers are one based.
         /// Assigning a 0 to this attribute will tell the debugger to ignore the
         /// entire file.
         /// </summary>
@@ -498,7 +496,7 @@ namespace Skybound.Gecko
 		void SetStartLineAttribute(uint aStartLine);
 		
 		/// <summary>
-        /// Line number for the end of this filter.  Line numbers are one based.
+        /// Line number for the end of this filter. Line numbers are one based.
         /// Assigning a 0 to this attribute will tell the debugger to ignore from
         /// |startLine| to the end of the file.
         /// </summary>
@@ -506,7 +504,7 @@ namespace Skybound.Gecko
 		uint GetEndLineAttribute();
 		
 		/// <summary>
-        /// Line number for the end of this filter.  Line numbers are one based.
+        /// Line number for the end of this filter. Line numbers are one based.
         /// Assigning a 0 to this attribute will tell the debugger to ignore from
         /// |startLine| to the end of the file.
         /// </summary>
@@ -615,7 +613,7 @@ namespace Skybound.Gecko
 		void OnScriptCreated(jsdIScript script);
 		
 		/// <summary>
-        /// Called when the JavaScript engine destroys a script.  The jsdIScript
+        /// Called when the JavaScript engine destroys a script. The jsdIScript
         /// object passed in will already be invalidated.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -648,7 +646,7 @@ namespace Skybound.Gecko
 	{
 		
 		/// <summary>
-        /// Called when the JavaScript engine encounters an error.  Return |true|
+        /// Called when the JavaScript engine encounters an error. Return |true|
         /// to pass the error along, |false| to invoke the debugHook.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -683,7 +681,7 @@ namespace Skybound.Gecko
 	
 	/// <summary>
     /// Objects which inherit this interface may go away, with (jsdIScript) or
-    /// without (all others) notification.  These objects are generally wrappers
+    /// without (all others) notification. These objects are generally wrappers
     /// around JSD structures that go away when you call jsdService::Off().
     /// </summary>
 	[ComImport()]
@@ -693,7 +691,7 @@ namespace Skybound.Gecko
 	{
 		
 		/// <summary>
-        /// |true| if this object is still valid.  If not, many or all of the methods
+        /// |true| if this object is still valid. If not, many or all of the methods
         /// and/or properties of the inheritor may no longer be callable.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -708,7 +706,7 @@ namespace Skybound.Gecko
 	}
 	
 	/// <summary>
-    /// Context object.  Only context's which are also nsISupports objects can be
+    /// Context object. Only context's which are also nsISupports objects can be
     /// reflected by this interface.
     /// </summary>
 	[ComImport()]
@@ -718,7 +716,7 @@ namespace Skybound.Gecko
 	{
 		
 		/// <summary>
-        /// |true| if this object is still valid.  If not, many or all of the methods
+        /// |true| if this object is still valid. If not, many or all of the methods
         /// and/or properties of the inheritor may no longer be callable.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -792,8 +790,8 @@ namespace Skybound.Gecko
 		
 		/// <summary>
         /// |true| if this context should be allowed to run scripts, |false|
-        /// otherwise.  This attribute is only valid for contexts which implement
-        /// nsIScriptContext.  Setting or getting this attribute on any other
+        /// otherwise. This attribute is only valid for contexts which implement
+        /// nsIScriptContext. Setting or getting this attribute on any other
         /// context will throw a NS_ERROR_NO_INTERFACE exception.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -802,8 +800,8 @@ namespace Skybound.Gecko
 		
 		/// <summary>
         /// |true| if this context should be allowed to run scripts, |false|
-        /// otherwise.  This attribute is only valid for contexts which implement
-        /// nsIScriptContext.  Setting or getting this attribute on any other
+        /// otherwise. This attribute is only valid for contexts which implement
+        /// nsIScriptContext. Setting or getting this attribute on any other
         /// context will throw a NS_ERROR_NO_INTERFACE exception.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -811,10 +809,10 @@ namespace Skybound.Gecko
 	}
 	
 	/// <summary>
-    /// Stack frame objects.  These are only valid inside the jsdIExecutionHook which
-    /// gave it to you.  After you return from that handler the bottom frame, and any
+    /// Stack frame objects. These are only valid inside the jsdIExecutionHook which
+    /// gave it to you. After you return from that handler the bottom frame, and any
     /// frame you found attached through it, are invalidated via the jsdIEphemeral
-    /// interface.  Once a jsdIStackFrame has been invalidated all method and
+    /// interface. Once a jsdIStackFrame has been invalidated all method and
     /// property accesses will throw a NS_ERROR_NOT_AVAILABLE exception.
     /// </summary>
 	[ComImport()]
@@ -824,7 +822,7 @@ namespace Skybound.Gecko
 	{
 		
 		/// <summary>
-        /// |true| if this object is still valid.  If not, many or all of the methods
+        /// |true| if this object is still valid. If not, many or all of the methods
         /// and/or properties of the inheritor may no longer be callable.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -924,9 +922,9 @@ namespace Skybound.Gecko
 		/// <summary>
         /// Evaluate arbitrary JavaScript in this stack frame.
         /// @param bytes    Script to be evaluated.
-        /// @param fileName Filename to compile this script under.  This is the
+        /// @param fileName Filename to compile this script under. This is the
         /// filename you'll see in error messages, etc.
-        /// @param line     Starting line number for this script.  One based.
+        /// @param line     Starting line number for this script. One based.
         /// @retval         Result of evaluating the script.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -935,7 +933,7 @@ namespace Skybound.Gecko
 	}
 	
 	/// <summary>
-    /// Script object.  In JavaScript engine terms, there's a single script for each
+    /// Script object. In JavaScript engine terms, there's a single script for each
     /// function, and one for the top level script.
     /// </summary>
 	[ComImport()]
@@ -945,7 +943,7 @@ namespace Skybound.Gecko
 	{
 		
 		/// <summary>
-        /// |true| if this object is still valid.  If not, many or all of the methods
+        /// |true| if this object is still valid. If not, many or all of the methods
         /// and/or properties of the inheritor may no longer be callable.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -977,7 +975,7 @@ namespace Skybound.Gecko
 		int GetVersionAttribute();
 		
 		/// <summary>
-        /// Tag value guaranteed unique among jsdIScript objects.  Useful as a
+        /// Tag value guaranteed unique among jsdIScript objects. Useful as a
         /// hash key in script.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -1005,7 +1003,7 @@ namespace Skybound.Gecko
 		void GetFileNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aFileName);
 		
 		/// <summary>
-        /// Function name for this script.  "anonymous" for unnamed functions (or
+        /// Function name for this script. "anonymous" for unnamed functions (or
         /// a function actually named anonymous), empty for top level scripts.
         /// This data is copied from the underlying structure when the jsdIScript
         /// instance is created and is therefore available even after the script is
@@ -1158,8 +1156,8 @@ namespace Skybound.Gecko
 	}
 	
 	/// <summary>
-    /// Value objects.  Represents typeless JavaScript values (jsval in SpiderMonkey
-    /// terminology.)  These are valid until the debugger is turned off.  Holding a
+    /// Value objects. Represents typeless JavaScript values (jsval in SpiderMonkey
+    /// terminology.)  These are valid until the debugger is turned off. Holding a
     /// jsdIValue adds a root for the underlying JavaScript value, so don't keep it
     /// if you don't need to.
     /// </summary>
@@ -1170,7 +1168,7 @@ namespace Skybound.Gecko
 	{
 		
 		/// <summary>
-        /// |true| if this object is still valid.  If not, many or all of the methods
+        /// |true| if this object is still valid. If not, many or all of the methods
         /// and/or properties of the inheritor may no longer be callable.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1237,41 +1235,41 @@ namespace Skybound.Gecko
 		jsdIValue GetJsParentAttribute();
 		
 		/// <summary>
-        /// Class name if this value represents an object.  Empty AUTF8String if the value
+        /// Class name if this value represents an object. Empty AUTF8String if the value
         /// is not an object.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetJsClassNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aJsClassName);
 		
 		/// <summary>
-        /// Constructor name if this value represents an object.  Empty AUTF8String if the
+        /// Constructor name if this value represents an object. Empty AUTF8String if the
         /// value is not an object.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		jsdIValue GetJsConstructorAttribute();
 		
 		/// <summary>
-        /// Function name if this value represents a function.  Empty AUTF8String if the
+        /// Function name if this value represents a function. Empty AUTF8String if the
         /// value is not a function.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetJsFunctionNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aJsFunctionName);
 		
 		/// <summary>
-        /// Value if interpreted as a boolean.  Converts if necessary.
+        /// Value if interpreted as a boolean. Converts if necessary.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetBooleanValueAttribute();
 		
 		/// <summary>
-        /// Value if interpreted as a double.  Converts if necessary.
+        /// Value if interpreted as a double. Converts if necessary.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		double GetDoubleValueAttribute();
 		
 		/// <summary>
-        /// Value if interpreted as an integer.  Converts if necessary.
+        /// Value if interpreted as an integer. Converts if necessary.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetIntValueAttribute();
@@ -1283,20 +1281,20 @@ namespace Skybound.Gecko
 		jsdIObject GetObjectValueAttribute();
 		
 		/// <summary>
-        /// Value if interpreted as a AUTF8String.  Converts if necessary.
+        /// Value if interpreted as a AUTF8String. Converts if necessary.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetStringValueAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aStringValue);
 		
 		/// <summary>
-        /// Number of properties.  0 if the value is not an object, or the value is
+        /// Number of properties. 0 if the value is not an object, or the value is
         /// an object but has no properties.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetPropertyCountAttribute();
 		
 		/// <summary>
-        /// Retrieves all properties if this value represents an object.  If this
+        /// Retrieves all properties if this value represents an object. If this
         /// value is not an object a 0 element array is returned.
         /// @param propArray Array of jsdIProperty values for this value.
         /// @param length    Size of array.
@@ -1305,7 +1303,7 @@ namespace Skybound.Gecko
 		void GetProperties(out jsdIProperty propArray, out uint length);
 		
 		/// <summary>
-        /// Retrieves a single property from the value.  Only valid if the value
+        /// Retrieves a single property from the value. Only valid if the value
         /// represents an object.
         /// @param name Name of the property to retrieve.
         /// @retval     jsdIProperty for the requested property name or null if no
@@ -1315,8 +1313,8 @@ namespace Skybound.Gecko
 		jsdIProperty GetProperty([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String name);
 		
 		/// <summary>
-        /// jsdIValues are wrappers around JavaScript engine structures.  Much of the
-        /// data is copied instead of shared.  The refresh method is used to resync
+        /// jsdIValues are wrappers around JavaScript engine structures. Much of the
+        /// data is copied instead of shared. The refresh method is used to resync
         /// the jsdIValue with the underlying structure.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -1324,7 +1322,7 @@ namespace Skybound.Gecko
 		
 		/// <summary>
         /// When called from JavaScript, this method returns the JavaScript value
-        /// wrapped by this jsdIValue.  The calling script is free to use the result
+        /// wrapped by this jsdIValue. The calling script is free to use the result
         /// as it would any other JavaScript value.
         /// When called from another language this method returns an xpconnect
         /// defined error code.
@@ -1346,7 +1344,7 @@ namespace Skybound.Gecko
     /// jsdIValue from whence your jsdIObject instance came for at least as long as
     /// you hold the jsdIObject.
     /// XXX Maybe the jsClassName, jsConstructorName, and property related attribute/
-    /// functions from jsdIValue should move to this interface.  We could inherit from
+    /// functions from jsdIValue should move to this interface. We could inherit from
     /// jsdIValue or use interface flattening or something.
     /// </summary>
 	[ComImport()]
@@ -1399,7 +1397,7 @@ namespace Skybound.Gecko
 	}
 	
 	/// <summary>
-    /// Representation of a property of an object.  When an instance is invalid, all
+    /// Representation of a property of an object. When an instance is invalid, all
     /// method and property access will result in a NS_UNAVAILABLE error.
     /// </summary>
 	[ComImport()]
@@ -1409,7 +1407,7 @@ namespace Skybound.Gecko
 	{
 		
 		/// <summary>
-        /// |true| if this object is still valid.  If not, many or all of the methods
+        /// |true| if this object is still valid. If not, many or all of the methods
         /// and/or properties of the inheritor may no longer be callable.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]

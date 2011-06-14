@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIXMLHttpRequestEventTarget </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6ce0a193-b033-4c3d-b748-f851b09261f5")]
+	[Guid("dea238a1-240f-45f4-9f07-7769bc69eb76")]
 	public interface nsIXMLHttpRequestEventTarget : nsIDOMEventTarget
 	{
 		
@@ -163,6 +163,17 @@ namespace Skybound.Gecko
 		/// <param name='aOnprogress'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOnprogressAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener aOnprogress);
+		
+		/// <summary>Member GetOnloadendAttribute </summary>
+		/// <returns>A nsIDOMEventListener</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMEventListener GetOnloadendAttribute();
+		
+		/// <summary>Member SetOnloadendAttribute </summary>
+		/// <param name='aOnloadend'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOnloadendAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener aOnloadend);
 	}
 	
 	/// <summary>nsIXMLHttpRequestUpload </summary>
@@ -301,6 +312,17 @@ namespace Skybound.Gecko
 		/// <param name='aOnprogress'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetOnprogressAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener aOnprogress);
+		
+		/// <summary>Member GetOnloadendAttribute </summary>
+		/// <returns>A nsIDOMEventListener</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMEventListener GetOnloadendAttribute();
+		
+		/// <summary>Member SetOnloadendAttribute </summary>
+		/// <param name='aOnloadend'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetOnloadendAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener aOnloadend);
 	}
 	
 	/// <summary>
@@ -346,7 +368,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6bb91106-85f0-4d93-8cb4-e57b3d0624f2")]
+	[Guid("af62a870-820c-4981-96a3-28ab17b779e1")]
 	public interface nsIXMLHttpRequest
 	{
 		
@@ -436,38 +458,10 @@ namespace Skybound.Gecko
 		nsAString GetResponseHeader([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String header);
 		
 		/// <summary>
-        /// Native (non-script) method to initialize a request. Note that
-        /// the request is not sent until the <code>send</code> method
-        /// is invoked.
-        ///
-        /// If there is an "active" request (that is, if open() or openRequest() has
-        /// been called already), this is equivalent to calling abort().
-        ///
-        /// @param method The HTTP method, for example "POST" or "GET". Ignored
-        /// if the URL is not a HTTP(S) URL.
-        /// @param url The URL to which to send the request.
-        /// @param async Whether the request is synchronous or asynchronous
-        /// i.e. whether send returns only after the response
-        /// is received or if it returns immediately after
-        /// sending the request. In the latter case, notification
-        /// of completion is sent through the event listeners.
-        /// This argument must be true if the multipart
-        /// attribute has been set to true, or an exception will
-        /// be thrown.
-        /// @param user A username for authentication if necessary.
-        /// @param password A password for authentication if necessary.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OpenRequest([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String method, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String url, [MarshalAs(UnmanagedType.Bool)] bool async, [MarshalAs(UnmanagedType.LPStruct)] nsAString user, [MarshalAs(UnmanagedType.LPStruct)] nsAString password);
-		
-		/// <summary>
         /// Meant to be a script-only method for initializing a request.
-        /// The parameters are similar to the ones detailed in the
-        /// description of <code>openRequest</code>, but the last
-        /// 3 are optional.
         ///
-        /// If there is an "active" request (that is, if open() or openRequest() has
-        /// been called already), this is equivalent to calling abort().
+        /// If there is an "active" request (that is, if open() has been called
+        /// already), this is equivalent to calling abort() and then open().
         ///
         /// @param method The HTTP method - either "POST" or "GET". Ignored
         /// if the URL is not a HTTP URL.

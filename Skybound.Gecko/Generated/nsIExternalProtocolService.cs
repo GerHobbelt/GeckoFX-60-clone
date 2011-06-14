@@ -118,6 +118,7 @@ namespace Skybound.Gecko
         /// Used to load a url via an external protocol handler (if one exists)
         ///
         /// @param aURL The url to load
+        ///
         /// @deprecated Use LoadURI instead (See Bug 389565 for removal)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

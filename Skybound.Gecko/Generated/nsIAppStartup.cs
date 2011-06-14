@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIAppStartup </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6799abed-4721-4f51-9304-d1a2ea1df5d5")]
+	[Guid("68b4b481-e21b-478f-8d75-41b131e1c261")]
 	public interface nsIAppStartup
 	{
 		
@@ -82,63 +82,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Quit(uint aMode);
-	}
-	
-	/// <summary>nsIAppStartup2 </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e233d663-d014-43b0-8649-7145ecf0a0b1")]
-	public interface nsIAppStartup2 : nsIAppStartup
-	{
-		
-		/// <summary>
-        /// Create the hidden window.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CreateHiddenWindow();
-		
-		/// <summary>
-        /// Destroys the hidden window. This will have no effect if the hidden window
-        /// has not yet been created.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void DestroyHiddenWindow();
-		
-		/// <summary>
-        /// Runs an application event loop: normally the main event pump which
-        /// defines the lifetime of the application. If there are no windows open
-        /// and no outstanding calls to enterLastWindowClosingSurvivalArea this
-        /// method will exit immediately.
-        ///
-        /// @returnCode NS_SUCCESS_RESTART_APP
-        /// This return code indicates that the application should be
-        /// restarted because quit was called with the eRestart flag.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Run();
-		
-		/// <summary>
-        /// There are situations where all application windows will be
-        /// closed but we don't want to take this as a signal to quit the
-        /// app. Bracket the code where the last window could close with
-        /// these.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void EnterLastWindowClosingSurvivalArea();
-		
-		/// <summary>Member ExitLastWindowClosingSurvivalArea </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ExitLastWindowClosingSurvivalArea();
-		
-		/// <summary>
-        /// Exit the event loop, and shut down the app.
-        ///
-        /// @param aMode
-        /// This parameter modifies how the app is shutdown, and it is
-        /// constructed from the constants defined above.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Quit(uint aMode);
 		
 		/// <summary>
         /// True if the application is in the process of shutting down.
@@ -146,70 +89,6 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetShuttingDownAttribute();
-	}
-	
-	/// <summary>nsIAppStartup_MOZILLA_2_0 </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2e8c45b0-1ac1-11e0-ac64-0800200c9a66")]
-	public interface nsIAppStartup_MOZILLA_2_0 : nsIAppStartup2
-	{
-		
-		/// <summary>
-        /// Create the hidden window.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CreateHiddenWindow();
-		
-		/// <summary>
-        /// Destroys the hidden window. This will have no effect if the hidden window
-        /// has not yet been created.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void DestroyHiddenWindow();
-		
-		/// <summary>
-        /// Runs an application event loop: normally the main event pump which
-        /// defines the lifetime of the application. If there are no windows open
-        /// and no outstanding calls to enterLastWindowClosingSurvivalArea this
-        /// method will exit immediately.
-        ///
-        /// @returnCode NS_SUCCESS_RESTART_APP
-        /// This return code indicates that the application should be
-        /// restarted because quit was called with the eRestart flag.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Run();
-		
-		/// <summary>
-        /// There are situations where all application windows will be
-        /// closed but we don't want to take this as a signal to quit the
-        /// app. Bracket the code where the last window could close with
-        /// these.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void EnterLastWindowClosingSurvivalArea();
-		
-		/// <summary>Member ExitLastWindowClosingSurvivalArea </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ExitLastWindowClosingSurvivalArea();
-		
-		/// <summary>
-        /// Exit the event loop, and shut down the app.
-        ///
-        /// @param aMode
-        /// This parameter modifies how the app is shutdown, and it is
-        /// constructed from the constants defined above.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Quit(uint aMode);
-		
-		/// <summary>
-        /// True if the application is in the process of shutting down.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool GetShuttingDownAttribute();
 		
 		/// <summary>
         /// Returns an object with main, process, firstPaint, sessionRestored properties.

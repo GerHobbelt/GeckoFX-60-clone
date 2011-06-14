@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIEditor </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("972e54e1-dec3-4e3f-87ec-408a7dbcfd92")]
+	[Guid("bd5d93f0-6451-11e0-ae3e-0800200c9a66")]
 	public interface nsIEditor
 	{
 		
@@ -43,20 +43,16 @@ namespace Skybound.Gecko
 		/// <summary>
         /// Init is to tell the implementation of nsIEditor to begin its services
         /// @param aDoc          The dom document interface being observed
-        /// @param aPresShell    TEMP: The presentation shell displaying the document.
-        /// Once events can tell us from what pres shell
-        /// they originated, this will no longer be
-        /// necessary, and the editor will no longer be
-        /// linked to a single pres shell.
         /// @param aRoot         This is the root of the editable section of this
         /// document. If it is null then we get root
         /// from document body.
         /// @param aSelCon       this should be used to get the selection location
+        /// (will be null for HTML editors)
         /// @param aFlags        A bitmask of flags for specifying the behavior
         /// of the editor.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument doc, System.IntPtr shell, System.IntPtr aRoot, [MarshalAs(UnmanagedType.Interface)] nsISelectionController aSelCon, uint aFlags);
+		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument doc, System.IntPtr aRoot, [MarshalAs(UnmanagedType.Interface)] nsISelectionController aSelCon, uint aFlags);
 		
 		/// <summary>Member SetAttributeOrEquivalent </summary>
 		/// <param name='element'> </param>
@@ -664,14 +660,6 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsModifiableNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode);
-	}
-	
-	/// <summary>nsIEditor_MOZILLA_2_0_BRANCH </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("54c0bc08-6c0e-4967-bb0d-ec991d78a8b3")]
-	public interface nsIEditor_MOZILLA_2_0_BRANCH
-	{
 		
 		/// <summary>
         /// Will be set to true if the last keypress event that the editor has handled

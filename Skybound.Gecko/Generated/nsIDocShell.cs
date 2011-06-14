@@ -32,7 +32,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("98cdbcc4-2d81-4191-a63f-b6c52085edbc")]
+	[Guid("f77271a1-0b22-4581-af6d-529125f1901d")]
 	public interface nsIDocShell
 	{
 		
@@ -669,14 +669,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsAppTabAttribute([MarshalAs(UnmanagedType.Bool)] bool aIsAppTab);
-	}
-	
-	/// <summary>nsIDocShell_MOZILLA_2_0_BRANCH </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5f7a2184-31b6-4d67-9c75-0c17477766e2")]
-	public interface nsIDocShell_MOZILLA_2_0_BRANCH
-	{
 		
 		/// <summary>
         /// Create a new about:blank document and content viewer.
