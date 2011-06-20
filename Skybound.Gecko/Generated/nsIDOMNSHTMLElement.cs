@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMNSHTMLElement </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f0ffe1d2-9615-492b-aae1-05428ebc2a70")]
+	[Guid("4738f75d-9c6f-40f8-81d0-84b2e4726a8f")]
 	public interface nsIDOMNSHTMLElement
 	{
 		
@@ -125,14 +125,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDraggableAttribute([MarshalAs(UnmanagedType.Bool)] bool aDraggable);
-		
-		/// <summary>Member Blur </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Blur();
-		
-		/// <summary>Member Focus </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Focus();
 		
 		/// <summary>Member ScrollIntoView </summary>
 		/// <param name='top'> </param>

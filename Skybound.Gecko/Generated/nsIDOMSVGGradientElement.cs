@@ -39,7 +39,7 @@ namespace Skybound.Gecko
     ///    nsIDOMSVGStylable </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("988b2de4-137b-4bb8-a15e-fe94038e9cf3")]
+	[Guid("8114186f-29ef-4642-b4e2-762f331661e5")]
 	public interface nsIDOMSVGGradientElement : nsIDOMSVGElement
 	{
 		
@@ -49,7 +49,7 @@ namespace Skybound.Gecko
         /// It represents a single node in the document tree.
         ///
         /// For more information on this interface please see
-        /// http://www.w3.org/TR/DOM-Level-2-Core/
+        /// http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetNodeNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNodeName);
@@ -182,16 +182,10 @@ namespace Skybound.Gecko
 		new void GetNamespaceURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNamespaceURI);
 		
 		/// <summary>
-        /// Introduced in DOM Level 2:
+        /// Modified in DOM Core
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
-		
-		/// <summary>
-        /// Introduced in DOM Level 2:
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
 		
 		/// <summary>
         /// Introduced in DOM Level 2:
@@ -365,7 +359,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7e15fce5-b208-43e1-952a-c570ebad0619")]
+	[Guid("44e59baf-4ca5-48af-9749-69b30be11917")]
 	public interface nsIDOMSVGLinearGradientElement : nsIDOMSVGGradientElement
 	{
 		
@@ -375,7 +369,7 @@ namespace Skybound.Gecko
         /// It represents a single node in the document tree.
         ///
         /// For more information on this interface please see
-        /// http://www.w3.org/TR/DOM-Level-2-Core/
+        /// http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetNodeNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNodeName);
@@ -508,16 +502,10 @@ namespace Skybound.Gecko
 		new void GetNamespaceURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNamespaceURI);
 		
 		/// <summary>
-        /// Introduced in DOM Level 2:
+        /// Modified in DOM Core
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
-		
-		/// <summary>
-        /// Introduced in DOM Level 2:
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
 		
 		/// <summary>
         /// Introduced in DOM Level 2:
@@ -710,7 +698,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d0262ae1-31a4-44be-b82e-85e4cfe280fd")]
+	[Guid("67d79c33-76b6-421a-a7ff-bb6793a4fd46")]
 	public interface nsIDOMSVGRadialGradientElement : nsIDOMSVGGradientElement
 	{
 		
@@ -720,7 +708,7 @@ namespace Skybound.Gecko
         /// It represents a single node in the document tree.
         ///
         /// For more information on this interface please see
-        /// http://www.w3.org/TR/DOM-Level-2-Core/
+        /// http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetNodeNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNodeName);
@@ -853,16 +841,10 @@ namespace Skybound.Gecko
 		new void GetNamespaceURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNamespaceURI);
 		
 		/// <summary>
-        /// Introduced in DOM Level 2:
+        /// Modified in DOM Core
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
-		
-		/// <summary>
-        /// Introduced in DOM Level 2:
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
 		
 		/// <summary>
         /// Introduced in DOM Level 2:

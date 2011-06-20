@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMSVGPointList </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4c12af24-0fc2-4fe7-b71d-5d6b41d463c1")]
+	[Guid("7bb28750-7238-4083-b5f4-4def4646a637")]
 	public interface nsIDOMSVGPointList
 	{
 		
@@ -39,7 +39,14 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetNumberOfItemsAttribute();
 		
-		/// <summary>Member Clear </summary>
+		/// <summary>Member GetLengthAttribute </summary>
+		/// <returns>A System.UInt32</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetLengthAttribute();
+		
+		/// <summary>
+        /// synonym for numberOfItems
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Clear();
 		

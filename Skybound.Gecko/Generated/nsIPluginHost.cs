@@ -134,6 +134,64 @@ namespace Skybound.Gecko
 		void HandleBadPlugin(System.IntPtr aLibrary, [MarshalAs(UnmanagedType.Interface)] nsIPluginInstance instance);
 		
 		/// <summary>
+        /// Fetches a URL.
+        ///
+        /// (Corresponds to NPN_GetURL and NPN_GetURLNotify.)
+        ///
+        /// @param pluginInst - the plugin making the request. If NULL, the URL
+        /// is fetched in the background.
+        /// @param url - the URL to fetch
+        /// @param target - the target window into which to load the URL, or NULL if
+        /// the data should be returned to the plugin via streamListener.
+        /// @param streamListener - a stream listener to be used to return data to
+        /// the plugin. May be NULL if target is not NULL.
+        /// @param altHost - an IP-address string that will be used instead of the
+        /// host specified in the URL. This is used to prevent DNS-spoofing
+        /// attacks. Can be defaulted to NULL meaning use the host in the URL.
+        /// @param referrer - the referring URL (may be NULL)
+        /// @param forceJSEnabled - forces JavaScript to be enabled for 'javascript:'
+        /// URLs, even if the user currently has JavaScript disabled (usually
+        /// specify PR_FALSE)
+        /// @result - NS_OK if this operation was successful
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetURL([MarshalAs(UnmanagedType.Interface)] nsISupports pluginInt, [MarshalAs(UnmanagedType.LPStr)] string url, [MarshalAs(UnmanagedType.LPStr)] string target, [MarshalAs(UnmanagedType.Interface)] nsIPluginStreamListener streamListener, [MarshalAs(UnmanagedType.LPStr)] string altHost, [MarshalAs(UnmanagedType.LPStr)] string referrer, [MarshalAs(UnmanagedType.Bool)] bool forceJSEnabled);
+		
+		/// <summary>
+        /// Posts to a URL with post data and/or post headers.
+        ///
+        /// (Corresponds to NPN_PostURL and NPN_PostURLNotify.)
+        ///
+        /// @param pluginInst - the plugin making the request. If NULL, the URL
+        /// is fetched in the background.
+        /// @param url - the URL to fetch
+        /// @param postDataLength - the length of postData (if non-NULL)
+        /// @param postData - the data to POST. NULL specifies that there is not post
+        /// data
+        /// @param isFile - whether the postData specifies the name of a file to
+        /// post instead of data. The file will be deleted afterwards.
+        /// @param target - the target window into which to load the URL, or NULL if
+        /// the data should be returned to the plugin via streamListener.
+        /// @param streamListener - a stream listener to be used to return data to
+        /// the plugin. May be NULL if target is not NULL.
+        /// @param altHost - an IP-address string that will be used instead of the
+        /// host specified in the URL. This is used to prevent DNS-spoofing
+        /// attacks. Can be defaulted to NULL meaning use the host in the URL.
+        /// @param referrer - the referring URL (may be NULL)
+        /// @param forceJSEnabled - forces JavaScript to be enabled for 'javascript:'
+        /// URLs, even if the user currently has JavaScript disabled (usually
+        /// specify PR_FALSE)
+        /// @param postHeadersLength - the length of postHeaders (if non-NULL)
+        /// @param postHeaders - the headers to POST. Must be in the form of
+        /// "HeaderName: HeaderValue\r\n".  Each header, including the last,
+        /// must be followed by "\r\n".  NULL specifies that there are no
+        /// post headers
+        /// @result - NS_OK if this operation was successful
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PostURL([MarshalAs(UnmanagedType.Interface)] nsISupports pluginInst, [MarshalAs(UnmanagedType.LPStr)] string url, uint postDataLen, [MarshalAs(UnmanagedType.LPStr)] string postData, [MarshalAs(UnmanagedType.Bool)] bool isFile, [MarshalAs(UnmanagedType.LPStr)] string target, [MarshalAs(UnmanagedType.Interface)] nsIPluginStreamListener streamListener, [MarshalAs(UnmanagedType.LPStr)] string altHost, [MarshalAs(UnmanagedType.LPStr)] string referrer, [MarshalAs(UnmanagedType.Bool)] bool forceJSEnabled, uint postHeadersLength, [MarshalAs(UnmanagedType.LPStr)] string postHeaders);
+		
+		/// <summary>
         /// Returns the proxy info for a given URL. The caller is required to
         /// free the resulting memory with nsIMalloc::Free. The result will be in the
         /// following format
@@ -227,17 +285,17 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPluginTag GetPluginTagForInstance([MarshalAs(UnmanagedType.Interface)] nsIPluginInstance aInstance);
-	}
-	
-	/// <summary>
-    /// Methods for clearing plugin private data. These should be moved onto
-    /// nsIPluginHost proper post-Gecko 2.0.
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0b0a2fb8-dc2b-4df2-b721-4b7a4008df6c")]
-	public interface nsIPluginHost_MOZILLA_2_0_BRANCH
-	{
+		
+		/// <summary>Member AddIdleTimeTarget </summary>
+		/// <param name='objectFrame'> </param>
+		/// <param name='isVisible'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AddIdleTimeTarget([MarshalAs(UnmanagedType.Interface)] nsIPluginInstanceOwner objectFrame, [MarshalAs(UnmanagedType.Bool)] bool isVisible);
+		
+		/// <summary>Member RemoveIdleTimeTarget </summary>
+		/// <param name='objectFrame'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveIdleTimeTarget([MarshalAs(UnmanagedType.Interface)] nsIPluginInstanceOwner objectFrame);
 		
 		/// <summary>
         /// Clear site data for a given plugin.

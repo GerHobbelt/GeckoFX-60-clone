@@ -32,7 +32,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("43987F7B-0FAA-4019-811E-42BECAC73FC5")]
+	[Guid("6eb307d6-3567-481a-971a-feb666b8ae72")]
 	public interface mozISpellCheckingEngine
 	{
 		
@@ -114,5 +114,11 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Suggest([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")] string word, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=2)] out string suggestions, out uint count);
+		
+		/// <summary>
+        /// Load dictionaries from the specified dir
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void LoadDictionariesFromDir([MarshalAs(UnmanagedType.Interface)] nsIFile dir);
 	}
 }

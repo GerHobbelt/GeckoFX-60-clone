@@ -43,7 +43,7 @@ namespace Skybound.Gecko
     ///    events::nsIDOMEventTarget </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7676f306-22c9-427e-bd71-2b1315851c93")]
+	[Guid("fb52b73c-3908-44c7-a390-2d40f8e8499c")]
 	public interface nsIDOMSVGSwitchElement : nsIDOMSVGElement
 	{
 		
@@ -53,7 +53,7 @@ namespace Skybound.Gecko
         /// It represents a single node in the document tree.
         ///
         /// For more information on this interface please see
-        /// http://www.w3.org/TR/DOM-Level-2-Core/
+        /// http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetNodeNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNodeName);
@@ -186,16 +186,10 @@ namespace Skybound.Gecko
 		new void GetNamespaceURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNamespaceURI);
 		
 		/// <summary>
-        /// Introduced in DOM Level 2:
+        /// Modified in DOM Core
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
-		
-		/// <summary>
-        /// Introduced in DOM Level 2:
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
 		
 		/// <summary>
         /// Introduced in DOM Level 2:

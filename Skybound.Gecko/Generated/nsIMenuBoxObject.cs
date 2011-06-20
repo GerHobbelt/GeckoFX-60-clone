@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIMenuBoxObject </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("F5099746-5049-4e81-A03E-945D5110FEE2")]
+	[Guid("689ebf3d-0184-450a-9bfa-5a26be0e7a8c")]
 	public interface nsIMenuBoxObject
 	{
 		
@@ -56,16 +56,6 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool HandleKeyPress([MarshalAs(UnmanagedType.Interface)] nsIDOMKeyEvent keyEvent);
-	}
-	
-	/// <summary>
-    /// be implemented by menubars
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("D03150F6-92A3-4307-A73C-864C8DAD3F22")]
-	public interface nsIMenuBoxObject_MOZILLA_2_0_BRANCH
-	{
 		
 		/// <summary>
         /// true if the menu or menubar was opened via a keypress.

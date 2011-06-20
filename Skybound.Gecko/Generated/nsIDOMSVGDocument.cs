@@ -31,7 +31,7 @@ namespace Skybound.Gecko
     ///, nsIDOMDocumentEvent </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("12d3b664-1dd2-11b2-a7cf-ceee7e90f396")]
+	[Guid("fc52bd3f-850c-4d80-819f-5bd8321b4b59")]
 	public interface nsIDOMSVGDocument : nsIDOMDocument
 	{
 		
@@ -41,7 +41,7 @@ namespace Skybound.Gecko
         /// It represents a single node in the document tree.
         ///
         /// For more information on this interface please see
-        /// http://www.w3.org/TR/DOM-Level-2-Core/
+        /// http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetNodeNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNodeName);
@@ -137,16 +137,10 @@ namespace Skybound.Gecko
 		new void GetNamespaceURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNamespaceURI);
 		
 		/// <summary>
-        /// Introduced in DOM Level 2:
+        /// Modified in DOM Core
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
-		
-		/// <summary>
-        /// Introduced in DOM Level 2:
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPrefix);
 		
 		/// <summary>
         /// Introduced in DOM Level 2:
@@ -171,7 +165,7 @@ namespace Skybound.Gecko
         /// objects.
         ///
         /// For more information on this interface please see
-        /// http://www.w3.org/TR/DOM-Level-2-Core/
+        /// http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -255,6 +249,95 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMElement GetElementById([MarshalAs(UnmanagedType.LPStruct)] nsAString elementId);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetInputEncodingAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aInputEncoding);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetXmlEncodingAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aXmlEncoding);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetXmlStandaloneAttribute();
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetXmlStandaloneAttribute([MarshalAs(UnmanagedType.Bool)] bool aXmlStandalone);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetXmlVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aXmlVersion);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetXmlVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aXmlVersion);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetStrictErrorCheckingAttribute();
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetStrictErrorCheckingAttribute([MarshalAs(UnmanagedType.Bool)] bool aStrictErrorChecking);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetDocumentURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aDocumentURI);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetDocumentURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aDocumentURI);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMNode AdoptNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode source);
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMDOMConfiguration GetDomConfigAttribute();
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void NormalizeDocument();
+		
+		/// <summary>
+        /// Introduced in DOM Level 3:
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMNode RenameNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode node, [MarshalAs(UnmanagedType.LPStruct)] nsAString namespaceURI, [MarshalAs(UnmanagedType.LPStruct)] nsAString qualifiedName);
 		
 		/// <summary>
         ///, nsIDOMDocumentEvent </summary>
