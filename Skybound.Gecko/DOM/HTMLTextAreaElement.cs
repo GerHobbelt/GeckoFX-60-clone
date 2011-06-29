@@ -32,7 +32,7 @@ namespace Skybound.Gecko.DOM
 			set { DOMHTMLElement.SetAccessKeyAttribute(new nsAString(value)); }
 		}
 
-		public int Cols {
+		public uint Cols {
 			get { return DOMHTMLElement.GetColsAttribute(); }
 			set { DOMHTMLElement.SetColsAttribute(value); }
 		}
@@ -52,7 +52,7 @@ namespace Skybound.Gecko.DOM
 			set { DOMHTMLElement.SetReadOnlyAttribute(value); }
 		}
 
-		public int Rows {
+		public uint Rows {
 			get { return DOMHTMLElement.GetRowsAttribute(); }
 			set { DOMHTMLElement.SetRowsAttribute(value); }
 		}

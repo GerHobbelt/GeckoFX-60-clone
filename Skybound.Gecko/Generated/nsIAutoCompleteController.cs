@@ -155,7 +155,7 @@ namespace Skybound.Gecko
 		void GetCommentAt(int index, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>
-        /// Get a the style hint for the result at a given index in the last completed search
+        /// Get the style hint for the result at a given index in the last completed search
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetStyleAt(int index, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);

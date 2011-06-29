@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIHTMLEditor </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("afc36593-5787-4420-93d9-b2c0ccbf0cad")]
+	[Guid("c964b8b0-e9e8-11df-9492-0800200c9a66")]
 	public interface nsIHTMLEditor
 	{
 		
@@ -631,5 +631,12 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetReturnInParagraphCreatesNewParagraphAttribute([MarshalAs(UnmanagedType.Bool)] bool aReturnInParagraphCreatesNewParagraph);
+		
+		/// <summary>
+        /// Checks whether a BR node is visible to the user.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool BreakIsVisible([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode);
 	}
 }

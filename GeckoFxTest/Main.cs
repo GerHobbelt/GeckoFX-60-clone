@@ -20,7 +20,7 @@ namespace GeckoFxTest
 
 			Xpcom.Initialize(XULRunnerLocator.GetXULRunnerLocation());
 #else
-			Xpcom.Initialize(@"C:\Program Files (x86)\Mozilla Firefox 4.0");
+			Xpcom.Initialize(@"C:\Program Files (x86)\Mozilla Firefox 5.0");
 #endif
 
 			Application.Run(new MyForm());
@@ -106,10 +106,10 @@ namespace GeckoFxTest
 			tabPage.Dock = DockStyle.Fill;
 
 			// add a handler showing how to view the DOM
-			browser.DocumentCompleted += (s, e) => 	TestQueryingOfDom(browser);
+//			browser.DocumentCompleted += (s, e) => 	TestQueryingOfDom(browser);
 
 			// add a handler showing how to modify the DOM.
-			browser.DocumentCompleted += (s, e) => TestModifyingDom(browser);
+//			browser.DocumentCompleted += (s, e) => TestModifyingDom(browser);
 
 			AddToolbarAndBrowserToTab(tabPage, browser);
 

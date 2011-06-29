@@ -2,6 +2,10 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v5.0-0.1 ==
+
+1. Initial version supporting xulrunner v5.0
+
 == v2.0.1-0.9 ==
 
 1. Fix bug which was causing Links to have wrong cursor.

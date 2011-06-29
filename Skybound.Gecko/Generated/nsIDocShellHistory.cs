@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDocShellHistory </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("95e425aa-afc6-40a0-9db4-7f210a58310a")]
+	[Guid("077af5fd-7450-48db-8f03-16617d441141")]
 	public interface nsIDocShellHistory
 	{
 		
@@ -43,9 +43,11 @@ namespace Skybound.Gecko
 		
 		/// <summary>
         /// Add a Child SHEntry for a frameset page, given the child's loadtype.
+        /// If aCloneChildren is true, then aCloneReference's children will be
+        /// cloned onto aHistoryEntry.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddChildSHEntry([MarshalAs(UnmanagedType.Interface)] nsISHEntry aCloneReference, [MarshalAs(UnmanagedType.Interface)] nsISHEntry aHistoryEntry, int aChildOffset, uint aLoadType);
+		void AddChildSHEntry([MarshalAs(UnmanagedType.Interface)] nsISHEntry aCloneReference, [MarshalAs(UnmanagedType.Interface)] nsISHEntry aHistoryEntry, int aChildOffset, uint aLoadType, [MarshalAs(UnmanagedType.Bool)] bool aCloneChilden);
 		
 		/// <summary>
         /// Whether this docshell should save entries in global history.

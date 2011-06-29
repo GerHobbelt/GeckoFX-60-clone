@@ -57,7 +57,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5cb91200-53f6-4d35-989d-1d28ad80a0d4")]
+	[Guid("51db277b-7ee7-4bce-9b84-fd2efcd2c8bd")]
 	public interface nsIFocusManager
 	{
 		
@@ -225,16 +225,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void FireDelayedEvents(System.IntPtr aDocument);
-	}
-	
-	/// <summary>
-    /// This interface extends nsIFocusManager for the 2.0 branch
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("94a49833-0f6d-4d9b-b859-990546ad9b8d")]
-	public interface nsIFocusManager_MOZILLA_2_0_BRANCH
-	{
 		
 		/// <summary>
         /// Indicate that a plugin wishes to take the focus. This is similar to a

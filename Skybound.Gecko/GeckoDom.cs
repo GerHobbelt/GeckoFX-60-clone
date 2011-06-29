@@ -187,8 +187,7 @@ namespace Skybound.Gecko
 
 		public string Prefix
 		{
-			get { return nsString.Get(((nsIDOMNode)_DomObject).GetPrefixAttribute); }
-			set { nsString.Set(((nsIDOMNode)_DomObject).SetPrefixAttribute, value); }
+			get { return nsString.Get(((nsIDOMNode)_DomObject).GetPrefixAttribute); }			
 		}
 
 		public string LocalName
@@ -496,16 +495,6 @@ namespace Skybound.Gecko
 			get { return String.Format("<{0}>{1}</{0}>", TagName, InnerHtml); }
 		}
 		
-		public void Focus()
-		{
-			DomNSHTMLElement.Focus();
-		}
-		
-		public void Blur()
-		{
-			DomNSHTMLElement.Blur();
-		}
-
 		public int TabIndex
 		{
 			get { return DomNSHTMLElement.GetTabIndexAttribute(); }
