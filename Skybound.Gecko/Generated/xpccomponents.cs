@@ -246,7 +246,7 @@ namespace Skybound.Gecko
 		bool IsSuccessCode(int result);
 		
 		/// <summary>
-        ///DEPRECATED: use Components.utils.lookupMethod instead.
+        ///@deprecated Use Components.utils.lookupMethod instead.
         /// (But are you sure you really want this method any more?
         /// See http://developer-test.mozilla.org/en/docs/XPCNativeWrapper )
         /// </summary>
@@ -254,7 +254,7 @@ namespace Skybound.Gecko
 		void LookupMethod();
 		
 		/// <summary>
-        ///DEPRECATED: use Components.utils.reportError instead. </summary>
+        ///@deprecated Use Components.utils.reportError instead. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ReportError();
 	}

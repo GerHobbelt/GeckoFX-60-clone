@@ -39,7 +39,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a6cf9083-15b3-11d2-932e-00805f8add32")]
+	[Guid("1af9e026-011d-4d0e-91db-09bcfa3e9622")]
 	public interface nsIDOMHTMLCollection
 	{
 		

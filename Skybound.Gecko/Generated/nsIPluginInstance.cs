@@ -276,261 +276,14 @@ namespace Skybound.Gecko
 		void NotifyPainted();
 		
 		/// <summary>
-        /// This should return a valid gfxASurface pointer, or null if there is nothing to render yet.
-        /// NO LONGER USED. Do not call.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSurface(out System.IntPtr aSurface);
-		
-		/// <summary>
         /// @return true if plugin module supports async rendering
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool UseAsyncPainting();
-	}
-	
-	/// <summary>
-    /// XXX kill me after branching
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("24235105-ac5f-483b-86ec-7c9446ddcb8a")]
-	public interface nsIPluginInstance_MOZILLA_2_0_BRANCH : nsIPluginInstance
-	{
 		
-		/// <summary>
-        /// Initializes a newly created plugin instance.
-        ///
-        /// @param aOwner - the plugin instance owner
-        /// @param aMime - the mime type for the instance
-        /// @result      - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Initialize([MarshalAs(UnmanagedType.Interface)] nsIPluginInstanceOwner aOwner, [MarshalAs(UnmanagedType.LPStr)] string aMIMEType);
-		
-		/// <summary>
-        /// Called to instruct the plugin instance to start. This will be
-        /// called after the plugin is first created and initialized, and
-        /// may be called after the plugin is stopped (via the Stop method)
-        /// if the plugin instance is returned to in the browser window's
-        /// history.
-        ///
-        /// @result - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Start();
-		
-		/// <summary>
-        /// Called to instruct the plugin instance to stop, thereby
-        /// suspending its state.  This method will be called whenever the
-        /// browser window goes on to display another page and the page
-        /// containing the plugin goes into the window's history list.
-        ///
-        /// @result - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Stop();
-		
-		/// <summary>
-        /// Called when the window containing the plugin instance changes.
-        ///
-        /// (Corresponds to NPP_SetWindow.)
-        ///
-        /// @param aWindow - the plugin window structure
-        /// @result        - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetWindow(System.IntPtr aWindow);
-		
-		/// <summary>
-        /// Called to tell the plugin that the initial src/data stream is
-        /// ready.  Expects the plugin to return a nsIPluginStreamListener.
-        ///
-        /// (Corresponds to NPP_NewStream.)
-        ///
-        /// @param aListener - listener the browser will use to give the plugin the data
-        /// @result          - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NewStreamToPlugin([MarshalAs(UnmanagedType.Interface)] out nsIPluginStreamListener aListener);
-		
-		/// <summary>
-        /// This operation is called by the plugin instance when it wishes to send
-        /// a stream of data to the browser. It constructs a new output stream to which
-        /// the plugin may send the data. When complete, the Close and Release methods
-        /// should be called on the output stream.
-        ///
-        /// (Corresponds to NPN_NewStream.)
-        ///
-        /// @param aType   - MIME type of the stream to create
-        /// @param aTarget - the target window name to receive the data
-        /// @param aResult - the resulting output stream
-        /// @result        - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NewStreamFromPlugin([MarshalAs(UnmanagedType.LPStr)] string aType, [MarshalAs(UnmanagedType.LPStr)] string aTarget, [MarshalAs(UnmanagedType.Interface)] out nsIOutputStream aResult);
-		
-		/// <summary>
-        /// Called to instruct the plugin instance to print itself to a printer.
-        ///
-        /// (Corresponds to NPP_Print.)
-        ///
-        /// @param aPlatformPrint - platform-specific printing information
-        /// @result               - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Print(System.IntPtr aPlatformPrint);
-		
-		/// <summary>
-        /// Handles an event.
-        ///
-        /// Note that for Unix and Mac the nsPluginEvent structure is different
-        /// from the old NPEvent structure -- it's no longer the native event
-        /// record, but is instead a struct. This was done for future extensibility,
-        /// and so that the Mac could receive the window argument too. For Windows
-        /// and OS2, it's always been a struct, so there's no change for them.
-        ///
-        /// (Corresponds to NPP_HandleEvent.)
-        ///
-        /// @param aEvent   - the event to be handled
-        /// @param aHandled - if non-NULL, set to the NPAPI NPP_HandleEvent
-        /// return value
-        /// @result - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void HandleEvent(System.IntPtr aEvent, out short aHandled);
-		
-		/// <summary>
-        /// Corresponds to NPN_InvalidateRect
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void InvalidateRect(System.IntPtr aRect);
-		
-		/// <summary>
-        /// Corresponds to NPN_InvalidateRegion
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void InvalidateRegion(System.IntPtr aRegion);
-		
-		/// <summary>
-        /// Corresponds to NPN_ForceRedraw
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ForceRedraw();
-		
-		/// <summary>
-        /// Returns the MIME type of the plugin instance.
-        ///
-        /// (Corresponds to NPP_New's MIMEType argument.)
-        ///
-        /// @param aMIMEType - resulting MIME type
-        /// @result          - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetMIMEType([MarshalAs(UnmanagedType.LPStr)] out string aValue);
-		
-		/// <summary>
-        /// Get the JavaScript context to this plugin instance.
-        ///
-        /// @param aJSContext - the resulting JavaScript context
-        /// @result           - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new System.IntPtr GetJSContextAttribute();
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIPluginInstanceOwner GetOwnerAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetOwnerAttribute([MarshalAs(UnmanagedType.Interface)] nsIPluginInstanceOwner aOwner);
-		
-		/// <summary>
-        /// This operation causes status information to be displayed on the window
-        /// associated with the plugin instance.
-        ///
-        /// (Corresponds to NPN_Status.)
-        ///
-        /// @param aMessage - the status message to display
-        /// @result         - NS_OK if this operation was successful
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ShowStatus([MarshalAs(UnmanagedType.LPStr)] string aMessage);
-		
-		/// <summary>
-        /// Drop our reference to our owner.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void InvalidateOwner();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new System.IntPtr GetJSObject(System.IntPtr cx);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetFormValueAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aFormValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void PushPopupsEnabledState([MarshalAs(UnmanagedType.Bool)] bool aEnabled);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void PopPopupsEnabledState();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new ushort GetPluginAPIVersionAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void DefineJavaProperties();
-		
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool ShouldCache();
-		
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool IsWindowless();
-		
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool IsTransparent();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetValueFromPlugin(System.IntPtr variable, System.IntPtr aValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new int GetDrawingModel();
-		
-		/// <summary>
-        /// async version of SetWindow call
-        ///
-        /// @param aWindow  - the plugin window structure
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void AsyncSetWindow(System.IntPtr aWindow);
-		
-		/// <summary>
-        /// Call this each time after the plugin has been painted to the screen
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NotifyPainted();
-		
-		/// <summary>
-        /// This should return a valid gfxASurface pointer, or null if there is nothing to render yet.
-        /// NO LONGER USED. Do not call.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetSurface(out System.IntPtr aSurface);
-		
-		/// <summary>
-        /// @return true if plugin module supports async rendering
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool UseAsyncPainting();
-		
-		/// <summary>
-        /// XXX kill me after branching
-        /// </summary>
+		/// <summary>Member IsRemoteDrawingCoreAnimation </summary>
+		/// <returns>A System.Boolean</returns>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsRemoteDrawingCoreAnimation();
@@ -560,9 +313,15 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetBackgroundUnknown();
 		
+		/// <summary>Member BeginUpdateBackground </summary>
+		/// <param name='rect'> </param>
+		/// <param name='ctx'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void BeginUpdateBackground(System.IntPtr rect, out System.IntPtr ctx);
 		
+		/// <summary>Member EndUpdateBackground </summary>
+		/// <param name='ctx'> </param>
+		/// <param name='rect'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EndUpdateBackground(System.IntPtr ctx, System.IntPtr rect);
 	}

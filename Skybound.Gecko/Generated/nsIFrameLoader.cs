@@ -144,7 +144,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIFrameLoader </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("50a67436-bb44-11df-8d9a-001e37d2764a")]
+	[Guid("13c512d6-fba0-402a-9244-fe7941c43965")]
 	public interface nsIFrameLoader
 	{
 		
@@ -237,33 +237,26 @@ namespace Skybound.Gecko
 		void SetDelayRemoteDialogsAttribute([MarshalAs(UnmanagedType.Bool)] bool aDelayRemoteDialogs);
 		
 		/// <summary>
-        /// DEPRECATED. Please QI to nsIContentViewManager.
-        /// FIXME 615368
+        /// When asynchronous scrolling is enabled, a target viewport can be
+        /// set to transform content pixels wrt its CSS viewport.
+        ///
+        /// NB: when async scrolling is enabled, it's the *user's*
+        /// responsibility to update the target scroll offset.  In effect,
+        /// the platform hands over control of scroll offset to the user.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ScrollViewportTo(double xPx, double yPx);
+		uint GetRenderModeAttribute();
 		
-		/// <summary>Member ScrollViewportBy </summary>
-		/// <param name='dxPx'> </param>
-		/// <param name='dyPx'> </param>
+		/// <summary>
+        /// When asynchronous scrolling is enabled, a target viewport can be
+        /// set to transform content pixels wrt its CSS viewport.
+        ///
+        /// NB: when async scrolling is enabled, it's the *user's*
+        /// responsibility to update the target scroll offset.  In effect,
+        /// the platform hands over control of scroll offset to the user.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ScrollViewportBy(double dxPx, double dyPx);
-		
-		/// <summary>Member SetViewportScale </summary>
-		/// <param name='xScale'> </param>
-		/// <param name='yScale'> </param>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetViewportScale(double xScale, double yScale);
-		
-		/// <summary>Member GetViewportScrollXAttribute </summary>
-		/// <returns>A System.Double</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		double GetViewportScrollXAttribute();
-		
-		/// <summary>Member GetViewportScrollYAttribute </summary>
-		/// <returns>A System.Double</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		double GetViewportScrollYAttribute();
+		void SetRenderModeAttribute(uint aRenderMode);
 	}
 	
 	/// <summary>nsIFrameLoaderOwner </summary>
@@ -296,36 +289,5 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SwapFrameLoaders(System.IntPtr aOtherOwner);
-	}
-	
-	/// <summary>
-    ///Please merge me into something else after 2.0 branches. </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e3e2d3f8-1397-4984-abb3-435c29a1ca55")]
-	public interface nsIFrameLoader_MOZILLA_2_0_BRANCH
-	{
-		
-		/// <summary>
-        /// When asynchronous scrolling is enabled, a target viewport can be
-        /// set to transform content pixels wrt its CSS viewport.
-        ///
-        /// NB: when async scrolling is enabled, it's the *user's*
-        /// responsibility to update the target scroll offset.  In effect,
-        /// the platform hands over control of scroll offset to the user.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetRenderModeAttribute();
-		
-		/// <summary>
-        /// When asynchronous scrolling is enabled, a target viewport can be
-        /// set to transform content pixels wrt its CSS viewport.
-        ///
-        /// NB: when async scrolling is enabled, it's the *user's*
-        /// responsibility to update the target scroll offset.  In effect,
-        /// the platform hands over control of scroll offset to the user.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetRenderModeAttribute(uint aRenderMode);
 	}
 }

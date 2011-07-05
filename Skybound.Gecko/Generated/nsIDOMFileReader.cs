@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMFileReader </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("71c32f16-ea5d-415e-9303-0db981c17bed")]
+	[Guid("f186170f-f07c-4f0b-9e3c-08f7dd496e74")]
 	public interface nsIDOMFileReader
 	{
 		
@@ -69,18 +69,5 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMFileError GetErrorAttribute();
-		
-		/// <summary>
-        /// event handler attributes
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMEventListener GetOnloadendAttribute();
-		
-		/// <summary>
-        /// event handler attributes
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOnloadendAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener aOnloadend);
 	}
 }

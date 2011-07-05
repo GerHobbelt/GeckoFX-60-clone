@@ -173,21 +173,4 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void MozSetImageElement([MarshalAs(UnmanagedType.LPStruct)] nsAString aImageElementId, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aImageElement);
 	}
-	
-	/// <summary>
-    /// WARNING! This interface is currently not exposed to script in classinfo
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("fee67aed-3b94-4136-ad7d-fb88ef23f45f")]
-	public interface nsIDOMNSDocument_MOZILLA_2_0_BRANCH
-	{
-		
-		/// <summary>
-        /// WARNING! This interface is currently not exposed to script in classinfo
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIVariant GetMozCurrentStateObjectAttribute();
-	}
 }

@@ -37,7 +37,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("abedfd52-9821-4311-b50c-7ef229b43abf")]
+	[Guid("e6d25dc8-0831-439c-9f8c-ec86c9dc5293")]
 	public interface nsIDOMCSS2Properties
 	{
 		
@@ -2838,5 +2838,113 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetResizeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aResize);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationName);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationName);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationDurationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationDuration);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationDurationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationDuration);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationDelayAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationDelay);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationDelayAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationDelay);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationTimingFunctionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationTimingFunction);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationTimingFunctionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationTimingFunction);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationDirectionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationDirection);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationDirectionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationDirection);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationFillModeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationFillMode);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationFillModeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationFillMode);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationIterationCountAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationIterationCount);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationIterationCountAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationIterationCount);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationPlayStateAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationPlayState);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationPlayStateAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimationPlayState);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozAnimationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimation);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozAnimationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozAnimation);
 	}
 }

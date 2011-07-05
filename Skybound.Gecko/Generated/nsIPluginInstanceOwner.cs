@@ -108,16 +108,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetEventModel(int eventModel);
-	}
-	
-	/// <summary>
-    /// This interface extends nsIPluginInstanceOwner for the 2.0 branch
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("20504739-4519-45f3-a8f7-fc8afba7ea87")]
-	public interface nsIPluginInstanceOwner_MOZILLA_2_0_BRANCH
-	{
 		
 		/// <summary>
         /// Call NPP_SetWindow on the plugin.

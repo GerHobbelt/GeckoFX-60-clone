@@ -34,7 +34,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9fb2a161-d075-4bf2-b07a-26bac650cc81")]
+	[Guid("12eb906a-71fe-4b79-b33a-6fe9ab57ea38")]
 	public interface nsIHttpChannelInternal
 	{
 		
@@ -96,23 +96,75 @@ namespace Skybound.Gecko
 		void SetForceAllowThirdPartyCookieAttribute([MarshalAs(UnmanagedType.Bool)] bool aForceAllowThirdPartyCookie);
 		
 		/// <summary>
-        /// Returns true iff the channel has been canceled.
+        /// True iff the channel has been canceled.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetCanceledAttribute();
 		
 		/// <summary>
-        /// Lets externalhandler tell the channel it is open on behalf of a download
+        /// External handlers may set this to true to notify the channel
+        /// that it is open on behalf of a download.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetChannelIsForDownloadAttribute();
 		
 		/// <summary>
-        /// Lets externalhandler tell the channel it is open on behalf of a download
+        /// External handlers may set this to true to notify the channel
+        /// that it is open on behalf of a download.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetChannelIsForDownloadAttribute([MarshalAs(UnmanagedType.Bool)] bool aChannelIsForDownload);
+		
+		/// <summary>
+        /// The local IP address to which this channel is bound, in the
+        /// format produced by PR_NetAddrToString. May be IPv4 or IPv6.
+        /// Note: in the presence of NAT, this may not be the same as the
+        /// address that the remote host thinks it's talking to.
+        ///
+        /// May throw NS_ERROR_NOT_AVAILABLE if accessed when the channel's
+        /// endpoints are not yet determined, or in any case when
+        /// nsIHttpActivityObserver.isActive is false. See bugs 534698 and 526207.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetLocalAddressAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aLocalAddress);
+		
+		/// <summary>
+        /// The local port number to which this channel is bound.
+        ///
+        /// May throw NS_ERROR_NOT_AVAILABLE if accessed when the channel's
+        /// endpoints are not yet determined, or in any case when
+        /// nsIHttpActivityObserver.isActive is false. See bugs 534698 and 526207.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetLocalPortAttribute();
+		
+		/// <summary>
+        /// The IP address of the remote host that this channel is
+        /// connected to, in the format produced by PR_NetAddrToString.
+        ///
+        /// May throw NS_ERROR_NOT_AVAILABLE if accessed when the channel's
+        /// endpoints are not yet determined, or in any case when
+        /// nsIHttpActivityObserver.isActive is false. See bugs 534698 and 526207.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetRemoteAddressAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aRemoteAddress);
+		
+		/// <summary>
+        /// The remote port number that this channel is connected to.
+        ///
+        /// May throw NS_ERROR_NOT_AVAILABLE if accessed when the channel's
+        /// endpoints are not yet determined, or in any case when
+        /// nsIHttpActivityObserver.isActive is false. See bugs 534698 and 526207.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetRemotePortAttribute();
+		
+		/// <summary>
+        /// Transfer chain of redirected cache-keys.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetCacheKeysRedirectChain(System.IntPtr cacheKeys);
 	}
 }

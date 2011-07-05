@@ -11,7 +11,7 @@ namespace GeckofxUnitTests
 	[TestFixture]
 	public class XpComTests
 	{
-		public const string XulRunnerLocation = @"C:\Program Files (x86)\Mozilla Firefox 4.0\";
+		public const string XulRunnerLocation = @"C:\Program Files (x86)\Mozilla Firefox 5.0";
 
 		[SetUp]
 		public void BeforeEachTestSetup()
@@ -36,15 +36,6 @@ namespace GeckofxUnitTests
 			Xpcom.Free(memory);
 		}
 #region CreateInstance Unittests
-		[Test]
-		public void CreateInstance_CreatingnsXPConnect_ReturnsValidInstance()
-		{
-			IntPtr ptr = (IntPtr)Xpcom.CreateInstance(new Guid("CB6593E0-F9B2-11d2-BDD6-000064657374"));
-			nsIXPConnect instance = (nsIXPConnect)Marshal.GetObjectForIUnknown(ptr);
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
-
 		[Test]
 		public void CreateInstance_CreatingnsWebBrowser_ReturnsValidInstance()
 		{
@@ -454,10 +445,10 @@ namespace GeckofxUnitTests
 		}
 
 		[Test]
-		public void CreateInstance_CreatingContentPrefService_ReturnsNull()
+		public void CreateInstance_CreatingContentPrefService_ThrowsFail()
 		{
 			var instance = Xpcom.CreateInstance<nsIContentPrefService>("@mozilla.org/content-pref/service;1");
-			Assert.IsNotNull(instance);
+			Assert.IsNotNull(instance);			
 		}
 
 		[Test]
