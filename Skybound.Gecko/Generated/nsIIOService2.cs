@@ -28,12 +28,11 @@ namespace Skybound.Gecko
 	
 	
 	/// <summary>
-    /// nsIIOService2 extends nsIIOService with support for automatic
-    /// online/offline management.
+    /// nsIIOService2 extends nsIIOService
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d44fe6d4-ee35-4789-886a-eb8f0554d04e")]
+	[Guid("9a7dc724-0b5c-4b78-9722-1037074c02de")]
 	public interface nsIIOService2 : nsIIOService
 	{
 		
@@ -185,5 +184,19 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetManageOfflineStatusAttribute([MarshalAs(UnmanagedType.Bool)] bool aManageOfflineStatus);
+		
+		/// <summary>
+        /// Creates a channel for a given URI.
+        ///
+        /// @param aURI nsIURI from which to make a channel
+        /// @param aProxyURI nsIURI to use for proxy resolution. Can be null in which
+        /// case aURI is used
+        /// @param aProxyFlags flags from nsIProtocolProxyService to use
+        /// when resolving proxies for this new channel
+        /// @return reference to the new nsIChannel object
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIChannel NewChannelFromURIWithProxyFlags([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aProxyURI, uint aProxyFlags);
 	}
 }

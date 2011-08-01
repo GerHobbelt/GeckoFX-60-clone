@@ -36,7 +36,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0d309c26-ddbb-44cb-9af1-3008972349e3")]
+	[Guid("873785cc-d8be-48af-8b30-5c566e3f4e6e")]
 	public interface nsIDOMTimeEvent : nsIDOMEvent
 	{
 		
@@ -155,6 +155,13 @@ namespace Skybound.Gecko
 		new void InitEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString eventTypeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg);
 		
 		/// <summary>
+        /// Used to indicate whether preventDefault() has been called for this event.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetDefaultPreventedAttribute();
+		
+		/// <summary>
         /// The SMIL TimeEvent interface.
         ///
         /// For more information please refer to:
@@ -166,9 +173,9 @@ namespace Skybound.Gecko
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMAbstractView GetViewAttribute();
+		nsIDOMWindow GetViewAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitTimeEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMAbstractView viewArg, int detailArg);
+		void InitTimeEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow viewArg, int detailArg);
 	}
 }

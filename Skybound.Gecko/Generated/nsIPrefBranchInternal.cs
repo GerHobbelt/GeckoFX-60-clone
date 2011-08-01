@@ -193,7 +193,6 @@ namespace Skybound.Gecko
         /// This method does nothing if this object is a default branch.
         ///
         /// @return NS_OK The user preference was successfully cleared.
-        /// @return Other The preference does not exist or have a user set value.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void ClearUserPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName);

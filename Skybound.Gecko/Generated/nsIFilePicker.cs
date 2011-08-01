@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIFilePicker </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d24ef0aa-d555-4117-84af-9cbbb7406909")]
+	[Guid("f2c0e216-5d07-4df4-bbcb-37683077ae7e")]
 	public interface nsIFilePicker
 	{
 		
@@ -162,6 +162,25 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISimpleEnumerator GetFilesAttribute();
+		
+		/// <summary>
+        /// Controls whether the chosen file(s) should be added to the system's recent
+        /// documents list. This attribute will be ignored if the system has no "Recent
+        /// Docs" concept, or if the application is in private browsing mode (in which
+        /// case the file will not be added). Defaults to true.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAddToRecentDocsAttribute();
+		
+		/// <summary>
+        /// Controls whether the chosen file(s) should be added to the system's recent
+        /// documents list. This attribute will be ignored if the system has no "Recent
+        /// Docs" concept, or if the application is in private browsing mode (in which
+        /// case the file will not be added). Defaults to true.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAddToRecentDocsAttribute([MarshalAs(UnmanagedType.Bool)] bool aAddToRecentDocs);
 		
 		/// <summary>
         /// Show File Dialog. The dialog is displayed modally.

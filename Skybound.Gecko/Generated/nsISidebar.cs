@@ -31,7 +31,7 @@ namespace Skybound.Gecko
     ///The Sidebar API for 3rd parties </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("67cf6231-c303-4f7e-b9b1-a0e87772ecfd")]
+	[Guid("41a22fb6-39e2-45e1-95c5-7e8cea36575d")]
 	public interface nsISidebar
 	{
 		
@@ -45,9 +45,6 @@ namespace Skybound.Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AddSearchEngine([MarshalAs(UnmanagedType.LPStr)] string engineURL, [MarshalAs(UnmanagedType.LPStr)] string iconURL, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")] string suggestedTitle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")] string suggestedCategory);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddMicrosummaryGenerator([MarshalAs(UnmanagedType.LPStr)] string generatorURL);
 	}
 	
 	/// <summary>nsISidebarExternal </summary>

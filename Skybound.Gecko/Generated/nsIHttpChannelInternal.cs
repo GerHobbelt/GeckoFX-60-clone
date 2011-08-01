@@ -28,13 +28,29 @@ namespace Skybound.Gecko
 	
 	
 	/// <summary>
+    /// The callback interface for nsIHttpChannelInternal::HTTPUpgrade()
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("5644af88-09e1-4fbd-83da-f012b3b30180")]
+	public interface nsIHttpUpgradeListener
+	{
+		
+		/// <summary>
+        /// The callback interface for nsIHttpChannelInternal::HTTPUpgrade()
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnTransportAvailable([MarshalAs(UnmanagedType.Interface)] nsISocketTransport aTransport, [MarshalAs(UnmanagedType.Interface)] nsIAsyncInputStream aSocketIn, [MarshalAs(UnmanagedType.Interface)] nsIAsyncOutputStream aSocketOut);
+	}
+	
+	/// <summary>
     /// Dumping ground for http.  This interface will never be frozen.  If you are
     /// using any feature exposed by this interface, be aware that this interface
     /// will change and you will be broken.  You have been warned.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("12eb906a-71fe-4b79-b33a-6fe9ab57ea38")]
+	[Guid("9363fd96-af59-47e8-bddf-1d5e91acd336")]
 	public interface nsIHttpChannelInternal
 	{
 		
@@ -166,5 +182,25 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetCacheKeysRedirectChain(System.IntPtr cacheKeys);
+		
+		/// <summary>
+        /// HTTPUpgrade allows for the use of HTTP to bootstrap another protocol
+        /// via the RFC 2616 Upgrade request header in conjunction with a 101 level
+        /// response. The nsIHttpUpgradeListener will have its
+        /// onTransportAvailable() method invoked if a matching 101 is processed.
+        /// The arguments to onTransportAvailable provide the new protocol the low
+        /// level tranport streams that are no longer used by HTTP.
+        ///
+        /// The onStartRequest and onStopRequest events are still delivered and the
+        /// listener gets full control over the socket if and when onTransportAvailable
+        /// is delievered.
+        ///
+        /// @param aProtocolName
+        /// The value of the HTTP Upgrade request header
+        /// @param aListener
+        /// The callback object used to handle a successful upgrade
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void HTTPUpgrade([MarshalAs(UnmanagedType.LPStruct)] nsACString aProtocolName, [MarshalAs(UnmanagedType.Interface)] nsIHttpUpgradeListener aListener);
 	}
 }

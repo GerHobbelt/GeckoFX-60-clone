@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMMozTouchEvent </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9b454391-0190-4313-a070-1e26e9bf6f31")]
+	[Guid("e9ed248b-1995-482f-8407-33ae7744bb9c")]
 	public interface nsIDOMMozTouchEvent : nsIDOMMouseEvent
 	{
 		
@@ -149,6 +149,13 @@ namespace Skybound.Gecko
 		new void InitEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString eventTypeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg);
 		
 		/// <summary>
+        /// Used to indicate whether preventDefault() has been called for this event.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetDefaultPreventedAttribute();
+		
+		/// <summary>
         /// The nsIDOMUIEvent interface is the datatype for all UI events in the
         /// Document Object Model.
         ///
@@ -157,7 +164,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMAbstractView GetViewAttribute();
+		new nsIDOMWindow GetViewAttribute();
 		
 		/// <summary>Member GetDetailAttribute </summary>
 		/// <returns>A System.Int32</returns>
@@ -171,7 +178,7 @@ namespace Skybound.Gecko
 		/// <param name='viewArg'> </param>
 		/// <param name='detailArg'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void InitUIEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMAbstractView viewArg, int detailArg);
+		new void InitUIEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow viewArg, int detailArg);
 		
 		/// <summary>
         /// The nsIDOMMouseEvent interface is the datatype for all mouse events
@@ -250,7 +257,7 @@ namespace Skybound.Gecko
 		/// <param name='buttonArg'> </param>
 		/// <param name='relatedTargetArg'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void InitMouseEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMAbstractView viewArg, int detailArg, int screenXArg, int screenYArg, int clientXArg, int clientYArg, [MarshalAs(UnmanagedType.Bool)] bool ctrlKeyArg, [MarshalAs(UnmanagedType.Bool)] bool altKeyArg, [MarshalAs(UnmanagedType.Bool)] bool shiftKeyArg, [MarshalAs(UnmanagedType.Bool)] bool metaKeyArg, ushort buttonArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget relatedTargetArg);
+		new void InitMouseEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow viewArg, int detailArg, int screenXArg, int screenYArg, int clientXArg, int clientYArg, [MarshalAs(UnmanagedType.Bool)] bool ctrlKeyArg, [MarshalAs(UnmanagedType.Bool)] bool altKeyArg, [MarshalAs(UnmanagedType.Bool)] bool shiftKeyArg, [MarshalAs(UnmanagedType.Bool)] bool metaKeyArg, ushort buttonArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget relatedTargetArg);
 		
 		/// <summary>Member GetStreamIdAttribute </summary>
 		/// <returns>A System.UInt32</returns>
@@ -279,7 +286,7 @@ namespace Skybound.Gecko
 					[MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, 
 					[MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, 
 					[MarshalAs(UnmanagedType.Bool)] bool cancelableArg, 
-					[MarshalAs(UnmanagedType.Interface)] nsIDOMAbstractView viewArg, 
+					[MarshalAs(UnmanagedType.Interface)] nsIDOMWindow viewArg, 
 					int detailArg, 
 					int screenXArg, 
 					int screenYArg, 

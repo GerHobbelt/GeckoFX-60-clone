@@ -32,7 +32,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3fe9308b-1608-4fa0-933c-c5ec2c6175fd")]
+	[Guid("9e557d99-7af0-4895-95b7-e6dba28c9ad9")]
 	public interface nsIProxyInfo
 	{
 		
@@ -71,6 +71,13 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetFlagsAttribute();
+		
+		/// <summary>
+        /// This attribute specifies flags that were used by nsIProxyProtocolService when
+        /// creating this ProxyInfo element.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetResolveFlagsAttribute();
 		
 		/// <summary>
         /// This attribute specifies the failover timeout in seconds for this proxy.

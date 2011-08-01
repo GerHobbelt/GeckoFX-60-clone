@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMKeyEvent </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("028e0e6e-8b01-11d3-aae7-0010838a3123")]
+	[Guid("e44d7977-20f2-442e-bc13-0f2f52992a4c")]
 	public interface nsIDOMKeyEvent : nsIDOMUIEvent
 	{
 		
@@ -149,6 +149,13 @@ namespace Skybound.Gecko
 		new void InitEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString eventTypeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg);
 		
 		/// <summary>
+        /// Used to indicate whether preventDefault() has been called for this event.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetDefaultPreventedAttribute();
+		
+		/// <summary>
         /// The nsIDOMUIEvent interface is the datatype for all UI events in the
         /// Document Object Model.
         ///
@@ -157,7 +164,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMAbstractView GetViewAttribute();
+		new nsIDOMWindow GetViewAttribute();
 		
 		/// <summary>Member GetDetailAttribute </summary>
 		/// <returns>A System.Int32</returns>
@@ -171,7 +178,7 @@ namespace Skybound.Gecko
 		/// <param name='viewArg'> </param>
 		/// <param name='detailArg'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void InitUIEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMAbstractView viewArg, int detailArg);
+		new void InitUIEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow viewArg, int detailArg);
 		
 		/// <summary>
         /// DOM_VK_A - DOM_VK_Z match their ascii values
@@ -220,6 +227,6 @@ namespace Skybound.Gecko
 		/// <param name='keyCodeArg'> </param>
 		/// <param name='charCodeArg'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitKeyEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMAbstractView viewArg, [MarshalAs(UnmanagedType.Bool)] bool ctrlKeyArg, [MarshalAs(UnmanagedType.Bool)] bool altKeyArg, [MarshalAs(UnmanagedType.Bool)] bool shiftKeyArg, [MarshalAs(UnmanagedType.Bool)] bool metaKeyArg, uint keyCodeArg, uint charCodeArg);
+		void InitKeyEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow viewArg, [MarshalAs(UnmanagedType.Bool)] bool ctrlKeyArg, [MarshalAs(UnmanagedType.Bool)] bool altKeyArg, [MarshalAs(UnmanagedType.Bool)] bool shiftKeyArg, [MarshalAs(UnmanagedType.Bool)] bool metaKeyArg, uint keyCodeArg, uint charCodeArg);
 	}
 }

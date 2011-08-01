@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMWindow2 </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("efff0d88-3b94-4375-bdeb-676a847ecd7d")]
+	[Guid("e2796e00-14de-4ce0-acfe-0374bc0e715d")]
 	public interface nsIDOMWindow2 : nsIDOMWindow
 	{
 		
@@ -171,6 +171,13 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SizeToContent();
+		
+		/// <summary>
+        /// @see <http://dev.w3.org/csswg/cssom/#dom-window-getcomputedstyle>
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMCSSStyleDeclaration GetComputedStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMElement elt, [MarshalAs(UnmanagedType.LPStruct)] nsAString pseudoElt);
 		
 		/// <summary>
         /// Get the window root for this window. This is useful for hooking

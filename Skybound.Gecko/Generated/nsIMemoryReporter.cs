@@ -35,16 +35,46 @@ namespace Skybound.Gecko
 	{
 		
 		/// <summary>
-        /// The path that this memory usage should be reported under.
+        /// The path that this memory usage should be reported under.  Paths can
+        /// begin with a process name plus a colon, eg "Content:", but this is not
+        /// necessary for the main process.  After the process name, paths are
+        /// '/'-delimited, eg. "a/b/c".  There are two categories of paths.
         ///
-        /// Normally "/"-delimited for organization.
+        /// - Paths starting with "explicit" represent non-overlapping regions of
+        /// memory that have been explicitly allocated with an OS-level allocation
+        /// (eg. mmap/VirtualAlloc/vm_allocate) or a heap-level allocation (eg.
+        /// malloc/calloc/operator new).  Each one can be viewed as representing a
+        /// path in a tree from the root node ("explicit") to a node lower in the
+        /// tree; this lower node does not have to be a leaf node.
+        ///
+        /// So, for example, "explicit/a/b", "explicit/a/c", "explicit/d",
+        /// "explicit/d/e", and "explicit/d/f" define this tree:
+        ///
+        /// explicit
+        /// |--a
+        /// |  |--b [*]
+        /// |  \--c [*]
+        /// \--d [*]
+        /// |--e [*]
+        /// \--f [*]
+        ///
+        /// Nodes marked with a [*] have a reporter.
+        ///
+        /// - All other paths represent cross-cuttings memory regions, ie. ones that
+        /// may overlap arbitrarily with regions in the "explicit" tree.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string GetPathAttribute();
 		
 		/// <summary>
-        /// A human-readable description of this memory usage report
+        /// The memory kind, see MR_* above.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetKindAttribute();
+		
+		/// <summary>
+        /// A human-readable description of this memory usage report.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

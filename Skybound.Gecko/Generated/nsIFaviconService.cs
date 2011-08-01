@@ -38,7 +38,7 @@ namespace Skybound.Gecko
         /// Declares that a given page uses a favicon with the given URI.
         ///
         /// Will create an entry linking the favicon URI to the page, regardless
-        /// the fact we have data for that icon.  You can populate it later with
+        /// of whether we have data for that icon.  You can populate it later with
         /// SetFaviconData.  However, remember that any favicons not associated with a
         /// visited web page, a bookmark, or a "place:" URI, will be removed during
         /// expiration runs.
@@ -85,6 +85,12 @@ namespace Skybound.Gecko
         /// Unset is normal behavior, we will only try to reload the favicon
         /// if we don't have it or if it has expired from the cache.  If set,
         /// it will always try to reload the favicon.
+        /// @param aCallback
+        /// Once we're done setting and/or loading the favicon, we invoke this
+        /// callback.
+        ///
+        /// @deprecated Use the identical function
+        /// mozIAsyncFavicons::setAndFetchFaviconForPage.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAndLoadFaviconForPage([MarshalAs(UnmanagedType.Interface)] nsIURI aPageURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.Bool)] bool aForceReload, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback);

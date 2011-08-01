@@ -30,44 +30,41 @@ namespace Skybound.Gecko
 	/// <summary>nsIUnicharStreamLoaderObserver </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6bb3e55b-69c0-4fc9-87e5-bed780d997ce")]
+	[Guid("c2982b39-2e48-429e-92b7-99348a1633c5")]
 	public interface nsIUnicharStreamLoaderObserver
 	{
 		
 		/// <summary>
-        /// Called when the first full segment of data if available.
+        /// Called as soon as at least 512 octets of data have arrived.
+        /// If the stream receives fewer than 512 octets of data in total,
+        /// called upon stream completion but before calling OnStreamComplete.
+        /// Will not be called if the stream receives no data at all.
         ///
         /// @param aLoader the unichar stream loader
         /// @param aContext the context parameter of the underlying channel
-        /// @param aFirstSegment the raw bytes of the first full data segment
-        /// @param aLength the length of aFirstSegment
+        /// @param aSegment up to 512 octets of raw data from the stream
         ///
-        /// @return charset corresponding to this stream
-        ///
-        /// @note this method will only be called if the stream loader receives an
-        /// OnDataAvailable call.
+        /// @return the name of the character set to be used to decode this stream
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnDetermineCharset([MarshalAs(UnmanagedType.Interface)] nsIUnicharStreamLoader aLoader, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.LPStr, SizeParamIndex=3)] string aFirstSegment, uint aLength, [MarshalAs(UnmanagedType.LPStruct)] nsACString retval);
+		void OnDetermineCharset([MarshalAs(UnmanagedType.Interface)] nsIUnicharStreamLoader aLoader, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.LPStruct)] nsACString aSegment, [MarshalAs(UnmanagedType.LPStruct)] nsACString retval);
 		
 		/// <summary>
-        /// Called when the entire stream has been loaded.
+        /// Called when the entire stream has been loaded and decoded.
         ///
         /// @param aLoader the unichar stream loader
         /// @param aContext the context parameter of the underlying channel
         /// @param aStatus the status of the underlying channel
-        /// @param aUnicharData the unichar input stream containing the data.  This
-        /// can be null in some failure conditions.
+        /// @param aBuffer the contents of the stream, decoded to UTF-16.
         ///
         /// This method will always be called asynchronously by the
         /// nsUnicharIStreamLoader involved, on the thread that called the
-        /// loader's init() method.
-        ///
-        /// @note If the stream loader does not receive an OnDataAvailable call,
-        /// aUnicharData will be null, and aStatus will be a success value.
+        /// loader's init() method.  If onDetermineCharset fails,
+        /// onStreamComplete will still be called, but aStatus will be an
+        /// error code.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnStreamComplete([MarshalAs(UnmanagedType.Interface)] nsIUnicharStreamLoader aLoader, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, int aStatus, [MarshalAs(UnmanagedType.Interface)] nsIUnicharInputStream aUnicharData);
+		void OnStreamComplete([MarshalAs(UnmanagedType.Interface)] nsIUnicharStreamLoader aLoader, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, int aStatus, [MarshalAs(UnmanagedType.LPStruct)] nsAString aBuffer);
 	}
 	
 	/// <summary>
@@ -81,7 +78,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9037f476-7c08-4729-b690-3e425269802b")]
+	[Guid("afb62060-37c7-4713-8a84-4a0c1199ba5c")]
 	public interface nsIUnicharStreamLoader : nsIStreamListener
 	{
 		
@@ -139,10 +136,9 @@ namespace Skybound.Gecko
         ///
         /// @param aObserver the observer to notify when a charset is needed and when
         /// the load is complete
-        /// @param aSegmentSize the size of the segments to use for the data, in bytes
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIUnicharStreamLoaderObserver aObserver, uint aSegmentSize);
+		void Init([MarshalAs(UnmanagedType.Interface)] nsIUnicharStreamLoaderObserver aObserver);
 		
 		/// <summary>
         /// The channel attribute is only valid inside the onDetermineCharset

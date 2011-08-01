@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMScrollAreaEvent </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b2f49035-4a2f-4e62-8fb0-deb68b0de4d9")]
+	[Guid("911c3352-6690-421c-9bbe-6bd34f1600dc")]
 	public interface nsIDOMScrollAreaEvent : nsIDOMUIEvent
 	{
 		
@@ -149,6 +149,13 @@ namespace Skybound.Gecko
 		new void InitEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString eventTypeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg);
 		
 		/// <summary>
+        /// Used to indicate whether preventDefault() has been called for this event.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetDefaultPreventedAttribute();
+		
+		/// <summary>
         /// The nsIDOMUIEvent interface is the datatype for all UI events in the
         /// Document Object Model.
         ///
@@ -157,7 +164,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMAbstractView GetViewAttribute();
+		new nsIDOMWindow GetViewAttribute();
 		
 		/// <summary>Member GetDetailAttribute </summary>
 		/// <returns>A System.Int32</returns>
@@ -171,7 +178,7 @@ namespace Skybound.Gecko
 		/// <param name='viewArg'> </param>
 		/// <param name='detailArg'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void InitUIEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMAbstractView viewArg, int detailArg);
+		new void InitUIEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString typeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow viewArg, int detailArg);
 		
 		/// <summary>
         /// Scroll area client rect
@@ -205,6 +212,6 @@ namespace Skybound.Gecko
 		/// <param name='width'> </param>
 		/// <param name='height'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitScrollAreaEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString aEventType, [MarshalAs(UnmanagedType.Bool)] bool aCanBubble, [MarshalAs(UnmanagedType.Bool)] bool aCancelable, [MarshalAs(UnmanagedType.Interface)] nsIDOMAbstractView aView, int aDetail, float x, float y, float width, float height);
+		void InitScrollAreaEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString aEventType, [MarshalAs(UnmanagedType.Bool)] bool aCanBubble, [MarshalAs(UnmanagedType.Bool)] bool aCancelable, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aView, int aDetail, float x, float y, float width, float height);
 	}
 }

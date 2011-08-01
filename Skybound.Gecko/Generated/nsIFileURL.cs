@@ -34,7 +34,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d26b2e2e-1dd1-11b2-88f3-8545a7ba7949")]
+	[Guid("e693cb4f-d835-4068-9e14-76de8bd9df1d")]
 	public interface nsIFileURL : nsIURL
 	{
 		
@@ -204,6 +204,24 @@ namespace Skybound.Gecko
 		new void SetPathAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aPath);
 		
 		/// <summary>
+        /// Returns the reference portion (the part after the "#") of the URI.
+        /// If there isn't one, an empty string is returned.
+        ///
+        /// Some characters may be escaped.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetRefAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aRef);
+		
+		/// <summary>
+        /// Returns the reference portion (the part after the "#") of the URI.
+        /// If there isn't one, an empty string is returned.
+        ///
+        /// Some characters may be escaped.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetRefAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aRef);
+		
+		/// <summary>
         /// URI equivalence test (not a strict string comparison).
         ///
         /// eg. http://foo.com:80/ == http://foo.com/
@@ -211,6 +229,17 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new bool Equals([MarshalAs(UnmanagedType.Interface)] nsIURI other);
+		
+		/// <summary>
+        /// URI equivalence test (not a strict string comparison), ignoring
+        /// the value of the .ref member.
+        ///
+        /// eg. http://foo.com/# == http://foo.com/
+        /// http://foo.com/#aaa == http://foo.com/#bbb
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool EqualsExceptRef([MarshalAs(UnmanagedType.Interface)] nsIURI other);
 		
 		/// <summary>
         /// An optimization to do scheme checks without requiring the users of nsIURI
@@ -222,14 +251,18 @@ namespace Skybound.Gecko
 		new bool SchemeIs([MarshalAs(UnmanagedType.LPStr)] string scheme);
 		
 		/// <summary>
-        /// Clones the current URI.  For some protocols, this is more than just an
-        /// optimization.  For example, under MacOS, the spec of a file URL does not
-        /// necessarily uniquely identify a file since two volumes could share the
-        /// same name.
+        /// Clones the current URI.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIURI Clone();
+		
+		/// <summary>
+        /// Clones the current URI, clearing the 'ref' attribute in the clone.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIURI CloneIgnoringRef();
 		
 		/// <summary>
         /// This method resolves a relative string into an absolute URI string,
@@ -321,24 +354,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetQueryAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aQuery);
-		
-		/// <summary>
-        /// Returns the reference portion (the part after the "#") of the URL.
-        /// If there isn't one, an empty string is returned.
-        ///
-        /// Some characters may be escaped.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetRefAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aRef);
-		
-		/// <summary>
-        /// Returns the reference portion (the part after the "#") of the URL.
-        /// If there isn't one, an empty string is returned.
-        ///
-        /// Some characters may be escaped.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetRefAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aRef);
 		
 		/// <summary>
         /// Returns the directory portion of a URL.  If the URL denotes a path to a

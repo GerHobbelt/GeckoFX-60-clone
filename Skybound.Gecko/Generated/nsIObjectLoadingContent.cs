@@ -32,7 +32,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9558649a-7255-4b00-afb4-1171e9cdcead")]
+	[Guid("107e8048-d00f-4711-bd21-97184ccae0b1")]
 	public interface nsIObjectLoadingContent
 	{
 		
@@ -63,9 +63,8 @@ namespace Skybound.Gecko
         /// will never instantiate the plugin and so is safe to call even when
         /// content script must not execute.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPluginInstance GetPluginInstanceAttribute();
+		System.IntPtr GetPluginInstanceAttribute();
 		
 		/// <summary>
         /// Makes sure that a frame for this object exists, and that the plugin is
@@ -83,9 +82,8 @@ namespace Skybound.Gecko
         /// trigger fallback to replacement content, and the type will change (and
         /// this method will return a failure code)
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPluginInstance EnsureInstantiation();
+		System.IntPtr EnsureInstantiation();
 		
 		/// <summary>
         /// Tells the content about an associated object frame.
@@ -96,13 +94,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void HasNewFrame(System.IntPtr aFrame);
-		
-		/// <summary>
-        /// Tells the object to paint directly in this location ignoring any
-        /// positioning information that may have been provided otherwise
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAbsoluteScreenPosition([MarshalAs(UnmanagedType.Interface)] nsIDOMElement element, [MarshalAs(UnmanagedType.Interface)] nsIDOMClientRect position, [MarshalAs(UnmanagedType.Interface)] nsIDOMClientRect clip);
 		
 		/// <summary>
         /// If this object is in going to be printed, this method

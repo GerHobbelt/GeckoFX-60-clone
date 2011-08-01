@@ -34,7 +34,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("19187542-1f4d-46e1-9b2d-d5de02dace85")]
+	[Guid("00d3454c-e125-4cce-bfec-adfbf0975e05")]
 	public interface nsIMarkupDocumentViewer
 	{
 		
@@ -218,22 +218,6 @@ namespace Skybound.Gecko
 		void SetBidiSupportAttribute(System.IntPtr aBidiSupport);
 		
 		/// <summary>
-        /// bidiCharacterSet: whether to force the user's character set
-        /// 1 - use the document character set
-        /// 2 - use the character set chosen by the user
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetBidiCharacterSetAttribute();
-		
-		/// <summary>
-        /// bidiCharacterSet: whether to force the user's character set
-        /// 1 - use the document character set
-        /// 2 - use the character set chosen by the user
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetBidiCharacterSetAttribute(System.IntPtr aBidiCharacterSet);
-		
-		/// <summary>
         /// Use this attribute to access all the Bidi options in one operation
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -249,7 +233,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIMarkupDocumentViewer_MOZILLA_2_0_BRANCH </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("cadfcad1-5570-4dac-b5a2-cd1ea751fe29")]
+	[Guid("83b28afd-75a7-4d13-9265-625e36861f04")]
 	public interface nsIMarkupDocumentViewer_MOZILLA_2_0_BRANCH : nsIMarkupDocumentViewer
 	{
 		
@@ -431,22 +415,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetBidiSupportAttribute(System.IntPtr aBidiSupport);
-		
-		/// <summary>
-        /// bidiCharacterSet: whether to force the user's character set
-        /// 1 - use the document character set
-        /// 2 - use the character set chosen by the user
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new System.IntPtr GetBidiCharacterSetAttribute();
-		
-		/// <summary>
-        /// bidiCharacterSet: whether to force the user's character set
-        /// 1 - use the document character set
-        /// 2 - use the character set chosen by the user
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetBidiCharacterSetAttribute(System.IntPtr aBidiCharacterSet);
 		
 		/// <summary>
         /// Use this attribute to access all the Bidi options in one operation

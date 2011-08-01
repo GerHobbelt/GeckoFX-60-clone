@@ -29,7 +29,7 @@ namespace Skybound.Gecko
 	
 	/// <summary>nsISelectionController </summary>
 	[ComImport()]
-	[Guid("ff11fa25-788f-444f-8f69-dcdf14348fb3")]
+	[Guid("e0dd9365-470b-4ee8-b644-54add1c4c73f")]
 	public interface nsISelectionController : nsISelectionDisplay
 	{
 		

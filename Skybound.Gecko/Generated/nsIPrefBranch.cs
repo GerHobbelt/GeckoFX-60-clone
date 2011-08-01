@@ -44,7 +44,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("56c35506-f14b-11d3-99d3-ddbfac2ccf65")]
+	[Guid("e0b6e170-691b-11e0-ae3e-0800200c9a66")]
 	public interface nsIPrefBranch
 	{
 		
@@ -202,7 +202,6 @@ namespace Skybound.Gecko
         /// This method does nothing if this object is a default branch.
         ///
         /// @return NS_OK The user preference was successfully cleared.
-        /// @return Other The preference does not exist or have a user set value.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ClearUserPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName);

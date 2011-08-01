@@ -32,7 +32,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e77021b4-4012-407d-b686-7a1f18050109")]
+	[Guid("ca6bad0c-8a48-48ac-82c7-27bb8f510fbe")]
 	public interface nsIGIOMimeApp
 	{
 		
@@ -66,6 +66,9 @@ namespace Skybound.Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAsDefaultForFileExtensions([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String extensions);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAsDefaultForURIScheme([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String uriScheme);
 	}
 	
 	/// <summary>
@@ -73,7 +76,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("47e372c2-78bb-4899-8114-56aa7d9cdac5")]
+	[Guid("eda22a30-84e1-4e16-9ca0-cd1553c2b34a")]
 	public interface nsIGIOService
 	{
 		
@@ -82,6 +85,12 @@ namespace Skybound.Gecko
         ///     should not include a leading dot. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetMimeTypeFromExtension([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String extension, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String retval);
+		
+		/// <summary>
+        ///Obtain the preferred application for opening a given URI scheme </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIGIOMimeApp GetAppForURIScheme([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aURIScheme);
 		
 		/// <summary>
         ///Obtain the preferred application for opening a given MIME type </summary>

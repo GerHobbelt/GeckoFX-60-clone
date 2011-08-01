@@ -368,7 +368,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("af62a870-820c-4981-96a3-28ab17b779e1")]
+	[Guid("5cf8d518-51d0-4cd6-a69a-c3674c2de599")]
 	public interface nsIXMLHttpRequest
 	{
 		
@@ -406,9 +406,29 @@ namespace Skybound.Gecko
 		void GetResponseTextAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aResponseText);
 		
 		/// <summary>
-        ///ArrayBuffer </summary>
+        /// Determine a response format which response attribute returns.
+        /// empty string (initial value) or "text": as text.
+        /// "arraybuffer": as a typed array ArrayBuffer.
+        /// "blob": as a File API Blob.
+        /// "document": as a DOM Document object.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetMozResponseArrayBufferAttribute();
+		void GetResponseTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aResponseType);
+		
+		/// <summary>
+        /// Determine a response format which response attribute returns.
+        /// empty string (initial value) or "text": as text.
+        /// "arraybuffer": as a typed array ArrayBuffer.
+        /// "blob": as a File API Blob.
+        /// "document": as a DOM Document object.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetResponseTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aResponseType);
+		
+		/// <summary>
+        ///any </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetResponseAttribute();
 		
 		/// <summary>
         /// The status of the response to the request for HTTP requests.
@@ -534,14 +554,15 @@ namespace Skybound.Gecko
         /// The state of the request.
         ///
         /// Possible values:
-        /// 0 UNINITIALIZED open() has not been called yet.
-        /// 1 LOADING       send() has not been called yet.
-        /// 2 LOADED        send() has been called, headers and status are available.
-        /// 3 INTERACTIVE   Downloading, responseText holds the partial data.
-        /// 4 COMPLETED     Finished with all operations.
+        /// 0 UNSENT   open() has not been called yet.
+        /// 1 OPENED   send() has not been called yet.
+        /// 2 HEADERS_RECEIVED
+        /// send() has been called, headers and status are available.
+        /// 3 LOADING  Downloading, responseText holds the partial data.
+        /// 4 DONE     Finished with all operations.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetReadyStateAttribute();
+		ushort GetReadyStateAttribute();
 		
 		/// <summary>
         /// Override the mime type returned by the server (if any). This may

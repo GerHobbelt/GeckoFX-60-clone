@@ -38,7 +38,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5725a7de-2883-45a5-878e-30773cd82478")]
+	[Guid("bfd028d4-fbbd-4d69-8899-dbee1778dde2")]
 	public interface nsIDOMDocumentType : nsIDOMNode
 	{
 		
@@ -173,14 +173,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aName);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMNamedNodeMap GetEntitiesAttribute();
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMNamedNodeMap GetNotationsAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetPublicIdAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPublicId);

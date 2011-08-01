@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMXMLDocument </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9f07f216-b3a3-4a08-81f1-a48075b91d1c")]
+	[Guid("75f617b4-1c61-4122-9fd7-f4243672848b")]
 	public interface nsIDOMXMLDocument : nsIDOMDocument
 	{
 		
@@ -357,19 +357,6 @@ namespace Skybound.Gecko
 		/// <summary>
         /// Introduced in DOM Level 3:
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool GetStrictErrorCheckingAttribute();
-		
-		/// <summary>
-        /// Introduced in DOM Level 3:
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetStrictErrorCheckingAttribute([MarshalAs(UnmanagedType.Bool)] bool aStrictErrorChecking);
-		
-		/// <summary>
-        /// Introduced in DOM Level 3:
-        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetDocumentURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aDocumentURI);
 		
@@ -389,22 +376,53 @@ namespace Skybound.Gecko
 		/// <summary>
         /// Introduced in DOM Level 3:
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMDOMConfiguration GetDomConfigAttribute();
-		
-		/// <summary>
-        /// Introduced in DOM Level 3:
-        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void NormalizeDocument();
 		
 		/// <summary>
-        /// Introduced in DOM Level 3:
+        /// The window associated with this document.
+        ///
+        /// @see http://www.whatwg.org/html/#dom-document-defaultview
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMNode RenameNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode node, [MarshalAs(UnmanagedType.LPStruct)] nsAString namespaceURI, [MarshalAs(UnmanagedType.LPStruct)] nsAString qualifiedName);
+		new nsIDOMWindow GetDefaultViewAttribute();
+		
+		/// <summary>
+        /// Create a range
+        ///
+        /// @see http://html5.org/specs/dom-range.html#dom-document-createrange
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMRange CreateRange();
+		
+		/// <summary>Member CreateNodeIterator </summary>
+		/// <param name='root'> </param>
+		/// <param name='whatToShow'> </param>
+		/// <param name='filter'> </param>
+		/// <param name='entityReferenceExpansion'> </param>
+		/// <returns>A nsIDOMNodeIterator</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMNodeIterator CreateNodeIterator([MarshalAs(UnmanagedType.Interface)] nsIDOMNode root, uint whatToShow, [MarshalAs(UnmanagedType.Interface)] nsIDOMNodeFilter filter, [MarshalAs(UnmanagedType.Bool)] bool entityReferenceExpansion);
+		
+		/// <summary>Member CreateTreeWalker </summary>
+		/// <param name='root'> </param>
+		/// <param name='whatToShow'> </param>
+		/// <param name='filter'> </param>
+		/// <param name='entityReferenceExpansion'> </param>
+		/// <returns>A nsIDOMTreeWalker</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMTreeWalker CreateTreeWalker([MarshalAs(UnmanagedType.Interface)] nsIDOMNode root, uint whatToShow, [MarshalAs(UnmanagedType.Interface)] nsIDOMNodeFilter filter, [MarshalAs(UnmanagedType.Bool)] bool entityReferenceExpansion);
+		
+		/// <summary>Member CreateEvent </summary>
+		/// <param name='eventType'> </param>
+		/// <returns>A nsIDOMEvent</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMEvent CreateEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString eventType);
 		
 		/// <summary>
         /// Whether to load synchronously or asynchronously.

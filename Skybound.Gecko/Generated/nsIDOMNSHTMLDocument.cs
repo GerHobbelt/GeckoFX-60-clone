@@ -30,19 +30,9 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMNSHTMLDocument </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("95cd5ad4-ae8a-4f0e-b168-35e03d5e0b9a")]
+	[Guid("386e9eee-1f06-40a6-a1a7-ed986646b793")]
 	public interface nsIDOMNSHTMLDocument
 	{
-		
-		/// <summary>Member GetWidthAttribute </summary>
-		/// <returns>A System.Int32</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetWidthAttribute();
-		
-		/// <summary>Member GetHeightAttribute </summary>
-		/// <returns>A System.Int32</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetHeightAttribute();
 		
 		/// <summary>Member GetAlinkColorAttribute </summary>
 		/// <param name='aAlinkColor'> </param>

@@ -36,7 +36,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3828e648-af61-47e1-b9bc-89ca51bc19f2")]
+	[Guid("663e33d7-eca2-42e8-af92-5df6a5e222df")]
 	public interface nsIDOMWindowUtils
 	{
 		
@@ -725,5 +725,12 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool LeafLayersPartitionWindow();
+		
+		/// <summary>
+        /// true if the (current inner) window may have event listeners for touch events.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetMayHaveTouchEventListenersAttribute();
 	}
 }

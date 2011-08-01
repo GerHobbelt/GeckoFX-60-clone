@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMWindowInternal </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9d6a1157-0719-46a7-b49f-7ffeaa0b5c86")]
+	[Guid("3a7b0839-b9d6-42ff-8ba6-910aba60a966")]
 	public interface nsIDOMWindowInternal : nsIDOMWindow2
 	{
 		
@@ -171,6 +171,13 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SizeToContent();
+		
+		/// <summary>
+        /// @see <http://dev.w3.org/csswg/cssom/#dom-window-getcomputedstyle>
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMCSSStyleDeclaration GetComputedStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMElement elt, [MarshalAs(UnmanagedType.LPStruct)] nsAString pseudoElt);
 		
 		/// <summary>
         /// Get the window root for this window. This is useful for hooking
@@ -608,7 +615,7 @@ namespace Skybound.Gecko
         /// See the WHATWG HTML5 specification, section 6.4, for more details.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void PostMessage([MarshalAs(UnmanagedType.LPStruct)] nsAString message, [MarshalAs(UnmanagedType.LPStruct)] nsAString targetOrigin);
+		void PostMessage(System.IntPtr message, [MarshalAs(UnmanagedType.LPStruct)] nsAString targetOrigin);
 		
 		/// <summary>
         /// Returns the number of times this document for this window has
@@ -628,6 +635,13 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetMozAnimationStartTimeAttribute();
+		
+		/// <summary>
+        /// http://dev.w3.org/csswg/cssom-view/#extensions-to-the-window-interface
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMMediaQueryList MatchMedia([MarshalAs(UnmanagedType.LPStruct)] nsAString media_query_list);
 	}
 	
 	/// <summary>nsIDOMMozURLProperty </summary>

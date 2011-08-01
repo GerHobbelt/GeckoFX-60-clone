@@ -36,7 +36,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d02e9a24-e5b2-47e4-bd80-7e980bf56b45")]
+	[Guid("dc8ec5c6-ebf2-4f95-be99-cd13e3c0d0c6")]
 	public interface nsIDOMMessageEvent : nsIDOMEvent
 	{
 		
@@ -155,10 +155,17 @@ namespace Skybound.Gecko
 		new void InitEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString eventTypeArg, [MarshalAs(UnmanagedType.Bool)] bool canBubbleArg, [MarshalAs(UnmanagedType.Bool)] bool cancelableArg);
 		
 		/// <summary>
+        /// Used to indicate whether preventDefault() has been called for this event.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetDefaultPreventedAttribute();
+		
+		/// <summary>
         /// Custom string data associated with this event.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDataAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aData);
+		System.IntPtr GetDataAttribute();
 		
 		/// <summary>
         /// The origin of the site from which this event originated, which is the
@@ -189,6 +196,6 @@ namespace Skybound.Gecko
         /// data, origin, source, and lastEventId attributes of this appropriately.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitMessageEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString aType, [MarshalAs(UnmanagedType.Bool)] bool aCanBubble, [MarshalAs(UnmanagedType.Bool)] bool aCancelable, [MarshalAs(UnmanagedType.LPStruct)] nsAString aData, [MarshalAs(UnmanagedType.LPStruct)] nsAString aOrigin, [MarshalAs(UnmanagedType.LPStruct)] nsAString aLastEventId, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aSource);
+		void InitMessageEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString aType, [MarshalAs(UnmanagedType.Bool)] bool aCanBubble, [MarshalAs(UnmanagedType.Bool)] bool aCancelable, System.IntPtr aData, [MarshalAs(UnmanagedType.LPStruct)] nsAString aOrigin, [MarshalAs(UnmanagedType.LPStruct)] nsAString aLastEventId, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aSource);
 	}
 }

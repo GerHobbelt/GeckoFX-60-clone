@@ -28,67 +28,84 @@ namespace Skybound.Gecko
 	
 	
 	/// <summary>
-    /// Observer for bookmark changes.
+    /// Observer for bookmarks changes.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("76f892d9-31ea-4061-b38c-6b40fad57e9d")]
+	[Guid("2fb820a9-9331-4c02-ae41-32a82a4b7aa1")]
 	public interface nsINavBookmarkObserver
 	{
 		
 		/// <summary>
-        /// Notify this observer that a batch transaction has started.
-        /// Other notifications will be sent during the batch change,
-        /// but the observer is guaranteed that onEndUpdateBatch() will be called
-        /// at the completion of changes.
+        /// Notifies that a batch transaction has started.
+        /// Other notifications will be sent during the batch, but the observer is
+        /// guaranteed that onEndUpdateBatch() will be called at its completion.
+        /// During a batch the observer should do its best to reduce the work done to
+        /// handle notifications, since multiple changes are going to happen in a short
+        /// timeframe.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnBeginUpdateBatch();
 		
 		/// <summary>
-        /// Notify this observer that a batch transaction has ended.
+        /// Notifies that a batch transaction has ended.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnEndUpdateBatch();
 		
 		/// <summary>
-        /// Notify this observer that an item was added.  Called after the actual
-        /// add took place. The items following the index will be shifted down, but
-        /// no additional notifications will be sent.
+        /// Notifies that an item (any type) was added.  Called after the actual
+        /// addition took place.
+        /// When a new item is created, all the items following it in the same folder
+        /// will have their index shifted down, but no additional notifications will
+        /// be sent.
         ///
         /// @param aItemId
-        /// The id of the bookmark that was added.
+        /// The id of the item that was added.
         /// @param aParentId
         /// The id of the folder to which the item was added.
         /// @param aIndex
         /// The item's index in the folder.
         /// @param aItemType
-        /// The type of the item that was added (one of the TYPE_* constants
-        /// defined above).
+        /// The type of the added item (see TYPE_* constants below).
         /// @param aURI
-        /// The URI of the item that was added when aItemType is TYPE_BOOKMARK,
-        /// null otherwise.
+        /// The URI of the added item if it was TYPE_BOOKMARK, null otherwise.
+        /// @param aTitle
+        /// The title of the added item.
+        /// @param aDateAdded
+        /// The stored date added value, in microseconds from the epoch.
+        /// @param aGUID
+        /// The unique ID associated with the item.
+        /// @param aParentGUID
+        /// The unique ID associated with the item's parent.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnItemAdded(int aItemId, int aParentId, int aIndex, ushort aItemType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		void OnItemAdded(int aItemId, int aParentId, int aIndex, ushort aItemType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aTitle, uint aDateAdded, [MarshalAs(UnmanagedType.LPStruct)] nsACString aGUID, [MarshalAs(UnmanagedType.LPStruct)] nsACString aParentGUID);
 		
 		/// <summary>
-        /// Notify this observer that an item is about to be removed.  Called before
-        /// the actual removal will take place.
+        /// Notifies that an item is about to be removed.  Called before the actual
+        /// removal will take place.
         ///
         /// @param aItemId
         /// The id of the bookmark to be removed.
         /// @param aItemType
-        /// The type of the item to be removed (one of the TYPE_* constants
-        /// defined above).
+        /// The type of the item to be removed (see TYPE_* constants below).
+        /// @param aParentId
+        /// The id of the folder containing the item.
+        /// @param aGUID
+        /// The unique ID associated with the item.
+        /// @param aParentGUID
+        /// The unique ID associated with the item's parent.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnBeforeItemRemoved(int aItemId, ushort aItemType);
+		void OnBeforeItemRemoved(int aItemId, ushort aItemType, int aParentId, [MarshalAs(UnmanagedType.LPStruct)] nsACString aGUID, [MarshalAs(UnmanagedType.LPStruct)] nsACString aParentGUID);
 		
 		/// <summary>
-        /// Notify this observer that an item was removed.  Called after the actual
-        /// remove took place. The items following the index will be shifted up, but
-        /// no additional notifications will be sent.
+        /// Notifies that an item was removed.  Called after the actual remove took
+        /// place.
+        /// When an item is removed, all the items following it in the same folder
+        /// will have their index shifted down, but no additional notifications will
+        /// be sent.
         ///
         /// @param aItemId
         /// The id of the item that was removed.
@@ -97,64 +114,94 @@ namespace Skybound.Gecko
         /// @param aIndex
         /// The bookmark's index in the folder.
         /// @param aItemType
-        /// The type of the item that was removed (one of the TYPE_* constants
-        /// defined above).
+        /// The type of the item to be removed (see TYPE_* constants below).
+        /// @param aURI
+        /// The URI of the added item if it was TYPE_BOOKMARK, null otherwise.
+        /// @param aGUID
+        /// The unique ID associated with the item.
+        /// @param aParentGUID
+        /// The unique ID associated with the item's parent.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnItemRemoved(int aItemId, int aParentId, int aIndex, ushort aItemType);
+		void OnItemRemoved(int aItemId, int aParentId, int aIndex, ushort aItemType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACString aGUID, [MarshalAs(UnmanagedType.LPStruct)] nsACString aParentGUID);
 		
 		/// <summary>
-        /// Notify this observer that an item's information has changed.  This
-        /// will be called whenever any attributes like "title" are changed.
+        /// Notifies that an item's information has changed.  This will be called
+        /// whenever any attributes like "title" are changed.
         ///
         /// @param aItemId
         /// The id of the item that was changed.
         /// @param aProperty
-        /// The property which changed.
+        /// The property which changed.  Can be null for the removal of all of
+        /// the annotations, in this case aIsAnnotationProperty is true.
         /// @param aIsAnnotationProperty
-        /// Whether or not aProperty the name of an item annotation.
-        /// @param aProperty
-        /// The property which has been changed (see list below).
+        /// Whether or not aProperty is the name of an annotation.  If true
+        /// aNewValue is always an empty string.
         /// @param aNewValue
         /// For certain properties, this is set to the new value of the
-        /// property (see list below).
+        /// property (see the list below).
         /// @param aLastModified
-        /// If the item's lastModified field has changed, this parameter is
-        /// set to the new value, otherwise it's set to 0.
+        /// If lastModified changed, this parameter is the new value, otherwise
+        /// it's set to 0.
         /// @param aItemType
-        /// The type of the item that has been changed(one of the TYPE_* constants
-        /// defined above).
+        /// The type of the item to be removed (see TYPE_* constants below).
+        /// @param aParentId
+        /// The id of the folder containing the item.
+        /// @param aGUID
+        /// The unique ID associated with the item.
+        /// @param aParentGUID
+        /// The unique ID associated with the item's parent.
         ///
-        /// property = "cleartime": (history was deleted, there is no last visit date):
-        /// value = empty string.
-        /// property = "title": value = new title.
-        /// property = "favicon": value = new "moz-anno" URL of favicon image
-        /// property = "uri": value = new uri spec.
-        /// property = "tags: (tags set for the bookmarked uri have changed)
-        /// value = empty string.
-        /// property = "dateAdded": value = PRTime when the item was first added
-        /// property = "lastModified": value = PRTime when the item was last modified
-        /// aIsAnnotationProperty = true: value = empty string.
+        /// @note List of values that may be associated with properties:
+        /// aProperty     | aNewValue
+        /// =====================================================================
+        /// cleartime      | Empty string (all visits to this item were removed).
+        /// title         | The new title.
+        /// favicon       | The "moz-anno" URL of the new favicon.
+        /// uri           | new URL.
+        /// tags          | Empty string (tags for this item changed)
+        /// dateAdded     | PRTime (as string) when the item was first added.
+        /// lastModified  | PRTime (as string) when the item was last modified.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnItemChanged(int aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsACString aProperty, [MarshalAs(UnmanagedType.Bool)] bool aIsAnnotationProperty, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aNewValue, uint aLastModified, ushort aItemType);
+		void OnItemChanged(int aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsACString aProperty, [MarshalAs(UnmanagedType.Bool)] bool aIsAnnotationProperty, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aNewValue, uint aLastModified, ushort aItemType, int aParentId, [MarshalAs(UnmanagedType.LPStruct)] nsACString aGUID, [MarshalAs(UnmanagedType.LPStruct)] nsACString aParentGUID);
 		
 		/// <summary>
-        /// Notify that the item was visited. Normally in bookmarks we use the last
-        /// visit date, and normally the time will be a new visit that will be more
-        /// recent, but this is not guaranteed. You should check to see if it's
-        /// actually more recent before using this new time.
+        /// Notifies that the item was visited.  Can be invoked only for TYPE_BOOKMARK
+        /// items.
         ///
-        /// @param aBookmarkId
+        /// @param aItemId
         /// The id of the bookmark that was visited.
-        /// @see onItemChanged property = "cleartime" for when all visit dates are
-        /// deleted for the URI.
+        /// @param aVisitId
+        /// The id of the visit.
+        /// @param aTime
+        /// The time of the visit.
+        /// @param aTransitionType
+        /// The transition for the visit.  See nsINavHistoryService::TRANSITION_*
+        /// constants for a list of possible values.
+        /// @param aURI
+        /// The nsIURI for this bookmark.
+        /// @param aParentId
+        /// The id of the folder containing the item.
+        /// @param aGUID
+        /// The unique ID associated with the item.
+        /// @param aParentGUID
+        /// The unique ID associated with the item's parent.
+        ///
+        /// @see onItemChanged with property = "cleartime" for when all visits to an
+        /// item are removed.
+        ///
+        /// @note The reported time is the time of the visit that was added, which may
+        /// be well in the past since the visit time can be specified.  This
+        /// means that the visit the observer is told about may not be the most
+        /// recent visit for that page.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnItemVisited(int aBookmarkId, int aVisitID, uint time);
+		void OnItemVisited(int aItemId, int aVisitId, uint aTime, uint aTransitionType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, int aParentId, [MarshalAs(UnmanagedType.LPStruct)] nsACString aGUID, [MarshalAs(UnmanagedType.LPStruct)] nsACString aParentGUID);
 		
 		/// <summary>
-        /// Notify this observer that an item has been moved.
+        /// Notifies that an item has been moved.
+        ///
         /// @param aItemId
         /// The id of the item that was moved.
         /// @param aOldParentId
@@ -165,12 +212,17 @@ namespace Skybound.Gecko
         /// The id of the new parent.
         /// @param aNewIndex
         /// The index inside the new parent.
-        /// @param  aItemType
-        /// The type of the item that was moved (one of the TYPE_* constants
-        /// defined above).
+        /// @param aItemType
+        /// The type of the item to be removed (see TYPE_* constants below).
+        /// @param aGUID
+        /// The unique ID associated with the item.
+        /// @param aOldParentGUID
+        /// The unique ID associated with the old item's parent.
+        /// @param aNewParentGUID
+        /// The unique ID associated with the new item's parent.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnItemMoved(int aItemId, int aOldParentId, int aOldIndex, int aNewParentId, int aNewIndex, ushort aItemType);
+		void OnItemMoved(int aItemId, int aOldParentId, int aOldIndex, int aNewParentId, int aNewIndex, ushort aItemType, [MarshalAs(UnmanagedType.LPStruct)] nsACString aGUID, [MarshalAs(UnmanagedType.LPStruct)] nsACString aOldParentGUID, [MarshalAs(UnmanagedType.LPStruct)] nsACString aNewParentGUID);
 	}
 	
 	/// <summary>

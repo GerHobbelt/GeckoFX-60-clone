@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMBlob </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5822776a-049c-4de7-adb6-dd9efc39d082")]
+	[Guid("d5237f31-443a-460b-9e42-449a135346f0")]
 	public interface nsIDOMBlob
 	{
 		
@@ -44,15 +44,6 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aType);
 		
-		/// <summary>Member Slice </summary>
-		/// <param name='start'> </param>
-		/// <param name='length'> </param>
-		/// <param name='contentType'> </param>
-		/// <returns>A nsIDOMBlob</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMBlob Slice(uint start, uint length, [MarshalAs(UnmanagedType.LPStruct)] nsAString contentType);
-		
 		/// <summary>Member GetInternalStreamAttribute </summary>
 		/// <returns>A nsIInputStream</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -64,14 +55,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetInternalUrl([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
-	}
-	
-	/// <summary>nsIDOMBlob_MOZILLA_2_0_BRANCH </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("cb5b4191-a555-4e57-b8d2-88091184b59f")]
-	public interface nsIDOMBlob_MOZILLA_2_0_BRANCH
-	{
 		
 		/// <summary>Member MozSlice </summary>
 		/// <param name='start'> </param>
@@ -86,7 +69,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMFile </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("ae1405b0-e411-481e-9606-b29ec7982687")]
+	[Guid("91c9ebd9-2a4a-4a38-9412-ef492a2799be")]
 	public interface nsIDOMFile : nsIDOMBlob
 	{
 		
@@ -100,15 +83,6 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aType);
 		
-		/// <summary>Member Slice </summary>
-		/// <param name='start'> </param>
-		/// <param name='length'> </param>
-		/// <param name='contentType'> </param>
-		/// <returns>A nsIDOMBlob</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMBlob Slice(uint start, uint length, [MarshalAs(UnmanagedType.LPStruct)] nsAString contentType);
-		
 		/// <summary>Member GetInternalStreamAttribute </summary>
 		/// <returns>A nsIInputStream</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -120,6 +94,15 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetInternalUrl([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		
+		/// <summary>Member MozSlice </summary>
+		/// <param name='start'> </param>
+		/// <param name='end'> </param>
+		/// <param name='contentType'> </param>
+		/// <returns>A nsIDOMBlob</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMBlob MozSlice(int start, int end, [MarshalAs(UnmanagedType.LPStruct)] nsAString contentType);
 		
 		/// <summary>Member GetNameAttribute </summary>
 		/// <param name='aName'> </param>
@@ -165,5 +148,25 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetAsBinary([MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+	}
+	
+	/// <summary>
+    /// raises(FileException) on retrieval
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("c4a77171-039b-4f84-97f9-820fb51626af")]
+	public interface nsIDOMMozBlobBuilder
+	{
+		
+		/// <summary>
+        /// raises(FileException) on retrieval
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMBlob GetBlob([MarshalAs(UnmanagedType.LPStruct)] nsAString contentType);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Append(System.IntPtr data);
 	}
 }

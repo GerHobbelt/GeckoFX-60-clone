@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMNavigator </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("777bd8a1-38c1-4b12-ba8f-ff6c2eb8c56b")]
+	[Guid("d7758ece-f088-4701-9ae4-1450192dca38")]
 	public interface nsIDOMNavigator
 	{
 		
@@ -95,11 +95,6 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMPluginArray GetPluginsAttribute();
-		
-		/// <summary>Member GetSecurityPolicyAttribute </summary>
-		/// <param name='aSecurityPolicy'> </param>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSecurityPolicyAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSecurityPolicy);
 		
 		/// <summary>Member GetUserAgentAttribute </summary>
 		/// <param name='aUserAgent'> </param>

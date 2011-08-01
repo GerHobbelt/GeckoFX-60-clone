@@ -653,7 +653,7 @@ namespace Skybound.Gecko
 		
 		public GeckoRange CreateRange()
 		{
-			return new GeckoRange(((nsIDOMDocumentRange)DomDocument).CreateRange());
+			return new GeckoRange(DomDocument.CreateRange());
 		}
 	}
 	

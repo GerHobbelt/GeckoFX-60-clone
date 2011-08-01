@@ -123,6 +123,11 @@ namespace GeckofxUnitTests
 		{
 			throw new NotImplementedException();
 		}
+
+		public nsIDOMCSSStyleDeclaration GetComputedStyle(nsIDOMElement elt, nsAString pseudoElt)
+		{
+			throw new NotImplementedException();
+		}
 	}
 	#endregion
 }

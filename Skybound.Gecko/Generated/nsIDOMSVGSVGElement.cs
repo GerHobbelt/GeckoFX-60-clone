@@ -43,8 +43,6 @@ namespace Skybound.Gecko
     ///    nsIDOMSVGFitToViewBox,
     ///    nsIDOMSVGZoomAndPan,
     ///    events::nsIDOMEventTarget,
-    ///    events::nsIDOMDocumentEvent,
-    ///    css::nsIDOMViewCSS,
     ///    css::nsIDOMDocumentCSS </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -356,8 +354,6 @@ namespace Skybound.Gecko
         ///    nsIDOMSVGFitToViewBox,
         ///    nsIDOMSVGZoomAndPan,
         ///    events::nsIDOMEventTarget,
-        ///    events::nsIDOMDocumentEvent,
-        ///    css::nsIDOMViewCSS,
         ///    css::nsIDOMDocumentCSS </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

@@ -37,7 +37,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e6d25dc8-0831-439c-9f8c-ec86c9dc5293")]
+	[Guid("249755DF-EEFE-4AF4-8127-BE3D6BDAED2D")]
 	public interface nsIDOMCSS2Properties
 	{
 		
@@ -50,7 +50,7 @@ namespace Skybound.Gecko
         /// http://www.w3.org/TR/DOM-Level-2-Style
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAzimuthAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aAzimuth);
+		void GetBackgroundAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aBackground);
 		
 		/// <summary>
         /// The nsIDOMCSS2Properties interface is a datatype for additional
@@ -59,18 +59,6 @@ namespace Skybound.Gecko
         ///
         /// For more information on this interface please see
         /// http://www.w3.org/TR/DOM-Level-2-Style
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAzimuthAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aAzimuth);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetBackgroundAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aBackground);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetBackgroundAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aBackground);
@@ -571,42 +559,6 @@ namespace Skybound.Gecko
         /// raises(DOMException) on setting
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCueAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aCue);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCueAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aCue);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCueAfterAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aCueAfter);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCueAfterAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aCueAfter);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCueBeforeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aCueBefore);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCueBeforeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aCueBefore);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetCursorAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aCursor);
 		
 		/// <summary>
@@ -638,18 +590,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDisplayAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aDisplay);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetElevationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aElevation);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetElevationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aElevation);
 		
 		/// <summary>
         /// raises(DOMException) on setting
@@ -1183,66 +1123,6 @@ namespace Skybound.Gecko
         /// raises(DOMException) on setting
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPauseAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPause);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPauseAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPause);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPauseAfterAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPauseAfter);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPauseAfterAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPauseAfter);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPauseBeforeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPauseBefore);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPauseBeforeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPauseBefore);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPitchAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPitch);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPitchAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPitch);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPitchRangeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPitchRange);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPitchRangeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPitchRange);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetPositionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aPosition);
 		
 		/// <summary>
@@ -1267,18 +1147,6 @@ namespace Skybound.Gecko
         /// raises(DOMException) on setting
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetRichnessAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aRichness);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetRichnessAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aRichness);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetRightAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aRight);
 		
 		/// <summary>
@@ -1298,78 +1166,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSizeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSize);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSpeakAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeak);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetSpeakAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeak);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSpeakHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeakHeader);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetSpeakHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeakHeader);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSpeakNumeralAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeakNumeral);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetSpeakNumeralAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeakNumeral);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSpeakPunctuationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeakPunctuation);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetSpeakPunctuationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeakPunctuation);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSpeechRateAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeechRate);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetSpeechRateAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aSpeechRate);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetStressAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aStress);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetStressAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aStress);
 		
 		/// <summary>
         /// raises(DOMException) on setting
@@ -1490,30 +1286,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetVisibilityAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aVisibility);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetVoiceFamilyAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aVoiceFamily);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetVoiceFamilyAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aVoiceFamily);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetVolumeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aVolume);
-		
-		/// <summary>
-        /// raises(DOMException) on setting
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetVolumeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aVolume);
 		
 		/// <summary>
         /// raises(DOMException) on setting
@@ -2271,6 +2043,18 @@ namespace Skybound.Gecko
         /// raises(DOMException) on setting
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozOrientAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozOrient);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozOrientAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozOrient);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetMozOutlineAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozOutline);
 		
 		/// <summary>
@@ -2699,6 +2483,18 @@ namespace Skybound.Gecko
         /// raises(DOMException) on setting
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozHyphensAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozHyphens);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozHyphensAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozHyphens);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetMozTransformAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTransform);
 		
 		/// <summary>
@@ -2742,6 +2538,54 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetBackgroundSizeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aBackgroundSize);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozTextBlinkAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTextBlink);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozTextBlinkAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTextBlink);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozTextDecorationColorAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTextDecorationColor);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozTextDecorationColorAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTextDecorationColor);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozTextDecorationLineAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTextDecorationLine);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozTextDecorationLineAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTextDecorationLine);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozTextDecorationStyleAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTextDecorationStyle);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozTextDecorationStyleAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aMozTextDecorationStyle);
 		
 		/// <summary>
         /// raises(DOMException) on setting

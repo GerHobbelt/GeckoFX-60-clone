@@ -33,12 +33,11 @@ namespace Skybound.Gecko
     /// contain child windows if the document in the window contains a
     /// HTML frameset document or if the document contains iframe elements.
     ///
-    /// This interface is not officially defined by any standard bodies, it
-    /// originates from the defacto DOM Level 0 standard.
+    /// @see <http://www.whatwg.org/html/#window>
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a6cf906b-15b3-11d2-932e-00805f8add32")]
+	[Guid("ff7d278f-93db-4078-b89a-058c8e1270b4")]
 	public interface nsIDOMWindow
 	{
 		
@@ -179,5 +178,12 @@ namespace Skybound.Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SizeToContent();
+		
+		/// <summary>
+        /// @see <http://dev.w3.org/csswg/cssom/#dom-window-getcomputedstyle>
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMCSSStyleDeclaration GetComputedStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMElement elt, [MarshalAs(UnmanagedType.LPStruct)] nsAString pseudoElt);
 	}
 }

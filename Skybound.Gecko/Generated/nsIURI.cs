@@ -43,10 +43,16 @@ namespace Skybound.Gecko
     ///
     /// The correct way to create an nsIURI from a string is via
     /// nsIIOService.newURI.
+    ///
+    /// NOTE: nsBinaryInputStream::ReadObject contains a hackaround to intercept the
+    /// old (pre-gecko6) nsIURI IID and swap in the current IID instead, in order
+    /// for sessionstore to work after an upgrade.  If this IID is revved further,
+    /// we will need to add additional checks there for all intermediate IIDs, until
+    /// nsPrincipal is fixed to serialize its URIs as nsISupports (bug 662693).
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("07a22cc0-0ce5-11d3-9331-00104ba0fd40")]
+	[Guid("d6d04c36-0fa4-4db3-be05-4a18397103e2")]
 	public interface nsIURI
 	{
 		
@@ -216,6 +222,24 @@ namespace Skybound.Gecko
 		void SetPathAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aPath);
 		
 		/// <summary>
+        /// Returns the reference portion (the part after the "#") of the URI.
+        /// If there isn't one, an empty string is returned.
+        ///
+        /// Some characters may be escaped.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetRefAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aRef);
+		
+		/// <summary>
+        /// Returns the reference portion (the part after the "#") of the URI.
+        /// If there isn't one, an empty string is returned.
+        ///
+        /// Some characters may be escaped.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRefAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aRef);
+		
+		/// <summary>
         /// URI equivalence test (not a strict string comparison).
         ///
         /// eg. http://foo.com:80/ == http://foo.com/
@@ -223,6 +247,17 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool Equals([MarshalAs(UnmanagedType.Interface)] nsIURI other);
+		
+		/// <summary>
+        /// URI equivalence test (not a strict string comparison), ignoring
+        /// the value of the .ref member.
+        ///
+        /// eg. http://foo.com/# == http://foo.com/
+        /// http://foo.com/#aaa == http://foo.com/#bbb
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool EqualsExceptRef([MarshalAs(UnmanagedType.Interface)] nsIURI other);
 		
 		/// <summary>
         /// An optimization to do scheme checks without requiring the users of nsIURI
@@ -234,14 +269,18 @@ namespace Skybound.Gecko
 		bool SchemeIs([MarshalAs(UnmanagedType.LPStr)] string scheme);
 		
 		/// <summary>
-        /// Clones the current URI.  For some protocols, this is more than just an
-        /// optimization.  For example, under MacOS, the spec of a file URL does not
-        /// necessarily uniquely identify a file since two volumes could share the
-        /// same name.
+        /// Clones the current URI.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIURI Clone();
+		
+		/// <summary>
+        /// Clones the current URI, clearing the 'ref' attribute in the clone.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI CloneIgnoringRef();
 		
 		/// <summary>
         /// This method resolves a relative string into an absolute URI string,

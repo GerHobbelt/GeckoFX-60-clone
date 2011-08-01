@@ -35,7 +35,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("39b73c3a-48eb-4189-8069-247279c3c42d")]
+	[Guid("5f3ebf43-6944-45fb-b1b1-78a05bf9370b")]
 	public interface nsISHEntry : nsIHistoryEntry
 	{
 		
@@ -234,33 +234,11 @@ namespace Skybound.Gecko
 		void SetIDAttribute(uint aID);
 		
 		/// <summary>
-        /// pageIdentifier is an integer that should be the same for two entries
-        /// attached to the same docshell only if the two entries are entries for
-        /// the same page in the sense that one could go from the state represented
-        /// by one to the state represented by the other simply by scrolling (so the
-        /// entries are separated by an anchor traversal or a subframe navigation in
-        /// some other frame).
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetPageIdentifierAttribute();
-		
-		/// <summary>
-        /// pageIdentifier is an integer that should be the same for two entries
-        /// attached to the same docshell only if the two entries are entries for
-        /// the same page in the sense that one could go from the state represented
-        /// by one to the state represented by the other simply by scrolling (so the
-        /// entries are separated by an anchor traversal or a subframe navigation in
-        /// some other frame).
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPageIdentifierAttribute(uint aPageIdentifier);
-		
-		/// <summary>
         /// docIdentifier is an integer that should be the same for two entries
         /// attached to the same docshell if and only if the two entries are entries
         /// for the same document.  In practice, two entries A and B will have the
-        /// same docIdentifier if they have the same pageIdentifier or if B was
-        /// created by A calling history.pushState().
+        /// same docIdentifier if we arrived at B by clicking an anchor link in A or
+        /// if B was created by A's calling history.pushState().
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetDocIdentifierAttribute();
@@ -269,8 +247,8 @@ namespace Skybound.Gecko
         /// docIdentifier is an integer that should be the same for two entries
         /// attached to the same docshell if and only if the two entries are entries
         /// for the same document.  In practice, two entries A and B will have the
-        /// same docIdentifier if they have the same pageIdentifier or if B was
-        /// created by A calling history.pushState().
+        /// same docIdentifier if we arrived at B by clicking an anchor link in A or
+        /// if B was created by A's calling history.pushState().
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDocIdentifierAttribute(uint aDocIdentifier);
@@ -377,17 +355,18 @@ namespace Skybound.Gecko
 		
 		/// <summary>
         /// Get/set data associated with this history state via a pushState() call,
-        /// encoded as JSON.
+        /// serialized using structured clone.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetStateDataAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aStateData);
+		nsIStructuredCloneContainer GetStateDataAttribute();
 		
 		/// <summary>
         /// Get/set data associated with this history state via a pushState() call,
-        /// encoded as JSON.
+        /// serialized using structured clone.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetStateDataAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aStateData);
+		void SetStateDataAttribute([MarshalAs(UnmanagedType.Interface)] nsIStructuredCloneContainer aStateData);
 		
 		/// <summary>
         /// Gets the owning pointer to the editor data assosicated with

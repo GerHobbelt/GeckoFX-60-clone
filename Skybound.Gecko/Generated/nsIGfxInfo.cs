@@ -31,7 +31,7 @@ namespace Skybound.Gecko
     ///NOTE: this interface is completely undesigned, not stable and likely to change </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5c5de1e7-f7f4-46b4-9ced-03ab1f869eaf")]
+	[Guid("a67c77af-2952-4028-93ab-e7bc3b43cf81")]
 	public interface nsIGfxInfo
 	{
 		
@@ -48,6 +48,9 @@ namespace Skybound.Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetDWriteVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aDWriteVersion);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetCleartypeParametersAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aCleartypeParameters);
 		
 		/// <summary>
         /// The name of the display adapter.

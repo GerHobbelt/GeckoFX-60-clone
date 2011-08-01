@@ -27,11 +27,10 @@ namespace Skybound.Gecko
 	using System.Windows.Forms;
 	
 	
-	/// <summary>
-    ///, nsIDOMDocumentEvent </summary>
+	/// <summary>nsIDOMSVGDocument </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("fc52bd3f-850c-4d80-819f-5bd8321b4b59")]
+	[Guid("2de25143-3fcb-4afc-8900-2c046fb6dc94")]
 	public interface nsIDOMSVGDocument : nsIDOMDocument
 	{
 		
@@ -46,9 +45,13 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetNodeNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNodeName);
 		
+		/// <summary>Member GetNodeValueAttribute </summary>
+		/// <param name='aNodeValue'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetNodeValueAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNodeValue);
 		
+		/// <summary>Member SetNodeValueAttribute </summary>
+		/// <param name='aNodeValue'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetNodeValueAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aNodeValue);
 		
@@ -58,30 +61,44 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new ushort GetNodeTypeAttribute();
 		
+		/// <summary>Member GetParentNodeAttribute </summary>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode GetParentNodeAttribute();
 		
+		/// <summary>Member GetChildNodesAttribute </summary>
+		/// <returns>A nsIDOMNodeList</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNodeList GetChildNodesAttribute();
 		
+		/// <summary>Member GetFirstChildAttribute </summary>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode GetFirstChildAttribute();
 		
+		/// <summary>Member GetLastChildAttribute </summary>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode GetLastChildAttribute();
 		
+		/// <summary>Member GetPreviousSiblingAttribute </summary>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode GetPreviousSiblingAttribute();
 		
+		/// <summary>Member GetNextSiblingAttribute </summary>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode GetNextSiblingAttribute();
 		
+		/// <summary>Member GetAttributesAttribute </summary>
+		/// <returns>A nsIDOMNamedNodeMap</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNamedNodeMap GetAttributesAttribute();
@@ -93,26 +110,45 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMDocument GetOwnerDocumentAttribute();
 		
+		/// <summary>Member InsertBefore </summary>
+		/// <param name='newChild'> </param>
+		/// <param name='refChild'> </param>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode InsertBefore([MarshalAs(UnmanagedType.Interface)] nsIDOMNode newChild, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode refChild);
 		
+		/// <summary>Member ReplaceChild </summary>
+		/// <param name='newChild'> </param>
+		/// <param name='oldChild'> </param>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode ReplaceChild([MarshalAs(UnmanagedType.Interface)] nsIDOMNode newChild, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode oldChild);
 		
+		/// <summary>Member RemoveChild </summary>
+		/// <param name='oldChild'> </param>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode RemoveChild([MarshalAs(UnmanagedType.Interface)] nsIDOMNode oldChild);
 		
+		/// <summary>Member AppendChild </summary>
+		/// <param name='newChild'> </param>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode AppendChild([MarshalAs(UnmanagedType.Interface)] nsIDOMNode newChild);
 		
+		/// <summary>Member HasChildNodes </summary>
+		/// <returns>A System.Boolean</returns>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new bool HasChildNodes();
 		
+		/// <summary>Member CloneNode </summary>
+		/// <param name='deep'> </param>
+		/// <returns>A nsIDOMNode</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNode CloneNode([MarshalAs(UnmanagedType.Bool)] bool deep);
@@ -171,46 +207,77 @@ namespace Skybound.Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMDocumentType GetDoctypeAttribute();
 		
+		/// <summary>Member GetImplementationAttribute </summary>
+		/// <returns>A nsIDOMDOMImplementation</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMDOMImplementation GetImplementationAttribute();
 		
+		/// <summary>Member GetDocumentElementAttribute </summary>
+		/// <returns>A nsIDOMElement</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMElement GetDocumentElementAttribute();
 		
+		/// <summary>Member CreateElement </summary>
+		/// <param name='tagName'> </param>
+		/// <returns>A nsIDOMElement</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMElement CreateElement([MarshalAs(UnmanagedType.LPStruct)] nsAString tagName);
 		
+		/// <summary>Member CreateDocumentFragment </summary>
+		/// <returns>A nsIDOMDocumentFragment</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMDocumentFragment CreateDocumentFragment();
 		
+		/// <summary>Member CreateTextNode </summary>
+		/// <param name='data'> </param>
+		/// <returns>A nsIDOMText</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMText CreateTextNode([MarshalAs(UnmanagedType.LPStruct)] nsAString data);
 		
+		/// <summary>Member CreateComment </summary>
+		/// <param name='data'> </param>
+		/// <returns>A nsIDOMComment</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMComment CreateComment([MarshalAs(UnmanagedType.LPStruct)] nsAString data);
 		
+		/// <summary>Member CreateCDATASection </summary>
+		/// <param name='data'> </param>
+		/// <returns>A nsIDOMCDATASection</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMCDATASection CreateCDATASection([MarshalAs(UnmanagedType.LPStruct)] nsAString data);
 		
+		/// <summary>Member CreateProcessingInstruction </summary>
+		/// <param name='target'> </param>
+		/// <param name='data'> </param>
+		/// <returns>A nsIDOMProcessingInstruction</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMProcessingInstruction CreateProcessingInstruction([MarshalAs(UnmanagedType.LPStruct)] nsAString target, [MarshalAs(UnmanagedType.LPStruct)] nsAString data);
 		
+		/// <summary>Member CreateAttribute </summary>
+		/// <param name='name'> </param>
+		/// <returns>A nsIDOMAttr</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMAttr CreateAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString name);
 		
+		/// <summary>Member CreateEntityReference </summary>
+		/// <param name='name'> </param>
+		/// <returns>A nsIDOMEntityReference</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMEntityReference CreateEntityReference([MarshalAs(UnmanagedType.LPStruct)] nsAString name);
 		
+		/// <summary>Member GetElementsByTagName </summary>
+		/// <param name='tagname'> </param>
+		/// <returns>A nsIDOMNodeList</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMNodeList GetElementsByTagName([MarshalAs(UnmanagedType.LPStruct)] nsAString tagname);
@@ -290,19 +357,6 @@ namespace Skybound.Gecko
 		/// <summary>
         /// Introduced in DOM Level 3:
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool GetStrictErrorCheckingAttribute();
-		
-		/// <summary>
-        /// Introduced in DOM Level 3:
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetStrictErrorCheckingAttribute([MarshalAs(UnmanagedType.Bool)] bool aStrictErrorChecking);
-		
-		/// <summary>
-        /// Introduced in DOM Level 3:
-        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetDocumentURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aDocumentURI);
 		
@@ -322,37 +376,76 @@ namespace Skybound.Gecko
 		/// <summary>
         /// Introduced in DOM Level 3:
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMDOMConfiguration GetDomConfigAttribute();
-		
-		/// <summary>
-        /// Introduced in DOM Level 3:
-        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void NormalizeDocument();
 		
 		/// <summary>
-        /// Introduced in DOM Level 3:
+        /// The window associated with this document.
+        ///
+        /// @see http://www.whatwg.org/html/#dom-document-defaultview
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMNode RenameNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode node, [MarshalAs(UnmanagedType.LPStruct)] nsAString namespaceURI, [MarshalAs(UnmanagedType.LPStruct)] nsAString qualifiedName);
+		new nsIDOMWindow GetDefaultViewAttribute();
 		
 		/// <summary>
-        ///, nsIDOMDocumentEvent </summary>
+        /// Create a range
+        ///
+        /// @see http://html5.org/specs/dom-range.html#dom-document-createrange
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMRange CreateRange();
+		
+		/// <summary>Member CreateNodeIterator </summary>
+		/// <param name='root'> </param>
+		/// <param name='whatToShow'> </param>
+		/// <param name='filter'> </param>
+		/// <param name='entityReferenceExpansion'> </param>
+		/// <returns>A nsIDOMNodeIterator</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMNodeIterator CreateNodeIterator([MarshalAs(UnmanagedType.Interface)] nsIDOMNode root, uint whatToShow, [MarshalAs(UnmanagedType.Interface)] nsIDOMNodeFilter filter, [MarshalAs(UnmanagedType.Bool)] bool entityReferenceExpansion);
+		
+		/// <summary>Member CreateTreeWalker </summary>
+		/// <param name='root'> </param>
+		/// <param name='whatToShow'> </param>
+		/// <param name='filter'> </param>
+		/// <param name='entityReferenceExpansion'> </param>
+		/// <returns>A nsIDOMTreeWalker</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMTreeWalker CreateTreeWalker([MarshalAs(UnmanagedType.Interface)] nsIDOMNode root, uint whatToShow, [MarshalAs(UnmanagedType.Interface)] nsIDOMNodeFilter filter, [MarshalAs(UnmanagedType.Bool)] bool entityReferenceExpansion);
+		
+		/// <summary>Member CreateEvent </summary>
+		/// <param name='eventType'> </param>
+		/// <returns>A nsIDOMEvent</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMEvent CreateEvent([MarshalAs(UnmanagedType.LPStruct)] nsAString eventType);
+		
+		/// <summary>Member GetTitleAttribute </summary>
+		/// <param name='aTitle'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetTitleAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aTitle);
 		
+		/// <summary>Member GetReferrerAttribute </summary>
+		/// <param name='aReferrer'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetReferrerAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aReferrer);
 		
+		/// <summary>Member GetDomainAttribute </summary>
+		/// <param name='aDomain'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetDomainAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aDomain);
 		
+		/// <summary>Member GetURLAttribute </summary>
+		/// <param name='aURL'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetURLAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAString aURL);
 		
+		/// <summary>Member GetRootElementAttribute </summary>
+		/// <returns>A nsIDOMSVGSVGElement</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMSVGSVGElement GetRootElementAttribute();

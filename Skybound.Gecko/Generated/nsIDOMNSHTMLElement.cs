@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIDOMNSHTMLElement </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4738f75d-9c6f-40f8-81d0-84b2e4726a8f")]
+	[Guid("cf76761d-2d93-4e88-aaf1-b637878bad65")]
 	public interface nsIDOMNSHTMLElement
 	{
 		
@@ -141,5 +141,11 @@ namespace Skybound.Gecko
 		/// <param name='aSpellcheck'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSpellcheckAttribute([MarshalAs(UnmanagedType.Bool)] bool aSpellcheck);
+		
+		/// <summary>Member GetDatasetAttribute </summary>
+		/// <returns>A nsIDOMDOMStringMap</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMDOMStringMap GetDatasetAttribute();
 	}
 }

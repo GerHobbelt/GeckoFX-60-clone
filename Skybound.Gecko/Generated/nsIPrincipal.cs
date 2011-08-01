@@ -31,7 +31,7 @@ namespace Skybound.Gecko
     ///Defines the abstract interface for a principal. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("799ab95c-0038-4e0f-b705-74c21f185bb5")]
+	[Guid("B406A2DB-E547-4C95-B8E2-AD09ECB54CE0")]
 	public interface nsIPrincipal : nsISerializable
 	{
 		
@@ -77,6 +77,13 @@ namespace Skybound.Gecko
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool Equals([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
+		
+		/// <summary>
+        /// Like equals, but doesn't take document.domain changes into account.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool EqualsIgnoringDomain([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
 		
 		/// <summary>
         /// Returns a hash value for the principal.

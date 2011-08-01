@@ -11,7 +11,7 @@ namespace GeckofxUnitTests
 	[TestFixture]
 	public class XpComTests
 	{
-		public const string XulRunnerLocation = @"C:\Program Files (x86)\Mozilla Firefox 5.0";
+		public const string XulRunnerLocation = @"C:\Program Files (x86)\Mozilla Firefox 5.05b";
 
 		[SetUp]
 		public void BeforeEachTestSetup()
@@ -260,8 +260,8 @@ namespace GeckofxUnitTests
 
 		[Test]
 		public void CreateInstance_CreatingWebSocket_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsIWebSocket>("@mozilla.org/websocket;1");
+		{
+			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/websocket;1");
 			Assert.IsNotNull(instance);
 			Marshal.ReleaseComObject(instance);
 		}
@@ -479,14 +479,6 @@ namespace GeckofxUnitTests
 		public void CreateInstance_CreatingWorkerFactory_ReturnsValidInstance()
 		{
 			var instance = Xpcom.CreateInstance<nsIWorkerFactory>("@mozilla.org/threads/workerfactory;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
-		
-		[Test]
-		public void CreateInstance_CreatingAccelerometer_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsIAccelerometer>("@mozilla.org/accelerometer;1");
 			Assert.IsNotNull(instance);
 			Marshal.ReleaseComObject(instance);
 		}
@@ -761,14 +753,6 @@ namespace GeckofxUnitTests
 			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/nslanguageatomservice;1");
 			Assert.IsNotNull(instance);
 			Marshal.ReleaseComObject(instance);		
-		}
-
-		[Test]
-		public void CreateInstance_CreatingWin32Locale_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/locale/win32-locale;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
 		}
 
 		[Test]

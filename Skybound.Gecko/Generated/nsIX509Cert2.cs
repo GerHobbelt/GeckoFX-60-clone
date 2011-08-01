@@ -190,24 +190,26 @@ namespace Skybound.Gecko
         /// Obtain an array of human readable strings describing
         /// the certificate's certified usages.
         ///
-        /// @param ignoreOcsp Do not use OCSP even if it is currently activated.
+        /// @param localOnly Do not hit the network, even if revocation information
+        /// downloading is currently activated.
         /// @param verified The certificate verification result, see constants.
         /// @param count The number of human readable usages returned.
         /// @param usages The array of human readable usages.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetUsagesArray([MarshalAs(UnmanagedType.Bool)] bool ignoreOcsp, out uint verified, out uint count, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=2)] out string usages);
+		new void GetUsagesArray([MarshalAs(UnmanagedType.Bool)] bool localOnly, out uint verified, out uint count, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=2)] out string usages);
 		
 		/// <summary>
         /// Obtain a single comma separated human readable string describing
         /// the certificate's certified usages.
         ///
-        /// @param ignoreOcsp Do not use OCSP even if it is currently activated.
+        /// @param localOnly Do not hit the network, even if revocation information
+        /// downloading is currently activated.
         /// @param verified The certificate verification result, see constants.
         /// @param purposes The string listing the usages.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetUsagesString([MarshalAs(UnmanagedType.Bool)] bool ignoreOcsp, out uint verified, [MarshalAs(UnmanagedType.LPStruct)] nsAString usages);
+		new void GetUsagesString([MarshalAs(UnmanagedType.Bool)] bool localOnly, out uint verified, [MarshalAs(UnmanagedType.LPStruct)] nsAString usages);
 		
 		/// <summary>
         /// Verify the certificate for a particular usage.

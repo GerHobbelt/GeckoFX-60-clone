@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>inIDOMUtils </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("aa6562de-2628-44fa-90a8-13d6aee404d6")]
+	[Guid("e01c9987-1ba2-44f0-a6a7-3148b55b7e6d")]
 	public interface inIDOMUtils
 	{
 		
@@ -39,7 +39,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray GetCSSStyleRules([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
+		nsISupportsArray GetCSSStyleRules([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.LPStruct)] nsAString aPseudo);
 		
 		/// <summary>Member GetRuleLine </summary>
 		/// <param name='aRule'> </param>

@@ -30,46 +30,14 @@ namespace Skybound.Gecko
 	/// <summary>nsIPhoneSupport </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c75982d6-811b-4321-980d-46490e1a6703")]
+	[Guid("c893eb89-8650-49d2-aed7-0ef809a2b940")]
 	public interface nsIPhoneSupport
 	{
-		
-		/// <summary>
-        /// This method attempts to make a telephone call.
-        ///
-        /// @param telephoneNumber this is the telephone to dial.
-        /// @param telephoneDescription this is an optional
-        /// description of the telephone number.
-        /// @param aPrompt this indicates whether to display the confirm call dialog
-        /// before dialing
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MakeCall([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")] string telephoneNumber, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")] string telephoneDescription, [MarshalAs(UnmanagedType.Bool)] bool aPrompt);
 		
 		/// <summary>
         /// This method displays a UI to switch to (or launch) a different task
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SwitchTask();
-		
-		/// <summary>
-        /// Determines whether or not Fennec is the "Default Browser".
-        /// This is simply whether or not Fennec is registered to handle http links.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsDefaultBrowser();
-		
-		/// <summary>
-        /// Registers Fennec as the "Default Browser".
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDefaultBrowser();
-		
-		/// <summary>
-        /// Restores previous "Default Browser".
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RestoreDefaultBrowser();
 	}
 }

@@ -35,7 +35,7 @@ namespace Skybound.Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a0a52a85-4032-41d7-b183-9d21009e0a65")]
+	[Guid("766a09c1-d21b-4bf8-9fe3-8b34b716251a")]
 	public interface nsISessionStore
 	{
 		
@@ -111,8 +111,9 @@ namespace Skybound.Gecko
 		
 		/// <summary>
         /// Restores the previous browser session using a fast, lightweight strategy
+        /// @param aBringToFront should a restored tab be brought to the foreground?
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RestoreLastSession();
+		void RestoreLastSession([MarshalAs(UnmanagedType.Bool)] bool aBringToFront);
 	}
 }

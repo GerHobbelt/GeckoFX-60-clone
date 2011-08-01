@@ -30,7 +30,7 @@ namespace Skybound.Gecko
 	/// <summary>nsIPluginInstanceOwner </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("B48DC23E-C20B-4292-974E-E8FF97B9F1CC")]
+	[Guid("17E89C1F-AE62-448E-83D5-C33FA6E07A19")]
 	public interface nsIPluginInstanceOwner
 	{
 		
@@ -38,13 +38,13 @@ namespace Skybound.Gecko
         /// Let the owner know what its instance is
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetInstance([MarshalAs(UnmanagedType.Interface)] nsIPluginInstance aInstance);
+		void SetInstance(System.IntPtr aInstance);
 		
 		/// <summary>
         /// Get the instance associated with this owner.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetInstance(System.IntPtr aInstance);
+		System.IntPtr GetInstance();
 		
 		/// <summary>
         /// Get a handle to the window structure of the owner.
