@@ -447,6 +447,6 @@ namespace Skybound.Gecko
         /// and a nonempty charset if it does not throw.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCharsetAndSource(out int aSource, [MarshalAs(UnmanagedType.LPStruct)] nsACString retval);
+		void GetCharsetAndSource(ref int aSource, [MarshalAs(UnmanagedType.LPStruct)] nsACString retval);
 	}
 }

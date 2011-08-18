@@ -40,7 +40,7 @@ namespace Skybound.Gecko
         /// @param val The jsval to receive the converted value.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void COMVariant2JSVal(System.IntPtr comvar, out System.IntPtr val);
+		void COMVariant2JSVal(System.IntPtr comvar, ref System.IntPtr val);
 		
 		/// <summary>
         /// Converts a jsval to a COM Variant
@@ -48,7 +48,7 @@ namespace Skybound.Gecko
         /// @param comvar The COM Variant to receive the converted value
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void JSVal2COMVariant(System.IntPtr var, out System.IntPtr comvar);
+		void JSVal2COMVariant(System.IntPtr var, ref System.IntPtr comvar);
 		
 		/// <summary>
         /// Test if the class is safe to host.
@@ -58,7 +58,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsClassSafeToHost(System.IntPtr cx, ref System.Guid cid, [MarshalAs(UnmanagedType.Bool)] bool capsCheck, [MarshalAs(UnmanagedType.Bool)] out bool classExists);
+		bool IsClassSafeToHost(System.IntPtr cx, ref System.Guid cid, [MarshalAs(UnmanagedType.Bool)] bool capsCheck, [MarshalAs(UnmanagedType.Bool)] ref bool classExists);
 		
 		/// <summary>
         /// Test if the specified class is marked safe for scripting.
@@ -68,7 +68,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsClassMarkedSafeForScripting(ref System.Guid cid, [MarshalAs(UnmanagedType.Bool)] out bool classExists);
+		bool IsClassMarkedSafeForScripting(ref System.Guid cid, [MarshalAs(UnmanagedType.Bool)] ref bool classExists);
 		
 		/// <summary>
         /// Test if the instantiated object is safe for scripting on the specified

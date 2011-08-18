@@ -102,7 +102,7 @@ namespace Skybound.Gecko
         /// @param aSHEntry        - Active Session History entry (if loading from SH)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InternalLoad([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.Interface)] nsISupports aOwner, uint aFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")] string aWindowTarget, [MarshalAs(UnmanagedType.LPStr)] string aTypeHint, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostDataStream, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeadersStream, uint aLoadFlags, [MarshalAs(UnmanagedType.Interface)] nsISHEntry aSHEntry, [MarshalAs(UnmanagedType.Bool)] bool firstParty, [MarshalAs(UnmanagedType.Interface)] out nsIDocShell aDocShell, [MarshalAs(UnmanagedType.Interface)] out nsIRequest aRequest);
+		void InternalLoad([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.Interface)] nsISupports aOwner, uint aFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")] string aWindowTarget, [MarshalAs(UnmanagedType.LPStr)] string aTypeHint, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostDataStream, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeadersStream, uint aLoadFlags, [MarshalAs(UnmanagedType.Interface)] nsISHEntry aSHEntry, [MarshalAs(UnmanagedType.Bool)] bool firstParty, [MarshalAs(UnmanagedType.Interface)] ref nsIDocShell aDocShell, [MarshalAs(UnmanagedType.Interface)] ref nsIRequest aRequest);
 		
 		/// <summary>
         /// Do either a history.pushState() or history.replaceState() operation,
@@ -116,7 +116,7 @@ namespace Skybound.Gecko
         /// to loadURI.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CreateLoadInfo([MarshalAs(UnmanagedType.Interface)] out nsIDocShellLoadInfo loadInfo);
+		void CreateLoadInfo([MarshalAs(UnmanagedType.Interface)] ref nsIDocShellLoadInfo loadInfo);
 		
 		/// <summary>
         /// Reset state to a new content model within the current document and the document
@@ -385,7 +385,7 @@ namespace Skybound.Gecko
         /// This is currently only necessary for embedding chrome.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void TabToTreeOwner([MarshalAs(UnmanagedType.Bool)] bool forward, [MarshalAs(UnmanagedType.Bool)] out bool tookFocus);
+		void TabToTreeOwner([MarshalAs(UnmanagedType.Bool)] bool forward, [MarshalAs(UnmanagedType.Bool)] ref bool tookFocus);
 		
 		/// <summary>
         /// History.pushState()

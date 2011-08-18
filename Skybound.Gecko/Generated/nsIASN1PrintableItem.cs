@@ -92,6 +92,6 @@ namespace Skybound.Gecko
 		/// <param name='data'> </param>
 		/// <param name='len'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetData(out System.IntPtr data, out uint len);
+		void GetData(ref System.IntPtr data, ref uint len);
 	}
 }

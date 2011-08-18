@@ -136,7 +136,7 @@ namespace Skybound.Gecko
 		/// <param name='output2'> </param>
 		/// <returns>A System.Int32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int In2OutAddTwoInts(int input1, int input2, out int output1, out int output2);
+		int In2OutAddTwoInts(int input1, int input2, ref int output1, ref int output2);
 		
 		/// <summary>Member In2OutOneString </summary>
 		/// <param name='input'> </param>
@@ -475,7 +475,7 @@ namespace Skybound.Gecko
 		/// <summary>Member GetStringB </summary>
 		/// <param name='s'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetStringB([MarshalAs(UnmanagedType.LPStr)] out string s);
+		void GetStringB([MarshalAs(UnmanagedType.LPStr)] ref string s);
 		
 		/// <summary>Member GetStringC </summary>
 		/// <returns>A System.String</returns>
@@ -595,7 +595,7 @@ namespace Skybound.Gecko
 		/// <returns>A System.String</returns>
 		[return: MarshalAs(UnmanagedType.LPStr, SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetStrings(out uint count);
+		string GetStrings(ref uint count);
 	}
 	
 	/// <summary>nsIWrappedJSObjectTest </summary>

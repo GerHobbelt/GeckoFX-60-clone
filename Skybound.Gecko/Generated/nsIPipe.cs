@@ -119,6 +119,6 @@ namespace Skybound.Gecko
         /// byte not searched will correspond to the length of the buffer.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Search([MarshalAs(UnmanagedType.LPStr)] string forString, [MarshalAs(UnmanagedType.Bool)] bool ignoreCase, [MarshalAs(UnmanagedType.Bool)] out bool found, out uint offsetSearchedTo);
+		void Search([MarshalAs(UnmanagedType.LPStr)] string forString, [MarshalAs(UnmanagedType.Bool)] bool ignoreCase, [MarshalAs(UnmanagedType.Bool)] ref bool found, ref uint offsetSearchedTo);
 	}
 }

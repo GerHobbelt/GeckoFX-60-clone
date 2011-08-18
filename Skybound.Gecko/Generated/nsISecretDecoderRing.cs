@@ -42,7 +42,7 @@ namespace Skybound.Gecko
         /// @return The length of the data in the output buffer.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int Encrypt(System.IntPtr data, int dataLen, out System.IntPtr result);
+		int Encrypt(System.IntPtr data, int dataLen, ref System.IntPtr result);
 		
 		/// <summary>
         /// Decrypt a buffer - callable only from C++.
@@ -50,7 +50,7 @@ namespace Skybound.Gecko
         /// @return The length of the data in the output buffer.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int Decrypt(System.IntPtr data, int dataLen, out System.IntPtr result);
+		int Decrypt(System.IntPtr data, int dataLen, ref System.IntPtr result);
 		
 		/// <summary>
         /// Encrypt nul-terminated string to BASE64 output.

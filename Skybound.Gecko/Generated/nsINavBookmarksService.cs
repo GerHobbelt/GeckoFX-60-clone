@@ -585,7 +585,7 @@ namespace Skybound.Gecko
         /// Returns the list of bookmark ids that contain the given URI.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetBookmarkIdsForURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, out uint count);
+		int GetBookmarkIdsForURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, ref uint count);
 		
 		/// <summary>
         /// Associates the given keyword with the given bookmark.

@@ -313,7 +313,7 @@ namespace Skybound.Gecko
 		void SetScrollPosition(int x, int y);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetScrollPosition(out int x, out int y);
+		void GetScrollPosition(ref int x, ref int y);
 		
 		/// <summary>
         ///Additional ways to create an entry </summary>
@@ -334,7 +334,7 @@ namespace Skybound.Gecko
         ///        nsSHEntry tree.  This will differ from contentViewer in the case
         ///        where a child nsSHEntry has the content viewer for this tree. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetAnyContentViewer([MarshalAs(UnmanagedType.Interface)] out nsISHEntry ownerEntry);
+		System.IntPtr GetAnyContentViewer([MarshalAs(UnmanagedType.Interface)] ref nsISHEntry ownerEntry);
 		
 		/// <summary>
         /// Get the owner, if any, that was associated with the channel

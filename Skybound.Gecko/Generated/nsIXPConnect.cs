@@ -387,7 +387,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports TranslateThis([MarshalAs(UnmanagedType.Interface)] nsISupports aInitialThis, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceInfo aInterfaceInfo, ushort aMethodIndex, [MarshalAs(UnmanagedType.Bool)] out bool aHideFirstParamFromJS, out System.Guid aIIDOfResult);
+		nsISupports TranslateThis([MarshalAs(UnmanagedType.Interface)] nsISupports aInitialThis, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceInfo aInterfaceInfo, ushort aMethodIndex, [MarshalAs(UnmanagedType.Bool)] ref bool aHideFirstParamFromJS, ref System.Guid aIIDOfResult);
 	}
 	
 	/// <summary> </summary>
@@ -479,7 +479,7 @@ namespace Skybound.Gecko
         /// aJSContext.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WrapNativeToJSVal(System.IntPtr aJSContext, System.IntPtr aScope, [MarshalAs(UnmanagedType.Interface)] nsISupports aCOMObj, System.IntPtr aCache, System.Guid aIID, [MarshalAs(UnmanagedType.Bool)] bool aAllowWrapper, out System.IntPtr aVal, [MarshalAs(UnmanagedType.Interface)] out nsIXPConnectJSObjectHolder aHolder);
+		void WrapNativeToJSVal(System.IntPtr aJSContext, System.IntPtr aScope, [MarshalAs(UnmanagedType.Interface)] nsISupports aCOMObj, System.IntPtr aCache, System.Guid aIID, [MarshalAs(UnmanagedType.Bool)] bool aAllowWrapper, ref System.IntPtr aVal, [MarshalAs(UnmanagedType.Interface)] ref nsIXPConnectJSObjectHolder aHolder);
 		
 		/// <summary>
         /// wrapJS will yield a new or previously existing xpcom interface pointer
@@ -533,7 +533,7 @@ namespace Skybound.Gecko
 		void SetSecurityManagerForJSContext(System.IntPtr aJSContext, [MarshalAs(UnmanagedType.Interface)] nsIXPCSecurityManager aManager, ushort flags);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSecurityManagerForJSContext(System.IntPtr aJSContext, [MarshalAs(UnmanagedType.Interface)] out nsIXPCSecurityManager aManager, out ushort flags);
+		void GetSecurityManagerForJSContext(System.IntPtr aJSContext, [MarshalAs(UnmanagedType.Interface)] ref nsIXPCSecurityManager aManager, ref ushort flags);
 		
 		/// <summary>
         /// The security manager to use when the current JSContext has no security
@@ -543,7 +543,7 @@ namespace Skybound.Gecko
 		void SetDefaultSecurityManager([MarshalAs(UnmanagedType.Interface)] nsIXPCSecurityManager aManager, ushort flags);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDefaultSecurityManager([MarshalAs(UnmanagedType.Interface)] out nsIXPCSecurityManager aManager, out ushort flags);
+		void GetDefaultSecurityManager([MarshalAs(UnmanagedType.Interface)] ref nsIXPCSecurityManager aManager, ref ushort flags);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -722,7 +722,7 @@ namespace Skybound.Gecko
         /// private date. See IS_WRAPPER_CLASS in xpcprivate.h for details.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetXPCWrappedNativeJSClassInfo(out System.IntPtr equality);
+		void GetXPCWrappedNativeJSClassInfo(ref System.IntPtr equality);
 		
 		/// <summary>
         /// Whether or not XPConnect should report all JS exceptions when returning
@@ -772,7 +772,7 @@ namespace Skybound.Gecko
         /// Return the caller object of the current call from JS.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCaller(out System.IntPtr aJSContext, out System.IntPtr aObject);
+		void GetCaller(ref System.IntPtr aJSContext, ref System.IntPtr aObject);
 		
 		/// <summary>
         /// When we place the browser in JS debug mode, there can't be any

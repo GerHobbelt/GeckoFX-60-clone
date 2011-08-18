@@ -74,7 +74,7 @@ namespace Skybound.Gecko
 		/// <param name='endOffset'> </param>
 		/// <param name='retval'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetTextAfterOffset(int offset, System.IntPtr boundaryType, out int startOffset, out int endOffset, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetTextAfterOffset(int offset, System.IntPtr boundaryType, ref int startOffset, ref int endOffset, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>Member GetTextAtOffset </summary>
 		/// <param name='offset'> </param>
@@ -83,7 +83,7 @@ namespace Skybound.Gecko
 		/// <param name='endOffset'> </param>
 		/// <param name='retval'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetTextAtOffset(int offset, System.IntPtr boundaryType, out int startOffset, out int endOffset, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetTextAtOffset(int offset, System.IntPtr boundaryType, ref int startOffset, ref int endOffset, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>Member GetTextBeforeOffset </summary>
 		/// <param name='offset'> </param>
@@ -92,7 +92,7 @@ namespace Skybound.Gecko
 		/// <param name='endOffset'> </param>
 		/// <param name='retval'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetTextBeforeOffset(int offset, System.IntPtr boundaryType, out int startOffset, out int endOffset, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetTextBeforeOffset(int offset, System.IntPtr boundaryType, ref int startOffset, ref int endOffset, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>
         /// It would be better to return an unsigned long here,
@@ -113,7 +113,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPersistentProperties GetTextAttributes([MarshalAs(UnmanagedType.Bool)] bool includeDefAttrs, int offset, out int rangeStartOffset, out int rangeEndOffset);
+		nsIPersistentProperties GetTextAttributes([MarshalAs(UnmanagedType.Bool)] bool includeDefAttrs, int offset, ref int rangeStartOffset, ref int rangeEndOffset);
 		
 		/// <summary>
         /// Return the text attributes that apply to the entire accessible.
@@ -147,7 +147,7 @@ namespace Skybound.Gecko
         /// nsIAccessibleCoordinateType).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCharacterExtents(int offset, out int x, out int y, out int width, out int height, uint coordType);
+		void GetCharacterExtents(int offset, ref int x, ref int y, ref int width, ref int height, uint coordType);
 		
 		/// <summary>Member GetRangeExtents </summary>
 		/// <param name='startOffset'> </param>
@@ -158,7 +158,7 @@ namespace Skybound.Gecko
 		/// <param name='height'> </param>
 		/// <param name='coordType'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetRangeExtents(int startOffset, int endOffset, out int x, out int y, out int width, out int height, uint coordType);
+		void GetRangeExtents(int startOffset, int endOffset, ref int x, ref int y, ref int width, ref int height, uint coordType);
 		
 		/// <summary>
         /// Get the text offset at the given point, or return -1
@@ -182,7 +182,7 @@ namespace Skybound.Gecko
 		/// <param name='startOffset'> </param>
 		/// <param name='endOffset'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSelectionBounds(int selectionNum, out int startOffset, out int endOffset);
+		void GetSelectionBounds(int selectionNum, ref int startOffset, ref int endOffset);
 		
 		/// <summary>
         /// Set the bounds for the given selection range

@@ -159,7 +159,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool CalculateZPosition([MarshalAs(UnmanagedType.Interface)] nsIXULWindow inWindow, uint inPosition, System.IntPtr inBelow, out uint outPosition, out System.IntPtr outBelow);
+		bool CalculateZPosition([MarshalAs(UnmanagedType.Interface)] nsIXULWindow inWindow, uint inPosition, System.IntPtr inBelow, ref uint outPosition, ref System.IntPtr outBelow);
 		
 		/// <summary>
         ///A window has been positioned behind another. Inform WindowMediator

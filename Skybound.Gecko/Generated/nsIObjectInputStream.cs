@@ -218,7 +218,7 @@ namespace Skybound.Gecko
 		nsISupports ReadObject([MarshalAs(UnmanagedType.Bool)] bool aIsStrongRef);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int ReadID(out System.IntPtr aID);
+		int ReadID(ref System.IntPtr aID);
 		
 		/// <summary>
         /// Optimized deserialization support -- see nsIStreamBufferAccess.idl.

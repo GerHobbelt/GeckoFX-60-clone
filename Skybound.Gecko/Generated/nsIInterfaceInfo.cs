@@ -69,7 +69,7 @@ namespace Skybound.Gecko
 		System.IntPtr GetMethodInfo(ushort index);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetMethodInfoForName([MarshalAs(UnmanagedType.LPStr)] string methodName, out ushort index);
+		System.IntPtr GetMethodInfoForName([MarshalAs(UnmanagedType.LPStr)] string methodName, ref ushort index);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetConstant(ushort index);
@@ -118,6 +118,6 @@ namespace Skybound.Gecko
 		bool HasAncestor(System.Guid iid);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetIIDForParamNoAlloc(ushort methodIndex, System.IntPtr param, out System.Guid iid);
+		int GetIIDForParamNoAlloc(ushort methodIndex, System.IntPtr param, ref System.Guid iid);
 	}
 }

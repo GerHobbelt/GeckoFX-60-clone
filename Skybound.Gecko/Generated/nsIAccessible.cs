@@ -181,7 +181,7 @@ namespace Skybound.Gecko
         /// (see nsIAccessibleStates::EXT_STATE_* constants)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetState(out uint aState, out uint aExtraState);
+		void GetState(ref uint aState, ref uint aExtraState);
 		
 		/// <summary>
         /// Help text associated with node
@@ -213,7 +213,7 @@ namespace Skybound.Gecko
         /// @param positionInGroup - 1-based, similar to ARIA 'posinset' property
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GroupPosition(out int aGroupLevel, out int aSimilarItemsInGroup, out int aPositionInGroup);
+		void GroupPosition(ref int aGroupLevel, ref int aSimilarItemsInGroup, ref int aPositionInGroup);
 		
 		/// <summary>
         /// Accessible child which contains the coordinate at (x, y) in screen pixels.
@@ -314,7 +314,7 @@ namespace Skybound.Gecko
         /// accessible's width and height.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetBounds(out int x, out int y, out int width, out int height);
+		void GetBounds(ref int x, ref int y, ref int width, ref int height);
 		
 		/// <summary>
         /// Add or remove this accessible to the current selection
@@ -376,6 +376,6 @@ namespace Skybound.Gecko
         /// to the OS/accessibility toolkit we're running on.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetNativeInterface(out System.IntPtr aOutAccessible);
+		void GetNativeInterface(ref System.IntPtr aOutAccessible);
 	}
 }

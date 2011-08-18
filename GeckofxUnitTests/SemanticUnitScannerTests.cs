@@ -36,10 +36,10 @@ namespace GeckofxUnitTests
 		[Test]
 		public void Next_SimpleText_FindFirstWord()
 		{
-			int begin, end;
+			int begin = 0, end = 0;
 			string text = "hello world";
 			m_instance.Start(String.Empty);
-			Assert.IsTrue(m_instance.Next(text, text.Length, 0, true, out begin, out end));
+			Assert.IsTrue(m_instance.Next(text, text.Length, 0, true, ref begin, ref end));
 			Assert.AreEqual(0, begin);
 			Assert.AreEqual(5, end);
 		}

@@ -181,7 +181,7 @@ namespace Skybound.Gecko
         /// Thrown when we have never heard of this favicon URI.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetFaviconData([MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aMimeType, out uint aDataLen);
+		System.IntPtr GetFaviconData([MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aMimeType, ref uint aDataLen);
 		
 		/// <summary>
         /// Same as getFaviconData, but returns data as a string containing a data url.

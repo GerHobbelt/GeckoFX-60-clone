@@ -71,7 +71,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool HasMatchingOverride([MarshalAs(UnmanagedType.LPStruct)] nsACString aHostName, int aPort, [MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, out uint aOverrideBits, [MarshalAs(UnmanagedType.Bool)] out bool aIsTemporary);
+		bool HasMatchingOverride([MarshalAs(UnmanagedType.LPStruct)] nsACString aHostName, int aPort, [MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, ref uint aOverrideBits, [MarshalAs(UnmanagedType.Bool)] ref bool aIsTemporary);
 		
 		/// <summary>
         /// Retrieve the stored override for the given hostname:port.
@@ -88,7 +88,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetValidityOverride([MarshalAs(UnmanagedType.LPStruct)] nsACString aHostName, int aPort, [MarshalAs(UnmanagedType.LPStruct)] nsACString aHashAlg, [MarshalAs(UnmanagedType.LPStruct)] nsACString aFingerprint, out uint aOverrideBits, [MarshalAs(UnmanagedType.Bool)] out bool aIsTemporary);
+		bool GetValidityOverride([MarshalAs(UnmanagedType.LPStruct)] nsACString aHostName, int aPort, [MarshalAs(UnmanagedType.LPStruct)] nsACString aHashAlg, [MarshalAs(UnmanagedType.LPStruct)] nsACString aFingerprint, ref uint aOverrideBits, [MarshalAs(UnmanagedType.Bool)] ref bool aIsTemporary);
 		
 		/// <summary>
         /// Remove a override for the given hostname:port.
@@ -109,7 +109,7 @@ namespace Skybound.Gecko
         /// @param aHostsWithPortsArray The array of host:port entries returned
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAllOverrideHostsWithPorts(out uint aCount, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=0)] out string aHostsWithPortsArray);
+		void GetAllOverrideHostsWithPorts(ref uint aCount, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=0)] ref string aHostsWithPortsArray);
 		
 		/// <summary>
         /// Is the given cert used in rules?

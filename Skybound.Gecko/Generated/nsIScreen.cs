@@ -40,7 +40,7 @@ namespace Skybound.Gecko
 		/// <param name='width'> </param>
 		/// <param name='height'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetRect(out int left, out int top, out int width, out int height);
+		void GetRect(ref int left, ref int top, ref int width, ref int height);
 		
 		/// <summary>Member GetAvailRect </summary>
 		/// <param name='left'> </param>
@@ -48,7 +48,7 @@ namespace Skybound.Gecko
 		/// <param name='width'> </param>
 		/// <param name='height'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAvailRect(out int left, out int top, out int width, out int height);
+		void GetAvailRect(ref int left, ref int top, ref int width, ref int height);
 		
 		/// <summary>Member GetPixelDepthAttribute </summary>
 		/// <returns>A System.Int32</returns>

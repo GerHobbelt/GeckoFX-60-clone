@@ -60,7 +60,7 @@ namespace Skybound.Gecko
         /// orientation (portrait or landscape).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetEffectivePageSize(out double aWidth, out double aHeight);
+		void GetEffectivePageSize(ref double aWidth, ref double aHeight);
 		
 		/// <summary>
         /// Makes a new copy

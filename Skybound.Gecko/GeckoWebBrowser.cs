@@ -1637,12 +1637,8 @@ namespace Skybound.Gecko
 			OnWindowSetBounds(new GeckoWindowSetBoundsEventArgs(new Rectangle(x, y, cx, cy), specified));			
 		}
 	
-		void nsIEmbeddingSiteWindow.GetDimensions(uint flags, out int x, out int y, out int cx, out int cy)
-		{
-			x = 0;
-			y = 0;
-			cx = 0;
-			cy = 0;
+		void nsIEmbeddingSiteWindow.GetDimensions(uint flags, ref int x, ref int y, ref int cx, ref int cy)
+		{			
 			if ((flags & nsIEmbeddingSiteWindowConstants.DIM_FLAGS_POSITION) != 0)
 			{
 				Point pt = PointToScreen(Point.Empty);
@@ -1658,7 +1654,7 @@ namespace Skybound.Gecko
 			
 			if ((this.ChromeFlags & (int)GeckoWindowFlags.OpenAsChrome) != 0)
 			{
-				BaseWindow.GetSize(out cx, out cy);
+				BaseWindow.GetSize(ref cx, ref cy);
 			}
 			
 			if ((flags & nsIEmbeddingSiteWindowConstants.DIM_FLAGS_SIZE_INNER) == 0)
@@ -1720,9 +1716,9 @@ namespace Skybound.Gecko
 			(this as nsIEmbeddingSiteWindow).SetDimensions(flags, x, y, cx, cy);
 		}
 
-		void nsIEmbeddingSiteWindow2.GetDimensions(uint flags, out int x, out int y, out int cx, out int cy)
+		void nsIEmbeddingSiteWindow2.GetDimensions(uint flags, ref int x, ref int y, ref int cx, ref int cy)
 		{
-			(this as nsIEmbeddingSiteWindow).GetDimensions(flags, out x, out y, out cx, out cy);
+			(this as nsIEmbeddingSiteWindow).GetDimensions(flags, ref x, ref y, ref cx, ref cy);
 		}
 
 		void nsIEmbeddingSiteWindow2.SetFocus()

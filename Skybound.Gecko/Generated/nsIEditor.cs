@@ -247,7 +247,7 @@ namespace Skybound.Gecko
         /// currently ready to be undone.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CanUndo([MarshalAs(UnmanagedType.Bool)] out bool isEnabled, [MarshalAs(UnmanagedType.Bool)] out bool canUndo);
+		void CanUndo([MarshalAs(UnmanagedType.Bool)] ref bool isEnabled, [MarshalAs(UnmanagedType.Bool)] ref bool canUndo);
 		
 		/// <summary>
         ///redo reverses the effects of the last Undo operation
@@ -270,7 +270,7 @@ namespace Skybound.Gecko
         ///                              currently ready to be redone.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CanRedo([MarshalAs(UnmanagedType.Bool)] out bool isEnabled, [MarshalAs(UnmanagedType.Bool)] out bool canRedo);
+		void CanRedo([MarshalAs(UnmanagedType.Bool)] ref bool isEnabled, [MarshalAs(UnmanagedType.Bool)] ref bool canRedo);
 		
 		/// <summary>
         ///beginTransaction is a signal from the caller to the editor that
@@ -556,7 +556,7 @@ namespace Skybound.Gecko
         /// becomes aExistingRightNode's previous sibling.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SplitNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode existingRightNode, int offset, [MarshalAs(UnmanagedType.Interface)] out nsIDOMNode newLeftNode);
+		void SplitNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode existingRightNode, int offset, [MarshalAs(UnmanagedType.Interface)] ref nsIDOMNode newLeftNode);
 		
 		/// <summary>
         /// joinNodes() takes 2 nodes and merge their content|children.
@@ -652,7 +652,7 @@ namespace Skybound.Gecko
 		/// <summary>
         ///Run unit tests. Noop in optimized builds </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DebugUnitTests(out int outNumTests, out int outNumTestsFailed);
+		void DebugUnitTests(ref int outNumTests, ref int outNumTestsFailed);
 		
 		/// <summary>
         ///checks if a node is read-only or not </summary>

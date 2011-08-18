@@ -72,6 +72,6 @@ namespace Skybound.Gecko
         /// @returns returns NS_OK if it was converted
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Convert([MarshalAs(UnmanagedType.LPStr)] string aFromDataFlavor, [MarshalAs(UnmanagedType.Interface)] nsISupports aFromData, uint aDataLen, [MarshalAs(UnmanagedType.LPStr)] string aToDataFlavor, [MarshalAs(UnmanagedType.Interface)] out nsISupports aToData, out uint aDataToLen);
+		void Convert([MarshalAs(UnmanagedType.LPStr)] string aFromDataFlavor, [MarshalAs(UnmanagedType.Interface)] nsISupports aFromData, uint aDataLen, [MarshalAs(UnmanagedType.LPStr)] string aToDataFlavor, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aToData, ref uint aDataToLen);
 	}
 }

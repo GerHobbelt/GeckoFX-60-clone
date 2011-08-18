@@ -42,22 +42,22 @@ namespace Skybound.Gecko
         /// Interface to a CMS Message
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ContentIsSigned([MarshalAs(UnmanagedType.Bool)] out bool aSigned);
+		void ContentIsSigned([MarshalAs(UnmanagedType.Bool)] ref bool aSigned);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ContentIsEncrypted([MarshalAs(UnmanagedType.Bool)] out bool aEncrypted);
+		void ContentIsEncrypted([MarshalAs(UnmanagedType.Bool)] ref bool aEncrypted);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSignerCommonName([MarshalAs(UnmanagedType.LPStr)] out string aName);
+		void GetSignerCommonName([MarshalAs(UnmanagedType.LPStr)] ref string aName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSignerEmailAddress([MarshalAs(UnmanagedType.LPStr)] out string aEmail);
+		void GetSignerEmailAddress([MarshalAs(UnmanagedType.LPStr)] ref string aEmail);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSignerCert([MarshalAs(UnmanagedType.Interface)] out nsIX509Cert scert);
+		void GetSignerCert([MarshalAs(UnmanagedType.Interface)] ref nsIX509Cert scert);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetEncryptionCert([MarshalAs(UnmanagedType.Interface)] out nsIX509Cert ecert);
+		void GetEncryptionCert([MarshalAs(UnmanagedType.Interface)] ref nsIX509Cert ecert);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void VerifySignature();

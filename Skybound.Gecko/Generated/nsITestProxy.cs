@@ -49,6 +49,6 @@ namespace Skybound.Gecko
 		/// <param name='p1'> </param>
 		/// <param name='p2'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Test3([MarshalAs(UnmanagedType.Interface)] nsISupports p1, [MarshalAs(UnmanagedType.Interface)] out nsISupports p2);
+		void Test3([MarshalAs(UnmanagedType.Interface)] nsISupports p1, [MarshalAs(UnmanagedType.Interface)] ref nsISupports p2);
 	}
 }

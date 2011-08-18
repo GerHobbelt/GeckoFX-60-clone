@@ -67,7 +67,7 @@ namespace Skybound.Gecko
         /// indicates whether this is a codebaseTrusted certificate.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPreferences([MarshalAs(UnmanagedType.LPStr)] out string prefBranch, [MarshalAs(UnmanagedType.LPStr)] out string id, [MarshalAs(UnmanagedType.LPStr)] out string subjectName, [MarshalAs(UnmanagedType.LPStr)] out string grantedList, [MarshalAs(UnmanagedType.LPStr)] out string deniedList, [MarshalAs(UnmanagedType.Bool)] out bool isTrusted);
+		void GetPreferences([MarshalAs(UnmanagedType.LPStr)] ref string prefBranch, [MarshalAs(UnmanagedType.LPStr)] ref string id, [MarshalAs(UnmanagedType.LPStr)] ref string subjectName, [MarshalAs(UnmanagedType.LPStr)] ref string grantedList, [MarshalAs(UnmanagedType.LPStr)] ref string deniedList, [MarshalAs(UnmanagedType.Bool)] ref bool isTrusted);
 		
 		/// <summary>
         /// Returns whether the other principal is equivalent to this principal.

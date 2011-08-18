@@ -208,7 +208,7 @@ namespace Skybound.Gecko
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCellIndexes([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aCell, out int aRowIndex, out int aColIndex);
+		void GetCellIndexes([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aCell, ref int aRowIndex, ref int aColIndex);
 		
 		/// <summary>
         ///Get the number of rows and columns in a table from the layout's cellmap
@@ -217,7 +217,7 @@ namespace Skybound.Gecko
         /// ROWSPAN effects or if table is not "rectangular" (has short rows)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetTableSize([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aTable, out int aRowCount, out int aColCount);
+		void GetTableSize([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aTable, ref int aRowCount, ref int aColCount);
 		
 		/// <summary>
         ///Get a cell element at cellmap grid coordinates
@@ -265,7 +265,7 @@ namespace Skybound.Gecko
         /// passes NS_SUCCEEDED macro)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCellDataAt([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aTable, int aRowIndex, int aColIndex, [MarshalAs(UnmanagedType.Interface)] out nsIDOMElement aCell, out int aStartRowIndex, out int aStartColIndex, out int aRowSpan, out int aColSpan, out int aActualRowSpan, out int aActualColSpan, [MarshalAs(UnmanagedType.Bool)] out bool aIsSelected);
+		void GetCellDataAt([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aTable, int aRowIndex, int aColIndex, [MarshalAs(UnmanagedType.Interface)] ref nsIDOMElement aCell, ref int aStartRowIndex, ref int aStartColIndex, ref int aRowSpan, ref int aColSpan, ref int aActualRowSpan, ref int aActualColSpan, [MarshalAs(UnmanagedType.Bool)] ref bool aIsSelected);
 		
 		/// <summary>
         ///Get the first row element in a table
@@ -332,7 +332,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement GetSelectedOrParentTableElement([MarshalAs(UnmanagedType.LPStruct)] nsAString aTagName, out int aCount);
+		nsIDOMElement GetSelectedOrParentTableElement([MarshalAs(UnmanagedType.LPStruct)] nsAString aTagName, ref int aCount);
 		
 		/// <summary>
         ///Generally used after GetSelectedOrParentTableElement
@@ -373,7 +373,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement GetFirstSelectedCell([MarshalAs(UnmanagedType.Interface)] out nsIDOMRange aRange);
+		nsIDOMElement GetFirstSelectedCell([MarshalAs(UnmanagedType.Interface)] ref nsIDOMRange aRange);
 		
 		/// <summary>
         ///Get first selected element in the table
@@ -392,7 +392,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement GetFirstSelectedCellInTable(out int aRowIndex, out int aColIndex);
+		nsIDOMElement GetFirstSelectedCellInTable(ref int aRowIndex, ref int aColIndex);
 		
 		/// <summary>
         ///Get next selected cell element from first selection range.
@@ -410,6 +410,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement GetNextSelectedCell([MarshalAs(UnmanagedType.Interface)] out nsIDOMRange aRange);
+		nsIDOMElement GetNextSelectedCell([MarshalAs(UnmanagedType.Interface)] ref nsIDOMRange aRange);
 	}
 }

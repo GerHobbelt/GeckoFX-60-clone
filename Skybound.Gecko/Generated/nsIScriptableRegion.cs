@@ -165,7 +165,7 @@ namespace Skybound.Gecko
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetBoundingBox(out int aX, out int aY, out int aWidth, out int aHeight);
+		void GetBoundingBox(ref int aX, ref int aY, ref int aWidth, ref int aHeight);
 		
 		/// <summary>
         /// offsets the region in x and y

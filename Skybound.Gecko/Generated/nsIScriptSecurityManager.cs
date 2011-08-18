@@ -302,7 +302,7 @@ namespace Skybound.Gecko
 		/// <returns>A nsIPrincipal</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal GetCxSubjectPrincipalAndFrame(System.IntPtr cx, out System.IntPtr fp);
+		nsIPrincipal GetCxSubjectPrincipalAndFrame(System.IntPtr cx, ref System.IntPtr fp);
 		
 		/// <summary>
         /// If no scripted code is running "above" (or called from) fp, then

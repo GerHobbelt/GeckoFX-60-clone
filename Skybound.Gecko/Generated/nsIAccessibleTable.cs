@@ -109,7 +109,7 @@ namespace Skybound.Gecko
         /// @param columnIndex  [out] column index at the given cell index
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetRowAndColumnIndicesAt(int cellIndex, out int rowIndex, out int columnIndex);
+		void GetRowAndColumnIndicesAt(int cellIndex, ref int rowIndex, ref int columnIndex);
 		
 		/// <summary>
         /// Return the number of columns occupied by the accessible cell at
@@ -213,7 +213,7 @@ namespace Skybound.Gecko
         /// @param  cellsArray      [in] array of indexes of selected cells
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetSelectedCellIndices(out uint cellsArraySize);
+		int GetSelectedCellIndices(ref uint cellsArraySize);
 		
 		/// <summary>
         /// Return an array of column indices currently selected.
@@ -222,7 +222,7 @@ namespace Skybound.Gecko
         /// @param  columnsArray      [in] array of indices of selected columns
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetSelectedColumnIndices(out uint columnsArraySize);
+		int GetSelectedColumnIndices(ref uint columnsArraySize);
 		
 		/// <summary>
         /// Return an array of row indices currently selected.
@@ -231,7 +231,7 @@ namespace Skybound.Gecko
         /// @param  rowsArray      [in] array of indices of selected rows
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetSelectedRowIndices(out uint rowsArraySize);
+		int GetSelectedRowIndices(ref uint rowsArraySize);
 		
 		/// <summary>
         /// Select a row and unselects all previously selected rows.

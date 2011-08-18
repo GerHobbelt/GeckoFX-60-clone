@@ -129,7 +129,7 @@ namespace Skybound.Gecko
 		/// <param name='min'> </param>
 		/// <param name='max'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetRangeAt(int i, out int min, out int max);
+		void GetRangeAt(int i, ref int min, ref int max);
 		
 		/// <summary>
         /// Can be used to invalidate the selection.
@@ -303,7 +303,7 @@ namespace Skybound.Gecko
 		new int GetRangeCount();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetRangeAt(int i, out int min, out int max);
+		new void GetRangeAt(int i, ref int min, ref int max);
 		
 		/// <summary>
         /// Can be used to invalidate the selection.

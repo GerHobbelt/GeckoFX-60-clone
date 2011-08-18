@@ -81,7 +81,7 @@ namespace Skybound.Gecko
         /// @see DIM_FLAGS_SIZE_INNER
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDimensions(uint flags, out int x, out int y, out int cx, out int cy);
+		void GetDimensions(uint flags, ref int x, ref int y, ref int cx, ref int cy);
 		
 		/// <summary>
         /// Give the window focus.

@@ -54,7 +54,7 @@ namespace Skybound.Gecko
         /// @param  aDataLen the length of the data
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFlavorData([MarshalAs(UnmanagedType.Interface)] nsITransferable aTransferable, [MarshalAs(UnmanagedType.LPStr)] string aFlavor, [MarshalAs(UnmanagedType.Interface)] out nsISupports aData, out uint aDataLen);
+		void GetFlavorData([MarshalAs(UnmanagedType.Interface)] nsITransferable aTransferable, [MarshalAs(UnmanagedType.LPStr)] string aFlavor, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aData, ref uint aDataLen);
 	}
 	
 	/// <summary>nsITransferable </summary>
@@ -83,7 +83,7 @@ namespace Skybound.Gecko
         /// @param  aDataLen the length of the data
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetTransferData([MarshalAs(UnmanagedType.LPStr)] string aFlavor, [MarshalAs(UnmanagedType.Interface)] out nsISupports aData, out uint aDataLen);
+		void GetTransferData([MarshalAs(UnmanagedType.LPStr)] string aFlavor, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aData, ref uint aDataLen);
 		
 		/// <summary>
         /// Returns the best flavor in the transferable, given those that have
@@ -94,7 +94,7 @@ namespace Skybound.Gecko
         /// @param  aDataLen the length of the data
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAnyTransferData([MarshalAs(UnmanagedType.LPStr)] out string aFlavor, [MarshalAs(UnmanagedType.Interface)] out nsISupports aData, out uint aDataLen);
+		void GetAnyTransferData([MarshalAs(UnmanagedType.LPStr)] ref string aFlavor, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aData, ref uint aDataLen);
 		
 		/// <summary>
         /// Returns true if the data is large.

@@ -85,7 +85,7 @@ namespace Skybound.Gecko
         /// data will be NULL if dataSize = 0
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetBlob(uint aIndex, out uint aDataSize, out System.IntPtr aData);
+		void GetBlob(uint aIndex, ref uint aDataSize, ref System.IntPtr aData);
 		
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -96,13 +96,13 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetSharedUTF8String(uint aIndex, out uint aLength);
+		string GetSharedUTF8String(uint aIndex, ref uint aLength);
 		
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetSharedString(uint aIndex, out uint aLength);
+		string GetSharedString(uint aIndex, ref uint aLength);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetSharedBlob(uint aIndex, out uint aLength);
+		System.IntPtr GetSharedBlob(uint aIndex, ref uint aLength);
 	}
 }

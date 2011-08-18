@@ -99,7 +99,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIHandlerInfo GetProtocolHandlerInfoFromOS([MarshalAs(UnmanagedType.LPStruct)] nsACString aProtocolScheme, [MarshalAs(UnmanagedType.Bool)] out bool aFound);
+		nsIHandlerInfo GetProtocolHandlerInfoFromOS([MarshalAs(UnmanagedType.LPStruct)] nsACString aProtocolScheme, [MarshalAs(UnmanagedType.Bool)] ref bool aFound);
 		
 		/// <summary>
         /// Set some sane defaults for a protocol handler object.

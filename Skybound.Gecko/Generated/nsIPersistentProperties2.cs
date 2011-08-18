@@ -98,7 +98,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStr, SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new string GetKeys(out uint count);
+		new string GetKeys(ref uint count);
 		
 		/// <summary>
         /// load a set of name/value pairs from the input stream

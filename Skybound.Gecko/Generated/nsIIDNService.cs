@@ -84,6 +84,6 @@ namespace Skybound.Gecko
         /// If the result is ASCII or ACE encoded, |isASCII| will be true.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ConvertToDisplayIDN([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String input, [MarshalAs(UnmanagedType.Bool)] out bool isASCII, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String retval);
+		void ConvertToDisplayIDN([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String input, [MarshalAs(UnmanagedType.Bool)] ref bool isASCII, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String retval);
 	}
 }

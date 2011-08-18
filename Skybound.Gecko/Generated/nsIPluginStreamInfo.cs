@@ -56,7 +56,7 @@ namespace Skybound.Gecko
 		string GetContentTypeAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void IsSeekable([MarshalAs(UnmanagedType.Bool)] out bool aSeekable);
+		void IsSeekable([MarshalAs(UnmanagedType.Bool)] ref bool aSeekable);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetLengthAttribute();
@@ -65,7 +65,7 @@ namespace Skybound.Gecko
 		uint GetLastModifiedAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetURL(out System.IntPtr aURL);
+		void GetURL(ref System.IntPtr aURL);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RequestRead(System.IntPtr aRangeList);

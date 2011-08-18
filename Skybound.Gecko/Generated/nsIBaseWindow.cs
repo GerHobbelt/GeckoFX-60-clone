@@ -104,7 +104,7 @@ namespace Skybound.Gecko
         ///	parent window.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPosition(out int x, out int y);
+		void GetPosition(ref int x, ref int y);
 		
 		/// <summary>
         ///Sets the width and height of the control.
@@ -116,7 +116,7 @@ namespace Skybound.Gecko
         ///Gets the width and height of the control.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSize(out int cx, out int cy);
+		void GetSize(ref int cx, ref int cy);
 		
 		/// <summary>
         ///Convenience function combining the SetPosition and SetSize into one call.
@@ -130,7 +130,7 @@ namespace Skybound.Gecko
         ///	Also is more efficient than calling both.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPositionAndSize(out int x, out int y, out int cx, out int cy);
+		void GetPositionAndSize(ref int x, ref int y, ref int cx, ref int cy);
 		
 		/// <summary>
         /// Tell the window to repaint itself

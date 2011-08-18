@@ -173,7 +173,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string EnumerateDocumentNames(out uint aCount);
+		string EnumerateDocumentNames(ref uint aCount);
 		
 		/// <summary>
         /// This exists PrintPreview mode and returns browser window to galley mode

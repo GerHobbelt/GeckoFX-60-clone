@@ -72,7 +72,7 @@ namespace Skybound.Gecko
         /// called.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr ConvertToByteArray([MarshalAs(UnmanagedType.LPStruct)] nsAString aString, out uint aLen);
+		System.IntPtr ConvertToByteArray([MarshalAs(UnmanagedType.LPStruct)] nsAString aString, ref uint aLen);
 		
 		/// <summary>
         /// Converts a unicode string to an input stream. The bytes in the stream are

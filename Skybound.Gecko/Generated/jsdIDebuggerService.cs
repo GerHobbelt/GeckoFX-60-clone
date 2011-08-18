@@ -929,7 +929,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool Eval([MarshalAs(UnmanagedType.LPStruct)] nsAString bytes, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String fileName, uint line, out jsdIValue result);
+		bool Eval([MarshalAs(UnmanagedType.LPStruct)] nsAString bytes, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String fileName, uint line, ref jsdIValue result);
 	}
 	
 	/// <summary>
@@ -1018,7 +1018,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetParameterNames(out uint count);
+		string GetParameterNames(ref uint count);
 		
 		/// <summary>
         /// Fetch the function object as a jsdIValue.
@@ -1300,7 +1300,7 @@ namespace Skybound.Gecko
         /// @param length    Size of array.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetProperties(out jsdIProperty propArray, out uint length);
+		void GetProperties(ref jsdIProperty propArray, ref uint length);
 		
 		/// <summary>
         /// Retrieves a single property from the value. Only valid if the value

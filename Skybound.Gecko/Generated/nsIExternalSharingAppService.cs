@@ -123,6 +123,6 @@ namespace Skybound.Gecko
 		/// <param name='aLen'> </param>
 		/// <returns>A nsISharingHandlerApp</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISharingHandlerApp GetSharingApps([MarshalAs(UnmanagedType.LPStruct)] nsAString aMIMEType, out uint aLen);
+		nsISharingHandlerApp GetSharingApps([MarshalAs(UnmanagedType.LPStruct)] nsAString aMIMEType, ref uint aLen);
 	}
 }

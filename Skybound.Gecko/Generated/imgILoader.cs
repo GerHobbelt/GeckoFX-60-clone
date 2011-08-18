@@ -79,7 +79,7 @@ namespace Skybound.Gecko
         /// make sure to Cancel() the resulting request before the observer goes away.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		imgIRequest LoadImageWithChannel([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel, imgIDecoderObserver aObserver, [MarshalAs(UnmanagedType.Interface)] nsISupports cx, [MarshalAs(UnmanagedType.Interface)] out nsIStreamListener aListener);
+		imgIRequest LoadImageWithChannel([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel, imgIDecoderObserver aObserver, [MarshalAs(UnmanagedType.Interface)] nsISupports cx, [MarshalAs(UnmanagedType.Interface)] ref nsIStreamListener aListener);
 		
 		/// <summary>
         /// Checks if a decoder for the an image with the given mime type is available

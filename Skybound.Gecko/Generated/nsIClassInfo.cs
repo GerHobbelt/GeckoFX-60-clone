@@ -44,7 +44,7 @@ namespace Skybound.Gecko
         /// Should set *count = 0 and *array = null and return NS_OK if getting the
         /// list is not supported.
         /// </summary>
-		System.Guid GetInterfaces(out uint count);
+		System.Guid GetInterfaces(ref uint count);
 		
 		/// <summary>
         /// Get a language mapping specific helper object that may assist in using

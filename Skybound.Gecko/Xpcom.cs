@@ -250,10 +250,8 @@ namespace Skybound.Gecko
 		/// </summary>
 		class ProfileProvider : nsIDirectoryServiceProvider
 		{
-			public nsIFile GetFile(string prop, out bool persistent)
-			{
-				persistent = false;
-				
+			public nsIFile GetFile(string prop, ref bool persistent)
+			{								
 				if (prop == "ProfD")
 				{
 					return (nsIFile)NewNativeLocalFile(ProfileDirectory ?? "");

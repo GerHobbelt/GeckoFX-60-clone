@@ -410,7 +410,7 @@ namespace Skybound.Gecko
         /// This method requires UniversalXPConnect privileges.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint CompareCanvases([MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLCanvasElement aCanvas1, [MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLCanvasElement aCanvas2, out uint aMaxDifference);
+		uint CompareCanvases([MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLCanvasElement aCanvas1, [MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLCanvasElement aCanvas2, ref uint aMaxDifference);
 		
 		/// <summary>
         /// Returns true if a MozAfterPaint event has been queued but not yet
@@ -453,7 +453,7 @@ namespace Skybound.Gecko
         /// @see nsIDOMWindow::scrollX/Y
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetScrollXY([MarshalAs(UnmanagedType.Bool)] bool aFlushLayout, out int aScrollX, out int aScrollY);
+		void GetScrollXY([MarshalAs(UnmanagedType.Bool)] bool aFlushLayout, ref int aScrollX, ref int aScrollY);
 		
 		/// <summary>
         /// Get IME open state. TRUE means 'Open', otherwise, 'Close'.

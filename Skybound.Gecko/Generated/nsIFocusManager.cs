@@ -184,7 +184,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement GetFocusedElementForWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Bool)] bool aDeep, [MarshalAs(UnmanagedType.Interface)] out nsIDOMWindow aFocusedWindow);
+		nsIDOMElement GetFocusedElementForWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Bool)] bool aDeep, [MarshalAs(UnmanagedType.Interface)] ref nsIDOMWindow aFocusedWindow);
 		
 		/// <summary>
         /// Moves the selection caret within aWindow to the current focus.

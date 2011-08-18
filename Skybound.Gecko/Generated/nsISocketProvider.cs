@@ -58,7 +58,7 @@ namespace Skybound.Gecko
         /// object typically implements nsITransportSecurityInfo.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NewSocket(int aFamily, [MarshalAs(UnmanagedType.LPStr)] string aHost, int aPort, [MarshalAs(UnmanagedType.LPStr)] string aProxyHost, int aProxyPort, uint aFlags, out System.IntPtr aFileDesc, [MarshalAs(UnmanagedType.Interface)] out nsISupports aSecurityInfo);
+		void NewSocket(int aFamily, [MarshalAs(UnmanagedType.LPStr)] string aHost, int aPort, [MarshalAs(UnmanagedType.LPStr)] string aProxyHost, int aProxyPort, uint aFlags, ref System.IntPtr aFileDesc, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aSecurityInfo);
 		
 		/// <summary>
         /// addToSocket
@@ -71,6 +71,6 @@ namespace Skybound.Gecko
         /// which is an in-param instead.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddToSocket(int aFamily, [MarshalAs(UnmanagedType.LPStr)] string aHost, int aPort, [MarshalAs(UnmanagedType.LPStr)] string aProxyHost, int aProxyPort, uint aFlags, System.IntPtr aFileDesc, [MarshalAs(UnmanagedType.Interface)] out nsISupports aSecurityInfo);
+		void AddToSocket(int aFamily, [MarshalAs(UnmanagedType.LPStr)] string aHost, int aPort, [MarshalAs(UnmanagedType.LPStr)] string aProxyHost, int aProxyPort, uint aFlags, System.IntPtr aFileDesc, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aSecurityInfo);
 	}
 }

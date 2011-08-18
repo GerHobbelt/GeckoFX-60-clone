@@ -48,6 +48,6 @@ namespace Skybound.Gecko
 		void Update([MarshalAs(UnmanagedType.LPStr)] string aBuf, int aLen);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Finish([MarshalAs(UnmanagedType.Interface)] out nsICMSMessage msg);
+		void Finish([MarshalAs(UnmanagedType.Interface)] ref nsICMSMessage msg);
 	}
 }

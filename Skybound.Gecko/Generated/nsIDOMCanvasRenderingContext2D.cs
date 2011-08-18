@@ -180,7 +180,7 @@ namespace Skybound.Gecko
 		/// <param name='iface'> </param>
 		/// <param name='type'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetStrokeStyle_multi([MarshalAs(UnmanagedType.LPStruct)] nsAString str, [MarshalAs(UnmanagedType.Interface)] out nsISupports iface, out int type);
+		void GetStrokeStyle_multi([MarshalAs(UnmanagedType.LPStruct)] nsAString str, [MarshalAs(UnmanagedType.Interface)] ref nsISupports iface, ref int type);
 		
 		/// <summary>Member SetFillStyle_multi </summary>
 		/// <param name='str'> </param>
@@ -193,7 +193,7 @@ namespace Skybound.Gecko
 		/// <param name='iface'> </param>
 		/// <param name='type'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFillStyle_multi([MarshalAs(UnmanagedType.LPStruct)] nsAString str, [MarshalAs(UnmanagedType.Interface)] out nsISupports iface, out int type);
+		void GetFillStyle_multi([MarshalAs(UnmanagedType.LPStruct)] nsAString str, [MarshalAs(UnmanagedType.Interface)] ref nsISupports iface, ref int type);
 		
 		/// <summary>Member CreateLinearGradient </summary>
 		/// <param name='x0'> </param>

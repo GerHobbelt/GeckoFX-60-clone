@@ -136,10 +136,8 @@ namespace GeckofxUnitTests
 
 		}
 
-		public void GetCorrection(string word, out string words, out uint count)
-		{
-			words = null;
-			count = 0;
+		public void GetCorrection(string word, ref string words, ref uint count)
+		{			
 		}
 	}
 

@@ -74,7 +74,7 @@ namespace Skybound.Gecko
         ///					minPos and maxPos.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetScrollRange(int scrollOrientation, out int minPos, out int maxPos);
+		void GetScrollRange(int scrollOrientation, ref int minPos, ref int maxPos);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetScrollRange(int scrollOrientation, int minPos, int maxPos);
@@ -105,6 +105,6 @@ namespace Skybound.Gecko
         ///	interested in.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetScrollbarVisibility([MarshalAs(UnmanagedType.Bool)] out bool verticalVisible, [MarshalAs(UnmanagedType.Bool)] out bool horizontalVisible);
+		void GetScrollbarVisibility([MarshalAs(UnmanagedType.Bool)] ref bool verticalVisible, [MarshalAs(UnmanagedType.Bool)] ref bool horizontalVisible);
 	}
 }

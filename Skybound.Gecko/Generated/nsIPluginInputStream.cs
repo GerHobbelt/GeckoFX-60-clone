@@ -131,9 +131,9 @@ namespace Skybound.Gecko
         /// Corresponds to NPStream's lastmodified field.)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetLastModified(out uint aResult);
+		void GetLastModified(ref uint aResult);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RequestRead(out System.IntPtr aRangeList);
+		void RequestRead(ref System.IntPtr aRangeList);
 	}
 }

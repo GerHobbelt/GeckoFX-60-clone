@@ -71,13 +71,13 @@ namespace Skybound.Gecko
         /// Get the major/minor version numbers for the request
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetRequestVersion(out uint major, out uint minor);
+		void GetRequestVersion(ref uint major, ref uint minor);
 		
 		/// <summary>
         /// Get the major/minor version numbers for the response
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetResponseVersion(out uint major, out uint minor);
+		void GetResponseVersion(ref uint major, ref uint minor);
 		
 		/// <summary>
         /// Helper method to set a cookie with a consumer-provided

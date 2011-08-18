@@ -87,6 +87,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetCurrentSHEntry([MarshalAs(UnmanagedType.Interface)] out nsISHEntry aEntry);
+		bool GetCurrentSHEntry([MarshalAs(UnmanagedType.Interface)] ref nsISHEntry aEntry);
 	}
 }

@@ -52,7 +52,7 @@ namespace Skybound.Gecko
         /// 0-length array when called from script.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetMessageArray(out nsIConsoleMessage messages, out uint count);
+		void GetMessageArray(ref nsIConsoleMessage messages, ref uint count);
 		
 		/// <summary>
         /// To guard against stack overflows from listeners that could log

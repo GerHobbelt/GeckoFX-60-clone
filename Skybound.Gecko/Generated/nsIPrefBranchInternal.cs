@@ -315,7 +315,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStr, SizeParamIndex=1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new string GetChildList([MarshalAs(UnmanagedType.LPStr)] string aStartingAt, out uint aCount);
+		new string GetChildList([MarshalAs(UnmanagedType.LPStr)] string aStartingAt, ref uint aCount);
 		
 		/// <summary>
         /// Called to reset all of the preferences referenced by this branch to their

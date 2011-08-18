@@ -94,7 +94,7 @@ namespace Skybound.Gecko
         /// @aJSContext       the corresponding JavaScript context
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetHiddenWindowAndJSContext([MarshalAs(UnmanagedType.Interface)] out nsIDOMWindowInternal aHiddenDOMWindow, out System.IntPtr aJSContext);
+		void GetHiddenWindowAndJSContext([MarshalAs(UnmanagedType.Interface)] ref nsIDOMWindowInternal aHiddenDOMWindow, ref System.IntPtr aJSContext);
 		
 		/// <summary>
         /// Return true if the application hidden window was provided by the

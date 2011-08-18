@@ -38,7 +38,7 @@ namespace Skybound.Gecko
         /// In Win32 accessible events we generate, the target's childID matches to this
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ushort get_NodeInfo([MarshalAs(UnmanagedType.BStr)] out string nodeName, out short nameSpaceID, [MarshalAs(UnmanagedType.BStr)] out string nodeValue, out uint numChildren, out uint uniqueID);
+		ushort get_NodeInfo([MarshalAs(UnmanagedType.BStr)] ref string nodeName, ref short nameSpaceID, [MarshalAs(UnmanagedType.BStr)] ref string nodeValue, ref uint numChildren, ref uint uniqueID);
 		
 		/// <summary>Member get_Attributes </summary>
 		/// <param name='maxAttribs'> </param>
@@ -47,7 +47,7 @@ namespace Skybound.Gecko
 		/// <param name='attribValues'> </param>
 		/// <returns>A System.UInt16</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ushort get_Attributes(ushort maxAttribs, [MarshalAs(UnmanagedType.BStr, SizeParamIndex=0)] out string attribNames, out short nameSpaceID, [MarshalAs(UnmanagedType.BStr, SizeParamIndex=0)] out string attribValues);
+		ushort get_Attributes(ushort maxAttribs, [MarshalAs(UnmanagedType.BStr, SizeParamIndex=0)] ref string attribNames, ref short nameSpaceID, [MarshalAs(UnmanagedType.BStr, SizeParamIndex=0)] ref string attribValues);
 		
 		/// <summary>Member get_AttributesForNames </summary>
 		/// <param name='numAttribs'> </param>
@@ -62,7 +62,7 @@ namespace Skybound.Gecko
         /// If TRUE, returns properites for media as set in nsIDOMDocument::set_alternateViewMediaTypes
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ushort get_ComputedStyle(ushort maxStyleProperties, [MarshalAs(UnmanagedType.Bool)] bool useAlternateView, [MarshalAs(UnmanagedType.BStr, SizeParamIndex=0)] out string styleProperties, [MarshalAs(UnmanagedType.BStr, SizeParamIndex=0)] out string styleValues);
+		ushort get_ComputedStyle(ushort maxStyleProperties, [MarshalAs(UnmanagedType.Bool)] bool useAlternateView, [MarshalAs(UnmanagedType.BStr, SizeParamIndex=0)] ref string styleProperties, [MarshalAs(UnmanagedType.BStr, SizeParamIndex=0)] ref string styleValues);
 		
 		/// <summary>
         /// If TRUE, returns properites for media as set in nsIDOMDocument::set_alternateViewMediaTypes

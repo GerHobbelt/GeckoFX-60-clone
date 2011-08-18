@@ -94,7 +94,7 @@ namespace Skybound.Gecko
         /// data will be NULL if dataSize = 0
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetBlob(uint aIndex, out uint aDataSize, out System.IntPtr aData);
+		new void GetBlob(uint aIndex, ref uint aDataSize, ref System.IntPtr aData);
 		
 		/// <summary>Member GetIsNull </summary>
 		/// <param name='aIndex'> </param>
@@ -108,7 +108,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new string GetSharedUTF8String(uint aIndex, out uint aLength);
+		new string GetSharedUTF8String(uint aIndex, ref uint aLength);
 		
 		/// <summary>Member GetSharedString </summary>
 		/// <param name='aIndex'> </param>
@@ -116,14 +116,14 @@ namespace Skybound.Gecko
 		/// <returns>A System.String</returns>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new string GetSharedString(uint aIndex, out uint aLength);
+		new string GetSharedString(uint aIndex, ref uint aLength);
 		
 		/// <summary>Member GetSharedBlob </summary>
 		/// <param name='aIndex'> </param>
 		/// <param name='aLength'> </param>
 		/// <returns>A System.IntPtr</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new System.IntPtr GetSharedBlob(uint aIndex, out uint aLength);
+		new System.IntPtr GetSharedBlob(uint aIndex, ref uint aLength);
 		
 		/// <summary>
         /// Obtains the result of a given column specified by aIndex.

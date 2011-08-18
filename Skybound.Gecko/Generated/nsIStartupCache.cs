@@ -40,7 +40,7 @@ namespace Skybound.Gecko
         /// GetBuffer, PutBuffer, and InvalidateCache act as described
         /// in that file. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetBuffer([MarshalAs(UnmanagedType.LPStr)] string aID, out System.IntPtr aBuffer);
+		uint GetBuffer([MarshalAs(UnmanagedType.LPStr)] string aID, ref System.IntPtr aBuffer);
 		
 		/// <summary>Member PutBuffer </summary>
 		/// <param name='aID'> </param>

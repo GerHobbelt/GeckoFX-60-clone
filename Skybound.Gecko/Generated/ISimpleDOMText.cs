@@ -53,7 +53,7 @@ namespace Skybound.Gecko
 		/// <param name='height'> </param>
 		/// <returns>A System.UInt32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint Get_clippedSubstringBounds(uint startIndex, uint endIndex, out int x, out int y, out int width, out int height);
+		uint Get_clippedSubstringBounds(uint startIndex, uint endIndex, ref int x, ref int y, ref int width, ref int height);
 		
 		/// <summary>Member Get_unclippedSubstringBounds </summary>
 		/// <param name='startIndex'> </param>
@@ -64,7 +64,7 @@ namespace Skybound.Gecko
 		/// <param name='height'> </param>
 		/// <returns>A System.UInt32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint Get_unclippedSubstringBounds(uint startIndex, uint endIndex, out int x, out int y, out int width, out int height);
+		uint Get_unclippedSubstringBounds(uint startIndex, uint endIndex, ref int x, ref int y, ref int width, ref int height);
 		
 		/// <summary>Member ScrollToSubstring </summary>
 		/// <param name='startIndex'> </param>

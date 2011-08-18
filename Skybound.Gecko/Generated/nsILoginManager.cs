@@ -107,7 +107,7 @@ namespace Skybound.Gecko
         /// (|logins| is an array).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsILoginInfo GetAllLogins(out uint count);
+		nsILoginInfo GetAllLogins(ref uint count);
 		
 		/// <summary>
         /// Obtain a list of all hosts for which password saving is disabled.
@@ -124,7 +124,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetAllDisabledHosts(out uint count);
+		string GetAllDisabledHosts(ref uint count);
 		
 		/// <summary>
         /// Check to see if saving logins has been disabled for a host.
@@ -183,7 +183,7 @@ namespace Skybound.Gecko
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsILoginInfo FindLogins(out uint count, [MarshalAs(UnmanagedType.LPStruct)] nsAString aHostname, [MarshalAs(UnmanagedType.LPStruct)] nsAString aActionURL, [MarshalAs(UnmanagedType.LPStruct)] nsAString aHttpRealm);
+		nsILoginInfo FindLogins(ref uint count, [MarshalAs(UnmanagedType.LPStruct)] nsAString aHostname, [MarshalAs(UnmanagedType.LPStruct)] nsAString aActionURL, [MarshalAs(UnmanagedType.LPStruct)] nsAString aHttpRealm);
 		
 		/// <summary>
         /// Search for logins matching the specified criteria, as with
@@ -251,7 +251,7 @@ namespace Skybound.Gecko
         /// (|logins| is an array).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsILoginInfo SearchLogins(out uint count, [MarshalAs(UnmanagedType.Interface)] nsIPropertyBag matchData);
+		nsILoginInfo SearchLogins(ref uint count, [MarshalAs(UnmanagedType.Interface)] nsIPropertyBag matchData);
 		
 		/// <summary>
         /// True when a master password prompt is being displayed.

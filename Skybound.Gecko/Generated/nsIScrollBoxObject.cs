@@ -80,13 +80,13 @@ namespace Skybound.Gecko
         /// @see scrollTo for the definition of x and y.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPosition(out int x, out int y);
+		void GetPosition(ref int x, ref int y);
 		
 		/// <summary>Member GetScrolledSize </summary>
 		/// <param name='width'> </param>
 		/// <param name='height'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetScrolledSize(out int width, out int height);
+		void GetScrolledSize(ref int width, ref int height);
 		
 		/// <summary>Member EnsureElementIsVisible </summary>
 		/// <param name='child'> </param>

@@ -103,6 +103,6 @@ namespace Skybound.Gecko
         ///Gets the current persistence states of the window.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPersistence([MarshalAs(UnmanagedType.Bool)] out bool aPersistPosition, [MarshalAs(UnmanagedType.Bool)] out bool aPersistSize, [MarshalAs(UnmanagedType.Bool)] out bool aPersistSizeMode);
+		void GetPersistence([MarshalAs(UnmanagedType.Bool)] ref bool aPersistPosition, [MarshalAs(UnmanagedType.Bool)] ref bool aPersistSize, [MarshalAs(UnmanagedType.Bool)] ref bool aPersistSizeMode);
 	}
 }

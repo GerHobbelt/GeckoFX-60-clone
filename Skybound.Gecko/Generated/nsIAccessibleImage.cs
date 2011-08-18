@@ -43,7 +43,7 @@ namespace Skybound.Gecko
         /// @param y          the y coordinate
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetImagePosition(uint coordType, out int x, out int y);
+		void GetImagePosition(uint coordType, ref int x, ref int y);
 		
 		/// <summary>
         /// Returns the size of the image.
@@ -52,6 +52,6 @@ namespace Skybound.Gecko
         /// @param height     the width
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetImageSize(out int width, out int height);
+		void GetImageSize(ref int width, ref int height);
 	}
 }

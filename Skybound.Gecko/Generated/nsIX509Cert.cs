@@ -57,7 +57,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetEmailAddresses(out uint length);
+		string GetEmailAddresses(ref uint length);
 		
 		/// <summary>
         /// Check whether a given address is contained in the certificate.
@@ -197,7 +197,7 @@ namespace Skybound.Gecko
         /// @param usages The array of human readable usages.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetUsagesArray([MarshalAs(UnmanagedType.Bool)] bool localOnly, out uint verified, out uint count, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=2)] out string usages);
+		void GetUsagesArray([MarshalAs(UnmanagedType.Bool)] bool localOnly, ref uint verified, ref uint count, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=2)] ref string usages);
 		
 		/// <summary>
         /// Obtain a single comma separated human readable string describing
@@ -209,7 +209,7 @@ namespace Skybound.Gecko
         /// @param purposes The string listing the usages.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetUsagesString([MarshalAs(UnmanagedType.Bool)] bool localOnly, out uint verified, [MarshalAs(UnmanagedType.LPStruct)] nsAString usages);
+		void GetUsagesString([MarshalAs(UnmanagedType.Bool)] bool localOnly, ref uint verified, [MarshalAs(UnmanagedType.LPStruct)] nsAString usages);
 		
 		/// <summary>
         /// Verify the certificate for a particular usage.
@@ -236,7 +236,7 @@ namespace Skybound.Gecko
         /// @param data The bytes representing the DER encoded certificate.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetRawDER(out uint length);
+		System.IntPtr GetRawDER(ref uint length);
 		
 		/// <summary>
         /// Test whether two certificate instances represent the

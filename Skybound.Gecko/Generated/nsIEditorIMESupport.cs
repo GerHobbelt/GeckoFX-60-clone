@@ -44,7 +44,7 @@ namespace Skybound.Gecko
         /// Get preferred IME status of current widget.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPreferredIMEState(out uint aState);
+		void GetPreferredIMEState(ref uint aState);
 		
 		/// <summary>
         /// whether this editor has active IME transaction

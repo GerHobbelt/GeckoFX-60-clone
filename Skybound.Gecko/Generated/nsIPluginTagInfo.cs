@@ -60,7 +60,7 @@ namespace Skybound.Gecko
         /// else to the found value.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAttribute([MarshalAs(UnmanagedType.LPStr)] string aName, out System.IntPtr aResult);
+		void GetAttribute([MarshalAs(UnmanagedType.LPStr)] string aName, ref System.IntPtr aResult);
 		
 		/// <summary>
         /// Get the type of the HTML tag that was used ot instantiate this
@@ -73,7 +73,7 @@ namespace Skybound.Gecko
         /// Get the complete text of the HTML tag that was used to instantiate this plugin.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetTagText(out System.IntPtr aTagText);
+		void GetTagText(ref System.IntPtr aTagText);
 		
 		/// <summary>
         /// Get a ptr to the paired list of parameter names and values,
@@ -93,26 +93,26 @@ namespace Skybound.Gecko
         /// @result        - NS_OK if this operation was successful
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetParameter([MarshalAs(UnmanagedType.LPStr)] string aName, out System.IntPtr aResult);
+		void GetParameter([MarshalAs(UnmanagedType.LPStr)] string aName, ref System.IntPtr aResult);
 		
 		/// <summary>
         /// Get the document base
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDocumentBase(out System.IntPtr aDocumentBase);
+		void GetDocumentBase(ref System.IntPtr aDocumentBase);
 		
 		/// <summary>
         /// Return an encoding whose name is specified in:
         /// http://java.sun.com/products/jdk/1.1/docs/guide/intl/intl.doc.html#25303
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDocumentEncoding(out System.IntPtr aDocumentEncoding);
+		void GetDocumentEncoding(ref System.IntPtr aDocumentEncoding);
 		
 		/// <summary>
         /// Get object alignment
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAlignment(out System.IntPtr aElignment);
+		void GetAlignment(ref System.IntPtr aElignment);
 		
 		/// <summary>
         /// Get object width

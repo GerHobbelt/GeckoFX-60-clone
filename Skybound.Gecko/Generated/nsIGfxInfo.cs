@@ -83,7 +83,7 @@ namespace Skybound.Gecko
 		
 		[return: MarshalAs(UnmanagedType.LPStr, SizeParamIndex=0)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetFailures(out uint failureCount);
+		string GetFailures(ref uint failureCount);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void LogFailure([MarshalAs(UnmanagedType.LPStruct)] nsACString failure);

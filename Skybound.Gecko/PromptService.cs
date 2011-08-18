@@ -215,10 +215,8 @@ namespace Skybound.Gecko
 			return false;
 		}
 		
-		public bool Select(nsIDOMWindow aParent, string aDialogTitle, string aText, uint aCount, string aSelectList, out int aOutSelection)
-		{
-			//throw new NotImplementedException();
-			aOutSelection = 0;
+		public bool Select(nsIDOMWindow aParent, string aDialogTitle, string aText, uint aCount, string aSelectList, ref int aOutSelection)
+		{			
 			return false;
 		}
 		

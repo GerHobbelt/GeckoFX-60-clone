@@ -83,7 +83,7 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Skybound.Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTagsForURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, out uint length);
+		string GetTagsForURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, ref uint length);
 		
 		/// <summary>
         /// Retrieves all tags used to tag URIs in the data-base (sorted by name).

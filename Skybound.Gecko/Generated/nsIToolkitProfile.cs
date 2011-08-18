@@ -124,6 +124,6 @@ namespace Skybound.Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIProfileLock Lock([MarshalAs(UnmanagedType.Interface)] out nsIProfileUnlocker aUnlocker);
+		nsIProfileLock Lock([MarshalAs(UnmanagedType.Interface)] ref nsIProfileUnlocker aUnlocker);
 	}
 }

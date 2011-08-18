@@ -56,7 +56,7 @@ namespace Skybound.Gecko
 		/// <summary>
         /// @note 'Normal' DOM interfaces are always automatically scriptable.
         /// </summary>
-		System.Guid GetScriptingInterfaces(out uint count);
+		System.Guid GetScriptingInterfaces(ref uint count);
 		
 		/// <summary>
         /// Event notifications:

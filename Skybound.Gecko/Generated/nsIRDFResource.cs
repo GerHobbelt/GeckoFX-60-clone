@@ -65,7 +65,7 @@ namespace Skybound.Gecko
         /// in UTF-8.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetValueConst([MarshalAs(UnmanagedType.LPStr)] out string aConstValue);
+		void GetValueConst([MarshalAs(UnmanagedType.LPStr)] ref string aConstValue);
 		
 		/// <summary>
         /// This method is called by the nsIRDFService after constructing

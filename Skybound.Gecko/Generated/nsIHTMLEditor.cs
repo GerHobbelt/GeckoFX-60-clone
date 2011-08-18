@@ -112,7 +112,7 @@ namespace Skybound.Gecko
         /// selection have the property
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetInlineProperty([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.LPStruct)] nsAString aAttribute, [MarshalAs(UnmanagedType.LPStruct)] nsAString aValue, [MarshalAs(UnmanagedType.Bool)] out bool aFirst, [MarshalAs(UnmanagedType.Bool)] out bool aAny, [MarshalAs(UnmanagedType.Bool)] out bool aAll);
+		void GetInlineProperty([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.LPStruct)] nsAString aAttribute, [MarshalAs(UnmanagedType.LPStruct)] nsAString aValue, [MarshalAs(UnmanagedType.Bool)] ref bool aFirst, [MarshalAs(UnmanagedType.Bool)] ref bool aAny, [MarshalAs(UnmanagedType.Bool)] ref bool aAll);
 		
 		/// <summary>Member GetInlinePropertyWithAttrValue </summary>
 		/// <param name='aProperty'> </param>
@@ -123,7 +123,7 @@ namespace Skybound.Gecko
 		/// <param name='aAll'> </param>
 		/// <param name='retval'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetInlinePropertyWithAttrValue([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.LPStruct)] nsAString aAttribute, [MarshalAs(UnmanagedType.LPStruct)] nsAString aValue, [MarshalAs(UnmanagedType.Bool)] out bool aFirst, [MarshalAs(UnmanagedType.Bool)] out bool aAny, [MarshalAs(UnmanagedType.Bool)] out bool aAll, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetInlinePropertyWithAttrValue([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.LPStruct)] nsAString aAttribute, [MarshalAs(UnmanagedType.LPStruct)] nsAString aValue, [MarshalAs(UnmanagedType.Bool)] ref bool aFirst, [MarshalAs(UnmanagedType.Bool)] ref bool aAny, [MarshalAs(UnmanagedType.Bool)] ref bool aAll, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>
         /// removeAllInlineProperties() deletes all the inline properties from all
@@ -309,7 +309,7 @@ namespace Skybound.Gecko
         /// @return           Name of block tag. "" is returned for none.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetParagraphState([MarshalAs(UnmanagedType.Bool)] out bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetParagraphState([MarshalAs(UnmanagedType.Bool)] ref bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>
         /// getFontFaceState returns what font face is in the selection.
@@ -318,7 +318,7 @@ namespace Skybound.Gecko
         /// tt tag.  "" is returned for none.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFontFaceState([MarshalAs(UnmanagedType.Bool)] out bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetFontFaceState([MarshalAs(UnmanagedType.Bool)] ref bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>
         /// getFontColorState returns what font face is in the selection.
@@ -326,7 +326,7 @@ namespace Skybound.Gecko
         /// @return           Color string. "" is returned for none.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFontColorState([MarshalAs(UnmanagedType.Bool)] out bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetFontColorState([MarshalAs(UnmanagedType.Bool)] ref bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>
         /// getFontColorState returns what font face is in the selection.
@@ -334,7 +334,7 @@ namespace Skybound.Gecko
         /// @return           Color string. "" is returned for none.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetBackgroundColorState([MarshalAs(UnmanagedType.Bool)] out bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetBackgroundColorState([MarshalAs(UnmanagedType.Bool)] ref bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>
         /// getHighlightColorState returns what the highlight color of the selection.
@@ -342,7 +342,7 @@ namespace Skybound.Gecko
         /// @return           Color string. "" is returned for none.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetHighlightColorState([MarshalAs(UnmanagedType.Bool)] out bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
+		void GetHighlightColorState([MarshalAs(UnmanagedType.Bool)] ref bool aMixed, [MarshalAs(UnmanagedType.LPStruct)] nsAString retval);
 		
 		/// <summary>
         /// getListState returns what list type is in the selection.
@@ -354,7 +354,7 @@ namespace Skybound.Gecko
         /// @param aDL       true if a "dl" list is selected.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetListState([MarshalAs(UnmanagedType.Bool)] out bool aMixed, [MarshalAs(UnmanagedType.Bool)] out bool aOL, [MarshalAs(UnmanagedType.Bool)] out bool aUL, [MarshalAs(UnmanagedType.Bool)] out bool aDL);
+		void GetListState([MarshalAs(UnmanagedType.Bool)] ref bool aMixed, [MarshalAs(UnmanagedType.Bool)] ref bool aOL, [MarshalAs(UnmanagedType.Bool)] ref bool aUL, [MarshalAs(UnmanagedType.Bool)] ref bool aDL);
 		
 		/// <summary>
         /// getListItemState returns what list item type is in the selection.
@@ -365,7 +365,7 @@ namespace Skybound.Gecko
         /// @param aDD       true if "dd" list items are selected.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetListItemState([MarshalAs(UnmanagedType.Bool)] out bool aMixed, [MarshalAs(UnmanagedType.Bool)] out bool aLI, [MarshalAs(UnmanagedType.Bool)] out bool aDT, [MarshalAs(UnmanagedType.Bool)] out bool aDD);
+		void GetListItemState([MarshalAs(UnmanagedType.Bool)] ref bool aMixed, [MarshalAs(UnmanagedType.Bool)] ref bool aLI, [MarshalAs(UnmanagedType.Bool)] ref bool aDT, [MarshalAs(UnmanagedType.Bool)] ref bool aDD);
 		
 		/// <summary>
         /// getAlignment     returns what alignment is in the selection.
@@ -375,14 +375,14 @@ namespace Skybound.Gecko
         /// (left/center/right)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAlignment([MarshalAs(UnmanagedType.Bool)] out bool aMixed, out short aAlign);
+		void GetAlignment([MarshalAs(UnmanagedType.Bool)] ref bool aMixed, ref short aAlign);
 		
 		/// <summary>
         /// Document me!
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetIndentState([MarshalAs(UnmanagedType.Bool)] out bool aCanIndent, [MarshalAs(UnmanagedType.Bool)] out bool aCanOutdent);
+		void GetIndentState([MarshalAs(UnmanagedType.Bool)] ref bool aCanIndent, [MarshalAs(UnmanagedType.Bool)] ref bool aCanOutdent);
 		
 		/// <summary>
         /// Document me!

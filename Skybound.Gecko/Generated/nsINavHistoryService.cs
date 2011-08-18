@@ -1035,7 +1035,7 @@ namespace Skybound.Gecko
         /// Only valid for RESULT_TYPE_QUERY nodes.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsINavHistoryQuery GetQueries(out uint queryCount);
+		nsINavHistoryQuery GetQueries(ref uint queryCount);
 		
 		/// <summary>
         /// Get the options which group this node's children.
@@ -1732,7 +1732,7 @@ namespace Skybound.Gecko
         /// It is used in places views only and can be ignored.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnVisit([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, int aVisitID, uint aTime, int aSessionID, int aReferringID, uint aTransitionType, out uint aAdded);
+		void OnVisit([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, int aVisitID, uint aTime, int aSessionID, int aReferringID, uint aTransitionType, ref uint aAdded);
 		
 		/// <summary>
         /// Called whenever either the "real" title or the custom title of the page
@@ -1957,7 +1957,7 @@ namespace Skybound.Gecko
         /// Get the transitions set for this query.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetTransitions(out uint count);
+		uint GetTransitions(ref uint count);
 		
 		/// <summary>
         /// Get the count of the set query transitions.
@@ -2154,7 +2154,7 @@ namespace Skybound.Gecko
         /// Limit results to items that are in all of the given folders.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetFolders(out uint count);
+		int GetFolders(ref uint count);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetFolderCountAttribute();
@@ -2581,7 +2581,7 @@ namespace Skybound.Gecko
         /// (if nothing is defined, it will just have the default values).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void QueryStringToQueries([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aQueryString, out nsINavHistoryQuery aQueries, out uint aResultCount, [MarshalAs(UnmanagedType.Interface)] out nsINavHistoryQueryOptions options);
+		void QueryStringToQueries([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String aQueryString, ref nsINavHistoryQuery aQueries, ref uint aResultCount, [MarshalAs(UnmanagedType.Interface)] ref nsINavHistoryQueryOptions options);
 		
 		/// <summary>
         /// Converts a query into an equivalent string that can be persisted. Inverse

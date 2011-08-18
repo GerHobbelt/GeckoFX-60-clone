@@ -84,7 +84,7 @@ namespace Skybound.Gecko
         /// If aEventTarget doesn't have any listeners, this returns null.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIEventListenerInfo GetListenerInfoFor([MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget aEventTarget, out uint aCount);
+		nsIEventListenerInfo GetListenerInfoFor([MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget aEventTarget, ref uint aCount);
 		
 		/// <summary>
         /// Returns an array of event targets.
@@ -95,7 +95,7 @@ namespace Skybound.Gecko
         /// event target chain than what this methods returns.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMEventTarget GetEventTargetChainFor([MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget aEventTarget, out uint aCount);
+		nsIDOMEventTarget GetEventTargetChainFor([MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget aEventTarget, ref uint aCount);
 		
 		/// <summary>
         /// Returns system event group.

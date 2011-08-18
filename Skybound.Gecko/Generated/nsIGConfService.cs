@@ -95,7 +95,7 @@ namespace Skybound.Gecko
         /// /desktop/gnome/url-handlers hierarchy.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAppForProtocol([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String scheme, [MarshalAs(UnmanagedType.Bool)] out bool enabled, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String retval);
+		void GetAppForProtocol([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String scheme, [MarshalAs(UnmanagedType.Bool)] ref bool enabled, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8String retval);
 		
 		/// <summary>
         /// Check whether the handler for a scheme requires a terminal to run.

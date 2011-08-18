@@ -717,7 +717,7 @@ namespace Skybound.Gecko
 		/// <param name='contentType'> </param>
 		/// <param name='charset'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSendInfo([MarshalAs(UnmanagedType.Interface)] out nsIInputStream body, [MarshalAs(UnmanagedType.LPStruct)] nsACString contentType, [MarshalAs(UnmanagedType.LPStruct)] nsACString charset);
+		void GetSendInfo([MarshalAs(UnmanagedType.Interface)] ref nsIInputStream body, [MarshalAs(UnmanagedType.LPStruct)] nsACString contentType, [MarshalAs(UnmanagedType.LPStruct)] nsACString charset);
 	}
 	
 	/// <summary>

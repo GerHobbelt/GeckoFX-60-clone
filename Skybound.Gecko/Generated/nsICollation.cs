@@ -73,7 +73,7 @@ namespace Skybound.Gecko
         /// returns newly allocated key, and its band its byte length
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AllocateRawSortKey(int strength, [MarshalAs(UnmanagedType.LPStruct)] nsAString stringIn, out System.IntPtr key, out uint outLen);
+		void AllocateRawSortKey(int strength, [MarshalAs(UnmanagedType.LPStruct)] nsAString stringIn, ref System.IntPtr key, ref uint outLen);
 		
 		/// <summary>
         /// length is a byte length, result is same as strcmp
