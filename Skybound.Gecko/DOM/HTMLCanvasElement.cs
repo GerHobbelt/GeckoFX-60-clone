@@ -37,7 +37,9 @@ namespace Gecko.DOM
 		{
 			using (nsAString retval = new nsAString(), param = new nsAString(type))
 			{
-				DOMHTMLElement.ToDataURL(param, null, 2, retval);
+				var instance = Xpcom.CreateInstance<nsIVariant>("@mozilla.org/variant;1");
+				DOMHTMLElement.ToDataURL(param, instance, 2, retval);
+				Marshal.ReleaseComObject(instance);
 				return retval.ToString();
 			}
 		}
