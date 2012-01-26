@@ -131,7 +131,19 @@ namespace Gecko
 		public string AsciiHost { get { return nsString.Get(Instance.GetAsciiHostAttribute); } }
 		public string OriginCharset { get { return nsString.Get(Instance.GetOriginCharsetAttribute); } }
 
+		public Uri ToUri()
+		{
+			if (!IsNull)
+			{
+				Uri result;
+				return Uri.TryCreate(Spec, UriKind.Absolute, out result) ? result : null;
+			}
 
+			return null;
+		}
+
+		#region Static creation functions
+		
 		public static nsURI Create(string url)
 		{
 			return new nsURI(CreateInternal(url));
@@ -149,6 +161,16 @@ namespace Gecko
 			Marshal.ReleaseComObject(service);
 			return returnValue;
 		}
+		#endregion
+
+		internal static Uri ToUri(nsIURI value )
+		{
+			if (value == null) return null;
+			var spec=nsString.Get( value.GetSpecAttribute );
+			Uri result;
+			return Uri.TryCreate(spec, UriKind.Absolute, out result) ? result : null;
+		}
+
 	}
 	
 }

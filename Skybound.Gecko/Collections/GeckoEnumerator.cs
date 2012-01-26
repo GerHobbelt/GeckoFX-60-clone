@@ -11,7 +11,7 @@ namespace Gecko.Collections
 	/// <typeparam name="TGeckoObject"></typeparam>
 	internal sealed class GeckoEnumerator<TWrapper, TGeckoObject>
 		: IEnumerator<TWrapper>
-	{
+	{ 
 		private nsISimpleEnumerator _enumerator;
 		private TGeckoObject _current;
 		private Func<TGeckoObject, TWrapper> _translator;
@@ -34,7 +34,8 @@ namespace Gecko.Collections
 			bool flag = _enumerator.HasMoreElements();
 			if (flag)
 			{
-				_current = (TGeckoObject)_enumerator.GetNext();
+				var obj = _enumerator.GetNext();
+				_current = ( TGeckoObject ) obj;
 			}
 			return flag;
 		}

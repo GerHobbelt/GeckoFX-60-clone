@@ -233,7 +233,7 @@ namespace Gecko
 			}
 			set
 			{
-				if (!string.IsNullOrEmpty(value))
+				if (!String.IsNullOrEmpty(value))
 				{
 					if (!Directory.Exists(value))
 					{
@@ -390,5 +390,26 @@ namespace Gecko
 		{
 			ComponentRegistrar.RegisterFactory(ref classID, className, contractID, factory);
 		}
+
+
+		#region Extension Methods for nsISupports
+
+		internal static T QueryInterface<T>(this nsISupports proxy)
+		{
+			var guid = typeof(T).GUID;
+			IntPtr ptr = proxy.QueryInterface(ref guid);
+			var obj = (T)Marshal.GetObjectForIUnknown(ptr);
+			return obj;
+		}
+
+		internal static object QueryInterface(this nsISupports proxy, Type type)
+		{
+			var guid = type.GUID;
+			IntPtr ptr = proxy.QueryInterface(ref guid);
+			var obj = Marshal.GetObjectForIUnknown(ptr);
+			return obj;
+		}
+
+		#endregion
 	}
 }

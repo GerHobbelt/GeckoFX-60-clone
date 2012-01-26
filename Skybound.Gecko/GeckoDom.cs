@@ -95,9 +95,11 @@ namespace Gecko
 	/// <summary>
 	/// Represents a DOM element.
 	/// </summary>
-	public class GeckoElement : GeckoNode
+	public class GeckoElement
+		: GeckoNode
 	{
-		internal GeckoElement(nsIDOMHTMLElement element) : base(element)
+		internal GeckoElement(nsIDOMHTMLElement element)
+			: base(element)
 		{
 			this.DomElement = element;			
 			this.DomNSElement = (nsIDOMNSElement)element;
@@ -432,7 +434,13 @@ namespace Gecko
 		/// </summary>
 		public GeckoElement DocumentElement
 		{
-			get { return GeckoElement.Create((nsIDOMHTMLElement)DomDocument.GetDocumentElementAttribute()); }
+			get
+			{
+				nsIDOMElement domElement = DomDocument.GetDocumentElementAttribute();
+				
+				return GeckoElement.Create(
+				(nsIDOMHTMLElement)domElement);
+			}
 		}
 		
 		/// <summary>

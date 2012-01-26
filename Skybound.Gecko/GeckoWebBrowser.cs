@@ -1188,16 +1188,19 @@ namespace Gecko
 				if (WebNav == null)
 					return null;
 
-				nsIURI locationComObject = WebNav.GetCurrentURIAttribute();				
-				nsURI location = new nsURI(locationComObject);
-				
-				if (!location.IsNull)
-				{
-					Uri result;
-					return Uri.TryCreate(location.Spec, UriKind.Absolute, out result) ? result : null;
-				}
-				
-				return new Uri("about:blank");
+				nsIURI locationComObject = WebNav.GetCurrentURIAttribute();
+
+				//nsURI location = new nsURI(locationComObject);
+
+				//if (!location.IsNull)
+				//{
+				//    Uri result;
+				//    return Uri.TryCreate(location.Spec, UriKind.Absolute, out result) ? result : null;
+				//}
+				//return new Uri("about:blank");
+
+				var uri=nsURI.ToUri( locationComObject );
+				return uri ?? new Uri( "about:blank" );
 			}
 		}
 		
@@ -1212,14 +1215,15 @@ namespace Gecko
 				if (WebNav == null)
 					return null;
 			
-				nsIURI location =  WebNav.GetReferringURIAttribute();				
+				nsIURI location =  WebNav.GetReferringURIAttribute();
+				var uri = nsURI.ToUri(location);
+				return uri ?? new Uri("about:blank");
+				//if (location != null)
+				//{
+				//    return new Uri(nsString.Get(location.GetSpecAttribute));
+				//}
 				
-				if (location != null)
-				{
-					return new Uri(nsString.Get(location.GetSpecAttribute));
-				}
-				
-				return new Uri("about:blank");
+				//return new Uri("about:blank");
 			}
 		}
 		
@@ -1806,7 +1810,20 @@ namespace Gecko
 			browser.Dock = DockStyle.Fill;
 			form.Controls.Add(browser);
 			form.Load += delegate { browser.Navigate("view-source:" + url); };
-			form.Icon = FindForm().Icon;
+			try
+			{
+#warning when geckoFX is used in WPF application there are no forms. We should rewrite this code
+				var outerForm = FindForm();
+				if (outerForm != null)
+				{
+					form.Icon = outerForm.Icon;
+				}
+			}
+			catch ( Exception )
+			{
+
+			}
+			
 			form.ClientSize = this.ClientSize;
 			form.StartPosition = FormStartPosition.CenterParent;
 			form.Show();			

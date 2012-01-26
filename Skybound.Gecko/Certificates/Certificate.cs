@@ -101,9 +101,9 @@ namespace Gecko.Certificates
 			get { return Create( _cert1.GetIssuerAttribute() ); }
 		}
 
-		public object Validity
+		public CertificateValidity Validity
 		{
-			get { return _cert1.GetValidityAttribute(); }
+			get { return new CertificateValidity( _cert1.GetValidityAttribute() ); }
 		}
 
 		public string DbKey
@@ -116,9 +116,9 @@ namespace Gecko.Certificates
 			get { return _cert1.GetWindowTitleAttribute(); }
 		}
 
-		public object Chain
+		public Collections.IGeckoArray<Certificate> Chain
 		{
-			get { return _cert1.GetChain(); }
+			get { return new Collections.GeckoArray<Certificate, nsIX509Cert>( _cert1.GetChain(), Certificate.Create ); }
 		}
 
 		public void GetUsagesArray(bool localOnly,ref uint verified,ref uint count,ref System.IntPtr[] usages)
@@ -213,6 +213,17 @@ namespace Gecko.Certificates
 			var cert2 = Xpcom.QueryInterface<nsIX509Cert2>( certificate );
 			var cert3 = Xpcom.QueryInterface<nsIX509Cert3>( certificate );
 			return new Certificate( certificate, cert2, cert3 );
+		}
+
+		internal static Certificate Create(nsIX509Cert2 certificate)
+		{
+			var cert3 = Xpcom.QueryInterface<nsIX509Cert3>(certificate);
+			return new Certificate(certificate, certificate, cert3);
+		}
+
+		internal static Certificate Create(nsIX509Cert3 certificate)
+		{
+			return new Certificate(certificate, certificate, certificate);
 		}
 	}
 }

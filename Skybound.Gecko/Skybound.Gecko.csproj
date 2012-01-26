@@ -34,6 +34,10 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_Windows|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -101,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoJSContext.cs" />
+    <None Include="ClassDiagrams\nsIDOMNode.cd" />
     <None Include="GeckoFX.snk" />
     <Compile Include="BaseNsFactory.cs" />
     <Compile Include="BaseTypes\gfxGraphicsFilter.cs" />
@@ -118,22 +123,34 @@
     <Compile Include="Certificates\Certificate.cs" />
     <Compile Include="Certificates\CertificateDatabase.cs" />
     <Compile Include="Certificates\CertificateList.cs" />
+    <Compile Include="Certificates\CertificateValidity.cs" />
     <Compile Include="ChromeDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ChromeDialog.Designer.cs">
       <DependentUpon>ChromeDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Collections\GeckoArray.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\GeckoCollectionsHelper.cs" />
     <Compile Include="Collections\GeckoEnumerableCollection.cs" />
     <Compile Include="Collections\GeckoEnumerator.cs" />
+    <Compile Include="Collections\StringEnumerator.cs" />
     <Compile Include="ConfirmDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ConfirmDialog.Designer.cs">
       <DependentUpon>ConfirmDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interop\nsSupports.cs" />
+    <Compile Include="Interop\WrapperManager.cs" />
     <Compile Include="IO\InputStream.cs" />
     <Compile Include="IO\OutputStream.cs" />
+    <Compile Include="Net\Channel.cs" />
+    <Compile Include="Net\HttpChannel.cs" />
+    <Compile Include="Net\LoadGroup.cs" />
+    <Compile Include="Net\Request.cs" />
     <Compile Include="nsCString.cs" />
     <Compile Include="GeckoMessageEvents.cs" />
     <Compile Include="ConsoleMessageEventArgs.cs" />
@@ -1445,6 +1462,7 @@
     <Compile Include="nsInterfaces.cs" />
     <Compile Include="nsString.cs" />
     <Compile Include="nsURI.cs" />
+    <Compile Include="ObserverNotifications.cs" />
     <Compile Include="PasswordDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1466,6 +1484,12 @@
       <DependentUpon>PropertiesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Windows\Taskbar\JumpListBuilder.cs" />
+    <Compile Include="Windows\Taskbar\JumpListItem.cs" />
+    <Compile Include="Windows\Taskbar\JumpListLink.cs" />
+    <Compile Include="Windows\Taskbar\JumpListSeparator.cs" />
+    <Compile Include="Windows\Taskbar\JumpListShortcut.cs" />
+    <Compile Include="Windows\Taskbar\WinTaskbar.cs" />
     <Compile Include="Xpcom.cs" />
     <Compile Include="GtkWrapperNoThread.cs" />
     <Compile Include="X11Structs.cs" />

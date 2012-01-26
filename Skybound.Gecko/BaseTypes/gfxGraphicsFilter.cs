@@ -9,4 +9,6 @@ namespace Gecko
 	public class gfxGraphicsFilter
 	{
 	}
+
+	// TODO: make this class binary marshalable from struct gfxGraphicsFilter
 }

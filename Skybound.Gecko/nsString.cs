@@ -76,6 +76,18 @@ namespace Gecko
 				return str.ToString();
 			}
 		}
+
+		public static string Get(Action<nsACString,nsACString> getter,string inValue)
+		{
+			using (nsACString nativeIn = new nsACString(),nativeOut=new nsACString())
+			{
+				if (!string.IsNullOrEmpty(inValue))
+					nativeIn.SetData( inValue );
+
+				getter( nativeIn, nativeOut );
+				return nativeOut.ToString();
+			}
+		}
 		
 		public static void Set(StringAttributeAnsi setter, string value)
 		{
@@ -85,6 +97,20 @@ namespace Gecko
 					str.SetData(value);
 				
 				setter(str);
+			}
+		}
+
+		public static void Pass(Action<nsACString, nsACString> func, string value1, string value2)
+		{
+			using (nsACString native1 = new nsACString(), native2 = new nsACString())
+			{
+				if (!string.IsNullOrEmpty(value1))
+					native1.SetData(value1);
+
+				if (!string.IsNullOrEmpty(value2))
+					native2.SetData(value2);
+
+				func(native1, native2);
 			}
 		}
 		
@@ -129,6 +155,8 @@ namespace Gecko
 			}
 			return ret;
 		}
+
+
 	}
 
 	// TODO: see comments on class nsAString
