@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Release_Windows</Configuration>
@@ -33,6 +33,10 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_Windows|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -151,7 +155,7 @@
     <Compile Include="Net\LoadGroup.cs" />
     <Compile Include="Net\Request.cs" />
     <Compile Include="nsCancelable.cs" />
-    <Compile Include="nsCString.cs" />
+    <Compile Include="nsSupportsPrimitives.cs" />
     <Compile Include="GeckoMessageEvents.cs" />
     <Compile Include="ConsoleMessageEventArgs.cs" />
     <Compile Include="CookieManager.cs" />
@@ -1469,6 +1473,8 @@
     <Compile Include="PasswordDialog.Designer.cs">
       <DependentUpon>PasswordDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\PluginHost.cs" />
+    <Compile Include="Plugins\PluginTag.cs" />
     <Compile Include="PrintSettings.cs" />
     <Compile Include="PromptDialog.cs">
       <SubType>Form</SubType>
@@ -1477,6 +1483,7 @@
       <DependentUpon>PromptDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="PromptService.cs" />
+    <Compile Include="Properties.cs" />
     <Compile Include="PropertiesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
