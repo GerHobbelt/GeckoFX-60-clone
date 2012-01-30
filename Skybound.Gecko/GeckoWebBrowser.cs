@@ -59,7 +59,9 @@ namespace Gecko
 		nsIWeakReference,
 		nsIDOMEventListener,
 		nsISHistoryListener,
-		nsITooltipListener
+		nsITooltipListener,
+        nsIObserver,
+         nsIHttpActivityObserver
 		//nsIWindowProvider,
 	{
 		Dictionary<string, Action<string>> _messageEventListeners = new Dictionary<string, Action<string>>();
@@ -202,6 +204,13 @@ namespace Gecko
 				Guid nsIWebProgressListenerGUID = typeof(nsIWebProgressListener).GUID;
 				WebBrowser.AddWebBrowserListener(this, ref nsIWebProgressListenerGUID);
 
+                var observerService = Xpcom.GetService<nsIObserverService>("@mozilla.org/observer-service;1");
+                observerService.AddObserver(this, "http-on-modify-request", false);
+
+                nsIHttpActivityDistributor activityDistributor = Xpcom.GetService<nsIHttpActivityDistributor>("@mozilla.org/network/http-activity-distributor;1");
+                activityDistributor = Xpcom.QueryInterface<nsIHttpActivityDistributor>(activityDistributor);
+                activityDistributor.AddObserver(this);
+
 				nsIDOMEventTarget target = Xpcom.QueryInterface<nsIDOMWindow>(WebBrowser.GetContentDOMWindowAttribute()).GetWindowRootAttribute();
 				
 				target.AddEventListener(new nsAString("submit"), this, true, true, 2);
@@ -238,7 +247,7 @@ namespace Gecko
 			base.OnHandleCreated(e);
 		}
 		
-		class WindowCreator : nsIWindowCreator
+		class WindowCreator : nsIWindowCreator2
 		{
 			static WindowCreator()
 			{
@@ -310,6 +319,37 @@ namespace Gecko
 				}
 				return null;
 			}
+
+
+            public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags, uint contextFlags, nsIURI uri, ref bool cancel)
+            {
+                GeckoWebBrowser browser = parent as GeckoWebBrowser;
+                if (browser != null)
+                {
+                    var url = "";
+                    if (uri != null)
+                    {
+                        url = (nsString.Get(uri.GetSpecAttribute)).ToString();
+                    }
+                    else
+                    {
+                        url = "about:blank";
+                    }
+
+                    GeckoCreateWindow2EventArgs e = new GeckoCreateWindow2EventArgs((GeckoWindowFlags)chromeFlags, url);
+                    e.WebBrowser = browser;
+
+                    browser.OnCreateWindow2(e);
+
+                    if (e.Cancel)
+                    {
+                        cancel = true;
+                        return null;
+                    }
+                }
+
+                return CreateChromeWindow(parent, chromeFlags);
+            }
 		}
 		
 		protected override void OnPaint(PaintEventArgs e)
@@ -345,6 +385,23 @@ namespace Gecko
 				((GeckoCreateWindowEventHandler)this.Events[CreateWindowEvent])(this, e);
 		}
 		#endregion
+		
+        #region public event GeckoCreateWindow2EventHandler CreateWindow2
+        public event GeckoCreateWindow2EventHandler CreateWindow2
+        {
+            add { this.Events.AddHandler(CreateWindow2Event, value); }
+            remove { this.Events.RemoveHandler(CreateWindow2Event, value); }
+        }
+        private static object CreateWindow2Event = new object();
+
+        /// <summary>Raises the <see cref="CreateWindow"/> event.</summary>
+        /// <param name="e">The data for the event.</param>
+        protected virtual void OnCreateWindow2(GeckoCreateWindow2EventArgs e)
+        {
+            if (((GeckoCreateWindow2EventHandler)this.Events[CreateWindow2Event]) != null)
+                ((GeckoCreateWindow2EventHandler)this.Events[CreateWindow2Event])(this, e);
+        }
+        #endregion
 		
 		#region public event GeckoWindowSetBoundsEventHandler WindowSetBounds
 		public event GeckoWindowSetBoundsEventHandler WindowSetBounds
@@ -620,7 +677,7 @@ namespace Gecko
 				referrerUri = Xpcom.GetService<nsIIOService>("@mozilla.org/network/io-service;1").NewURI(new nsAUTF8String(referrer), null, null);
 			}
 
-			WebNav.LoadURI(url, (uint)loadFlags, referrerUri, postData.InputStream, null);
+            WebNav.LoadURI(url, (uint)loadFlags, referrerUri, postData!=null?postData.InputStream:null, null);
 
 			return true;
 		}
@@ -2841,6 +2898,165 @@ namespace Gecko
 			target.AddEventListener(new nsAString(eventName), this, /*Review*/ true, true, /*what's this?*/2);
 			_messageEventListeners.Add(eventName, action);
 		}
+
+        #region public event GeckoObserveHttpModifyRequestEventHandler Navigated
+        /// <summary>
+        /// Occurs after the browser has send a http request to the web
+        /// </summary>
+        [Category("Observe"), Description("Occurs after the browser has navigated to a new page.")]
+        public event GeckoObserveHttpModifyRequestEventHandler ObserveHttpModifyRequest
+        {
+            add { this.Events.AddHandler(ObserveHttpModifyRequestEvent, value); }
+            remove { this.Events.RemoveHandler(ObserveHttpModifyRequestEvent, value); }
+        }
+        private static object ObserveHttpModifyRequestEvent = new object();
+
+        /// <summary>Raises the <see cref="ObserveHttpModify"/> event.</summary>
+        /// <param name="e">The data for the event.</param>
+        protected virtual void OnObserveHttpModifyRequest(GeckoObserveHttpModifyRequestEventArgs e)
+        {
+            if (((GeckoObserveHttpModifyRequestEventHandler)this.Events[ObserveHttpModifyRequestEvent]) != null)
+                ((GeckoObserveHttpModifyRequestEventHandler)this.Events[ObserveHttpModifyRequestEvent])(this, e);
+        }
+        #endregion
+
+        public void Observe(nsISupports aSubject, string aTopic, string aData)
+        {
+            if (aTopic.Equals("http-on-modify-request"))
+            {
+                nsIHttpChannel httpChannel = Xpcom.QueryInterface<nsIHttpChannel>(aSubject);
+
+                Uri uri = new Uri(nsString.Get(httpChannel.GetURIAttribute().GetSpecAttribute));
+                Uri uri_ref = null;
+                var ref_attr = httpChannel.GetReferrerAttribute();
+                if (ref_attr != null)
+                    uri_ref = new Uri(nsString.Get(ref_attr.GetSpecAttribute));
+
+                var req_method = nsString.Get(httpChannel.GetRequestMethodAttribute);
+
+                var evt = new GeckoObserveHttpModifyRequestEventArgs(uri, uri_ref, req_method, aData);
+
+                OnObserveHttpModifyRequest(evt);
+
+                if (evt.Cancel)
+                {
+                    httpChannel.Cancel(nsIHelperAppLauncherConstants.NS_BINDING_ABORTED);
+                }
+            }
+        }
+
+        #region nsIHttpActivityObserver members
+
+        public Dictionary<nsIHttpChannel, GeckoJavaScriptHttpChannelWrapper> origJavaScriptHttpChannels = new Dictionary<nsIHttpChannel, GeckoJavaScriptHttpChannelWrapper>();
+
+        public bool IsAjaxBusy
+        {
+            get { return (origJavaScriptHttpChannels.Count > 0); }
+        }
+
+        //public void ObserveActivity(nsISupports aHttpChannel, uint aActivityType, uint aActivitySubtype, uint aTimestamp, ulong aExtraSizeData, nsACString aExtraStringData)
+        public void ObserveActivity(nsISupports aHttpChannel,
+                             UInt32 aActivityType,
+                             UInt32 aActivitySubtype,
+                             UInt64 aTimestamp,
+                             UInt64 aExtraSizeData,
+                             IntPtr aExtraStringData)
+        {
+            nsIHttpChannel httpChannel = Xpcom.QueryInterface<nsIHttpChannel>(aHttpChannel);
+
+            if (httpChannel != null)
+            {
+                switch (aActivityType)
+                {
+                    case nsIHttpActivityObserverConstants.ACTIVITY_TYPE_SOCKET_TRANSPORT:
+                        switch (aActivitySubtype)
+                        {
+                            case nsISocketTransportConstants.STATUS_RESOLVING:
+                                break;
+                            case nsISocketTransportConstants.STATUS_RESOLVED:
+                                break;
+                            case nsISocketTransportConstants.STATUS_CONNECTING_TO:
+                                break;
+                            case nsISocketTransportConstants.STATUS_CONNECTED_TO:
+                                break;
+                            case nsISocketTransportConstants.STATUS_SENDING_TO:
+                                break;
+                            case nsISocketTransportConstants.STATUS_WAITING_FOR:
+                                break;
+                            case nsISocketTransportConstants.STATUS_RECEIVING_FROM:
+                                break;
+                        }
+                        break;
+                    case nsIHttpActivityObserverConstants.ACTIVITY_TYPE_HTTP_TRANSACTION:
+                        switch (aActivitySubtype)
+                        {
+                            case nsIHttpActivityObserverConstants.ACTIVITY_SUBTYPE_REQUEST_HEADER:
+                                {
+                                    var callbacks = httpChannel.GetNotificationCallbacksAttribute();
+                                    var httpChannelXHR = Xpcom.QueryInterface<nsIXMLHttpRequest>(callbacks);
+
+                                    if (httpChannelXHR != null)
+                                    {
+                                        nsIDOMEventListener origEventListener = httpChannelXHR.GetOnreadystatechangeAttribute();
+                                        var newEventListener = new GeckoJavaScriptHttpChannelWrapper(this, httpChannel, origEventListener);
+                                        origJavaScriptHttpChannels.Add(httpChannel, newEventListener);
+                                        httpChannelXHR.SetOnreadystatechangeAttribute(newEventListener);
+                                         
+                                        #region POST data
+                                        /**
+                                        nsIUploadChannel uploadChannel = Xpcom.QueryInterface<nsIUploadChannel>(httpChannel);
+
+                                        if (uploadChannel != null)
+                                        {
+                                            var uploadChannelStream = uploadChannel.GetUploadStreamAttribute();
+
+                                            if (uploadChannelStream != null)
+                                            {
+                                                nsISeekableStream seekableChannelStream = Xpcom.QueryInterface<nsISeekableStream>(uploadChannelStream);
+
+                                                if (seekableChannelStream != null)
+                                                {
+                                                    seekableChannelStream.Seek(0, 0);
+
+                                                    var sis = Xpcom.CreateInstance<nsIScriptableInputStream>("@mozilla.org/scriptableinputstream;1");
+
+                                                    var stream = Xpcom.QueryInterface<nsIInputStream>(uploadChannelStream);
+
+                                                    sis.Init(stream);
+
+                                                    StringBuilder sb = new StringBuilder();
+
+                                                    for (var count = sis.Available(); count != 0; count = sis.Available())
+                                                    {
+                                                        sb.Append(sis.Read(count));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        /**/
+                                        #endregion POST data
+                                    }
+                                }
+                                break;
+                            case nsIHttpActivityObserverConstants.ACTIVITY_SUBTYPE_REQUEST_BODY_SENT:
+                                break;
+                            case nsIHttpActivityObserverConstants.ACTIVITY_SUBTYPE_RESPONSE_START:
+                                break;
+                            case nsIHttpActivityObserverConstants.ACTIVITY_SUBTYPE_RESPONSE_COMPLETE:
+                                break;
+                            case nsIHttpActivityObserverConstants.ACTIVITY_SUBTYPE_TRANSACTION_CLOSE:
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+
+        public bool GetIsActiveAttribute()
+        {
+            return true;
+        }
+        #endregion nsIHttpActivityObserver members
 	}
 	
 	#region public delegate void GeckoHistoryEventHandler(object sender, GeckoHistoryEventArgs e);
@@ -3011,6 +3227,52 @@ namespace Gecko
 	}
 	#endregion
 	
+    #region public delegate void GeckoCreateWindow2EventHandler(object sender, GeckoCreateWindow2EventArgs e);
+    public delegate void GeckoCreateWindow2EventHandler(object sender, GeckoCreateWindow2EventArgs e);
+
+    /// <summary>Provides data for the <see cref="GeckoCreateWindowEventHandler"/> event.</summary>
+    public class GeckoCreateWindow2EventArgs : System.EventArgs
+    {
+        /// <summary>Creates a new instance of a <see cref="GeckoCreateWindowEventArgs"/> object.</summary>
+        /// <param name="flags"></param>
+        public GeckoCreateWindow2EventArgs(GeckoWindowFlags flags, String uri)
+        {
+            _Flags = flags;
+            _Uri = uri;
+            _Cancel = false;
+        }
+
+        public GeckoWindowFlags Flags { get { return _Flags; } }
+        GeckoWindowFlags _Flags;
+
+        /// <summary>
+        /// Gets or sets the <see cref="GeckoWebBrowser"/> used in the new window.
+        /// </summary>
+        public GeckoWebBrowser WebBrowser
+        {
+            get { return _WebBrowser; }
+            set { _WebBrowser = value; }
+        }
+        GeckoWebBrowser _WebBrowser;
+
+        Boolean _Cancel;
+
+        public Boolean Cancel
+        {
+            get { return _Cancel; }
+            set { _Cancel = value; }
+        }
+
+        String _Uri;
+
+        public String Uri
+        {
+            get { return _Uri; }
+            set { _Uri = value; }
+        }
+    }
+    #endregion
+	
 	#region public delegate void GeckoWindowSetBoundsEventHandler(object sender, GeckoWindowSetBoundsEventArgs e);
 	public delegate void GeckoWindowSetBoundsEventHandler(object sender, GeckoWindowSetBoundsEventArgs e);
 
@@ -3097,6 +3359,44 @@ namespace Gecko
 	}
 	#endregion
 	
+    #region public delegate void GeckoObserveHttpModifyRequestEventHandler(object sender, GeckoObserveHttpModifyRequestEventArgs e);
+    public delegate void GeckoObserveHttpModifyRequestEventHandler(object sender, GeckoObserveHttpModifyRequestEventArgs e);
+
+    /// <summary>Provides data for the <see cref="GeckoObserveHttpModifyRequestEventHandler"/> event.</summary>
+    public class GeckoObserveHttpModifyRequestEventArgs : System.EventArgs
+    {
+        /// <summary>Creates a new instance of a <see cref="GeckoObserveHttpModifyRequestEventArgs"/> object.</summary>
+        /// <param name="value"></param>
+        public GeckoObserveHttpModifyRequestEventArgs(Uri value, Uri ref_val, String req_method, String req_data)
+        {
+            _Uri = value;
+            _Referrer = ref_val;
+            _RequestMetod = req_method;
+            _RequestData = req_data;
+            _Cancel = false;
+        }
+
+        public Uri Uri { get { return _Uri; } }
+        readonly Uri _Uri;
+
+        public Uri Referrer { get { return _Referrer; } }
+        readonly Uri _Referrer;
+
+        public String RequestMethod { get { return _RequestMetod; } }
+        readonly String _RequestMetod;
+
+        public String RequestData { get { return _RequestData; } }
+        readonly String _RequestData;
+
+        public Boolean Cancel
+        {
+            get { return _Cancel; }
+            set { _Cancel = value; }
+        }
+        Boolean _Cancel;
+    }
+    #endregion
+
 	#region public enum GeckoLoadFlags
 	public enum GeckoLoadFlags
 	{
@@ -3233,4 +3533,44 @@ namespace Gecko
 		All = 0x00000ffe,
 	}
 	#endregion
+
+    #region GeckoJavaScriptHttpChannelWrapper
+    public class GeckoJavaScriptHttpChannelWrapper : nsIDOMEventListener
+    {
+        private readonly GeckoWebBrowser m_browser;
+        private readonly nsIHttpChannel m_httpChannel;
+        private readonly nsIDOMEventListener m_origEventListener;
+        private readonly nsIXMLHttpRequest m_notificationCallsbacks;
+
+        public GeckoJavaScriptHttpChannelWrapper(GeckoWebBrowser p_browser, nsIHttpChannel p_httpChannel, nsIDOMEventListener p_origEventListener)
+        {
+            m_browser = p_browser;
+            m_httpChannel = p_httpChannel;
+            m_origEventListener = p_origEventListener;
+
+            m_notificationCallsbacks = Xpcom.QueryInterface<nsIXMLHttpRequest>(m_httpChannel.GetNotificationCallbacksAttribute());
+        }
+
+        public void HandleEvent(nsIDOMEvent @event)
+        {
+            var xhr_uri = (new Uri(nsString.Get(m_httpChannel.GetOriginalURIAttribute().GetSpecAttribute))).ToString();
+            var xhr_status = m_notificationCallsbacks.GetStatusAttribute();
+            var xhr_readyState = m_notificationCallsbacks.GetReadyStateAttribute();
+
+            try
+            {
+                m_origEventListener.HandleEvent(@event);
+            }
+            catch (COMException)
+            {
+            }
+
+            // remove when finished
+            if (xhr_readyState == 4)
+            {
+                m_browser.origJavaScriptHttpChannels.Remove(m_httpChannel);
+            }
+        }
+    }
+    #endregion GeckoJavaScriptHttpChannelWrapper
 }

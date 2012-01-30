@@ -334,4 +334,34 @@ namespace Gecko
 	{
 	}
 
+    /// <see cref="https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIHttpActivityObserver"/>
+    static class nsIHttpActivityObserverConstants
+    {
+        public const uint ACTIVITY_TYPE_SOCKET_TRANSPORT = 0x0001;
+        public const uint ACTIVITY_TYPE_HTTP_TRANSACTION = 0x0002;
+        public const uint ACTIVITY_SUBTYPE_REQUEST_HEADER = 0x5001;
+        public const uint ACTIVITY_SUBTYPE_REQUEST_BODY_SENT = 0x5002;
+        public const uint ACTIVITY_SUBTYPE_RESPONSE_START = 0x5003;
+        public const uint ACTIVITY_SUBTYPE_RESPONSE_COMPLETE = 0x5005;
+        public const uint ACTIVITY_SUBTYPE_TRANSACTION_CLOSE = 0x5006;
+    }
+
+    /// <see cref="https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsISocketTransport"/>
+    static class nsISocketTransportConstants
+    {
+        public const uint STATUS_RESOLVING      = 0x804b0003;
+        public const uint STATUS_RESOLVED       = 0x804b000b;
+        public const uint STATUS_CONNECTING_TO  = 0x804b0007;
+        public const uint STATUS_CONNECTED_TO   = 0x804b0004;
+        public const uint STATUS_SENDING_TO     = 0x804b0005;
+        public const uint STATUS_WAITING_FOR    = 0x804b000a;
+        public const uint STATUS_RECEIVING_FROM = 0x804b0006;
+    }
+
+    static class nsISeekableStreamConstants
+    {
+        public const int    NS_SEEK_SET = 0;
+        public const int    NS_SEEK_CUR = 1;
+        public const int    NS_SEEK_END = 2;
+    }
 }
