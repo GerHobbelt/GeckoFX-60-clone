@@ -229,6 +229,7 @@ namespace Gecko
 				target.AddEventListener(new nsAString("contextmenu"), this, true, true, 2);
 				target.AddEventListener(new nsAString("DOMMouseScroll"), this, true, true, 2);
 				target.AddEventListener(new nsAString("focus"), this, true, true, 2);
+				target.AddEventListener(new nsAString("blur"), this, true, true, 2);
 				// Load event added here rather than DOMDocument as DOMDocument recreated when navigating
 				// ths losing attached listener.
 				target.AddEventListener(new nsAString("load"), this, true, true, 2);
@@ -2268,6 +2269,7 @@ namespace Gecko
 				case "contextmenu": OnDomContextMenu((GeckoDomMouseEventArgs)(ea = new GeckoDomMouseEventArgs((nsIDOMMouseEvent)e))); break;				
 				case "DOMMouseScroll": OnDomMouseScroll((GeckoDomMouseEventArgs)(ea = new GeckoDomMouseEventArgs((nsIDOMMouseEvent)e))); break;				
 				case "focus": OnDomFocus(ea = new GeckoDomEventArgs(e)); break;
+				case "blur": OnDomBlur(ea = new GeckoDomEventArgs(e)); break;
 				case "load": OnLoad(ea = new GeckoDomEventArgs(e)); break;
 				case "change": OnDomContentChanged(ea = new GeckoDomEventArgs(e)); break;
 
@@ -2535,6 +2537,24 @@ namespace Gecko
 		{
 			if (((GeckoDomEventHandler)this.Events[DomFocusEvent]) != null)
 				((GeckoDomEventHandler)this.Events[DomFocusEvent])(this, e);
+		}
+		#endregion
+
+		#region public event GeckoDomEventHandler DomBlur
+		[Category("DOM Events")]
+		public event GeckoDomEventHandler DomBlur
+		{
+			add { this.Events.AddHandler(DomBlurEvent, value); }
+			remove { this.Events.RemoveHandler(DomBlurEvent, value); }
+		}
+		private static object DomBlurEvent = new object();
+
+		/// <summary>Raises the <see cref="DomBlur"/> event.</summary>
+		/// <param name="e">The data for the event.</param>
+		protected virtual void OnDomBlur(GeckoDomEventArgs e)
+		{
+			if (((GeckoDomEventHandler)this.Events[DomBlurEvent]) != null)
+				((GeckoDomEventHandler)this.Events[DomBlurEvent])(this, e);
 		}
 		#endregion
 
