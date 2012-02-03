@@ -189,7 +189,9 @@ namespace Gecko
 				PromptFactoryFactory.Register();
 				#endif
 				WindowCreator.Register();
-                LauncherDialogFactory.Register();				
+#if !GTK
+                LauncherDialogFactory.Register();
+#endif
 				
 				WebBrowser = Xpcom.CreateInstance<nsIWebBrowser>("@mozilla.org/embedding/browser/nsWebBrowser;1");
 				WebBrowserFocus = (nsIWebBrowserFocus)WebBrowser;

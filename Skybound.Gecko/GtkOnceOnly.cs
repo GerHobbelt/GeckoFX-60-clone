@@ -1,3 +1,4 @@
+using System.Diagnostics;
 #if GTK
 namespace GtkDotNet
 {
@@ -11,8 +12,16 @@ namespace GtkDotNet
 				{
 					Gtk.Application.Init();
 					m_initedOnce = true;
+					
+					GLib.ExceptionManager.UnhandledException += OnException;
 				}
 			}
+		}
+
+		static void OnException(GLib.UnhandledExceptionArgs args)
+		{
+			Debug.WriteLine("Glib error error {0}", args.ExceptionObject.ToString());
+			args.ExitApplication = false;
 		}
 		/// <summary>
 		/// Stores if gtk has been initizlized.

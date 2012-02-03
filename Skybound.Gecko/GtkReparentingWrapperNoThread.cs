@@ -85,11 +85,7 @@ namespace GtkDotNet
 
 			// Wraps the panel native (X) window handle in a GdkWrapper
 			m_gdkWrapperOfForm = Gdk.Window.ForeignNewForDisplay(Gdk.Display.Default, (uint)m_parent.Handle);
-
-			m_parent.HandleCreated += delegate {
-				// get low level access to x11 events
-				Gdk.Window.AddFilterForAll(FilterFunc);
-			};
+			
 			System.Windows.Forms.Application.DoEvents();
 			ProcessPendingGtkEvents();
 
@@ -97,18 +93,20 @@ namespace GtkDotNet
 			m_popupWindow.GdkWindow.Reparent(m_gdkWrapperOfForm, 0, 0);
 			ProcessPendingGtkEvents();
 			
+			m_popupWindow.GdkWindow.AddFilter(FilterFunc);
+			
 			// Setting the m_xDisplayPointer could possibly be done earlier if needed.
 			Gdk.Display display = Gdk.Display.Default;	
 			m_xDisplayPointer = gdk_x11_display_get_xdisplay(display.Handle);
 		}
-		
+								
 		private FilterReturn FilterFunc (IntPtr xevent, Event evnt)
 		{
 			if (xevent == IntPtr.Zero)
 				return FilterReturn.Continue;
 
 			var e = (X11.XEvent)Marshal.PtrToStructure(xevent, typeof(X11.XEvent));
-
+			
 			// Dropping these events is non standard but so is embeding a Gtk into
 			// a X11 Window.
 			if (e.type == X11.XEventName.FocusOut ||

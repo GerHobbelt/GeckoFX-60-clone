@@ -53,7 +53,8 @@ namespace Gecko.Interop
 		internal static TWrapper GetManagedWrapper<TWrapper>( this nsISupports proxy )
 		{
 			var geckoType = _wrappersTypes2geckoObjectTypes[ typeof (TWrapper) ];
-			var iFace = proxy.QueryInterface( geckoType.GUID );
+			Guid guid = geckoType.GUID;
+			var iFace = proxy.QueryInterface(ref guid);
 			var translator = _notGenericWrappers[ geckoType ];
 			return ( TWrapper ) translator( iFace );
 		}
