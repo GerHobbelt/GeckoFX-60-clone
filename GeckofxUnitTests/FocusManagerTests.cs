@@ -28,15 +28,21 @@ namespace GeckofxUnitTests
 		}
 
 		[Test]
-		public void GetLastFocusMethod_OfMockedDOMWindow_ReturnsZero()
+		public void GetLastFocusMethod_OfStubbedDOMWindow_ReturnsZero()
 		{
-			var mockDOMWindow = new MockDOMWindow();			
-			Assert.AreEqual(0, m_instance.GetLastFocusMethod(mockDOMWindow));			
+			var stubDOMWindow = new StubDOMWindow();
+			Assert.AreEqual(0, m_instance.GetLastFocusMethod(stubDOMWindow));			
+		}
+
+		[Test]
+		public void GetActiveWindowAttribute_ActiveWindowIsNull_ReturnsNull()
+		{			
+			Assert.IsNull(m_instance.GetActiveWindowAttribute());
 		}
 	}
 
-	#region Mocks
-	internal class MockDOMWindow : nsIDOMWindow
+	#region Stubs
+	internal class StubDOMWindow : nsIDOMWindow
 	{
 
 		public nsIDOMDocument GetDocumentAttribute()
@@ -205,12 +211,12 @@ namespace GeckofxUnitTests
 		}
 
 		public void Focus()
-		{
+		{			
 			throw new NotImplementedException();
 		}
 
 		public void Blur()
-		{
+		{		
 			throw new NotImplementedException();
 		}
 
