@@ -1781,23 +1781,30 @@ namespace Gecko
 		void nsIWebProgressListener.OnStateChange(nsIWebProgress aWebProgress, nsIRequest aRequest, uint aStateFlags, int aStatus)
 		{
 			bool cancelled = false;
-			
-			if ((aStateFlags & nsIWebProgressListenerConstants.STATE_START) != 0 && (aStateFlags & nsIWebProgressListenerConstants.STATE_IS_NETWORK) != 0)
-			{
-				IsBusy = true;
-				
-				Uri uri;
-				Uri.TryCreate(nsString.Get(aRequest.GetNameAttribute), UriKind.Absolute, out uri);
-				
-				GeckoNavigatingEventArgs ea = new GeckoNavigatingEventArgs(uri);
-				OnNavigating(ea);
-				
-				if (ea.Cancel)
+
+			/*
+			 *  http://zenit.senecac.on.ca/wiki/dxr/source.cgi/mozilla/netwerk/protocol/viewsource/src/nsViewSourceChannel.cpp
+			 *  "View source" always wants the currently cached content.
+			 *  Method "aRequest.GetNameAttribute" failed on such requests.
+			 */
+			uint loadAttr = aRequest.GetLoadFlagsAttribute();
+			if (((loadAttr & (1 << 10)) /* nsIRequest::LOAD_FROM_CACHE */) == 0)
+				if ((aStateFlags & nsIWebProgressListenerConstants.STATE_START) != 0 && (aStateFlags & nsIWebProgressListenerConstants.STATE_IS_NETWORK) != 0)
 				{
-					aRequest.Cancel(0);
-					cancelled = true;
+					IsBusy = true;
+
+					Uri uri;
+					Uri.TryCreate(nsString.Get(aRequest.GetNameAttribute), UriKind.Absolute, out uri);
+
+					GeckoNavigatingEventArgs ea = new GeckoNavigatingEventArgs(uri);
+					OnNavigating(ea);
+
+					if (ea.Cancel)
+					{
+						aRequest.Cancel(0);
+						cancelled = true;
+					}
 				}
-			}
 			
 			// maybe we'll add another event here to allow users to cancel certain content types
 			//if ((aStateFlags & nsIWebProgressListenerConstants.STATE_TRANSFERRING) != 0)
