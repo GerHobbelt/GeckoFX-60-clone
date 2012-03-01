@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b0196fc7-1913-441a-882a-453c0d8b89b8")]
+	[Guid("537ff844-c325-4047-92f5-e1c292d108bc")]
 	public interface nsIScriptError : nsIConsoleMessage
 	{
 		
@@ -79,6 +79,16 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string GetCategoryAttribute();
 		
+		/// <summary>
+        ///The time (in milliseconds from the Epoch) that the script error instance
+        ///       was initialised, and thus the time when the error occurred.
+        ///       Currently used to display date and time of the message in Error console.
+        ///       The timestamp is initialized as JS_now/1000 so that it can be
+        ///       compared to Date.now in Javascript.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetTimeStampAttribute();
+		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string message, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string sourceName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string sourceLine, uint lineNumber, uint columnNumber, uint flags, [MarshalAs(UnmanagedType.LPStr)] string category);
 		
@@ -92,7 +102,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4472646b-c928-4d76-9e7c-6b91da7f24cc")]
+	[Guid("444c5e66-a85d-4a3b-83ce-4c71882b09a3")]
 	public interface nsIScriptError2
 	{
 		
@@ -107,12 +117,6 @@ namespace Gecko
         ///       returned if init() was used instead of initWithWindowID(). </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ulong GetInnerWindowIDAttribute();
-		
-		/// <summary>
-        ///Elapsed time, in milliseconds, from a platform-specific zero time to the
-        ///       time the message was created. </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		long GetTimeStampAttribute();
 		
 		/// <summary>
         ///This should be called instead of nsIScriptError.init to

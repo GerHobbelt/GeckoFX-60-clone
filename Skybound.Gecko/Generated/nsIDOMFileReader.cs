@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIDOMFileReader </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("fc316500-87c4-411e-ab75-dd62468f4174")]
+	[Guid("d158de26-904e-4731-b42c-8b3a4d172703")]
 	public interface nsIDOMFileReader : nsIDOMEventTarget
 	{
 		
@@ -67,6 +67,25 @@ namespace Gecko
 		new void AddEventListener([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase type, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener listener, [MarshalAs(UnmanagedType.U1)] bool useCapture, [MarshalAs(UnmanagedType.U1)] bool wantsUntrusted, int argc);
 		
 		/// <summary>
+        /// addSystemEventListener() adds an event listener of aType to the system
+        /// group.  Typically, core code should use system group for listening to
+        /// content (i.e., non-chrome) element's events.  If core code uses
+        /// nsIDOMEventTarget::AddEventListener for a content node, it means
+        /// that the listener cannot listen the event when web content calls
+        /// stopPropagation() of the event.
+        ///
+        /// @param aType            An event name you're going to handle.
+        /// @param aListener        An event listener.
+        /// @param aUseCapture      TRUE if you want to listen the event in capturing
+        /// phase.  Otherwise, FALSE.
+        /// @param aWantsUntrusted  TRUE if you want to handle untrusted events.
+        /// Otherwise, FALSE.
+        /// @return                 NS_OK if succeed.  Otherwise, NS_ERROR_*.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void AddSystemEventListener([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase type, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener listener, [MarshalAs(UnmanagedType.U1)] bool aUseCapture, [MarshalAs(UnmanagedType.U1)] bool aWantsUntrusted, int argc);
+		
+		/// <summary>
         /// This method allows the removal of event listeners from the event
         /// target. If an EventListener is removed from an EventTarget while it
         /// is processing an event, it will not be triggered by the current actions.
@@ -88,6 +107,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void RemoveEventListener([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase type, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener listener, [MarshalAs(UnmanagedType.U1)] bool useCapture);
+		
+		/// <summary>
+        /// removeSystemEventListener() should be used if you have used
+        /// addSystemEventListener().
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void RemoveSystemEventListener([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase type, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener listener, [MarshalAs(UnmanagedType.U1)] bool aUseCapture);
 		
 		/// <summary>
         /// This method allows the dispatch of events into the implementations

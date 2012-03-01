@@ -1580,7 +1580,7 @@ namespace Gecko
 			OnProgressChanged(new GeckoProgressEventArgs(nProgress, nProgressMax));
 		}
 
-		void nsIWebProgressListener.OnLocationChange(nsIWebProgress aWebProgress, nsIRequest aRequest, nsIURI aLocation)
+		void nsIWebProgressListener.OnLocationChange(nsIWebProgress aWebProgress, nsIRequest aRequest, nsIURI aLocation, uint flags)
 		{
 			// make sure we're loading the top-level window
 			nsIDOMWindow domWindow = aWebProgress.GetDOMWindowAttribute();

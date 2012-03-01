@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIDroppedLinkHandler </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("F266B79B-7026-4D2D-B4BD-4F2C6B6C59B4")]
+	[Guid("6B58A5A7-76D0-4E93-AB2E-4DE108683FF8")]
 	public interface nsIDroppedLinkHandler
 	{
 		
@@ -50,17 +50,21 @@ namespace Gecko
 		/// <summary>
         /// Given a drop event aEvent, determines the link being dragged and returns
         /// it. If a uri is returned the caller can, for instance, load it. If null
-        /// is returned, there is no valid link to be dropped. A
-        /// NS_ERROR_DOM_SECURITY_ERR error will be thrown and the event cancelled if
+        /// is returned, there is no valid link to be dropped.
+        ///
+        /// A NS_ERROR_DOM_SECURITY_ERR error will be thrown and the event cancelled if
         /// the receiving target should not load the uri for security reasons. This
-        /// will occur if the source of the drag initiated a link for dragging that
+        /// will occur if any of the following conditions are true:
+        /// - the source of the drag initiated a link for dragging that
         /// it itself cannot access. This prevents a source document from tricking
-        /// the user into a dragging a chrome url for example.
+        /// the user into a dragging a chrome url, for example.
+        /// - aDisallowInherit is true, and the URI being dropped would inherit the
+        /// current document's security context (URI_INHERITS_SECURITY_CONTEXT).
         ///
         /// aName is filled in with the link title if it exists, or an empty string
         /// otherwise.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DropLink([MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aEvent, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void DropLink([MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aEvent, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aName, [MarshalAs(UnmanagedType.U1)] bool aDisallowInherit, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
 	}
 }

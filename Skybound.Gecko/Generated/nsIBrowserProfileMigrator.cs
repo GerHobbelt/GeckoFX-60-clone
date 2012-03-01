@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIBrowserProfileMigrator </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f8365b4a-da55-4e47-be7a-230142360f62")]
+	[Guid("5f445759-86a8-4dd3-ab84-4fc5341d9d9d")]
 	public interface nsIBrowserProfileMigrator
 	{
 		
@@ -49,7 +49,8 @@ namespace Gecko
         /// @param   aProfile the profile that we are looking for available data
         /// to import
         /// @param   aDoingStartup "true" if the profile is not currently being used.
-        /// @returns bit field containing profile items (see above)
+        /// @return  bit field containing profile items (see above)
+        /// @note    a return value of 0 represents no items rather than ALL.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetMigrateData([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aProfile, [MarshalAs(UnmanagedType.U1)] bool aDoingStartup);
@@ -77,7 +78,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray GetSourceProfilesAttribute();
+		nsIArray GetSourceProfilesAttribute();
 		
 		/// <summary>
         /// The import source homepage.  Returns null if not present/available

@@ -27,11 +27,11 @@ namespace Gecko
 	using System.Windows.Forms;
 	
 	
-	/// <summary>nsIDOMBatteryManager </summary>
+	/// <summary>nsIDOMMozBatteryManager </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6ac8bdb2-f005-469b-a55e-398e23ef3c95")]
-	public interface nsIDOMBatteryManager : nsIDOMEventTarget
+	[Guid("41e88f87-42cb-4db1-8724-f5456a16c410")]
+	public interface nsIDOMMozBatteryManager : nsIDOMEventTarget
 	{
 		
 		/// <summary>
@@ -67,6 +67,25 @@ namespace Gecko
 		new void AddEventListener([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase type, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener listener, [MarshalAs(UnmanagedType.U1)] bool useCapture, [MarshalAs(UnmanagedType.U1)] bool wantsUntrusted, int argc);
 		
 		/// <summary>
+        /// addSystemEventListener() adds an event listener of aType to the system
+        /// group.  Typically, core code should use system group for listening to
+        /// content (i.e., non-chrome) element's events.  If core code uses
+        /// nsIDOMEventTarget::AddEventListener for a content node, it means
+        /// that the listener cannot listen the event when web content calls
+        /// stopPropagation() of the event.
+        ///
+        /// @param aType            An event name you're going to handle.
+        /// @param aListener        An event listener.
+        /// @param aUseCapture      TRUE if you want to listen the event in capturing
+        /// phase.  Otherwise, FALSE.
+        /// @param aWantsUntrusted  TRUE if you want to handle untrusted events.
+        /// Otherwise, FALSE.
+        /// @return                 NS_OK if succeed.  Otherwise, NS_ERROR_*.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void AddSystemEventListener([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase type, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener listener, [MarshalAs(UnmanagedType.U1)] bool aUseCapture, [MarshalAs(UnmanagedType.U1)] bool aWantsUntrusted, int argc);
+		
+		/// <summary>
         /// This method allows the removal of event listeners from the event
         /// target. If an EventListener is removed from an EventTarget while it
         /// is processing an event, it will not be triggered by the current actions.
@@ -88,6 +107,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void RemoveEventListener([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase type, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener listener, [MarshalAs(UnmanagedType.U1)] bool useCapture);
+		
+		/// <summary>
+        /// removeSystemEventListener() should be used if you have used
+        /// addSystemEventListener().
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void RemoveSystemEventListener([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase type, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener listener, [MarshalAs(UnmanagedType.U1)] bool aUseCapture);
 		
 		/// <summary>
         /// This method allows the dispatch of events into the implementations
@@ -212,15 +238,25 @@ namespace Gecko
 		new System.IntPtr GetJSContextForEventHandlers();
 		
 		/// <summary>Member GetLevelAttribute </summary>
-		/// <returns>A System.Single</returns>
+		/// <returns>A System.Double</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		float GetLevelAttribute();
+		double GetLevelAttribute();
 		
 		/// <summary>Member GetChargingAttribute </summary>
 		/// <returns>A System.Boolean</returns>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetChargingAttribute();
+		
+		/// <summary>Member GetDischargingTimeAttribute </summary>
+		/// <returns>A System.Double</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double GetDischargingTimeAttribute();
+		
+		/// <summary>Member GetChargingTimeAttribute </summary>
+		/// <returns>A System.Double</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double GetChargingTimeAttribute();
 		
 		/// <summary>Member GetOnlevelchangeAttribute </summary>
 		/// <returns>A nsIDOMEventListener</returns>
@@ -243,5 +279,27 @@ namespace Gecko
 		/// <param name='aOnchargingchange'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOnchargingchangeAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener aOnchargingchange);
+		
+		/// <summary>Member GetOndischargingtimechangeAttribute </summary>
+		/// <returns>A nsIDOMEventListener</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMEventListener GetOndischargingtimechangeAttribute();
+		
+		/// <summary>Member SetOndischargingtimechangeAttribute </summary>
+		/// <param name='aOndischargingtimechange'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOndischargingtimechangeAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener aOndischargingtimechange);
+		
+		/// <summary>Member GetOnchargingtimechangeAttribute </summary>
+		/// <returns>A nsIDOMEventListener</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMEventListener GetOnchargingtimechangeAttribute();
+		
+		/// <summary>Member SetOnchargingtimechangeAttribute </summary>
+		/// <param name='aOnchargingtimechange'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOnchargingtimechangeAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventListener aOnchargingtimechange);
 	}
 }

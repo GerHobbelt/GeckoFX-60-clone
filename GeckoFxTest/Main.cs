@@ -20,11 +20,11 @@ namespace GeckoFxTest
 			if (!Environment.GetEnvironmentVariable("LD_LIBRARY_PATH").Contains("/usr/lib/firefox-9.0.1/"))
 				throw new ApplicationException(String.Format("LD_LIBRARY_PATH must contain {0}", "/usr/lib/firefox-9.0.1/"));
 
-			Xpcom.Initialize("/usr/lib/firefox-10.0/");
+			Xpcom.Initialize("/usr/lib/firefox-11.0.1/");
 #else
-			if (Directory.Exists(@"c:\program Files (x86)\Mozilla Firefox 10.0\"))
+			if (Directory.Exists(@"c:\program Files (x86)\Mozilla Firefox 11.0\"))
 			{
-				Xpcom.Initialize( @"c:\program Files (x86)\Mozilla Firefox 10.0\" );
+				Xpcom.Initialize( @"c:\program Files (x86)\Mozilla Firefox 11.0\" );
 			}else
 			{
 				Xpcom.Initialize(@"c:\program Files (x86)\Mozilla Firefox\");

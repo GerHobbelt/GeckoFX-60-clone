@@ -39,7 +39,7 @@ namespace Gecko
     /// filesystem. Decode notifications are fired as the image is decoded. If an
     /// image is decoded on load and not visibly discarded, decode notifications are
     /// nested logically inside load notifications as one might expect. However, with
-    /// decode-on-draw, the set of decode notifications can come completely _after_
+    /// decode-on-draw, the set of decode notifications can imgRcome completely _after_
     /// the load notifications, and can come multiple times if the image is
     /// discardable. Moreover, they can be interleaved in various ways. In general,
     /// any presumed ordering between load and decode notifications should not be
@@ -59,7 +59,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9f6bfbee-9e04-43a0-b8f6-2159973efec8")]
+	[Guid("2e5fa0c4-57f8-4d16-bda3-1daeba9caa34")]
 	public interface imgIDecoderObserver : imgIContainerObserver
 	{
 		
@@ -132,6 +132,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnStopContainer(imgIRequest aRequest, imgIContainer aContainer);
+		
+		/// <summary>
+        /// Notification for when an image is known to be animated. This should be
+        /// fired at the earliest possible time.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnImageIsAnimated(imgIRequest aRequest);
 		
 		/// <summary>
         /// In theory a decode notification, but currently a load notification.

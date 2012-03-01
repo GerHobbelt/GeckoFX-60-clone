@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIGSettingsCollection </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("09637d3c-3c07-40b4-aff9-1d2a0f046f3c")]
+	[Guid("16d5b0ed-e756-4f1b-a8ce-9132e869acd8")]
 	public interface nsIGSettingsCollection
 	{
 		
@@ -70,6 +70,13 @@ namespace Gecko
 		/// <returns>A System.Int32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetInt([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase key);
+		
+		/// <summary>Member GetStringList </summary>
+		/// <param name='key'> </param>
+		/// <returns>A nsIArray</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIArray GetStringList([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase key);
 	}
 	
 	/// <summary>nsIGSettingsService </summary>

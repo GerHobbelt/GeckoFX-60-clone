@@ -107,6 +107,20 @@
     <Compile Include="BaseTypes\gfxGraphicsFilter.cs" />
     <Compile Include="BaseTypes\gfxMatrix.cs" />
     <Compile Include="BaseTypes\gfxRect.cs" />
+    <Compile Include="Generated\mozIDOMTelephony.cs" />
+    <Compile Include="Generated\nsIAndroidBridge.cs" />
+    <Compile Include="Generated\nsIAudioManager.cs" />
+    <Compile Include="Generated\nsIDOMApplicationRegistry.cs" />
+    <Compile Include="Generated\nsIDOMNavigatorSms.cs" />
+    <Compile Include="Generated\nsIDOMSmsEvent.cs" />
+    <Compile Include="Generated\nsIDOMSmsManager.cs" />
+    <Compile Include="Generated\nsIDOMSmsMessage.cs" />
+    <Compile Include="Generated\nsIFrameRequestCallback.cs" />
+    <Compile Include="Generated\nsIProfiler.cs" />
+    <Compile Include="Generated\nsIRadioWorker.cs" />
+    <Compile Include="Generated\nsISmsService.cs" />
+    <Compile Include="Generated\nsITelephone.cs" />
+    <Compile Include="Generated\nsIWebSocket.cs" />
     <Compile Include="Interop\InstanceWrapper.cs" />
     <Compile Include="IOService.cs" />
     <Compile Include="Search\BrowserSearchService.cs" />
@@ -342,7 +356,6 @@
     <Compile Include="Generated\nsIAccessibleWin32Object.cs" />
     <Compile Include="Generated\nsIAccessNode.cs" />
     <Compile Include="Generated\nsIAlertsService.cs" />
-    <Compile Include="Generated\nsIAnimationFrameListener.cs" />
     <Compile Include="Generated\nsIAnnotationService.cs" />
     <Compile Include="Generated\nsIAppleFileDecoder.cs" />
     <Compile Include="Generated\nsIApplicationCache.cs" />
@@ -419,7 +432,6 @@
     <Compile Include="Generated\nsIChannelEventSink.cs" />
     <Compile Include="Generated\nsIChannelPolicy.cs" />
     <Compile Include="Generated\nsICharsetConverterManager.cs" />
-    <Compile Include="Generated\nsICharsetResolver.cs" />
     <Compile Include="Generated\nsIChildChannel.cs" />
     <Compile Include="Generated\nsIChromeRegistry.cs" />
     <Compile Include="Generated\nsIClassInfo.cs" />
@@ -700,7 +712,6 @@
     <Compile Include="Generated\nsIDOMNotifyAudioAvailableEvent.cs" />
     <Compile Include="Generated\nsIDOMNotifyPaintEvent.cs" />
     <Compile Include="Generated\nsIDOMNSEditableElement.cs" />
-    <Compile Include="Generated\nsIDOMNSElement.cs" />
     <Compile Include="Generated\nsIDOMNSEvent.cs" />
     <Compile Include="Generated\nsIDOMNSRange.cs" />
     <Compile Include="Generated\nsIDOMNSRGBAColor.cs" />
@@ -871,7 +882,6 @@
     <Compile Include="Generated\nsIDragService.cs" />
     <Compile Include="Generated\nsIDragSession.cs" />
     <Compile Include="Generated\nsIDroppedLinkHandler.cs" />
-    <Compile Include="Generated\nsIDynamicContainer.cs" />
     <Compile Include="Generated\nsIEditActionListener.cs" />
     <Compile Include="Generated\nsIEditingSession.cs" />
     <Compile Include="Generated\nsIEditor.cs" />
@@ -1058,7 +1068,6 @@
     <Compile Include="Generated\nsIMIMEInputStream.cs" />
     <Compile Include="Generated\nsIMIMEService.cs" />
     <Compile Include="Generated\nsIModule.cs" />
-    <Compile Include="Generated\nsIMozWebSocket.cs" />
     <Compile Include="Generated\nsIMultiPartChannel.cs" />
     <Compile Include="Generated\nsIMultiplexInputStream.cs" />
     <Compile Include="Generated\nsIMutable.cs" />
@@ -1421,10 +1430,6 @@
     <Compile Include="Generated\nsIXPCScriptable.cs" />
     <Compile Include="Generated\nsIXPCScriptNotify.cs" />
     <Compile Include="Generated\nsIXPCSecurityManager.cs" />
-    <Compile Include="Generated\nsIXPIDialogService.cs" />
-    <Compile Include="Generated\nsIXPIInstallInfo.cs" />
-    <Compile Include="Generated\nsIXPInstallManager.cs" />
-    <Compile Include="Generated\nsIXPIProgressDialog.cs" />
     <Compile Include="Generated\nsIXSLTException.cs" />
     <Compile Include="Generated\nsIXSLTProcessor.cs" />
     <Compile Include="Generated\nsIXSLTProcessorPrivate.cs" />
@@ -1448,7 +1453,6 @@
     <Compile Include="Generated\nsIXULWindow.cs" />
     <Compile Include="Generated\nsIZipReader.cs" />
     <Compile Include="Generated\nsIZipWriter.cs" />
-    <Compile Include="Generated\nsPICertNotification.cs" />
     <Compile Include="Generated\nsPICommandUpdater.cs" />
     <Compile Include="Generated\nsPIDNSService.cs" />
     <Compile Include="Generated\nsPIEditorTransaction.cs" />
@@ -1460,7 +1464,6 @@
     <Compile Include="Generated\nsPIWindowWatcher.cs" />
     <Compile Include="Generated\nspluginroot.cs" />
     <Compile Include="Generated\nsrootidl.cs" />
-    <Compile Include="Generated\OpenWebapps.cs" />
     <Compile Include="Generated\rdfIDataSource.cs" />
     <Compile Include="Generated\rdfISerializer.cs" />
     <Compile Include="Generated\rdfITripleVisitor.cs" />

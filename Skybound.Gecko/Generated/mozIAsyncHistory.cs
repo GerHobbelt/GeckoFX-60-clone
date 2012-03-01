@@ -165,7 +165,28 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f79ca67c-7e57-4511-a400-ea31001c762f")]
+	[Guid("994092bf-936f-449b-8dd6-0941e024360d")]
+	public interface mozIVisitedStatusCallback
+	{
+		
+		/// <summary>
+        /// Notifies whether a certain URI has been visited.
+        ///
+        /// @param aURI
+        /// URI being notified about.
+        /// @param aVisitedStatus
+        /// The visited status of aURI.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void IsVisited([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.U1)] bool aVisitedStatus);
+	}
+	
+	/// <summary>
+    /// @status EXPERIMENTAL
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("b7edc16e-9f3c-4bf5-981b-4e8000b02d89")]
 	public interface mozIAsyncHistory
 	{
 		
@@ -192,5 +213,16 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void UpdatePlaces(System.IntPtr aPlaceInfo, mozIVisitInfoCallback aCallback, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Checks if a given URI has been visited.
+        ///
+        /// @param aURI
+        /// The URI to check for.
+        /// @param aCallback
+        /// A mozIVisitStatusCallback object which receives the visited status.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void IsURIVisited([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, mozIVisitedStatusCallback aCallback);
 	}
 }

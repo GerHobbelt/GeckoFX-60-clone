@@ -50,7 +50,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("95c74255-df9a-4060-b5a0-0d111fcafe08")]
+	[Guid("f7debb84-2854-4731-a57b-1bd752ad71f8")]
 	public interface nsIImageLoadingContent : imgIDecoderObserver
 	{
 		
@@ -123,6 +123,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void OnStopContainer(imgIRequest aRequest, imgIContainer aContainer);
+		
+		/// <summary>
+        /// Notification for when an image is known to be animated. This should be
+        /// fired at the earliest possible time.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void OnImageIsAnimated(imgIRequest aRequest);
 		
 		/// <summary>
         /// In theory a decode notification, but currently a load notification.
@@ -218,6 +225,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		imgIRequest GetRequest(int aRequestType);
+		
+		/// <summary>
+        /// Used to notify the image loading content node that a frame has been
+        /// created.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void FrameCreated(System.IntPtr aFrame);
+		
+		/// <summary>
+        /// Used to notify the image loading content node that a frame has been
+        /// destroyed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void FrameDestroyed(System.IntPtr aFrame);
 		
 		/// <summary>
         /// Used to find out what type of request one is dealing with (eg

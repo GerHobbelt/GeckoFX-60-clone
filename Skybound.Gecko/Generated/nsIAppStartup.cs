@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIAppStartup </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("35fcdb69-3bb6-4484-b99a-32f49a84fabd")]
+	[Guid("dd3e7b3c-0974-4a38-b4d3-ce2213452432")]
 	public interface nsIAppStartup
 	{
 		
@@ -95,7 +95,7 @@ namespace Gecko
         /// Properties may not be available depending on platform or application
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetStartupInfo();
+		System.IntPtr GetStartupInfo(System.IntPtr jsContext);
 		
 		/// <summary>
         /// True if startup was interrupted by an interactive prompt.

@@ -193,6 +193,13 @@ namespace Gecko
 		void MoveCaretToFocus([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
 		
 		/// <summary>
+        /// Check if given element is focusable.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool ElementIsFocusable([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, uint aFlags);
+		
+		/// <summary>
         /// Called when a window has been raised.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

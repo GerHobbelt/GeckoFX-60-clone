@@ -74,16 +74,16 @@ namespace Gecko
 		/// <summary>
         ///These types are inspired by DXGI_ADAPTER_DESC </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetAdapterVendorIDAttribute();
+		void GetAdapterVendorIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aAdapterVendorID);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetAdapterVendorID2Attribute();
+		void GetAdapterVendorID2Attribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aAdapterVendorID2);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetAdapterDeviceIDAttribute();
+		void GetAdapterDeviceIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aAdapterDeviceID);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetAdapterDeviceID2Attribute();
+		void GetAdapterDeviceID2Attribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aAdapterDeviceID2);
 		
 		/// <summary>
         /// The amount of RAM in MB in the display adapter.
@@ -142,5 +142,8 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetData();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetInfo(System.IntPtr jsContext);
 	}
 }

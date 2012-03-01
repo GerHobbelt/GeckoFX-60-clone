@@ -112,8 +112,9 @@ namespace Gecko
 		/// <summary>
         /// Restores the previous browser session using a fast, lightweight strategy
         /// @param aBringToFront should a restored tab be brought to the foreground?
+        /// @param aForceRestore  whether we need to force a restore, regardless of the recent crash situation
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RestoreLastSession([MarshalAs(UnmanagedType.U1)] bool aBringToFront);
+		void RestoreLastSession([MarshalAs(UnmanagedType.U1)] bool aBringToFront, [MarshalAs(UnmanagedType.U1)] bool aForceRestore);
 	}
 }

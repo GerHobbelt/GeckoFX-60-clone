@@ -393,7 +393,7 @@ namespace Gecko
 	/// <summary> </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a995b541-d514-43f1-ac0e-f49746c0b063")]
+	[Guid("07661008-5505-4784-a612-89f7dc2144da")]
 	public interface nsIXPConnect
 	{
 		
@@ -720,7 +720,7 @@ namespace Gecko
         /// Trigger a JS garbage collection.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GarbageCollect();
+		void GarbageCollect([MarshalAs(UnmanagedType.U1)] bool shrinkingGC);
 		
 		/// <summary>
         /// Define quick stubs on the given object, @a proto.
@@ -763,20 +763,6 @@ namespace Gecko
         /// on all scripts in the JSRuntime when the debugger is activated.
         /// This method will turn debug mode on or off when the context
         /// stack reaches zero length.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDebugModeWhenPossible([MarshalAs(UnmanagedType.U1)] bool mode);
-	}
-	
-	/// <summary>nsIXPConnect_MOZILLA_10_BRANCH </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("44bf9047-914a-4f47-a1ec-e417927bacd1")]
-	public interface nsIXPConnect_MOZILLA_10_BRANCH
-	{
-		
-		/// <summary>
-        /// controlling whether sync disable of debug mode is allowed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDebugModeWhenPossible([MarshalAs(UnmanagedType.U1)] bool mode, [MarshalAs(UnmanagedType.U1)] bool allowSyncDisable);

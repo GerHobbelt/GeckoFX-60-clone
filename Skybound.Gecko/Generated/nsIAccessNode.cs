@@ -41,7 +41,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("bbbd5a68-bad2-48c1-ab09-beb6c34f03d9")]
+	[Guid("08bb2c50-1b30-11e1-bddb-0800200c9a66")]
 	public interface nsIAccessNode
 	{
 		
@@ -95,13 +95,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ScrollToPoint(uint aCoordinateType, int aX, int aY);
-		
-		/// <summary>
-        /// A unique ID calculated for this DOM node, for the
-        /// purposes of caching and referencing this object.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetUniqueIDAttribute();
 		
 		/// <summary>
         /// Retrieve the computed style value for this DOM node, if it is a DOM element.

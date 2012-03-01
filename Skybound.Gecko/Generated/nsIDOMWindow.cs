@@ -56,7 +56,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8f577294-d572-4473-94b1-d2c5a74a2a74")]
+	[Guid("f6e3b10d-d5f4-4fcd-aa4c-5f98626d428a")]
 	public interface nsIDOMWindow
 	{
 		
@@ -590,12 +590,22 @@ namespace Gecko
 		ulong GetMozPaintCountAttribute();
 		
 		/// <summary>
-        /// Request a refresh of this browser window.
-        ///
-        /// @see <http://dvcs.w3.org/hg/webperf/raw-file/tip/specs/RequestAnimationFrame/Overview.html>
+        /// Argument is optional only so we can warn when it's null
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MozRequestAnimationFrame([MarshalAs(UnmanagedType.Interface)] nsIAnimationFrameListener aListener);
+		int MozRequestAnimationFrame([MarshalAs(UnmanagedType.Interface)] nsIFrameRequestCallback aCallback);
+		
+		/// <summary>
+        /// Cancel a refresh callback.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MozCancelAnimationFrame(int aHandle);
+		
+		/// <summary>
+        /// Backwards-compat shim for now to make Google maps work
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MozCancelRequestAnimationFrame(int aHandle);
 		
 		/// <summary>
         /// The current animation start time in milliseconds since the epoch.
@@ -1293,12 +1303,22 @@ namespace Gecko
 		new ulong GetMozPaintCountAttribute();
 		
 		/// <summary>
-        /// Request a refresh of this browser window.
-        ///
-        /// @see <http://dvcs.w3.org/hg/webperf/raw-file/tip/specs/RequestAnimationFrame/Overview.html>
+        /// Argument is optional only so we can warn when it's null
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void MozRequestAnimationFrame([MarshalAs(UnmanagedType.Interface)] nsIAnimationFrameListener aListener);
+		new int MozRequestAnimationFrame([MarshalAs(UnmanagedType.Interface)] nsIFrameRequestCallback aCallback);
+		
+		/// <summary>
+        /// Cancel a refresh callback.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void MozCancelAnimationFrame(int aHandle);
+		
+		/// <summary>
+        /// Backwards-compat shim for now to make Google maps work
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void MozCancelRequestAnimationFrame(int aHandle);
 		
 		/// <summary>
         /// The current animation start time in milliseconds since the epoch.

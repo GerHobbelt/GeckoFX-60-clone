@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("755e2d2d-a836-4539-83f4-16b51156341f")]
+	[Guid("a3d3181e-47c1-4f2e-b2c7-94775a86f5c5")]
 	public interface nsIEventSource
 	{
 		
@@ -53,6 +53,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetReadyStateAttribute();
+		
+		/// <summary>
+        /// requests.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetWithCredentialsAttribute();
 		
 		/// <summary>
         /// event handler attributes
@@ -98,8 +105,12 @@ namespace Gecko
         /// null.
         /// @param ownerWindow The associated window for the request. May be null.
         /// @param url The EventSource's url. This must not be empty.
+        /// @param withCredentials When set to true attempts to make cross-site
+        /// Access-Control requests with credentials such as
+        /// cookies and authorization headers. Never affects
+        /// same-site requests.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, System.IntPtr scriptContext, System.IntPtr ownerWindow, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase url);
+		void Init([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, System.IntPtr scriptContext, System.IntPtr ownerWindow, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase url, [MarshalAs(UnmanagedType.U1)] bool withCredentials);
 	}
 }

@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("aa232c7f-855f-4488-a92c-6f89adc668cc")]
+	[Guid("9be5b327-6818-464d-9695-f33885fd8377")]
 	public interface jsdIDebuggerService
 	{
 		
@@ -370,15 +370,13 @@ namespace Gecko
 		void ClearAllBreakpoints();
 		
 		/// <summary>
-        ///in jsvalue value </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		jsdIValue WrapValue();
-		
-		/// <summary>
-        /// The same as above but to be called from C++.
+        /// When called from JavaScript, this method returns the jsdIValue wrapper
+        /// for the given value. If a wrapper does not exist one will be created.
+        /// When called from another language this method returns an xpconnect
+        /// defined error code.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		jsdIValue WrapJSValue(System.IntPtr value);
+		jsdIValue WrapValue(System.IntPtr value);
 		
 		/// <summary>
         /// Push a new network queue, and enter a new UI event loop.
@@ -1173,7 +1171,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("861c4d37-e115-4a52-9f76-273cb6b21c3b")]
+	[Guid("1cd3535b-4ddb-4202-9053-e0ec88f5c82b")]
 	public interface jsdIValue : jsdIEphemeral
 	{
 		
@@ -1338,7 +1336,7 @@ namespace Gecko
         /// defined error code.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetWrappedValue();
+		System.IntPtr GetWrappedValue(System.IntPtr jsContext);
 		
 		/// <summary>
         /// If this is a function value, return its associated jsdIScript.

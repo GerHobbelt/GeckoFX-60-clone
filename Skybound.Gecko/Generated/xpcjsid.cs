@@ -130,7 +130,7 @@ namespace Gecko
 	/// <summary>nsIJSCID </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("26b2a374-6eaf-46d4-acaf-1c6be152d36b")]
+	[Guid("bf5eb086-9eaa-4694-aec3-fe4aac6119bd")]
 	public interface nsIJSCID : nsIJSID
 	{
 		
@@ -177,15 +177,19 @@ namespace Gecko
 		new System.IntPtr GetID();
 		
 		/// <summary>Member CreateInstance </summary>
-		/// <returns>A nsISupports</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
+		/// <param name='iid'> </param>
+		/// <param name='jsContext'> </param>
+		/// <param name='argc'> </param>
+		/// <returns>A System.IntPtr</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports CreateInstance();
+		System.IntPtr CreateInstance(System.IntPtr iid, System.IntPtr jsContext, int argc);
 		
 		/// <summary>Member GetService </summary>
-		/// <returns>A nsISupports</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
+		/// <param name='iid'> </param>
+		/// <param name='jsContext'> </param>
+		/// <param name='argc'> </param>
+		/// <returns>A System.IntPtr</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports GetService();
+		System.IntPtr GetService(System.IntPtr iid, System.IntPtr jsContext, int argc);
 	}
 }

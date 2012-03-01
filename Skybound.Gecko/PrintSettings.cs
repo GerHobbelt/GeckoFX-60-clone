@@ -780,6 +780,11 @@ namespace Gecko
 			throw new NotImplementedException();
 		}
 
+		public void GetPageRanges(System.IntPtr aPages)
+		{
+
+		}
+
 		#endregion
 	}
 }

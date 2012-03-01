@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5644af88-09e1-4fbd-83da-f012b3b30180")]
+	[Guid("4b967b6d-cd1c-49ae-a457-23ff76f5a2e8")]
 	public interface nsIHttpUpgradeListener
 	{
 		
@@ -202,5 +202,22 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void HTTPUpgrade([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aProtocolName, [MarshalAs(UnmanagedType.Interface)] nsIHttpUpgradeListener aListener);
+		
+		/// <summary>
+        /// Enable/Disable Spdy negotiation on per channel basis.
+        /// The network.http.spdy.enabled preference is still a pre-requisite
+        /// for starting spdy.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAllowSpdyAttribute();
+		
+		/// <summary>
+        /// Enable/Disable Spdy negotiation on per channel basis.
+        /// The network.http.spdy.enabled preference is still a pre-requisite
+        /// for starting spdy.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAllowSpdyAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowSpdy);
 	}
 }

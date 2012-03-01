@@ -137,6 +137,8 @@ namespace Gecko
         /// Until this time, we won't try to load it again.
         /// @throws NS_ERROR_FAILURE
         /// Thrown if the favicon is overbloated and won't be saved to the db.
+        ///
+        /// @deprecated Use mozIAsyncFavicons::replaceFaviconData
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetFaviconData([MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] aData, uint aDataLen, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aMimeType, long aExpiration);
@@ -157,6 +159,8 @@ namespace Gecko
         /// Until this time, we won't try to load it again.
         /// @throws NS_ERROR_FAILURE
         /// Thrown if the favicon is overbloated and won't be saved to the db.
+        ///
+        /// @deprecated Use mozIAsyncFavicons::replaceFaviconDataFromDataURL
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetFaviconDataFromDataURL([MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aDataURL, long aExpiration);

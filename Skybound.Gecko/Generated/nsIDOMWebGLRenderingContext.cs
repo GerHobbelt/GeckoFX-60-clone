@@ -179,6 +179,29 @@ namespace Gecko
 		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aName);
 	}
 	
+	/// <summary>nsIWebGLShaderPrecisionFormat </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("76265e93-2e8f-40ca-b25b-eea5995e9641")]
+	public interface nsIWebGLShaderPrecisionFormat
+	{
+		
+		/// <summary>Member GetRangeMinAttribute </summary>
+		/// <returns>A System.Int32</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetRangeMinAttribute();
+		
+		/// <summary>Member GetRangeMaxAttribute </summary>
+		/// <returns>A System.Int32</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetRangeMaxAttribute();
+		
+		/// <summary>Member GetPrecisionAttribute </summary>
+		/// <returns>A System.Int32</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetPrecisionAttribute();
+	}
+	
 	/// <summary>nsIWebGLUniformLocation </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -701,9 +724,17 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetShaderInfoLog([MarshalAs(UnmanagedType.Interface)] nsIWebGLShader shader, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
 		
-		/// <summary>
-        ///void glGetShaderPrecisionFormat(WebGLenum shadertype, WebGLenum precisiontype, WebGLint* range, WebGLint* precision);
-        /// </summary>
+		/// <summary>Member GetShaderPrecisionFormat </summary>
+		/// <param name='shadertype'> </param>
+		/// <param name='precisiontype'> </param>
+		/// <returns>A nsIWebGLShaderPrecisionFormat</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIWebGLShaderPrecisionFormat GetShaderPrecisionFormat(uint shadertype, uint precisiontype);
+		
+		/// <summary>Member GetShaderSource </summary>
+		/// <param name='shader'> </param>
+		/// <param name='retval'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetShaderSource([MarshalAs(UnmanagedType.Interface)] nsIWebGLShader shader, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
 		

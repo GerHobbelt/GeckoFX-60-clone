@@ -37,7 +37,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("519ae4fa-0fee-4aaa-bcb9-34b503236801")]
+	[Guid("0a6fc4c6-a62a-4f52-9ab6-3d398b958843")]
 	public interface nsIDOMCSS2Properties
 	{
 		
@@ -2862,5 +2862,17 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetMozAnimationAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aMozAnimation);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMozTextSizeAdjustAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aMozTextSizeAdjust);
+		
+		/// <summary>
+        /// raises(DOMException) on setting
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozTextSizeAdjustAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aMozTextSizeAdjust);
 	}
 }

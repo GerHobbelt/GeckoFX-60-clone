@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>mozIJSSubScriptLoader </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8792d77e-1dd2-11b2-ac7f-9bc9be4f2916")]
+	[Guid("837d0211-c448-4bb8-a9bf-922ba33b9d37")]
 	public interface mozIJSSubScriptLoader
 	{
 		
@@ -44,10 +44,10 @@ namespace Gecko
         /// defaults to the global object of the caller.
         /// @param charset optionally specifies the character encoding of
         /// the file. If absent, the file is interpreted
-        ///		      as ASCII.
+        /// as ASCII.
         /// @retval rv the value returned by the sub-script
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LoadSubScript([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string url);
+		System.IntPtr LoadSubScript([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase url, System.IntPtr obj, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase charset, System.IntPtr jsContext);
 	}
 }

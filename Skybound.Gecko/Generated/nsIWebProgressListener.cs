@@ -36,7 +36,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("570F39D1-EFD0-11d3-B093-00A024FFC08C")]
+	[Guid("a0cda7e4-c6ca-11e0-b6a5-001320257da5")]
 	public interface nsIWebProgressListener
 	{
 		
@@ -109,9 +109,12 @@ namespace Gecko
         /// The associated nsIRequest.  This may be null in some cases.
         /// @param aLocation
         /// The URI of the location that is being loaded.
+        /// @param aFlags
+        /// This is a value which explains the situation or the reason why
+        /// the location has changed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnLocationChange([MarshalAs(UnmanagedType.Interface)] nsIWebProgress aWebProgress, [MarshalAs(UnmanagedType.Interface)] nsIRequest aRequest, [MarshalAs(UnmanagedType.Interface)] nsIURI aLocation);
+		void OnLocationChange([MarshalAs(UnmanagedType.Interface)] nsIWebProgress aWebProgress, [MarshalAs(UnmanagedType.Interface)] nsIRequest aRequest, [MarshalAs(UnmanagedType.Interface)] nsIURI aLocation, uint aFlags);
 		
 		/// <summary>
         /// Notification that the status of a request has changed.  The status message

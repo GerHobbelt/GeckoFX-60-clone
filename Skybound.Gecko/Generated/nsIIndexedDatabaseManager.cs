@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIIndexedDatabaseUsageCallback </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("17675af5-0569-4f5b-987f-ff4bb60f73ee")]
+	[Guid("ef1795ec-7050-4658-b80f-0e48cbe1d64b")]
 	public interface nsIIndexedDatabaseUsageCallback
 	{
 		
@@ -38,7 +38,7 @@ namespace Gecko
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnUsageResult([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, ulong aUsage);
+		void OnUsageResult([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, ulong aUsage, ulong aFileUsage);
 	}
 	
 	/// <summary>nsIIndexedDatabaseManager </summary>

@@ -31,17 +31,17 @@ namespace Gecko
     ///NOTE: this interface is only implemented in debug builds </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0c19c88a-9ef1-4bb4-b0a2-86ab768e8bd6")]
+	[Guid("ca7b0bc7-c67c-4b79-8270-ed7ba002af08")]
 	public interface nsIGfxInfoDebug
 	{
 		
 		/// <summary>
         ///NOTE: this interface is only implemented in debug builds </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SpoofVendorID(uint aVendorID);
+		void SpoofVendorID([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aVendorID);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SpoofDeviceID(uint aDeviceID);
+		void SpoofDeviceID([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aDeviceID);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SpoofDriverVersion([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aDriverVersion);

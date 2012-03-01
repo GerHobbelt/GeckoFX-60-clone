@@ -232,7 +232,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("573f99bd-988c-4253-836f-4ce009d33ac6")]
+	[Guid("5398fdee-72d8-4100-9863-6bb7f88274e0")]
 	public interface nsINavBookmarksService
 	{
 		
@@ -305,24 +305,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int CreateFolder(long aParentFolder, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase name, int index);
-		
-		/// <summary>
-        /// Creates a dynamic container under the given parent folder.
-        ///
-        /// @param aParentFolder
-        /// The id of the parent folder
-        /// @param aName
-        /// The name of the new folder
-        /// @param aContractId
-        /// The contract id of the service which is to manipulate this
-        /// container.
-        /// @param aIndex
-        /// The index to insert at, or DEFAULT_INDEX to append
-        ///
-        /// @return The ID of the newly-inserted folder.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int CreateDynamicContainer(long aParentFolder, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aContractId, int aIndex);
 		
 		/// <summary>
         /// Gets an undo-able transaction for removing a folder from the bookmarks

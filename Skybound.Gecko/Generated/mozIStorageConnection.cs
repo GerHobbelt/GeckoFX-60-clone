@@ -38,7 +38,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("ad035628-4ffb-42ff-a256-0ed9e410b859")]
+	[Guid("b2a4b534-f92e-4387-9bd9-d10408173925")]
 	public interface mozIStorageConnection
 	{
 		
@@ -121,6 +121,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		long GetLastInsertRowIDAttribute();
+		
+		/// <summary>
+        /// affectedRows returns the number of database rows that were changed or
+        /// inserted or deleted by last operation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetAffectedRowsAttribute();
 		
 		/// <summary>
         /// The last error SQLite error code.
@@ -370,5 +377,17 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetGrowthIncrement(int aIncrement, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDatabaseName);
+		
+		/// <summary>
+        /// Enable a predefined virtual table implementation.
+        ///
+        /// @param aModuleName
+        /// The module to enable. Only "filesystem" is currently supported.
+        ///
+        /// @throws NS_ERROR_FAILURE
+        /// For unknown module names.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void EnableModule([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aModuleName);
 	}
 }

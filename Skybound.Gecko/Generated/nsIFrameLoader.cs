@@ -144,7 +144,7 @@ namespace Gecko
 	/// <summary>nsIFrameLoader </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("12905a29-4246-475a-81d4-fc389197df02")]
+	[Guid("efc0b731-45dc-4189-8ffa-d3eeeb850977")]
 	public interface nsIFrameLoader
 	{
 		
@@ -278,6 +278,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetEventModeAttribute(uint aEventMode);
+		
+		/// <summary>
+        /// If false, then the subdocument is not clipped to its CSS viewport, and the
+        /// subdocument's viewport scrollbar(s) are not rendered.
+        /// Defaults to true.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetClipSubdocumentAttribute();
+		
+		/// <summary>
+        /// If false, then the subdocument is not clipped to its CSS viewport, and the
+        /// subdocument's viewport scrollbar(s) are not rendered.
+        /// Defaults to true.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetClipSubdocumentAttribute([MarshalAs(UnmanagedType.U1)] bool aClipSubdocument);
 	}
 	
 	/// <summary>nsIFrameLoaderOwner </summary>

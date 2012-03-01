@@ -105,9 +105,12 @@ namespace Gecko
         /// The associated nsIRequest.  This may be null in some cases.
         /// @param aLocation
         /// The URI of the location that is being loaded.
+        /// @param aFlags
+        /// This is a value which explains the situation or the reason why
+        /// the location has changed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void OnLocationChange([MarshalAs(UnmanagedType.Interface)] nsIWebProgress aWebProgress, [MarshalAs(UnmanagedType.Interface)] nsIRequest aRequest, [MarshalAs(UnmanagedType.Interface)] nsIURI aLocation);
+		new void OnLocationChange([MarshalAs(UnmanagedType.Interface)] nsIWebProgress aWebProgress, [MarshalAs(UnmanagedType.Interface)] nsIRequest aRequest, [MarshalAs(UnmanagedType.Interface)] nsIURI aLocation, uint aFlags);
 		
 		/// <summary>
         /// Notification that the status of a request has changed.  The status message
