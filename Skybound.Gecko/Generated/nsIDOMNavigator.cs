@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIDOMNavigator </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c5acd187-bf76-4b26-9329-41c798e47fb6")]
+	[Guid("d6d01084-4a7d-469b-9654-76cf220cb124")]
 	public interface nsIDOMNavigator
 	{
 		
@@ -134,5 +134,53 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool TaintEnabled();
+		
+		/// <summary>
+        /// Pulse the device's vibrator, if it has one.  If the device does not have a
+        /// vibrator, this function does nothing.  If the window is hidden, this
+        /// function does nothing.
+        ///
+        /// mozVibrate takes one argument, which specifies either how long to vibrate
+        /// for or gives a pattern of vibrator-on/vibrator-off timings.
+        ///
+        /// If a vibration pattern is in effect when this function is called, this
+        /// call will overwrite the existing pattern, if this call successfully
+        /// completes.
+        ///
+        /// We handle the argument to mozVibrate as follows.
+        ///
+        /// - If the argument is undefined or null, we throw
+        /// NS_ERROR_DOM_NOT_SUPPORTED_ERR.
+        ///
+        /// - If the argument is 0, the empty list, or a list containing entirely 0s,
+        /// we cancel any outstanding vibration pattern; that is, we stop the device
+        /// from vibrating.
+        ///
+        /// - Otherwise, if the argument X is not a list, we treat it as though it's
+        /// the singleton list [X] and then proceed as below.
+        ///
+        /// - If the argument is a list (or if we wrapped it as a list above), then we
+        /// try to convert each element in the list to an integer, by first
+        /// converting it to a number and then rounding.  If there is some element
+        /// that we can't convert to an integer, or if any of the integers are
+        /// negative, we throw NS_ERROR_DOM_NOT_SUPPORTED_ERR.
+        ///
+        /// This list of integers specifies a vibration pattern.  Given a list of
+        /// numbers
+        ///
+        /// [a_1, b_1, a_2, b_2, ..., a_n]
+        ///
+        /// the device will vibrate for a_1 milliseconds, then be still for b_1
+        /// milliseconds, then vibrate for a_2 milliseconds, and so on.
+        ///
+        /// The list may contain an even or an odd number of elements, but if you
+        /// pass an even number of elements (that is, if your list ends with b_n
+        /// instead of a_n), the final element doesn't specify anything meaningful.
+        ///
+        /// We may throw NS_ERROR_DOM_NOT_SUPPORTED_ERR if the vibration pattern is
+        /// too long, or if any of its elements is too large.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MozVibrate(System.IntPtr aPattern, System.IntPtr jsContext);
 	}
 }

@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIScriptableRegion </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f390b97c-a0cf-4cb4-b9e8-bfc15df76ab5")]
+	[Guid("a5f44cc7-2820-489b-b817-ae8a08506ff6")]
 	public interface nsIScriptableRegion
 	{
 		
@@ -184,7 +184,7 @@ namespace Gecko
         /// The result will contain bogus data if values don't fit in 31 bit
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetRects();
+		System.IntPtr GetRects(System.IntPtr jsContext);
 		
 		/// <summary>
         /// does the region intersect the rectangle?

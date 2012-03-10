@@ -510,7 +510,17 @@ namespace GeckofxUnitTests
 			throw new NotImplementedException();
 		}
 
-		public void MozRequestAnimationFrame(nsIAnimationFrameListener aListener)
+		public int MozRequestAnimationFrame(nsIFrameRequestCallback callback)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void MozCancelRequestAnimationFrame(int frame)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void MozCancelAnimationFrame(int frame)
 		{
 			throw new NotImplementedException();
 		}

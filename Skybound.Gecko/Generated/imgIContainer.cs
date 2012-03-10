@@ -37,7 +37,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("239dfa70-2285-4d63-99cd-e9b7ff9555c7")]
+	[Guid("8c82b89f-f90c-4a31-a544-6e1f759673d4")]
 	public interface imgIContainer
 	{
 		
@@ -94,6 +94,15 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetFrame(uint aWhichFrame, uint aFlags);
+		
+		/// <summary>
+        /// Attempts to create an ImageContainer (and Image) containing the current
+        /// frame. Only valid for RASTER type images.
+        ///
+        /// @param aManager The layer manager to use to create the ImageContainer.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetImageContainer(System.IntPtr aManager);
 		
 		/// <summary>
         /// Create and return a new copy of the given frame that you can write to
@@ -183,6 +192,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void UnlockImage();
+		
+		/// <summary>
+        /// Indicates that this imgIContainer has been triggered to update
+        /// its internal animation state. Likely this should only be called
+        /// from within nsImageFrame or objects of similar type.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RequestRefresh(ulong aTime);
 		
 		/// <summary>
         /// Animation mode Constants

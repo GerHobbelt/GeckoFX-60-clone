@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("adc6a1e2-9fd7-4d28-a7f9-9c653313124b")]
+	[Guid("e0d308ea-b804-4962-918a-28ec0aa4e42b")]
 	public interface nsIIDBObjectStore
 	{
 		
@@ -47,7 +47,7 @@ namespace Gecko
 		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetKeyPathAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aKeyPath);
+		System.IntPtr GetKeyPathAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetIndexNamesAttribute();
@@ -55,6 +55,10 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIIDBTransaction GetTransactionAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAutoIncrementAttribute();
 		
 		/// <summary>
         /// Success fires IDBTransactionEvent, result == value for key
@@ -105,7 +109,7 @@ namespace Gecko
         ///none </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIIDBIndex CreateIndex([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase name, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase keyPath, System.IntPtr options, System.IntPtr jsContext);
+		nsIIDBIndex CreateIndex([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase name, System.IntPtr keyPath, System.IntPtr options, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Returns object immediately

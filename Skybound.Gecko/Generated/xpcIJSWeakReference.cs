@@ -30,13 +30,17 @@ namespace Gecko
 	/// <summary>xpcIJSWeakReference </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5b776cd4-952b-45a2-b363-84e99e8fe608")]
+	[Guid("75767928-ecb1-4e6c-9f55-c118b297fcef")]
 	public interface xpcIJSWeakReference
 	{
 		
 		/// <summary>
-        ///JSObject </summary>
+        /// To be called from JS only.
+        ///
+        /// Returns the referenced JS object or null if the JS object has
+        /// been garbage collected.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Get();
+		System.IntPtr Get(System.IntPtr jsContext);
 	}
 }

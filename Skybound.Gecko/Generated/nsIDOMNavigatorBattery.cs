@@ -27,17 +27,17 @@ namespace Gecko
 	using System.Windows.Forms;
 	
 	
-	/// <summary>nsIDOMNavigatorBattery </summary>
+	/// <summary>nsIDOMMozNavigatorBattery </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a19eedd7-6c26-4676-bd34-7ca74ca5f565")]
-	public interface nsIDOMNavigatorBattery
+	[Guid("c295f049-be3d-4f83-9f7c-5c3e91d6ecb9")]
+	public interface nsIDOMMozNavigatorBattery
 	{
 		
 		/// <summary>Member GetMozBatteryAttribute </summary>
-		/// <returns>A nsIDOMBatteryManager</returns>
+		/// <returns>A nsIDOMMozBatteryManager</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMBatteryManager GetMozBatteryAttribute();
+		nsIDOMMozBatteryManager GetMozBatteryAttribute();
 	}
 }

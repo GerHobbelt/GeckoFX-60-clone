@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("107e8048-d00f-4711-bd21-97184ccae0b1")]
+	[Guid("e5330f90-91a3-41d7-b29e-af38a23a6602")]
 	public interface nsIObjectLoadingContent
 	{
 		
@@ -106,5 +106,12 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void PluginCrashed([MarshalAs(UnmanagedType.Interface)] nsIPluginTag pluginTag, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase pluginDumpID, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase browserDumpID, [MarshalAs(UnmanagedType.U1)] bool submittedCrashReport);
+		
+		/// <summary>
+        /// This method will play a plugin that has been stopped by the
+        /// click-to-play plugins feature.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PlayPlugin();
 	}
 }

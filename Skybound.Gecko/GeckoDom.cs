@@ -321,8 +321,7 @@ namespace Gecko
 		internal GeckoElement(nsIDOMHTMLElement element)
 			: base(element)
 		{
-			this.DomElement = element;
-			this.DomNSElement = (nsIDOMNSElement)element;			
+			this.DomElement = element;			
 		}
 		
 		internal static GeckoElement Create(nsIDOMHTMLElement element)
@@ -335,8 +334,7 @@ namespace Gecko
 			return (element == null) ? null : DOM.DOMSelector.GetClassFor<T>(element);
 		}
 		
-		nsIDOMHTMLElement DomElement;
-		nsIDOMNSElement DomNSElement;		
+		nsIDOMHTMLElement DomElement;		
 		
 		/// <summary>
 		/// Gets the inline style of the GeckoElement. 
@@ -423,18 +421,18 @@ namespace Gecko
 		{
 			get
 			{
-				nsIDOMClientRect domRect = DomNSElement.GetBoundingClientRect();
+				nsIDOMClientRect domRect = DomElement.GetBoundingClientRect();
 				var r = new Rectangle((int)domRect.GetLeftAttribute(), (int)domRect.GetTopAttribute(), (int)domRect.GetWidthAttribute(), (int)domRect.GetHeightAttribute());
 				return r;				
 			}
 		}
 
-		public int ScrollLeft { get { return DomNSElement.GetScrollLeftAttribute(); } set { DomNSElement.SetScrollLeftAttribute(value); } }
-		public int ScrollTop { get { return DomNSElement.GetScrollTopAttribute(); } set { DomNSElement.SetScrollTopAttribute(value); } }
-		public int ScrollWidth { get { return DomNSElement.GetScrollWidthAttribute(); } }
-		public int ScrollHeight { get { return DomNSElement.GetScrollHeightAttribute(); } }
-		public int ClientWidth { get { return DomNSElement.GetClientWidthAttribute(); } }
-		public int ClientHeight { get { return DomNSElement.GetClientHeightAttribute(); } }
+		public int ScrollLeft { get { return DomElement.GetScrollLeftAttribute(); } set { DomElement.SetScrollLeftAttribute(value); } }
+		public int ScrollTop { get { return DomElement.GetScrollTopAttribute(); } set { DomElement.SetScrollTopAttribute(value); } }
+		public int ScrollWidth { get { return DomElement.GetScrollWidthAttribute(); } }
+		public int ScrollHeight { get { return DomElement.GetScrollHeightAttribute(); } }
+		public int ClientWidth { get { return DomElement.GetClientWidthAttribute(); } }
+		public int ClientHeight { get { return DomElement.GetClientHeightAttribute(); } }
 
 		public int OffsetLeft { get { return DomElement.GetOffsetLeftAttribute(); } }
 		public int OffsetTop { get { return DomElement.GetOffsetTopAttribute(); } }
@@ -459,30 +457,7 @@ namespace Gecko
 
 		public virtual string OuterHtml
 		{
-			get {
-				string contenteditableAttribute = String.Empty;
-				string contentEdiableValue = ContentEditable;
-
-				if (contentEdiableValue.ToLowerInvariant() != "inherit")
-					contenteditableAttribute = String.Format(" ContentEditable={0}", contentEdiableValue);
-
-				string nameAttribute = String.Empty;
-				string name = this.GetAttribute("name");
-				if (!String.IsNullOrEmpty(name))
-					nameAttribute = String.Format(" name=\"{0}\"", name);
-
-				string idAttribute = String.Empty;
-				string id = Id;
-				if (!String.IsNullOrEmpty(id))
-					idAttribute = String.Format(" id=\"{0}\"", id);
-
-				string classAttribute = String.Empty;
-				string className = ClassName;
-				if (!String.IsNullOrEmpty(className))
-					classAttribute = String.Format(" class=\"{0}\"", className);
-				
-				return String.Format("<{0}{1}{2}{3}{4}>{5}</{0}>", TagName, nameAttribute, idAttribute, classAttribute, contenteditableAttribute, InnerHtml);
-			}
+			get { return nsString.Get(DomElement.GetOuterHTMLAttribute); }			
 		}
 		
 		public int TabIndex

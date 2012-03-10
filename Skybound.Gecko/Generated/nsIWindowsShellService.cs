@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIWindowsShellService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("16e7e8da-8bef-4f41-be5f-045b2e9918e1")]
+	[Guid("89b0a761-d9a0-4c39-ab83-d81566459a31")]
 	public interface nsIWindowsShellService : nsIShellService
 	{
 		
@@ -131,14 +131,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsILocalFile GetDefaultFeedReaderAttribute();
-		
-		/// <summary>
-        /// The number of unread mail messages for the current user.
-        ///
-        /// @return The number of unread (new) mail messages for the current user.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetUnreadMailCountAttribute();
 		
 		/// <summary>
         /// Provides the shell service an opportunity to do some Win7+ shortcut

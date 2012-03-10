@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIEditorIMESupport </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a64744c5-d3ff-46ba-b9b1-57f79ff7d97d")]
+	[Guid("0ba7f490-afb8-46dd-87fc-bc6137fbc899")]
 	public interface nsIEditorIMESupport
 	{
 		
@@ -44,7 +44,7 @@ namespace Gecko
         /// Get preferred IME status of current widget.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPreferredIMEState(ref uint aState);
+		System.IntPtr GetPreferredIMEState();
 		
 		/// <summary>
         /// whether this editor has active IME transaction

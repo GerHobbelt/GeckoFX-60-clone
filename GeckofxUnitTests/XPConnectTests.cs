@@ -41,7 +41,7 @@ namespace GeckofxUnitTests
 		[Test]
 		public void GarbageCollect_ShouldNotThrowException()
 		{
-			m_instance.GarbageCollect();
+			m_instance.GarbageCollect(true);
 		}
 	}
 }

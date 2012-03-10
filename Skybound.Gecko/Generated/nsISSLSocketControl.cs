@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsISSLSocketControl </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a092097c-8386-4f1b-97b1-90eb70008c2d")]
+	[Guid("753f0f13-681d-4de3-a6c6-11aa7e0b3afd")]
 	public interface nsISSLSocketControl
 	{
 		
@@ -52,5 +52,34 @@ namespace Gecko
 		/// <summary>Member StartTLS </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void StartTLS();
+		
+		/// <summary>
+        ///NPN (Next Protocol Negotiation) is a mechanism for
+        ///       negotiating the protocol to be spoken inside the SSL
+        ///       tunnel during the SSL handshake. The NPNList is the list
+        ///       of offered client side protocols. setNPNList() needs to
+        ///       be called before any data is read or written (including the
+        ///       handshake to be setup correctly. </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetNPNList(System.IntPtr aNPNList);
+		
+		/// <summary>
+        ///negotiatedNPN is '' if no NPN list was provided by the client,
+        /// or if the server did not select any protocol choice from that
+        /// list. That also includes the case where the server does not
+        /// implement NPN.
+        ///
+        /// If negotiatedNPN is read before NPN has progressed to the point
+        /// where this information is available NS_ERROR_NOT_CONNECTED is
+        /// raised.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetNegotiatedNPNAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aNegotiatedNPN);
+		
+		/// <summary>
+        ///e.g. "spdy/2" </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool JoinConnection([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase npnProtocol, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase hostname, int port);
 	}
 }

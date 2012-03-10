@@ -168,4 +168,34 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void StopImmediatePropagation();
 	}
+	
+	/// <summary>nsIEventInit </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("fe864f0f-45df-404a-bb27-83c5d08be8d1")]
+	public interface nsIEventInit
+	{
+		
+		/// <summary>Member GetBubblesAttribute </summary>
+		/// <returns>A System.Boolean</returns>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetBubblesAttribute();
+		
+		/// <summary>Member SetBubblesAttribute </summary>
+		/// <param name='aBubbles'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBubblesAttribute([MarshalAs(UnmanagedType.U1)] bool aBubbles);
+		
+		/// <summary>Member GetCancelableAttribute </summary>
+		/// <returns>A System.Boolean</returns>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCancelableAttribute();
+		
+		/// <summary>Member SetCancelableAttribute </summary>
+		/// <param name='aCancelable'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetCancelableAttribute([MarshalAs(UnmanagedType.U1)] bool aCancelable);
+	}
 }

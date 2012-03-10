@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIDOMGeoPositionAddress </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0DF49C5C-9845-42F9-A76C-62E09C110986")]
+	[Guid("93abae10-7024-49eb-8e05-1931343b0ebb")]
 	public interface nsIDOMGeoPositionAddress
 	{
 		
@@ -68,11 +68,6 @@ namespace Gecko
 		/// <param name='aCountry'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetCountryAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aCountry);
-		
-		/// <summary>Member GetCountryCodeAttribute </summary>
-		/// <param name='aCountryCode'> </param>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCountryCodeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aCountryCode);
 		
 		/// <summary>Member GetPostalCodeAttribute </summary>
 		/// <param name='aPostalCode'> </param>

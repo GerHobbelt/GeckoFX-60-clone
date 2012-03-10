@@ -32,29 +32,37 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a4d68b4e-0c0b-4c7c-b540-ef2f9834171f")]
+	[Guid("43845d58-1054-47fb-8be3-970b3f7bd7ea")]
 	public interface nsIJSON
 	{
 		
 		/// <summary>
-        ///in JSObject value </summary>
+        /// New users should use JSON.stringify!
+        /// The encode() method is only present for backward compatibility.
+        /// encode() is not a conforming JSON stringify implementation!
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Encode([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		void Encode(System.IntPtr value, System.IntPtr jsContext, int argc, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
 		
 		/// <summary>
-        ///in JSObject value </summary>
+        /// New users should use JSON.stringify.
+        /// You may also want to have a look at nsIConverterOutputStream.
+        ///
+        /// The encodeToStream() method is only present for backward compatibility.
+        /// encodeToStream() is not a conforming JSON stringify implementation!
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void EncodeToStream([MarshalAs(UnmanagedType.Interface)] nsIOutputStream stream, [MarshalAs(UnmanagedType.LPStr)] string charset, [MarshalAs(UnmanagedType.U1)] bool writeBOM);
+		void EncodeToStream([MarshalAs(UnmanagedType.Interface)] nsIOutputStream stream, [MarshalAs(UnmanagedType.LPStr)] string charset, [MarshalAs(UnmanagedType.U1)] bool writeBOM, System.IntPtr value, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
-        ///JSObject </summary>
+        /// New users should use JSON.parse!
+        /// The decode() method is only present for backward compatibility.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Decode([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase str);
+		System.IntPtr Decode([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase str, System.IntPtr jsContext);
 		
-		/// <summary>
-        ///JSObject </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DecodeFromStream([MarshalAs(UnmanagedType.Interface)] nsIInputStream stream, int contentLength);
+		System.IntPtr DecodeFromStream([MarshalAs(UnmanagedType.Interface)] nsIInputStream stream, int contentLength, System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EncodeFromJSVal(System.IntPtr value, System.IntPtr cx, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
@@ -66,14 +74,24 @@ namespace Gecko
 		System.IntPtr DecodeToJSVal([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase str, System.IntPtr cx);
 		
 		/// <summary>
-        ///jsval </summary>
+        /// Decode a JSON string, but also accept some strings in non-JSON format, as
+        /// the decoding methods here did previously before tightening.
+        ///
+        /// This method is provided only as a temporary transition path for users of
+        /// the old code who depended on the ability to decode leniently; new users
+        /// should use JSON.parse.
+        ///
+        /// This method must only be called from script.
+        ///
+        /// @param str the string to parse
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LegacyDecode([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase str);
+		System.IntPtr LegacyDecode([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase str, System.IntPtr jsContext);
 		
 		/// <summary>
-        ///jsval </summary>
+        ///Identical to legacyDecode, but decode the contents of stream. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LegacyDecodeFromStream([MarshalAs(UnmanagedType.Interface)] nsIInputStream stream, int contentLength);
+		System.IntPtr LegacyDecodeFromStream([MarshalAs(UnmanagedType.Interface)] nsIInputStream stream, int contentLength, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Make sure you GCroot the result of this function before using it.

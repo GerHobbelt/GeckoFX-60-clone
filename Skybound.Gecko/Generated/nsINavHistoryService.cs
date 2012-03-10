@@ -482,7 +482,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("55829318-0f6c-4503-8739-84231f3a6793")]
+	[Guid("62534d3c-1b3f-401e-b3ba-b911f57f8a29")]
 	public interface nsINavHistoryContainerResultNode : nsINavHistoryResultNode
 	{
 		
@@ -719,37 +719,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetChildrenReadOnlyAttribute();
-		
-		/// <summary>
-        /// This is a string representing the dynamic container API service that is
-        /// responsible for this container. This throws if if the node is not a dynamic
-        /// container.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDynamicContainerTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDynamicContainerType);
-		
-		/// <summary>
-        /// Appends a full visit node to this container and returns it. For the dynamic
-        /// container API. TO BE CALLED FROM nsIDynamicContainer::OnContainerOpening()
-        /// ONLY, and only for non-bookmark-folder containers.
-        ///
-        /// @see nsINavHistoryURIResultNode for parameters.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsINavHistoryResultNode AppendURINode([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURI, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTitle, uint aAccessCount, long aTime, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aIconURI);
-		
-		/// <summary>
-        /// Appends a bookmark folder node to this container and returns it. For the
-        /// dynamic container API. TO BE CALLED FROM nsIDynamicContainer::OnContainerOpening()
-        /// ONLY, and only for non-bookmark-folder containers.
-        ///
-        /// All container attributes will come from the boomkarks service for this
-        /// folder.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsINavHistoryContainerResultNode AppendFolderNode(long aFolderId);
 	}
 	
 	/// <summary>
@@ -1000,37 +969,6 @@ namespace Gecko
 		new bool GetChildrenReadOnlyAttribute();
 		
 		/// <summary>
-        /// This is a string representing the dynamic container API service that is
-        /// responsible for this container. This throws if if the node is not a dynamic
-        /// container.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetDynamicContainerTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDynamicContainerType);
-		
-		/// <summary>
-        /// Appends a full visit node to this container and returns it. For the dynamic
-        /// container API. TO BE CALLED FROM nsIDynamicContainer::OnContainerOpening()
-        /// ONLY, and only for non-bookmark-folder containers.
-        ///
-        /// @see nsINavHistoryURIResultNode for parameters.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsINavHistoryResultNode AppendURINode([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURI, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTitle, uint aAccessCount, long aTime, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aIconURI);
-		
-		/// <summary>
-        /// Appends a bookmark folder node to this container and returns it. For the
-        /// dynamic container API. TO BE CALLED FROM nsIDynamicContainer::OnContainerOpening()
-        /// ONLY, and only for non-bookmark-folder containers.
-        ///
-        /// All container attributes will come from the boomkarks service for this
-        /// folder.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsINavHistoryContainerResultNode AppendFolderNode(long aFolderId);
-		
-		/// <summary>
         /// Get the queries which build this node's children.
         /// Only valid for RESULT_TYPE_QUERY nodes.
         /// </summary>
@@ -1060,7 +998,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9ea86387-6a30-4ee2-b70d-26fbb718902f")]
+	[Guid("547102c4-ab84-4058-b9d4-6f99f6c80893")]
 	public interface nsINavHistoryResultObserver
 	{
 		
@@ -1211,32 +1149,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void NodeReplaced([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aParentNode, [MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aOldNode, [MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNewNode, uint aIndex);
-		
-		/// <summary>
-        /// Called after a container node went from closed to opened.
-        ///
-        /// @note  This method is DEPRECATED.  In the future only containerStateChanged
-        /// will notify when a container is opened.
-        ///
-        /// @param aContainerNode
-        /// the container node which was opened
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ContainerOpened([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aContainerNode);
-		
-		/// <summary>
-        /// Called after a container node went from opened to closed. This will be
-        /// called for the topmost container that is closing, and implies that any
-        /// child containers have closed as well.
-        ///
-        /// @note  This method is DEPRECATED.  In the future only containerStateChanged
-        /// will notify when a container is closed.
-        ///
-        /// @param aContainerNode
-        /// the container node which was closed
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ContainerClosed([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aContainerNode);
 		
 		/// <summary>
         /// Called after a container changes state.
@@ -1466,32 +1378,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void NodeReplaced([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aParentNode, [MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aOldNode, [MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNewNode, uint aIndex);
-		
-		/// <summary>
-        /// Called after a container node went from closed to opened.
-        ///
-        /// @note  This method is DEPRECATED.  In the future only containerStateChanged
-        /// will notify when a container is opened.
-        ///
-        /// @param aContainerNode
-        /// the container node which was opened
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ContainerOpened([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aContainerNode);
-		
-		/// <summary>
-        /// Called after a container node went from opened to closed. This will be
-        /// called for the topmost container that is closing, and implies that any
-        /// child containers have closed as well.
-        ///
-        /// @note  This method is DEPRECATED.  In the future only containerStateChanged
-        /// will notify when a container is closed.
-        ///
-        /// @param aContainerNode
-        /// the container node which was closed
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ContainerClosed([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aContainerNode);
 		
 		/// <summary>
         /// Called after a container changes state.

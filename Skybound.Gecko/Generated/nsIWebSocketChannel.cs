@@ -27,10 +27,12 @@ namespace Gecko
 	using System.Windows.Forms;
 	
 	
-	/// <summary>nsIWebSocketChannel </summary>
+	/// <summary>
+    /// You probably want nsI{Moz}WebSocket.idl
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e8ae0371-c28f-4d61-b257-514e014a4686")]
+	[Guid("ace34548-6dde-4570-b0b4-451aa6a877e0")]
 	public interface nsIWebSocketChannel
 	{
 		
@@ -149,5 +151,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SendBinaryMsg([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMsg);
+		
+		/// <summary>
+        /// Use to send a binary stream (Blob) to Websocket peer.
+        ///
+        /// @param aStream The input stream to be sent.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SendBinaryStream([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, uint length);
 	}
 }

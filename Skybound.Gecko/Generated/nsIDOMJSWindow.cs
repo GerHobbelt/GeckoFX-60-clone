@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIDOMJSWindow </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("14efb76c-5bd6-449e-b36f-0cbd22981f20")]
+	[Guid("6652c4d2-6b49-424b-aaf9-91f91006fab7")]
 	public interface nsIDOMJSWindow
 	{
 		
@@ -59,11 +59,12 @@ namespace Gecko
         /// which is a nop so we need to support that as well.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ClearTimeout();
+		void ClearTimeout(int handle);
 		
 		/// <summary>Member ClearInterval </summary>
+		/// <param name='handle'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ClearInterval();
+		void ClearInterval(int handle);
 		
 		/// <summary>
         /// This method is here for backwards compatibility with 4.x only,

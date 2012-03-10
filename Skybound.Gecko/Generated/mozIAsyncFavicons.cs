@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0cb4e536-e120-41e6-998f-66123d81ec53")]
+	[Guid("f3530e8d-0016-4f56-91fe-28958a7ec296")]
 	public interface mozIAsyncFavicons
 	{
 		
@@ -77,6 +77,69 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAndFetchFaviconForPage([MarshalAs(UnmanagedType.Interface)] nsIURI aPageURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.U1)] bool aForceReload, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback);
+		
+		/// <summary>
+        /// Sets the data for a given favicon URI either by replacing existing data in
+        /// the database or taking the place of otherwise fetched icon data when
+        /// calling setAndFetchFaviconForPage later.
+        ///
+        /// Favicon data for favicon URIs that are not associated with a page URI via
+        /// setAndFetchFaviconForPage will be stored in memory, but may be expired at
+        /// any time, so you should make an effort to associate favicon URIs with page
+        /// URIs as soon as possible.
+        ///
+        /// It's better to not use this function for chrome: icon URIs since you can
+        /// reference the chrome image yourself. getFaviconLinkForIcon/Page will ignore
+        /// any associated data if the favicon URI is "chrome:" and just return the
+        /// same chrome URI.
+        ///
+        /// This function does NOT send out notifications that the data has changed.
+        /// Pages using this favicons that are visible in history or bookmarks views
+        /// will keep the old icon until they have been refreshed by other means.
+        ///
+        /// This function tries to optimize the favicon size, if it is bigger
+        /// than a defined limit we will try to convert it to a 16x16 png image.
+        /// If the conversion fails and favicon is still bigger than our max accepted
+        /// size it won't be saved.
+        ///
+        /// @param aFaviconURI
+        /// URI of the favicon whose data is being set.
+        /// @param aData
+        /// Binary contents of the favicon to save
+        /// @param aDataLength
+        /// Length of binary data
+        /// @param aMimeType
+        /// MIME type of the data to store.  This is important so that we know
+        /// what to report when the favicon is used.  You should always set this
+        /// param unless you are clearing an icon.
+        /// @param aExpiration
+        /// Time in microseconds since the epoch when this favicon expires.
+        /// Until this time, we won't try to load it again.
+        /// @throws NS_ERROR_FAILURE
+        /// Thrown if the favicon is overbloated and won't be saved to the db.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReplaceFaviconData([MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] aData, uint aDataLen, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aMimeType, long aExpiration);
+		
+		/// <summary>
+        /// Same as replaceFaviconData but the data is provided by a string
+        /// containing a data URL.
+        ///
+        /// @see replaceFaviconData
+        ///
+        /// @param aFaviconURI
+        /// URI of the favicon whose data is being set.
+        /// @param aDataURL
+        /// string containing a data URL that represents the contents of
+        /// the favicon to save
+        /// @param aExpiration
+        /// Time in microseconds since the epoch when this favicon expires.
+        /// Until this time, we won't try to load it again.
+        /// @throws NS_ERROR_FAILURE
+        /// Thrown if the favicon is overbloated and won't be saved to the db.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReplaceFaviconDataFromDataURL([MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aDataURL, long aExpiration);
 		
 		/// <summary>
         /// Retrieve the URL of the favicon for the given page.

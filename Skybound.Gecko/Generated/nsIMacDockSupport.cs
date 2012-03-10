@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("CBC8A835-0733-470B-A51D-B7EBBFA88689")]
+	[Guid("8BE66B0C-5F71-4B74-98CF-6C2551B999B1")]
 	public interface nsIMacDockSupport
 	{
 		
@@ -60,5 +60,17 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ActivateApplication([MarshalAs(UnmanagedType.U1)] bool aIgnoreOtherApplications);
+		
+		/// <summary>
+        /// Text used to badge the dock tile.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetBadgeTextAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aBadgeText);
+		
+		/// <summary>
+        /// Text used to badge the dock tile.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBadgeTextAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aBadgeText);
 	}
 }

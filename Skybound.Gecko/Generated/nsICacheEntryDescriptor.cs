@@ -220,6 +220,13 @@ namespace Gecko
 		void SetSecurityInfoAttribute([MarshalAs(UnmanagedType.Interface)] nsISupports aSecurityInfo);
 		
 		/// <summary>
+        /// Get the size of the cache entry data, as stored. This may differ
+        /// from the entry's dataSize, if the entry is compressed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetStorageDataSizeAttribute();
+		
+		/// <summary>
         /// Doom the cache entry this descriptor references in order to slate it for
         /// removal.  Once doomed a cache entry cannot be undoomed.
         ///

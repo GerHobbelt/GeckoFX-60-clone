@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1da60889-3db4-4f66-9fd7-b78c1e7969b7")]
+	[Guid("233ec586-7b34-4263-b27e-a4991b757597")]
 	public interface nsIIDBIndex
 	{
 		
@@ -50,11 +50,15 @@ namespace Gecko
 		void GetStoreNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aStoreName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetKeyPathAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aKeyPath);
+		System.IntPtr GetKeyPathAttribute(System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetUniqueAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetMultiEntryAttribute();
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

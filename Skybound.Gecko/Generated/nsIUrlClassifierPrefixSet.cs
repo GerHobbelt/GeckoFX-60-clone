@@ -27,64 +27,41 @@ namespace Gecko
 	using System.Windows.Forms;
 	
 	
-	/// <summary>nsIUrlClassifierPrefixSet </summary>
+	/// <summary>
+    /// All methods are thread-safe.
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("42ef1d52-3351-4973-98f8-d18f089bccfa")]
+	[Guid("519c8519-0f30-426b-bb7b-c400ba0318e2")]
 	public interface nsIUrlClassifierPrefixSet
 	{
 		
-		/// <summary>Member SetPrefixes </summary>
-		/// <param name='aPrefixes'> </param>
-		/// <param name='aLength'> </param>
+		/// <summary>
+        /// Requires array to be sorted.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetPrefixes([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] uint[] aPrefixes, uint aLength);
 		
-		/// <summary>Member AddPrefixes </summary>
-		/// <param name='aPrefixes'> </param>
-		/// <param name='aLength'> </param>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddPrefixes([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] uint[] aPrefixes, uint aLength);
-		
-		/// <summary>Member Contains </summary>
-		/// <param name='aPrefix'> </param>
-		/// <returns>A System.Boolean</returns>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool Contains(uint aPrefix);
-		
-		/// <summary>Member Probe </summary>
-		/// <param name='aPrefix'> </param>
-		/// <param name='aKey'> </param>
-		/// <param name='aReady'> </param>
-		/// <returns>A System.Boolean</returns>
+		/// <summary>
+        /// If not set, we will return in aReady whether we were ready or not.
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool Probe(uint aPrefix, uint aKey, [MarshalAs(UnmanagedType.U1)] ref bool aReady);
 		
-		/// <summary>Member EstimateSize </summary>
-		/// <returns>A System.UInt32</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint EstimateSize();
-		
-		/// <summary>Member GetKey </summary>
-		/// <returns>A System.UInt32</returns>
+		/// <summary>
+        /// Return the key that is used to randomize the collisions in the prefixes.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetKey();
 		
-		/// <summary>Member IsEmpty </summary>
-		/// <returns>A System.Boolean</returns>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsEmpty();
 		
-		/// <summary>Member LoadFromFile </summary>
-		/// <param name='aFile'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void LoadFromFile([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
 		
-		/// <summary>Member StoreToFile </summary>
-		/// <param name='aFile'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void StoreToFile([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
 	}

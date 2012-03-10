@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("343700dd-078b-42b6-a809-b9c1d7e951d0")]
+	[Guid("4404c94b-0506-4255-9e3c-4582dba6cfbb")]
 	public interface nsIPrintSettings
 	{
 		
@@ -650,5 +650,17 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetUnwriteableMarginInTwips(System.IntPtr aEdge);
+		
+		/// <summary>
+        /// Get more accurate print ranges from the superior interval
+        /// (startPageRange, endPageRange). The aPages array is populated with a
+        /// list of pairs (start, end), where the endpoints are included. The print
+        /// ranges (start, end), must not overlap and must be in the
+        /// (startPageRange, endPageRange) scope.
+        ///
+        /// If there are no print ranges the aPages array is cleared.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetPageRanges(System.IntPtr aPages);
 	}
 }

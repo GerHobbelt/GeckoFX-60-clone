@@ -64,7 +64,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("11def472-446f-4635-a1d8-8856e85aac50")]
+	[Guid("4d81faf5-fe01-428b-99b8-c94cba12fd72")]
 	public interface mozIStorageServiceQuotaManagement
 	{
 		
@@ -117,6 +117,6 @@ namespace Gecko
         /// under the quota system.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UpdateQutoaInformationForFile([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
+		void UpdateQuotaInformationForFile([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
 	}
 }

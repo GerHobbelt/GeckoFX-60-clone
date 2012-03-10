@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsITaggingService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e39cea60-7e6d-4c8b-80a3-997af1c2cbcb")]
+	[Guid("f816b4df-f733-4dbd-964d-8bfc92a475b2")]
 	public interface nsITaggingService
 	{
 		
@@ -90,5 +90,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIVariant GetAllTagsAttribute();
+		
+		/// <summary>
+        /// Whether any tags exist.
+        ///
+        /// @note This is faster than allTags.length, since doesn't need to sort tags.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetHasTagsAttribute();
 	}
 }

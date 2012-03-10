@@ -161,7 +161,7 @@ namespace Gecko
     /// interface of Components.utils </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("11785c1f-346f-475c-950e-fe1bacce70f1")]
+	[Guid("b032a8f1-9149-4cbe-bee6-4ac5dfe7c80a")]
 	public interface nsIXPCComponents_Utils
 	{
 		
@@ -177,7 +177,7 @@ namespace Gecko
         /// is converted to a string and reported as a new error.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReportError();
+		void ReportError(System.IntPtr error, System.IntPtr jsContext);
 		
 		/// <summary>
         ///lookupMethod is designed to be called from JavaScript only.
@@ -194,21 +194,59 @@ namespace Gecko
         /// any other use.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LookupMethod();
+		System.IntPtr LookupMethod(System.IntPtr obj, System.IntPtr name, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIXPCComponents_utils_Sandbox GetSandboxAttribute();
 		
 		/// <summary>
-        ///, obj </summary>
+        /// evalInSandbox is designed to be called from JavaScript only.
+        ///
+        /// evalInSandbox evaluates the provided source string in the given sandbox.
+        /// It returns the result of the evaluation to the caller.
+        ///
+        /// var s = new C.u.Sandbox("http://www.mozilla.org");
+        /// var res = C.u.evalInSandbox("var five = 5; 2 + five", s);
+        /// var outerFive = s.five;
+        /// s.seven = res;
+        /// var thirtyFive = C.u.evalInSandbox("five * seven", s);
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void EvalInSandbox([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase source);
+		System.IntPtr EvalInSandbox([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase source, System.IntPtr sandbox, System.IntPtr version, System.IntPtr filename, int lineNo, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
-        ///, [optional] in JSObject targetObj </summary>
+        /// import is designed to be called from JavaScript only.
+        ///
+        /// Synchronously loads and evaluates the js file located at
+        /// 'registryLocation' with a new, fully privileged global object.
+        ///
+        /// If 'targetObj' is specified and equal to null, returns the
+        /// module's global object. Otherwise (if 'targetObj' is not
+        /// specified, or 'targetObj' is != null) looks for a property
+        /// 'EXPORTED_SYMBOLS' on the new global object. 'EXPORTED_SYMBOLS'
+        /// is expected to be an array of strings identifying properties on
+        /// the global object.  These properties will be installed as
+        /// properties on 'targetObj', or, if 'targetObj' is not specified,
+        /// on the caller's global object. If 'EXPORTED_SYMBOLS' is not
+        /// found, an error is thrown.
+        ///
+        /// @param resourceURI A resource:// URI string to load the module from.
+        /// @param targetObj  the object to install the exported properties on.
+        /// If this parameter is a primitive value, this method throws
+        /// an exception.
+        /// @returns the module code's global object.
+        ///
+        /// The implementation maintains a hash of registryLocation->global obj.
+        /// Subsequent invocations of importModule with 'registryLocation'
+        /// pointing to the same file will not cause the module to be re-evaluated,
+        /// but the symbols in EXPORTED_SYMBOLS will be exported into the
+        /// specified target object and the global object returned as above.
+        ///
+        /// (This comment is duplicated from xpcIJSModuleLoader.)
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Import([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase registryLocation);
+		System.IntPtr Import([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI, System.IntPtr targetObj, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
         /// Unloads the JS module at 'registryLocation'. Existing references to the
@@ -222,9 +260,12 @@ namespace Gecko
 		void Unload([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase registryLocation);
 		
 		/// <summary>
-        ///in JSObject obj </summary>
+        /// To be called from JS only.
+        ///
+        /// Return a weak reference for the given JS object.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		xpcIJSWeakReference GetWeakReference();
+		xpcIJSWeakReference GetWeakReference(System.IntPtr obj, System.IntPtr jsContext);
 		
 		/// <summary>
         /// To be called from JS only.
@@ -232,7 +273,7 @@ namespace Gecko
         /// Force an immediate garbage collection cycle.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ForceGC();
+		void ForceGC(System.IntPtr jsContext);
 		
 		/// <summary>
         /// Schedule a garbage collection cycle for a point in the future when no JS
@@ -257,9 +298,15 @@ namespace Gecko
 		System.IntPtr NondeterministicGetWeakMapKeys(System.IntPtr aMap, System.IntPtr jsContext);
 		
 		/// <summary>
-        ///in JSObject obj </summary>
+        /// To be called from JS only.
+        ///
+        /// Returns the global object with which the given object is associated.
+        ///
+        /// @param obj The JavaScript object whose global is to be gotten.
+        /// @return the corresponding global.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetGlobalForObject();
+		System.IntPtr GetGlobalForObject(System.IntPtr obj, System.IntPtr jsContext);
 		
 		/// <summary>
         /// To be called from JS only.
@@ -291,7 +338,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetStrictAttribute();
+		bool GetStrictAttribute(System.IntPtr jsContext);
 		
 		/// <summary>
         /// To be called from JS only.
@@ -305,63 +352,49 @@ namespace Gecko
         /// cheap, but setting any of them is relatively expensive.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetStrictAttribute([MarshalAs(UnmanagedType.U1)] bool aStrict);
+		void SetStrictAttribute([MarshalAs(UnmanagedType.U1)] bool aStrict, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetWerrorAttribute();
+		bool GetWerrorAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetWerrorAttribute([MarshalAs(UnmanagedType.U1)] bool aWerror);
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetAtlineAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAtlineAttribute([MarshalAs(UnmanagedType.U1)] bool aAtline);
+		void SetWerrorAttribute([MarshalAs(UnmanagedType.U1)] bool aWerror, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetXmlAttribute();
+		bool GetAtlineAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetXmlAttribute([MarshalAs(UnmanagedType.U1)] bool aXml);
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetRelimitAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetRelimitAttribute([MarshalAs(UnmanagedType.U1)] bool aRelimit);
+		void SetAtlineAttribute([MarshalAs(UnmanagedType.U1)] bool aAtline, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetTracejitAttribute();
+		bool GetXmlAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetTracejitAttribute([MarshalAs(UnmanagedType.U1)] bool aTracejit);
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetMethodjitAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetMethodjitAttribute([MarshalAs(UnmanagedType.U1)] bool aMethodjit);
+		void SetXmlAttribute([MarshalAs(UnmanagedType.U1)] bool aXml, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetJitprofilingAttribute();
+		bool GetRelimitAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetJitprofilingAttribute([MarshalAs(UnmanagedType.U1)] bool aJitprofiling);
+		void SetRelimitAttribute([MarshalAs(UnmanagedType.U1)] bool aRelimit, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetMethodjit_alwaysAttribute();
+		bool GetMethodjitAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetMethodjit_alwaysAttribute([MarshalAs(UnmanagedType.U1)] bool aMethodjit_always);
+		void SetMethodjitAttribute([MarshalAs(UnmanagedType.U1)] bool aMethodjit, System.IntPtr jsContext);
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetMethodjit_alwaysAttribute(System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMethodjit_alwaysAttribute([MarshalAs(UnmanagedType.U1)] bool aMethodjit_always, System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetGCZeal(int zeal, System.IntPtr jsContext);
@@ -371,7 +404,7 @@ namespace Gecko
     /// interface of JavaScript's 'Components' object </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("155809f1-71f1-47c5-be97-d812ba560405")]
+	[Guid("4676e9cf-2c07-423b-b161-26bb9d8067d3")]
 	public interface nsIXPCComponents
 	{
 		
@@ -425,11 +458,11 @@ namespace Gecko
         /// See http://developer-test.mozilla.org/en/docs/XPCNativeWrapper )
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LookupMethod();
+		System.IntPtr LookupMethod(System.IntPtr obj, System.IntPtr name, System.IntPtr jsContext);
 		
 		/// <summary>
         ///@deprecated Use Components.utils.reportError instead. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReportError();
+		void ReportError(System.IntPtr error, System.IntPtr jsContext);
 	}
 }

@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>imgITools </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c395d8f1-c616-4a1b-adfd-747b4b1b2cbe")]
+	[Guid("1f19a2ce-cf5c-4a6b-8ba7-63785b45053f")]
 	public interface imgITools
 	{
 		
@@ -63,10 +63,12 @@ namespace Gecko
         /// An image container.
         /// @param aMimeType
         /// Type of encoded image desired (eg "image/png").
+        /// @param outputOptions
+        /// Encoder-specific output options.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIInputStream EncodeImage(imgIContainer aContainer, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType);
+		nsIInputStream EncodeImage(imgIContainer aContainer, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase outputOptions);
 		
 		/// <summary>
         /// encodeScaledImage
@@ -80,9 +82,11 @@ namespace Gecko
         /// Type of encoded image desired (eg "image/png").
         /// @param aWidth, aHeight
         /// The size (in pixels) desired for the resulting image.
+        /// @param outputOptions
+        /// Encoder-specific output options.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIInputStream EncodeScaledImage(imgIContainer aContainer, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType, int aWidth, int aHeight);
+		nsIInputStream EncodeScaledImage(imgIContainer aContainer, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType, int aWidth, int aHeight, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase outputOptions);
 	}
 }

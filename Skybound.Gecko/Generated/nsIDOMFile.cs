@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIDOMBlob </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d5237f31-443a-460b-9e42-449a135346f0")]
+	[Guid("f62c6887-e3bc-495a-802c-287e12e969a0")]
 	public interface nsIDOMBlob
 	{
 		
@@ -65,6 +65,24 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMBlob MozSlice(long start, long end, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase contentType, int argc);
+		
+		/// <summary>
+        /// Intended only for testing. It can be called on any thread.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetFileId();
+		
+		/// <summary>
+        /// the blob is initialized from a database. It can be called on any thread.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AddFileInfo(System.IntPtr aFileInfo);
+		
+		/// <summary>
+        /// shared or needs to be copied. It can be called on any thread.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetFileInfo(System.IntPtr aFileManager);
 	}
 	
 	/// <summary>nsIDOMFile </summary>
@@ -105,6 +123,24 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMBlob MozSlice(long start, long end, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase contentType, int argc);
+		
+		/// <summary>
+        /// Intended only for testing. It can be called on any thread.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new int GetFileId();
+		
+		/// <summary>
+        /// the blob is initialized from a database. It can be called on any thread.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void AddFileInfo(System.IntPtr aFileInfo);
+		
+		/// <summary>
+        /// shared or needs to be copied. It can be called on any thread.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new System.IntPtr GetFileInfo(System.IntPtr aFileManager);
 		
 		/// <summary>Member GetNameAttribute </summary>
 		/// <param name='aName'> </param>

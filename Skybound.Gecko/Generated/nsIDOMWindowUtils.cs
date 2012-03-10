@@ -36,7 +36,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("910484d7-219c-4c72-b999-7a7e9c954646")]
+	[Guid("e01171b0-712a-47ce-8552-b7b2ef0a2507")]
 	public interface nsIDOMWindowUtils
 	{
 		
@@ -217,6 +217,38 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SendMouseEvent([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aType, float aX, float aY, int aButton, int aClickCount, int aModifiers, [MarshalAs(UnmanagedType.U1)] bool aIgnoreRootScrollFrame);
+		
+		/// <summary>
+        ///Synthesize a touch event. The event types supported are:
+        /// touchstart, touchend, touchmove, and touchcancel
+        ///
+        /// Events are sent in coordinates offset by aX and aY from the window.
+        ///
+        /// Cannot be accessed from unprivileged context (not content-accessible)
+        /// Will throw a DOM security error if called without UniversalXPConnect
+        /// privileges.
+        ///
+        /// The event is dispatched via the toplevel window, so it could go to any
+        /// window under the toplevel window, in some cases it could never reach this
+        /// window at all.
+        ///
+        /// @param aType event type
+        /// @param xs array of offsets in CSS pixels for each touch to be sent
+        /// @param ys array of offsets in CSS pixels for each touch to be sent
+        /// @param rxs array of radii in CSS pixels for each touch to be sent
+        /// @param rys array of radii in CSS pixels for each touch to be sent
+        /// @param rotationAngles array of angles in degrees for each touch to be sent
+        /// @param forces array of forces (floats from 0 to 1) for each touch to be sent
+        /// @param count number of touches in this set
+        /// @param aModifiers modifiers pressed, using constants defined in nsIDOMNSEvent
+        /// @param aIgnoreRootScrollFrame whether the event should ignore viewport bounds
+        /// during dispatch
+        ///
+        /// returns true if the page called prevent default on this touch event
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool SendTouchEvent([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aType, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] uint[] aIdentifiers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] int[] aXs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] int[] aYs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] uint[] aRxs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] uint[] aRys, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] float[] aRotationAngles, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] float[] aForces, uint count, int aModifiers, [MarshalAs(UnmanagedType.U1)] bool aIgnoreRootScrollFrame);
 		
 		/// <summary>
         ///The same as sendMouseEvent but ensures that the event is dispatched to
@@ -505,10 +537,12 @@ namespace Gecko
 		bool DispatchDOMEventViaPresShell([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aTarget, [MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aEvent, [MarshalAs(UnmanagedType.U1)] bool aTrusted);
 		
 		/// <summary>
-        ///in JSObjectPtr aObj </summary>
+        /// Returns the real classname (possibly of the mostly-transparent security
+        /// wrapper) of aObj.
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetClassName();
+		string GetClassName(System.IntPtr aObject, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Generate a content command event.
@@ -593,9 +627,13 @@ namespace Gecko
 		void GetVisitedDependentComputedStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aPseudoElement, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aPropertyName, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
 		
 		/// <summary>
-        ///obj </summary>
+        /// Returns the parent of obj.
+        ///
+        /// @param obj The JavaScript object whose parent is to be gotten.
+        /// @return the parent.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetParent();
+		System.IntPtr GetParent(System.IntPtr obj, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Get the id of the outer window of this window.  This will never throw.
@@ -773,5 +811,68 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool CheckAndClearPaintedState([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
+		
+		/// <summary>
+        /// Get internal id of the stored blob.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetFileId([MarshalAs(UnmanagedType.Interface)] nsIDOMBlob aBlob);
+		
+		/// <summary>
+        /// Get file ref count info for given database and file id.
+        ///
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetFileReferences([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aDatabaseName, long aId, ref int aRefCnt, ref int aDBRefCnt, ref int aSliceRefCnt);
+		
+		/// <summary>
+        /// Begin opcode-level profiling of all JavaScript execution in the window's
+        /// runtime.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void StartPCCountProfiling();
+		
+		/// <summary>
+        /// Stop opcode-level profiling of JavaScript execution in the runtime, and
+        /// collect all counts for use by getPCCount methods.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void StopPCCountProfiling();
+		
+		/// <summary>
+        /// Purge collected PC counters.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PurgePCCounts();
+		
+		/// <summary>
+        /// Get the number of scripts with opcode-level profiling information.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetPCCountScriptCount();
+		
+		/// <summary>
+        /// Get a JSON string for a short summary of a script and the PC counts
+        /// accumulated for it.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetPCCountScriptSummary(int script, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		
+		/// <summary>
+        /// Get a JSON string with full information about a profiled script,
+        /// including the decompilation of the script and placement of decompiled
+        /// operations within it, and PC counts for each operation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetPCCountScriptContents(int script, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase retval);
+		
+		/// <summary>
+        /// Returns true if painting is suppressed for this window and false
+        /// otherwise.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetPaintingSuppressedAttribute();
 	}
 }

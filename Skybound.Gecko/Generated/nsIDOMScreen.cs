@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIDOMScreen </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("77947960-b4af-11d2-bd93-00805f8ae3f4")]
+	[Guid("4507e43f-097c-452a-bfc4-dbb99748f6fd")]
 	public interface nsIDOMScreen
 	{
 		
@@ -83,5 +83,56 @@ namespace Gecko
 		/// <returns>A System.Int32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetAvailTopAttribute();
+		
+		/// <summary>
+        /// Is the device's screen currently enabled?  This attribute controls the
+        /// device's screen, so setting it to false will turn off the screen.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetMozEnabledAttribute();
+		
+		/// <summary>
+        /// Is the device's screen currently enabled?  This attribute controls the
+        /// device's screen, so setting it to false will turn off the screen.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozEnabledAttribute([MarshalAs(UnmanagedType.U1)] bool aMozEnabled);
+		
+		/// <summary>
+        /// How bright is the screen's backlight, on a scale from 0 (very dim) to 1
+        /// (full brightness)?  Setting this attribute modifies the screen's
+        /// brightness.
+        ///
+        /// You can read and write this attribute even when the screen is disabled,
+        /// but the backlight is off while the screen is disabled.
+        ///
+        /// If you write a value of X into this attribute, the attribute may not have
+        /// the same value X when you later read it.  Most screens don't support as
+        /// many different brightness levels as there are doubles between 0 and 1, so
+        /// we may reduce the value's precision before storing it.
+        ///
+        /// @throw NS_ERROR_INVALID_ARG if brightness is not in the range [0, 1].
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double GetMozBrightnessAttribute();
+		
+		/// <summary>
+        /// How bright is the screen's backlight, on a scale from 0 (very dim) to 1
+        /// (full brightness)?  Setting this attribute modifies the screen's
+        /// brightness.
+        ///
+        /// You can read and write this attribute even when the screen is disabled,
+        /// but the backlight is off while the screen is disabled.
+        ///
+        /// If you write a value of X into this attribute, the attribute may not have
+        /// the same value X when you later read it.  Most screens don't support as
+        /// many different brightness levels as there are doubles between 0 and 1, so
+        /// we may reduce the value's precision before storing it.
+        ///
+        /// @throw NS_ERROR_INVALID_ARG if brightness is not in the range [0, 1].
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMozBrightnessAttribute(double aMozBrightness);
 	}
 }

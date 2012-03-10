@@ -30,7 +30,7 @@ namespace Gecko
 	/// <summary>nsIDocumentEncoderNodeFixup </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c0da5b87-0ba7-4d7c-8cb3-fcb02af4253d")]
+	[Guid("82adaeca-63ee-44eb-830a-e1678bb8745e")]
 	public interface nsIDocumentEncoderNodeFixup
 	{
 		
@@ -99,6 +99,11 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode);
+		
+		/// <summary>Member SetNativeNode </summary>
+		/// <param name='aNode'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetNativeNode(System.IntPtr aNode);
 		
 		/// <summary>
         /// If the container is set to a non-null value, then its

@@ -30,14 +30,42 @@ namespace Gecko
 	/// <summary>xpcIJSModuleLoader </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3f945a8e-58ca-47ba-a789-82d022e837fd")]
+	[Guid("243d1a31-db9f-47a1-9922-55a1ad5515fb")]
 	public interface xpcIJSModuleLoader
 	{
 		
 		/// <summary>
-        ///, [optional] in JSObject targetObj </summary>
+        /// To be called from JavaScript only.
+        ///
+        /// Synchronously loads and evaluates the js file located at
+        /// aResourceURI with a new, fully privileged global object.
+        ///
+        /// If 'targetObj' is specified and equal to null, returns the
+        /// module's global object. Otherwise (if 'targetObj' is not
+        /// specified, or 'targetObj' is != null) looks for a property
+        /// 'EXPORTED_SYMBOLS' on the new global object. 'EXPORTED_SYMBOLS'
+        /// is expected to be an array of strings identifying properties on
+        /// the global object.  These properties will be installed as
+        /// properties on 'targetObj', or, if 'targetObj' is not specified,
+        /// on the caller's global object. If 'EXPORTED_SYMBOLS' is not
+        /// found, an error is thrown.
+        ///
+        /// @param resourceURI A resource:// URI string to load the module from.
+        /// @param targetObj  the object to install the exported properties on.
+        /// If this parameter is a primitive value, this method throws
+        /// an exception.
+        /// @returns the module code's global object.
+        ///
+        /// The implementation maintains a hash of registryLocation->global obj.
+        /// Subsequent invocations of importModule with 'registryLocation'
+        /// pointing to the same file will not cause the module to be re-evaluated,
+        /// but the symbols in EXPORTED_SYMBOLS will be exported into the
+        /// specified target object and the global object returned as above.
+        ///
+        /// (This comment is duplicated to nsIXPCComponents_Utils.)
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Import([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI);
+		System.IntPtr Import([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI, System.IntPtr targetObj, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
         /// Imports the JS module at aResourceURI to the JS object
