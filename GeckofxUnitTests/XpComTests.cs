@@ -14,17 +14,7 @@ namespace GeckofxUnitTests
 	{
 		public static string XulRunnerLocation 
 		{
-			get 
-			{ 
-				if (Xpcom.IsLinux)
-					return "/usr/lib/firefox-11.0.1/";
-				
-				if (Directory.Exists(@"c:\program Files (x86)\Mozilla Firefox 11.0\"))
-				{
-					return @"c:\program Files (x86)\Mozilla Firefox 11.0\";
-				}
-				return @"c:\program Files (x86)\Mozilla Firefox\";
-			}
+			get { return XULRunnerLocator.GetXULRunnerLocation(); }
 		}
 
 		[SetUp]

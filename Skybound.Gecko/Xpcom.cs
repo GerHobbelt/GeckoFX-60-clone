@@ -202,6 +202,12 @@ namespace Gecko
 			
 			nsIServiceManager serviceManagerPtr;
 			//int res = NS_InitXPCOM2(out serviceManagerPtr, mreAppDir, new DirectoryServiceProvider());
+
+
+			//Note: the error box that this can generate can't be prevented with try/catch, and res is 0 even if it fails
+			//REVIEW: how else can we determine what happened and give a more useful answer, to help new GeckoFX users,
+			//Telling them that probably the version of firefox or xulrunner didn't match this library version?
+			
 			int res = NS_InitXPCOM2(out serviceManagerPtr, mreAppDir, null);
 			
 			// change back
