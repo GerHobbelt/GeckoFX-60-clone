@@ -349,73 +349,7 @@ namespace Gecko
 		{
 			return Navigate(url, loadFlags, null, null, null);
 		}
-		
-		[Obsolete]
-		/// <summary>
-		/// Navigates to the specified URL using the given load flags, referrer, post data and headers.
-		/// In order to find out when Navigate has finished attach a handler to NavigateFinishedNotifier.NavigateFinished.
-		/// </summary>
-		/// <param name="url">The url to navigate to.  If the url is empty or null, the browser does not navigate and the method returns false.</param>
-		/// <param name="loadFlags">Flags which specify how the page is loaded.</param>
-		/// <param name="referrer">The referring URL, or null.</param>
-		/// <param name="postData">The post data to send, or null.  If you use post data, you must explicity specify a Content-Type and Content-Length
-		/// header in <paramref name="additionalHeaders"/>.</param>
-		/// <param name="additionalHeaders">Any additional HTTP headers to send, or null.  Separate multiple headers with CRLF.  For example,
-		/// "Content-Type: application/x-www-form-urlencoded\r\nContent-Length: 50"</param>
-		public bool Navigate(string url, GeckoLoadFlags loadFlags, string referrer, byte [] postData, string additionalHeaders)
-		{
-			if (string.IsNullOrEmpty(url))
-				return false;
-
-			if (!IsHandleCreated)
-				throw new InvalidOperationException("Cannot call Navigate() before the window handle is created.");
-	
-			if (IsBusy)
-				this.Stop();
 				
-			// WebNav.LoadURI throws an exception if we try to open a file that doesn't exist...
-			Uri created;
-			if (Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out created) && created.IsAbsoluteUri && created.IsFile)
-			{
-				if (!File.Exists(created.LocalPath) && !Directory.Exists(created.LocalPath))
-					return false;
-			}
-				
-			nsIInputStream postDataStream = null, headersStream = null;
-				
-			if (postData != null)
-			{
-				// post data must start with CRLF.  actually, you can put additional headers before this, but there's no
-				// point because this method has an "additionalHeaders" argument.  so we might as well insert it automatically
-				Array.Resize(ref postData, postData.Length + 2);
-				Array.Copy(postData, 0, postData, 2, postData.Length - 2);
-				postData[0] = (byte)'\r';
-				postData[1] = (byte)'\n';
-				postDataStream = ByteArrayInputStream.Create(postData);
-			}
-				
-			if (!string.IsNullOrEmpty(additionalHeaders))
-			{
-				// each header must end with a CRLF (including the last one)
-				// here we simply ensure that the last header has a CRLF.  if the header has other syntax problems,
-				// they're the caller's responsibility
-				if (!additionalHeaders.EndsWith("\r\n"))
-					additionalHeaders += "\r\n";
-					
-				headersStream = ByteArrayInputStream.Create(Encoding.UTF8.GetBytes(additionalHeaders));
-			}
-				
-			nsIURI referrerUri = null;
-			if (!string.IsNullOrEmpty(referrer))
-			{
-				//referrerUri = Xpcom.GetService<nsIIOService>("@mozilla.org/network/io-service;1").NewURI(new nsAUTF8String(referrer), null, null);
-				referrerUri = IOService.CreateNsIUri(referrer);
-			}
-
-			WebNav.LoadURI(url, (uint)loadFlags, referrerUri, postDataStream, headersStream);
-			return true;
-		}
-		
 		/// <summary>
 		///  Navigates to the specified URL using the given load flags, referrer and post data
 		///  In order to find out when Navigate has finished attach a handler to NavigateFinishedNotifier.NavigateFinished.
@@ -425,7 +359,7 @@ namespace Gecko
 		/// <param name="referrer">The referring URL, or null.</param>
 		/// <param name="postData">post data and headers, or null</param>
 		/// <returns></returns>
-		public bool Navigate(string url, GeckoLoadFlags loadFlags, string referrer, GeckoMIMEInputStream postData)
+		public bool Navigate(string url, GeckoLoadFlags loadFlags, string referrer, GeckoMIMEInputStream postData, GeckoMIMEInputStream headers = null)
 		{
 			if (string.IsNullOrEmpty(url))
 				return false;
@@ -448,7 +382,7 @@ namespace Gecko
 				referrerUri = IOService.CreateNsIUri( referrer );
 			}
 
-            WebNav.LoadURI(url, (uint)loadFlags, referrerUri, postData!=null?postData.InputStream:null, null);
+		WebNav.LoadURI(url, (uint)loadFlags, referrerUri, postData != null ? postData.InputStream : null, headers != null ? headers.InputStream : null);
 
 			return true;
 		}
