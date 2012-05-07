@@ -297,35 +297,35 @@ namespace Gecko
 			}
 
 
-            public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags, uint contextFlags, nsIURI uri, ref bool cancel)
-            {
-                GeckoWebBrowser browser = parent as GeckoWebBrowser;
-                if (browser != null)
-                {
-                    var url = "";
-                    if (uri != null)
-                    {
-                        url = (nsString.Get(uri.GetSpecAttribute)).ToString();
-                    }
-                    else
-                    {
-                        url = "about:blank";
-                    }
+			public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags, uint contextFlags, nsIURI uri, ref bool cancel)
+			{
+				GeckoWebBrowser browser = parent as GeckoWebBrowser;
+				if (browser != null)
+				{
+					var url = "";
+					if (uri != null)
+					{
+						url = (nsString.Get(uri.GetSpecAttribute)).ToString();
+					}
+					else
+					{
+						url = "about:blank";
+					}
 
-                    GeckoCreateWindow2EventArgs e = new GeckoCreateWindow2EventArgs((GeckoWindowFlags)chromeFlags, url);
-                    e.WebBrowser = browser;
+					GeckoCreateWindow2EventArgs e = new GeckoCreateWindow2EventArgs((GeckoWindowFlags)chromeFlags, url);
+					e.WebBrowser = browser;
 
-                    browser.OnCreateWindow2(e);
+					browser.OnCreateWindow2(e);
 
-                    if (e.Cancel)
-                    {
-                        cancel = true;
-                        return null;
-                    }
-                }
+					if (e.Cancel)
+					{
+						cancel = true;
+						return null;
+					}
+				}
 
-                return CreateChromeWindow(parent, chromeFlags);
-            }
+				return CreateChromeWindow(parent, chromeFlags);
+			}
 		}
 
 		#region Navigation
@@ -2146,47 +2146,47 @@ namespace Gecko
 	}
 	#endregion
 
-    #region GeckoJavaScriptHttpChannelWrapper
-    public class GeckoJavaScriptHttpChannelWrapper : nsIDOMEventListener
-    {
-        private readonly GeckoWebBrowser m_browser;
-        private readonly nsIHttpChannel m_httpChannel;
-        private readonly nsIDOMEventListener m_origEventListener;
-        private readonly nsIXMLHttpRequest m_notificationCallsbacks;
+	#region GeckoJavaScriptHttpChannelWrapper
+	public class GeckoJavaScriptHttpChannelWrapper : nsIDOMEventListener
+	{
+		private readonly GeckoWebBrowser m_browser;
+		private readonly nsIHttpChannel m_httpChannel;
+		private readonly nsIDOMEventListener m_origEventListener;
+		private readonly nsIXMLHttpRequest m_notificationCallsbacks;
 
-        public GeckoJavaScriptHttpChannelWrapper(GeckoWebBrowser p_browser, nsIHttpChannel p_httpChannel, nsIDOMEventListener p_origEventListener)
-        {
-            m_browser = p_browser;
-            m_httpChannel = p_httpChannel;
-            m_origEventListener = p_origEventListener;
+		public GeckoJavaScriptHttpChannelWrapper(GeckoWebBrowser p_browser, nsIHttpChannel p_httpChannel, nsIDOMEventListener p_origEventListener)
+		{
+			m_browser = p_browser;
+			m_httpChannel = p_httpChannel;
+			m_origEventListener = p_origEventListener;
 
-            m_notificationCallsbacks = Xpcom.QueryInterface<nsIXMLHttpRequest>(m_httpChannel.GetNotificationCallbacksAttribute());
-        }
+			m_notificationCallsbacks = Xpcom.QueryInterface<nsIXMLHttpRequest>(m_httpChannel.GetNotificationCallbacksAttribute());
+		}
 
-        public void HandleEvent(nsIDOMEvent @event)
-        {
-            // This is how to get the fields, but we don't need them by default since sometimes they are undefined
-            //var xhr_uri = (new Uri(nsString.Get(m_httpChannel.GetOriginalURIAttribute().GetSpecAttribute))).ToString();
-            //var xhr_status = m_notificationCallsbacks.GetStatusAttribute();
-            var xhr_readyState = m_notificationCallsbacks.GetReadyStateAttribute();
+		public void HandleEvent(nsIDOMEvent @event)
+		{
+			// This is how to get the fields, but we don't need them by default since sometimes they are undefined
+			//var xhr_uri = (new Uri(nsString.Get(m_httpChannel.GetOriginalURIAttribute().GetSpecAttribute))).ToString();
+			//var xhr_status = m_notificationCallsbacks.GetStatusAttribute();
+			var xhr_readyState = m_notificationCallsbacks.GetReadyStateAttribute();
 
-            bool bHandlerFailed = false;
+			bool bHandlerFailed = false;
 
-            try
-            {
-                m_origEventListener.HandleEvent(@event);
-            }
-            catch (Exception)
-            {
-                bHandlerFailed = true;
-            }
+			try
+			{
+				m_origEventListener.HandleEvent(@event);
+			}
+			catch (Exception)
+			{
+				bHandlerFailed = true;
+			}
 
-            // remove when finished
-            if (bHandlerFailed || (xhr_readyState == 4))
-            {
-                m_browser.origJavaScriptHttpChannels.Remove(m_httpChannel);
-            }
-        }
-    }
-    #endregion GeckoJavaScriptHttpChannelWrapper
+			// remove when finished
+			if (bHandlerFailed || (xhr_readyState == 4))
+			{
+				m_browser.origJavaScriptHttpChannels.Remove(m_httpChannel);
+			}
+		}
+	}
+	#endregion GeckoJavaScriptHttpChannelWrapper
 }
