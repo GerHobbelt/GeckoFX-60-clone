@@ -6,7 +6,7 @@ namespace Gecko
 	/// </summary>
 	public class GeckoWindow
 	{
-		private GeckoWindow(nsIDOMWindow window)
+		public GeckoWindow(nsIDOMWindow window)
 		{
 			_DomWindow = window;
 		}
