@@ -2,6 +2,20 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v12.0-0.2 ==
+
+1. Added Cryptography classes.
+2. Calling Convention fixes. (stops .net 4.0 error messages)
+3. Added wrappers for HttpActivityDistributor,ImgContainer,DomNavigator.
+4. Fixed release builds.
+5. Added WindowWatcher service wrapper.
+6. Add WindowUtils wrapper for nsIDOMWindowUtils
+7. Generated interfaces now contain numeric constants defintions. 
+8. Added Head Property to GeckoDocument.
+9. Added OnRedirecting event to GeckoWebBrowser.
+10. Changed AppShellService visibilty to public.
+11. Fixed Dispose crash when disposing non shown GeckoWebBrowser instances.
+
 == v12.0-0.1 ==
 
 1. Initial version supporting firefox/xulrunner v12.0
