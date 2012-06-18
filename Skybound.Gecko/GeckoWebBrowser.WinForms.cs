@@ -252,7 +252,7 @@ namespace Gecko
 					e.Graphics.FillRectangle(brush, this.ClientRectangle);
 
 				e.Graphics.DrawString(
-					string.Format("GeckoFX v{0}\r\n{1}\r\n" + "http://bitbucket.org/geckofx/", versionString),
+					string.Format("GeckoFX v{0}\r\n" + "http://bitbucket.org/geckofx/", versionString),
 					SystemFonts.MessageBoxFont,
 					Brushes.Black,
 					new RectangleF( 2, 2, this.Width - 4, this.Height - 4 ) );
