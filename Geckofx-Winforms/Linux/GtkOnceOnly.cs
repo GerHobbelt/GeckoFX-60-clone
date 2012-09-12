@@ -13,6 +13,9 @@ namespace GtkDotNet
 					Gtk.Application.Init();
 					m_initedOnce = true;
 					
+					// UnhandledException event doesn't seem to be sufficient when running in kde.
+					Gdk.Error.TrapPush();
+					
 					GLib.ExceptionManager.UnhandledException += OnException;
 				}
 			}

@@ -115,7 +115,10 @@ namespace Gecko
 		{
 #if GTK
 			if (Xpcom.IsMono)
+			{
+				GtkDotNet.GtkOnceOnly.Init();
 				m_wrapper = new GtkDotNet.GtkReparentingWrapperNoThread(new Gtk.Window(Gtk.WindowType.Popup), this);
+			}
 #endif
 
 			NavigateFinishedNotifier = new NavigateFinishedNotifier(this);
