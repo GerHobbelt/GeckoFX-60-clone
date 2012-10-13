@@ -579,7 +579,7 @@ namespace Gecko
 		{
 			public nsIFile GetFile(string prop, ref bool persistent)
 			{
-				if (prop == "ProfD")
+				if (prop == "ProfD" || prop == "ProfLD")
 				{
 					return (nsIFile)NewNativeLocalFile(ProfileDirectory ?? "");
 				}
