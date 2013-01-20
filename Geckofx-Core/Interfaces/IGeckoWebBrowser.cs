@@ -175,6 +175,19 @@ namespace Gecko
 
 		#endregion
 
+		/// <summary>
+		/// UI platform independent call function from UI thread
+		/// </summary>
+		/// <param name="action"></param>
+		void UserInterfaceThreadInvoke( Action action );
+		/// <summary>
+		/// UI platform independent call function from UI thread
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="func"></param>
+		/// <returns></returns>
+		T UserInterfaceThreadInvoke<T>( Func<T> func );
+
 		#region Events
 
 		event EventHandler DocumentCompleted;

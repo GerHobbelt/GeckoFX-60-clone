@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Gecko.IO
@@ -130,11 +131,13 @@ namespace Gecko.IO
 			var mimeInputStream= Xpcom.QueryInterface<nsIMIMEInputStream>(stream);
 			if (mimeInputStream != null)
 			{
+				Marshal.ReleaseComObject( stream );
 				return new MimeInputStream( mimeInputStream );
 			}
 			var stringInputStream = Xpcom.QueryInterface<nsIStringInputStream>( stream );
 			if (stringInputStream != null)
 			{
+				Marshal.ReleaseComObject( stream );
 				return new StringInputStream( stringInputStream );
 			}
 			return new InputStream(stream);

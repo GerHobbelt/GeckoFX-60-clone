@@ -954,7 +954,7 @@ namespace Gecko
 				if (WebBrowser == null)
 					return null;
 
-				return _Window ?? ( _Window = GeckoWindow.Create( WebBrowser.GetContentDOMWindowAttribute() ) );
+				return _Window ?? ( _Window = WebBrowser.GetContentDOMWindowAttribute().Wrap( GeckoWindow.Create ) );
 			}
 		}
 		GeckoWindow _Window;
@@ -1061,7 +1061,7 @@ namespace Gecko
 			nsIWebBrowserPersist persist = Xpcom.QueryInterface<nsIWebBrowserPersist>(WebBrowser);
 			if (persist != null)
 			{
-				persist.SaveDocument((nsIDOMDocument)Document.DomObject, (nsISupports)Xpcom.NewNativeLocalFile(path), null,
+				persist.SaveDocument(DomDocument._domDocument, (nsISupports)Xpcom.NewNativeLocalFile(path), null,
 					outputMimeType, 0, 0);
 			}
 			else
@@ -1565,7 +1565,7 @@ namespace Gecko
 			#region request parameters
 			Uri destUri = null;
 			Uri.TryCreate(nsString.Get(aRequest.GetNameAttribute), UriKind.Absolute, out destUri);
-			var domWindow = GeckoWindow.Create(aWebProgress.GetDOMWindowAttribute());
+			var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap( GeckoWindow.Create );
 
 			/* This flag indicates that the state transition is for a request, which includes but is not limited to document requests.
 			 * Other types of requests, such as requests for inline content (for example images and stylesheets) are considered normal requests.
@@ -1718,7 +1718,7 @@ namespace Gecko
 			if (IsDisposed) return;
 
 			Uri uri = new Uri(nsString.Get(aLocation.GetSpecAttribute));
-			using ( var domWindow = GeckoWindow.Create( aWebProgress.GetDOMWindowAttribute() ) )
+			using (var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap(GeckoWindow.Create))
 			{
 
 				bool sameDocument = ( flags & nsIWebProgressListenerConstants.LOCATION_CHANGE_SAME_DOCUMENT ) != 0;
@@ -1828,7 +1828,7 @@ namespace Gecko
 		{
 			Uri destUri = new Uri( nsString.Get( aRefreshURI.GetSpecAttribute ) );
 			bool cancel = false;
-			using ( var domWindow = GeckoWindow.Create( aWebProgress.GetDOMWindowAttribute() ) )
+			using (var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap(GeckoWindow.Create))
 			{
 				GeckoNavigatingEventArgs ea = new GeckoNavigatingEventArgs( destUri, domWindow );
 				cancel = ea.Cancel;
@@ -2098,7 +2098,7 @@ namespace Gecko
 
 					if (uploadChannel != null) {
 						var uc = new UploadChannel(uploadChannel);
-						var uploadStream = uc.GetUploadStream();
+						var uploadStream = uc.UploadStream;
 						
 						if (uploadStream.CanSeek) {
 							var rdr = new BinaryReader(uploadStream);

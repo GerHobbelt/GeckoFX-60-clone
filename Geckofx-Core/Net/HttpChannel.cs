@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using Gecko.Interop;
 
 namespace Gecko.Net
 {
@@ -173,7 +174,7 @@ namespace Gecko.Net
 		public UploadChannel CastToUploadChannel()
 		{
 			var channel = Xpcom.QueryInterface<nsIUploadChannel>( _httpChannel );
-			return channel == null ? null : new UploadChannel(channel);
+			return channel.Wrap( x => new UploadChannel( x ) );
 		}
 
 		public TraceableChannel CastToTraceableChannel()
@@ -228,7 +229,7 @@ namespace Gecko.Net
 
 		public void SetNewListener(StreamListenerTee streamListener)
 		{
-			var old = _traceableChannel.SetNewListener( streamListener._streamListenerTee );
+			var old = _traceableChannel.SetNewListener( streamListener._streamListenerTee.Instance );
 			streamListener.IntInit( old );
 		}
 	}

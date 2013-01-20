@@ -7,7 +7,7 @@ namespace Gecko.Net
 	public class StreamListenerTee
 		:IDisposable
 	{
-		internal nsIStreamListenerTee _streamListenerTee;
+		internal InstanceWrapper<nsIStreamListenerTee> _streamListenerTee;
 		private RequestObserver _requestObserver=new RequestObserver();
 
 		private byte[] _capturedData;
@@ -15,19 +15,19 @@ namespace Gecko.Net
 
 		public StreamListenerTee()
 		{
-			var streamListenerTee = Xpcom.CreateInstance<nsIStreamListenerTee>( Contracts.StreamListenerTee );
-			_streamListenerTee = Xpcom.QueryInterface<nsIStreamListenerTee>( streamListenerTee );
+			_streamListenerTee = new InstanceWrapper<nsIStreamListenerTee>( Contracts.StreamListenerTee );
 			_requestObserver.Stopped += OnStopped;
 		}
 
 		~StreamListenerTee()
 		{
-			
+			Xpcom.DisposeObject( ref _streamListenerTee );
 		}
 
 		public void Dispose()
 		{
-			
+			Xpcom.DisposeObject( ref _streamListenerTee );
+			GC.SuppressFinalize( this );
 		}
 
 		/// <summary>
@@ -36,16 +36,12 @@ namespace Gecko.Net
 		/// </summary>
 		private void Close()
 		{
-			if (_nativeOutputStream != null)
-			{
-				_nativeOutputStream.Dispose();
-				_nativeOutputStream = null;
-			}
+			Xpcom.DisposeObject( ref _nativeOutputStream );
 		}
 
 		internal void IntInit(nsIStreamListener streamListener)
 		{
-			_streamListenerTee.Init(streamListener, _nativeOutputStream, _requestObserver);
+			_streamListenerTee.Instance.Init(streamListener, _nativeOutputStream, _requestObserver);
 		}
 
 		private void OnStopped(object sender, EventArgs e)

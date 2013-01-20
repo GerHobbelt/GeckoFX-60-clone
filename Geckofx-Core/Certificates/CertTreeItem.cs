@@ -4,21 +4,21 @@ namespace Gecko.Certificates
 {
 	public sealed class CertTreeItem
 	{
-		private nsICertTreeItem _certTreeItem;
+		private InstanceWrapper<nsICertTreeItem> _certTreeItem;
 
 		internal CertTreeItem(nsICertTreeItem certTreeItem)
 		{
-			_certTreeItem = certTreeItem;
+			_certTreeItem = new InstanceWrapper<nsICertTreeItem>( certTreeItem );
 		}
 
 		public Certificate Certificate
 		{
-			get { return Certificate.Create( _certTreeItem.GetCertAttribute() ); }
+			get { return Certificate.Create( _certTreeItem.Instance.GetCertAttribute() ); }
 		}
 
 		public string HostPort
 		{
-			get { return nsString.Get( _certTreeItem.GetHostPortAttribute ); }
+			get { return nsString.Get(_certTreeItem.Instance.GetHostPortAttribute); }
 		}
 	}
 }

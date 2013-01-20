@@ -121,7 +121,7 @@ namespace Gecko.Certificates
 
 		public Collections.IGeckoArray<Certificate> Chain
 		{
-			get { return new Collections.GeckoArray<Certificate, nsIX509Cert>( _cert1.GetChain(), Certificate.Create ); }
+			get { return new Collections.GeckoArray<Certificate, nsIX509Cert>( _cert3.GetChain(), Certificate.Create ); }
 		}
 
 		public void GetUsagesArray(bool localOnly,ref uint verified,ref uint count,ref System.IntPtr[] usages)

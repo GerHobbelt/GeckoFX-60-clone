@@ -24,7 +24,7 @@ namespace Gecko.Certificates
 		/// <param name='type'> </param>
 		public void LoadCertsFromCache(CertCache cache, uint type)
 		{
-			_certTree.LoadCertsFromCache( cache._certCache, type );
+			_certTree.LoadCertsFromCache( cache._certCache.Instance, type );
 		}
 
 		/// <summary>Member GetCert </summary>

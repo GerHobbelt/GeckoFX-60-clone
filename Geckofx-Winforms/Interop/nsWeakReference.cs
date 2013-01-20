@@ -20,7 +20,7 @@ namespace Gecko.Interop
 			_weakReference = new WeakReference( obj, false );
 		}
 
-		IntPtr nsIWeakReference.QueryReferent(  ref Guid uuid)
+		IntPtr nsIWeakReference.QueryReferent( ref Guid uuid)
 		{
 			// If object is alive we take it to QueryReferentImplementation
 			// else return IntPtr.Zero

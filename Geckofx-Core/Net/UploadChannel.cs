@@ -1,24 +1,52 @@
 using Gecko.IO;
+using Gecko.Interop;
 
 namespace Gecko.Net
 {
 	public sealed class UploadChannel
 	{
-		private nsIUploadChannel _uploadChannel;
+		private InstanceWrapper<nsIUploadChannel> _uploadChannel;
+
+		private nsIUploadChannel2 _uploadChannel2;
 
 		internal UploadChannel(nsIUploadChannel uploadChannel)
 		{
-			_uploadChannel = uploadChannel;
+			_uploadChannel = new InstanceWrapper<nsIUploadChannel>(uploadChannel);
+
+			_uploadChannel2 = ( nsIUploadChannel2 ) uploadChannel;
 		}
 
-		public InputStream GetUploadStream()
+		public InputStream UploadStream
 		{
-			return InputStream.Create( _uploadChannel.GetUploadStreamAttribute() );
+			get { return _uploadChannel.Instance.GetUploadStreamAttribute().Wrap( InputStream.Create ); }
 		}
 
-		public void SetInputStream(InputStream stream,string contentType,int len)
+		public void SetUploadStream( InputStream stream, string contentType, int len )
 		{
-			nsString.Set( _uploadChannel.SetUploadStream, stream._inputStream, contentType, len );
+			nsString.Set( _uploadChannel.Instance.SetUploadStream, stream._inputStream, contentType, len );
 		}
+
+		public bool UploadStreamHasHeaders
+		{
+			get { return _uploadChannel2.GetUploadStreamHasHeadersAttribute(); }
+		}
+
+
+		public void ExplicitSetUploadStream(
+			InputStream stream,
+			string contentType, int len, string method, bool streamHasHeaders )
+		{
+			using ( nsACString nct = new nsACString( contentType ), nmethod = new nsACString( method ) )
+			{
+				_uploadChannel2.ExplicitSetUploadStream(
+					stream._inputStream,
+					nct,
+					len,
+					nmethod,
+					streamHasHeaders
+					);
+			}
+		}
+
 	}
 }

@@ -8,21 +8,21 @@ namespace Gecko.Certificates
 	public sealed class CertificateList
 		:IEnumerable<Certificate>
 	{
-		internal nsIX509CertList _list;
+		internal InstanceWrapper<nsIX509CertList> _list;
 
 		internal CertificateList(nsIX509CertList list)
 		{
-			_list = list;
+			_list = new InstanceWrapper<nsIX509CertList>( list );
 		}
 
 		public IntPtr RawCertList
 		{
-			get { return _list.GetRawCertList(); }
+			get { return _list.Instance.GetRawCertList(); }
 		}
 
 		public IEnumerator<Certificate> GetEnumerator()
 		{
-			return new GeckoEnumerator<Certificate, nsIX509Cert>( _list.GetEnumerator(), Certificate.Create );
+			return new GeckoEnumerator<Certificate, nsIX509Cert>( _list.Instance.GetEnumerator(), Certificate.Create );
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -32,12 +32,12 @@ namespace Gecko.Certificates
 
 		public void AddCert(Certificate certificate)
 		{
-			_list.AddCert( certificate._cert1 );
+			_list.Instance.AddCert(certificate._cert1);
 		}
 
 		public void DeleteCert(Certificate certificate)
 		{
-			_list.DeleteCert( certificate._cert1 );
+			_list.Instance.DeleteCert(certificate._cert1);
 		}
 	}
 }

@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 using Gecko.DOM;
+using Gecko.Interop;
+
 namespace Gecko
 {
 	/// <summary>
@@ -11,7 +13,7 @@ namespace Gecko
 	{
 		private InstanceWrapper<nsIDOMWindow> _domWindow;
 
-		public GeckoWindow(nsIDOMWindow window)
+		private GeckoWindow(nsIDOMWindow window)
 		{
 			//Interop.ComDebug.WriteDebugInfo( window );
 			_domWindow = new InstanceWrapper<nsIDOMWindow>( window );
@@ -59,7 +61,7 @@ namespace Gecko
 		/// </summary>
 		public GeckoWindow Parent
 		{
-			get { return Create( _domWindow.Instance.GetParentAttribute() ); }
+			get { return _domWindow.Instance.GetParentAttribute().Wrap( Create ); }
 		}
 
 		public int ScrollX
@@ -105,7 +107,7 @@ namespace Gecko
 		
 		public GeckoWindow Top
 		{
-			get { return Create( _domWindow.Instance.GetTopAttribute() ); }
+			get { return _domWindow.Instance.GetTopAttribute().Wrap( Create ); }
 		}
 		
 		public string Name

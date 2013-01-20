@@ -82,7 +82,12 @@ namespace Gecko
 
 				using (nsAString color = new nsAString("rgb(255,255,255)"))
 				{
-					context.DrawWindow((nsIDOMWindow)m_browser.Window.DomWindow, xOffset, yOffset, width, height, color, 0);
+					context.DrawWindow( ( nsIDOMWindow ) m_browser.Window.DomWindow, xOffset, yOffset, width, height, color,
+					                    ( uint ) ( nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DO_NOT_FLUSH |
+					                               nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DRAW_VIEW |
+					                               nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_ASYNC_DECODE_IMAGES |
+					                               nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_USE_WIDGET_LAYERS ) );
+					;
 				}
 
 				string data = canvas.toDataURL("image/png");

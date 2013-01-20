@@ -12,58 +12,33 @@ namespace Gecko.Interop
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	internal sealed class ServiceWrapper<T>
-		:IDisposable
+		:ComPtr<T>
 		where T : class
 	{
 		private T _instance;
 
 		#region ctor & dtor
 		internal ServiceWrapper(string contractID)
+			: base(CreateServiceReference(contractID))
 		{
 			CreateServiceReference( contractID );
 		}
 
 		internal ServiceWrapper(T addRefedServiceInstance)
+			:base(addRefedServiceInstance)
 		{
-			_instance = addRefedServiceInstance;
-		}
-
-		~ServiceWrapper()
-		{
-			Xpcom.FreeComObject( ref _instance );
-		}
-
-		public void Dispose()
-		{
-			Xpcom.FreeComObject(ref _instance);
-			GC.SuppressFinalize(this);
+			
 		}
 		#endregion
 
-		internal T Instance
-		{
-			get
-			{
-				// check for uninialized state (errors, or release)
-				if (_instance == null)
-				{
-					
-				}
-				return _instance;
-			}
-		}
-
-		#region creation and release
-		private void CreateServiceReference(string contractID)
+		private static T CreateServiceReference(string contractID)
 		{
 			if (!Xpcom.IsInitialized)
 			{
 				throw new GeckoException("Xpcom.Initialize must be called before using of any xulrunner/gecko-fx services");
 			}
-			_instance = Xpcom.GetService<T>(contractID);
+			return Xpcom.GetService<T>(contractID);
 		}
-		#endregion
-
 	}
 
 }

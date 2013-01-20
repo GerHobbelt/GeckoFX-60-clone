@@ -86,11 +86,12 @@
     <Compile Include="DOM\Events\DomEventArgs.cs" />
     <Compile Include="DOM\Events\DomMouseEventArgs.cs" />
     <Compile Include="DOM\Events\DomUIEventArgs.cs" />
+    <Compile Include="Interop\ComPtr.cs" />
     <Compile Include="Interop\ExtensionMethods.cs" />
     <Compile Include="Net\AsyncStreamCopier.cs" />
     <Compile Include="Net\ImgRequest.cs" />
     <Compile Include="Net\IncrementalDownload.cs" />
-    <Compile Include="Services\AppShellService.cs" />
+    <Compile Include="AppShellService.cs" />
     <Compile Include="AutoJSContext.cs" />
     <Compile Include="BaseTypes\AccessibleTextBoundary.cs" />
     <Compile Include="BaseTypes\gfxContext.cs" />

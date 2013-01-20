@@ -13,8 +13,6 @@ namespace Gecko.Certificates
 		{
 			_certDb = new ServiceWrapper<nsIX509CertDB>(Contracts.X509CertDb);
 			_certDb2 = new ServiceWrapper<nsIX509CertDB2>(Contracts.X509CertDb);
-
-			
 		}
 
 

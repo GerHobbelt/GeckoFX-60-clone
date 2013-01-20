@@ -19,22 +19,7 @@ namespace Gecko
 
 		public object Value
 		{
-			get
-			{
-				switch ((DataType)_variant.GetDataTypeAttribute())
-				{
-					case DataType.Int8:
-						return _variant.GetAsInt8();
-					case DataType.Int16:
-						return _variant.GetAsInt16();
-					case DataType.Int32:
-						return _variant.GetAsInt32();
-					case DataType.Int64:
-						return _variant.GetAsInt64();
-					default:
-						return null;
-				}
-			}
+			get { return GetValue(); }
 		}
 
 
@@ -42,6 +27,29 @@ namespace Gecko
 		{
 			var writable = Xpcom.QueryInterface<nsIWritableVariant>( variant );
 			return writable != null ? new WritableVariant( writable ) : new Variant( variant );
+		}
+
+
+		protected object GetValue()
+		{
+			switch ((DataType)_variant.GetDataTypeAttribute())
+			{
+				case DataType.Int8:
+					return _variant.GetAsInt8();
+				case DataType.Int16:
+					return _variant.GetAsInt16();
+				case DataType.Int32:
+					return _variant.GetAsInt32();
+				case DataType.Int64:
+					return _variant.GetAsInt64();
+				default:
+					return null;
+			}
+		}
+
+		public sbyte GetAsInt8()
+		{
+			return (sbyte)_variant.GetAsInt8();
 		}
 	}
 
@@ -72,10 +80,9 @@ namespace Gecko
 			set { _writableVariant.Instance.SetWritableAttribute( value ); }
 		}
 
-		public new object Value
+		public void SetString( string value )
 		{
-		//	get { return null; }
-			set{}
+			_writableVariant.Instance.SetAsWString( value );
 		}
 	}
 

@@ -7,51 +7,51 @@ namespace Gecko.Certificates
 {
 	public sealed class CertificateValidity
 	{
-		private nsIX509CertValidity _validity;
+		private InstanceWrapper<nsIX509CertValidity> _validity;
 
 		internal CertificateValidity(nsIX509CertValidity validity)
 		{
-			_validity = validity;
+			_validity = new InstanceWrapper<nsIX509CertValidity>( validity );
 		}
 
 		public long NotBefore
 		{
-			get { return _validity.GetNotBeforeAttribute(); }
+			get { return _validity.Instance.GetNotBeforeAttribute(); }
 		}
 
 		public string NotBeforeLocalTime
 		{
-			get { return nsString.Get( _validity.GetNotBeforeLocalTimeAttribute ); }
+			get { return nsString.Get(_validity.Instance.GetNotBeforeLocalTimeAttribute); }
 		}
 
 		public string NotBeforeLocalDay
 		{
-			get { return nsString.Get( _validity.GetNotBeforeLocalDayAttribute ); }
+			get { return nsString.Get(_validity.Instance.GetNotBeforeLocalDayAttribute); }
 		}
 
 		public string NotBeforeGMT
 		{
-			get { return nsString.Get( _validity.GetNotBeforeGMTAttribute ); }
+			get { return nsString.Get(_validity.Instance.GetNotBeforeGMTAttribute); }
 		}
 	
 		public long NotAfter
 		{
-			get { return _validity.GetNotAfterAttribute(); }
+			get { return _validity.Instance.GetNotAfterAttribute(); }
 		}
 
 		public string NotAfterLocalTime
 		{
-			get { return nsString.Get( _validity.GetNotAfterLocalTimeAttribute ); }
+			get { return nsString.Get(_validity.Instance.GetNotAfterLocalTimeAttribute); }
 		}
 
 		public string NotAfterLocalDay
 		{
-			get { return nsString.Get( _validity.GetNotAfterLocalDayAttribute ); }
+			get { return nsString.Get(_validity.Instance.GetNotAfterLocalDayAttribute); }
 		}
 
 		public string NotAfterGMT
 		{
-			get { return nsString.Get( _validity.GetNotAfterGMTAttribute ); }
+			get { return nsString.Get(_validity.Instance.GetNotAfterGMTAttribute); }
 		}
 	}
 }
