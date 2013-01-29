@@ -93,6 +93,9 @@
     <Compile Include="Net\AsyncStreamCopier.cs" />
     <Compile Include="Net\ImgRequest.cs" />
     <Compile Include="Net\IncrementalDownload.cs" />
+    <Compile Include="NewFolder1\GeckoEventList.cs" />
+    <Compile Include="NewFolder1\GeckoEventListTmp.cs" />
+    <Compile Include="NewFolder1\GeckoNavigatingEventArgs.cs" />
     <Compile Include="Services\AppShellService.cs" />
     <Compile Include="AutoJSContext.cs" />
     <Compile Include="BaseTypes\AccessibleTextBoundary.cs" />
@@ -181,6 +184,7 @@
     <Compile Include="Services\VersionComparator.cs" />
     <Compile Include="Services\WindowWatcher.cs" />
     <Compile Include="Variant.cs" />
+    <Compile Include="WebProgressListener.cs" />
     <Compile Include="WiFiMonitor.cs" />
     <Compile Include="WindowMediator.cs" />
     <Compile Include="Services\XulRuntime.cs" />

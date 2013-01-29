@@ -595,6 +595,35 @@ namespace Gecko
 			Marshal.FinalReleaseComObject(localObj);
 		}
 
+		public static IntPtr WebBrowserGetInterface<T>(T geckoWebBrowser, nsIWebBrowser instance, ref Guid uuid)
+		where T : IGeckoWebBrowser
+		{
+
+			object obj = geckoWebBrowser;
+
+			// note: when a new window is created, gecko calls GetInterface on the webbrowser to get a DOMWindow in order
+			// to set the starting url
+			if (instance != null)
+			{
+				if (uuid == typeof(nsIDOMWindow).GUID)
+				{
+					obj = instance.GetContentDOMWindowAttribute();
+				}
+				else if (uuid == typeof(nsIDOMDocument).GUID)
+				{
+					obj = instance.GetContentDOMWindowAttribute().GetDocumentAttribute();
+				}
+			}
+
+			IntPtr ppv, pUnk = Marshal.GetIUnknownForObject(obj);
+
+			Marshal.QueryInterface(pUnk, ref uuid, out ppv);
+
+			Marshal.Release(pUnk);
+
+			return ppv;
+		}
+
 		#region Internal class & interface declarations
 		#region QI_nsIInterfaceRequestor	
 		/// <summary>
@@ -649,5 +678,7 @@ namespace Gecko
 		}
 
 		#endregion
+
+	
 	}
 }

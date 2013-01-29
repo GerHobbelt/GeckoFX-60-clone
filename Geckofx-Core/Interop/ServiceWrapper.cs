@@ -15,7 +15,6 @@ namespace Gecko.Interop
 		:ComPtr<T>
 		where T : class
 	{
-		private T _instance;
 
 		#region ctor & dtor
 		internal ServiceWrapper(string contractID)
