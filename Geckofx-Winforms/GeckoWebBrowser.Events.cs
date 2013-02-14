@@ -1121,7 +1121,7 @@ namespace Gecko
 			if (m_javascriptDebuggingEnabled)
 				return;
 
-			using (var a = new AutoJSContext(JSContext))
+			//using (var a = new AutoJSContext(JSContext))
 			{
 				using (var jsd = new ServiceWrapper<jsdIDebuggerService>( "@mozilla.org/js/jsd/debugger-service;1" ))
 				{
