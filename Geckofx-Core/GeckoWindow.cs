@@ -40,7 +40,11 @@ namespace Gecko
 
 		public WindowUtils WindowUtils 
 		{
-			get { return new WindowUtils(Xpcom.QueryInterface<nsIDOMWindowUtils>(DomWindow)); }
+			get
+			{
+				var utils = Xpcom.QueryInterface<nsIDOMWindowUtils>( DomWindow );
+				return utils.Wrap( WindowUtils.Create );
+			}
 		}
 		
 		internal static GeckoWindow Create(nsIDOMWindow window)
@@ -128,6 +132,18 @@ namespace Gecko
 		public GeckoSelection Selection
 		{
 			get { return GeckoSelection.Create( _domWindow.Instance.GetSelection() ); }
+		}
+	}
+
+
+	public static class GeckoWindowExtension
+	{
+		public static bool IsTopWindow( this GeckoWindow geckoWindow )
+		{
+			if ( geckoWindow == null ) return true;
+			var top = geckoWindow.Top;
+			if ( top == null ) return true;
+			return top.DomWindow.GetHashCode() == geckoWindow.DomWindow.GetHashCode();
 		}
 	}
 }

@@ -38,6 +38,7 @@ namespace Gecko
 		private HwndSource _source;
 		#endregion
 
+		private uint _chromeFlags;
 
 
 		public IntPtr JSContext { get; protected set; }

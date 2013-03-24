@@ -18,11 +18,12 @@ namespace Gecko
 		nsIWebBrowserChrome,
 		nsIEmbeddingSiteWindow,
 		nsIInterfaceRequestor,
-		// web progress listener
-		nsIWebProgressListener2,
 		// weak reference creation
 		nsISupportsWeakReference
 	{
+		private WebProgressListener _webProgressListener=new WebProgressListener();
+		private nsIWeakReference _webProgressWeakReference;
+
 
 		protected override HandleRef BuildWindowCore( HandleRef hwndParent )
 		{
@@ -49,76 +50,33 @@ namespace Gecko
 			RecordNewJsContext();
 			_baseWindow.Create();
 
+			#region nsIWebProgressListener/nsIWebProgressListener2
 			Guid nsIWebProgressListenerGUID = typeof(nsIWebProgressListener).GUID;
 			Guid nsIWebProgressListener2GUID = typeof(nsIWebProgressListener2).GUID;
-			//_webBrowser.Instance.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListenerGUID);
-			//_webBrowser.Instance.AddWebBrowserListener( this.GetWeakReference(), ref nsIWebProgressListener2GUID );
+			_webProgressWeakReference = _webProgressListener.GetWeakReference();
+			_webBrowser.Instance.AddWebBrowserListener(_webProgressWeakReference, ref nsIWebProgressListenerGUID);
+			_webBrowser.Instance.AddWebBrowserListener(_webProgressWeakReference, ref nsIWebProgressListener2GUID);
+			#endregion
 			_baseWindow.SetVisibilityAttribute(true);
 		}
 
-		protected override void DestroyWindowCore(HandleRef hwnd)
+		protected override void DestroyWindowCore( HandleRef hwnd )
 		{
+			#region nsIWebProgressListener/nsIWebProgressListener2
+			_webProgressListener.IsListening = false;
+			Guid nsIWebProgressListenerGUID = typeof(nsIWebProgressListener).GUID;
+			Guid nsIWebProgressListener2GUID = typeof(nsIWebProgressListener2).GUID;
+			_webBrowser.Instance.RemoveWebBrowserListener(_webProgressWeakReference, ref nsIWebProgressListenerGUID);
+			_webBrowser.Instance.RemoveWebBrowserListener(_webProgressWeakReference, ref nsIWebProgressListener2GUID);
+			_webProgressWeakReference = null;
+			_webProgressListener = null;
+			#endregion
 			//_webNav.Stop(  );
 			_webBrowser.FinalRelease();
 			_webBrowser.Dispose();
 			_webBrowser = null;
 			_source.Dispose();
 		}
-
-		#region nsIWebBrowserChrome
-
-		public void SetStatus( uint statusType, string status )
-		{
-			Status = status;
-		}
-
-		public nsIWebBrowser GetWebBrowserAttribute()
-		{
-			return _webBrowser.Instance;
-		}
-
-		public void SetWebBrowserAttribute( nsIWebBrowser aWebBrowser )
-		{
-			
-		}
-
-		private uint _chromeFlags;
-
-		public uint GetChromeFlagsAttribute()
-		{
-			return _chromeFlags;
-		}
-
-		public void SetChromeFlagsAttribute( uint aChromeFlags )
-		{
-			_chromeFlags = aChromeFlags;
-		}
-
-		public void DestroyBrowserWindow()
-		{
-			
-		}
-
-		public void SizeBrowserTo( int aCX, int aCY )
-		{
-			
-		}
-
-		public void ShowAsModal()
-		{
-			
-		}
-
-		public bool IsWindowModal()
-		{
-			return false;
-		}
-
-		public void ExitModalEventLoop( int aStatus )
-		{
-			
-		}
-		#endregion
 
 
 		protected void RecordNewJsContext()
@@ -155,82 +113,6 @@ namespace Gecko
 		}
 
 
-
-
-		#region nsIWebProgressListener
-		void nsIWebProgressListener.OnStateChange( nsIWebProgress aWebProgress, nsIRequest aRequest, uint aStateFlags, int aStatus )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener2.OnProgressChange(
-			nsIWebProgress aWebProgress, nsIRequest aRequest, int aCurSelfProgress, int aMaxSelfProgress, int aCurTotalProgress,
-			int aMaxTotalProgress )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener2.OnLocationChange( nsIWebProgress aWebProgress, nsIRequest aRequest, nsIURI aLocation, uint aFlags )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener2.OnStatusChange( nsIWebProgress aWebProgress, nsIRequest aRequest, int aStatus, string aMessage )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener2.OnSecurityChange( nsIWebProgress aWebProgress, nsIRequest aRequest, uint aState )
-		{
-			throw new NotImplementedException();
-		}
-
-		public void OnProgressChange64(
-			nsIWebProgress aWebProgress, nsIRequest aRequest, long aCurSelfProgress, long aMaxSelfProgress, long aCurTotalProgress,
-			long aMaxTotalProgress )
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool OnRefreshAttempted( nsIWebProgress aWebProgress, nsIURI aRefreshURI, int aMillis, bool aSameURI )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener2.OnStateChange( nsIWebProgress aWebProgress, nsIRequest aRequest, uint aStateFlags, int aStatus )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener.OnProgressChange(
-			nsIWebProgress aWebProgress, nsIRequest aRequest, int aCurSelfProgress, int aMaxSelfProgress, int aCurTotalProgress,
-			int aMaxTotalProgress )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener.OnLocationChange( nsIWebProgress aWebProgress, nsIRequest aRequest, nsIURI aLocation, uint aFlags )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener.OnStatusChange( nsIWebProgress aWebProgress, nsIRequest aRequest, int aStatus, string aMessage )
-		{
-			throw new NotImplementedException();
-		}
-
-		void nsIWebProgressListener.OnSecurityChange( nsIWebProgress aWebProgress, nsIRequest aRequest, uint aState )
-		{
-			throw new NotImplementedException();
-		}
-		#endregion
-
-		#region nsISupportsWeakReference
-		public nsIWeakReference GetWeakReference()
-		{
-			return new nsWeakReference(this);
-		}
-		#endregion
 
 		#region IGeckoWebBrowser
 
@@ -330,17 +212,48 @@ namespace Gecko
 
 		public bool GoBack()
 		{
-			throw new NotImplementedException();
+			bool ok;
+			try
+			{
+				_webNav.GoBack();
+				ok = true;
+			}
+			catch ( Exception )
+			{
+				ok = false;
+			}
+			return ok;
+
 		}
 
 		public bool GoForward()
 		{
-			throw new NotImplementedException();
+			bool ok;
+			try
+			{
+				_webNav.GoForward();
+				ok = true;
+			}
+			catch (Exception)
+			{
+				ok = false;
+			}
+			return ok;
 		}
 
 		public bool Reload()
 		{
-			throw new NotImplementedException();
+			bool ok;
+			try
+			{
+				_webNav.Reload(0);
+				ok = true;
+			}
+			catch (Exception)
+			{
+				ok = false;
+			}
+			return ok;
 		}
 
 		public event EventHandler DocumentCompleted;		
@@ -351,7 +264,14 @@ namespace Gecko
 		/// <param name="action"></param>
 		public void UserInterfaceThreadInvoke(Action action)
 		{
-			throw new NotImplementedException();
+			if ( Dispatcher.CheckAccess() )
+			{
+				action();
+			}
+			else
+			{
+				Dispatcher.Invoke( action );
+			}
 		}
 
 		/// <summary>
@@ -362,7 +282,11 @@ namespace Gecko
 		/// <returns></returns>
 		public T UserInterfaceThreadInvoke<T>(Func<T> func)
 		{
-			throw new NotImplementedException();
+			if (Dispatcher.CheckAccess())
+			{
+				return func();
+			}
+			return (T)Dispatcher.Invoke(func);
 		}
 
 		#endregion
@@ -383,119 +307,5 @@ namespace Gecko
 			base.OnRenderSizeChanged(sizeInfo);
 		}
 
-		#region nsIEmbeddingSiteWindow Members
-
-		void nsIEmbeddingSiteWindow.SetDimensions(uint flags, int x, int y, int cx, int cy)
-		{
-			//const int DIM_FLAGS_POSITION = 1;
-			//const int DIM_FLAGS_SIZE_INNER = 2;
-			//const int DIM_FLAGS_SIZE_OUTER = 4;
-
-			//BoundsSpecified specified = 0;
-			//if ((flags & DIM_FLAGS_POSITION) != 0)
-			//{
-			//    specified |= BoundsSpecified.Location;
-			//}
-			//if ((flags & DIM_FLAGS_SIZE_INNER) != 0 || (flags & DIM_FLAGS_SIZE_OUTER) != 0)
-			//{
-			//    specified |= BoundsSpecified.Size;
-			//}
-
-			//OnWindowSetBounds(new GeckoWindowSetBoundsEventArgs(new Rectangle(x, y, cx, cy), specified));
-		}
-
-		unsafe void nsIEmbeddingSiteWindow.GetDimensions( uint flags, int* x, int* y, int* cx, int* cy )
-		{
-			double localX = ( x != ( void* ) 0 ) ? *x : 0;
-			double localY = ( y != ( void* ) 0 ) ? *y : 0;
-			double localCX = 0;
-			double localCY = 0;
-
-			if ( ( flags & nsIEmbeddingSiteWindowConstants.DIM_FLAGS_POSITION ) != 0 )
-			{
-				Point pt = PointToScreen( new Point() );
-				localX = pt.X;
-				localY = pt.Y;
-			}
-			localCX = ActualWidth;
-			localCY = ActualHeight;
-
-			int iLocalCX = 0, iLocalCY = 0;
-			_baseWindow.GetSize( ref iLocalCX, ref iLocalCY );
-			localCX = iLocalCX;
-			localCY = iLocalCY;
-
-			if ( x != ( void* ) 0 ) *x = ( int ) localX;
-			if ( y != ( void* ) 0 ) *y = ( int ) localY;
-			if ( cx != ( void* ) 0 ) *cx = ( int ) localCX;
-			if ( cy != ( void* ) 0 ) *cy = ( int ) localCY;
-		}
-
-		void nsIEmbeddingSiteWindow.SetFocus()
-		{
-			Focus();
-			if (_baseWindow != null)
-			{
-				_baseWindow.SetFocus();
-			}
-		}
-
-		bool nsIEmbeddingSiteWindow.GetVisibilityAttribute()
-		{
-			return Visibility==Visibility.Visible;
-		}
-
-		void nsIEmbeddingSiteWindow.SetVisibilityAttribute(bool aVisibility)
-		{
-			Visibility = aVisibility ? Visibility.Visible : Visibility.Hidden;
-		}
-
-		string nsIEmbeddingSiteWindow.GetTitleAttribute()
-		{
-			return DocumentTitle;
-		}
-
-		void nsIEmbeddingSiteWindow.SetTitleAttribute(string aTitle)
-		{
-			DocumentTitle = aTitle;
-		}
-
-		IntPtr nsIEmbeddingSiteWindow.GetSiteWindowAttribute()
-		{
-			return Handle;
-		}
-
-		void nsIEmbeddingSiteWindow.Blur()
-		{
-			// TODO: implement.
-		}
-		#endregion
-
-		IntPtr nsIInterfaceRequestor.GetInterface(ref Guid uuid)
-		{
-			object obj = this;
-
-			// note: when a new window is created, gecko calls GetInterface on the webbrowser to get a DOMWindow in order
-			// to set the starting url
-			if (_webBrowser != null)
-			{
-				if (uuid == typeof(nsIDOMWindow).GUID)
-				{
-					obj = _webBrowser.Instance.GetContentDOMWindowAttribute();
-				}
-				else if (uuid == typeof(nsIDOMDocument).GUID)
-				{
-					obj = _webBrowser.Instance.GetContentDOMWindowAttribute().GetDocumentAttribute();
-				}
-			}
-
-			IntPtr ppv, pUnk = Marshal.GetIUnknownForObject(obj);
-
-			Marshal.QueryInterface(pUnk, ref uuid, out ppv);
-
-			Marshal.Release(pUnk);
-
-			return ppv;
-		}
 	}
 }

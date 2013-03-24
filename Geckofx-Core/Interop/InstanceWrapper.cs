@@ -25,11 +25,6 @@ namespace Gecko
 		{
 		}
 
-		public T Instance
-		{
-			get { return _instance; }
-		}
-
 		/// <summary>
 		/// Creates InstanceWrapper for xulrunner object instance		
 		/// refcount is not incremented
