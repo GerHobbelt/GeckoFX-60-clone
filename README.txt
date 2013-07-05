@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v21.0-0.2 ==
+
+1. Fix zooming.
+2. Fix issue #3 (AccessViolationException on Dispose())
+
 == v21.0-0.1 ==
 
 1. Initial version supporting firefox/xulrunner v21.0
