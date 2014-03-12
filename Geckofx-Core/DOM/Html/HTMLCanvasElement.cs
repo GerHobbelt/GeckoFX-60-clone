@@ -28,17 +28,13 @@ namespace Gecko.DOM
 			set { DOMHTMLElement.SetHeightAttribute(value); }
 		}
 
-		public string toDataURL(string type)
+		public string ToDataURL(string type)
 		{
+			using (var context = new AutoJSContext(GlobalJSContextHolder.BackstageJSContext))
 			using (nsAString retval = new nsAString(), param = new nsAString(type))
 			{
-				var instance = Xpcom.CreateInstance<nsIVariant>(Contracts.Variant);
-#if PORT
-				DOMHTMLElement.ToDataURL(param, instance, 2, retval);
-#else
-				throw new NotImplementedException("ToDataURL api changed");
-#endif
-				Marshal.ReleaseComObject(instance);
+				JsVal js = default(JsVal);
+				DOMHTMLElement.ToDataURL(param, js, context.ContextPointer, retval);
 				return retval.ToString();
 			}
 		}

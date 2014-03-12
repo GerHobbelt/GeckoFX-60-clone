@@ -116,20 +116,6 @@ namespace Gecko.DOM
 				CreationMethod = (x) => new GeckoTableCaptionElement((nsIDOMHTMLTableCaptionElement)x) });
 			Add(new GeckoClassDesc() { TagName = "td", InterfaceType = typeof(nsIDOMHTMLTableCellElement), GeckoElement = typeof(GeckoTableCellElement),
 				CreationMethod = (x) => new GeckoTableCellElement((nsIDOMHTMLTableCellElement)x) });
-#if PORT
-			Add(new GeckoClassDesc() { TagName = "col", InterfaceType = typeof(nsIDOMHTMLTableColElement), GeckoElement = typeof(GeckoTableColElement),
-				CreationMethod = (x) => new GeckoTableColElement((nsIDOMHTMLTableColElement)x) });
-			Add(new GeckoClassDesc() { TagName = "table", InterfaceType = typeof(nsIDOMHTMLTableElement), GeckoElement = typeof(GeckoTableElement), 
-				CreationMethod = (x) => new GeckoTableElement((nsIDOMHTMLTableElement)x) });
-			Add(new GeckoClassDesc() { TagName = "tr", InterfaceType = typeof(nsIDOMHTMLTableRowElement), GeckoElement = typeof(GeckoTableRowElement), 
-				CreationMethod = (x) => new GeckoTableRowElement((nsIDOMHTMLTableRowElement)x) });
-			Add(new GeckoClassDesc() { TagName = "thead", InterfaceType = typeof(nsIDOMHTMLTableSectionElement), GeckoElement = typeof(GeckoTableSectionElement),
-				CreationMethod = (x) => new GeckoTableSectionElement((nsIDOMHTMLTableSectionElement)x) });
-			Add(new GeckoClassDesc() { TagName = "tbody", InterfaceType = typeof(nsIDOMHTMLTableSectionElement), GeckoElement = typeof(GeckoTableSectionElement), 
-				CreationMethod = (x) => new GeckoTableSectionElement((nsIDOMHTMLTableSectionElement)x) });
-			Add(new GeckoClassDesc() { TagName = "tfoot", InterfaceType = typeof(nsIDOMHTMLTableSectionElement), GeckoElement = typeof(GeckoTableSectionElement), 
-				CreationMethod = (x) => new GeckoTableSectionElement((nsIDOMHTMLTableSectionElement)x) });
-#endif
 			Add(new GeckoClassDesc() { TagName = "textarea", InterfaceType = typeof(nsIDOMHTMLTextAreaElement), GeckoElement = typeof(GeckoTextAreaElement), 
 				CreationMethod = (x) => new GeckoTextAreaElement((nsIDOMHTMLTextAreaElement)x) });
 			Add(new GeckoClassDesc() { TagName = "title", InterfaceType = typeof(nsIDOMHTMLTitleElement), GeckoElement = typeof(GeckoTitleElement), 
