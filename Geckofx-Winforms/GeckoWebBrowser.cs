@@ -322,17 +322,8 @@ namespace Gecko
 			if (!IsHandleCreated) CreateHandle(); 
 			if (IsBusy) this.Stop();
 
-
 			if (!IsHandleCreated)
 				throw new InvalidOperationException("Cannot call Navigate() before the window handle is created.");
-
-			// WebNav.LoadURI throws an exception if we try to open a file that doesn't exist...
-			Uri created;
-			if (Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out created) && created.IsAbsoluteUri && created.IsFile)
-			{
-				if (!File.Exists(created.LocalPath) && !Directory.Exists(created.LocalPath))
-					return false;
-			}
 
 			nsIURI referrerUri = null;
 			if (!string.IsNullOrEmpty(referrer))
