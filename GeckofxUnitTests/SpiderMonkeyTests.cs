@@ -190,7 +190,6 @@ namespace GeckofxUnitTests
 			yield return new KeyValuePair<string, Action<IntPtr>>("JS_Free", (c) => SpiderMonkey.JS_Free(c, IntPtr.Zero));
 			yield return new KeyValuePair<string, Action<IntPtr>>("JS_WrapObject", (c) => SpiderMonkey.JS_WrapObject(c, IntPtr.Zero));
 			yield return new KeyValuePair<string, Action<IntPtr>>("IsObjectInContextCompartment", (c) => SpiderMonkey.IsObjectInContextCompartment(IntPtr.Zero, c));
-			yield return new KeyValuePair<string, Action<IntPtr>>("JS_Shutdown", (c) => SpiderMonkey.JS_Shutdown());
 			yield return new KeyValuePair<string, Action<IntPtr>>("JS_DestroyRuntime", (c) => SpiderMonkey.JS_DestroyRuntime(IntPtr.Zero));
 			yield return new KeyValuePair<string, Action<IntPtr>>("JS_HasProperty", (c) => SpiderMonkey.JS_HasProperty(c, IntPtr.Zero, ""));
 			yield return new KeyValuePair<string, Action<IntPtr>>("JS_GetProperty", (c) => SpiderMonkey.JS_GetProperty(c, IntPtr.Zero, ""));

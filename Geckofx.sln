@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2011
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geckofx-Core", "Geckofx-Core\Geckofx-Core.csproj", "{6AB4EEE6-1889-43AB-83F7-A4F083230BE7}"
