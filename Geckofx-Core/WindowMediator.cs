@@ -1,4 +1,5 @@
 using Gecko.Interop;
+using System.Collections.Generic;
 
 namespace Gecko
 {
@@ -25,15 +26,27 @@ namespace Gecko
 			_windowMediator.Instance.UnregisterWindow( window );
 		}
 		/// <summary>
-		/// Get most recent window
-		/// types:
-		/// "navigator:browser"
+		/// Get most recent window.
 		/// </summary>
-		/// <param name="type"></param>
+		/// <param name="type">Window type. non-empty-string: for xul pages, should be equal to "windowtype" attribute of the root element.
+		/// ""/null: for normal html pages.</param>
 		/// <returns></returns>
 		public static nsIDOMWindow GetMostRecentWindow(string type)
 		{
 			return _windowMediator.Instance.GetMostRecentWindow( type );
+		}
+
+		/// <summary>
+		/// Gets the enumerator of all windows.
+		/// </summary>
+		/// <returns>The enumerator.</returns>
+		/// <param name="type">Window type. non-empty-string: for xul pages, should be equal to "windowtype" attribute of the root element.
+		/// ""/null: for normal html pages.</param>
+		public static IEnumerator<GeckoWindow> GetEnumerator(string type)
+		{
+			return new Collections.GeckoEnumerator<GeckoWindow, nsIDOMWindow>(
+				_windowMediator.Instance.GetEnumerator(type),
+				x => new GeckoWindow(x));
 		}
 	}
 }

@@ -180,6 +180,8 @@ namespace Gecko
 				}
 			}
 
+			WindowMediator.RegisterWindow(this);
+
 			base.OnHandleCreated( e );
 		}
 
@@ -188,6 +190,8 @@ namespace Gecko
 			if (BaseWindow != null)
 			{
 				this.Stop();
+
+				WindowMediator.UnregisterWindow(this);
 
 				nsIDocShell docShell = Xpcom.QueryInterface<nsIDocShell>(BaseWindow);
 				if (docShell != null && !docShell.IsBeingDestroyed())
