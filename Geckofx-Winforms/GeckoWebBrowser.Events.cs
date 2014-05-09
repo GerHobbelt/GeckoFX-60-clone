@@ -82,6 +82,7 @@ namespace Gecko
 		private static readonly object DomDragEvent = new object();
 		private static readonly object DomDropEvent = new object();
 		private static readonly object DomDragEndEvent = new object();
+		private static readonly object FullscreenChangeEvent = new object();
 		#endregion
 
 		#region Navigation events
@@ -1120,6 +1121,25 @@ namespace Gecko
 		}
 
 		#endregion public event GeckoDomEventHandler DomDoubleClick
+
+		#region public event GeckoDomEventHandler FullscreenChange
+
+		[Category("DOM Events")]
+		public event EventHandler<DomEventArgs> FullscreenChange
+		{
+			add { Events.AddHandler(FullscreenChangeEvent, value); }
+			remove { Events.RemoveHandler(FullscreenChangeEvent, value); }
+		}
+
+		/// <summary>Raises the <see cref="FullscreenChange"/> event.</summary>
+		/// <param name="e">The data for the event.</param>
+		protected virtual void OnFullscreenChange(DomEventArgs e)
+		{
+			var evnt = (EventHandler<DomEventArgs>)Events[FullscreenChangeEvent];
+			if (evnt != null) evnt(this, e);
+		}
+
+		#endregion public event GeckoDomEventHandler FullscreenChange
 
 		#endregion
 
