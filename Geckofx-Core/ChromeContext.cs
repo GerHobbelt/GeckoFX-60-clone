@@ -55,7 +55,7 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
 ";
 
 				var button = doc.CreateElement("button");
-				button.SetAttribute("oncommand", func + "this.setUserData('drawResult', drawWindow(this.getUserData('window'), 0, 0, 200, 200), null)");
+				button.SetAttribute("oncommand", func + @"this.setUserData('drawResult', drawWindow(this.getUserData('window'), this.getUserData('x'), this.getUserData('y'), this.getUserData('w'), this.getUserData('h')), null)");
 				rootElement.AppendChild(button);
 
 				command = Xpcom.QueryInterface<nsIDOMXULElement>(button.DOMElement).AsComPtr();
