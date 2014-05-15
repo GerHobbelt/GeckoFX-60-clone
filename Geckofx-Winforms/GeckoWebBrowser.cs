@@ -219,9 +219,8 @@ namespace Gecko
 						((nsIWebBrowserChrome)e.WebBrowser).SetChromeFlagsAttribute(chromeFlags);
 						return e.WebBrowser;
 					}
-									
-					//nsIAppShellService appShellService = Xpcom.GetService<nsIAppShellService>(Contracts.AppShellService);
-					nsIXULWindow xulChild = AppShellService.CreateTopLevelWindow(null, null, chromeFlags, -1, -1);
+					
+					nsIXULWindow xulChild = AppShellService.CreateTopLevelWindow(null, null, chromeFlags, e.InitialWidth, e.InitialHeight);
 					return Xpcom.QueryInterface<nsIWebBrowserChrome>(xulChild);									
 				}
 				return null;
