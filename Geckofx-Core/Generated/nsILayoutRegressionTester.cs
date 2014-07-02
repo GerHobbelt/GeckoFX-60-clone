@@ -61,10 +61,10 @@ namespace Gecko
         // @param aResult             a status value indicating whether the dump happened,
         //                                whether the page was still loading, or whether some other error happened.
         // </summary>
-		public const int DUMP_FLAGS_MASK_DEFAULT = 0;
+		public const short DUMP_FLAGS_MASK_DEFAULT = 0;
 		
 		// 
-		public const int DUMP_FLAGS_MASK_PRINT_MODE = 1;
+		public const short DUMP_FLAGS_MASK_PRINT_MODE = 1;
 		
 		// 
 		public const long DUMP_RESULT_COMPLETED = 0;
@@ -86,9 +86,9 @@ namespace Gecko
         // @param aFlags              flags specifying output verbosity
         // @param aResult             result of the comparison: zero if the files are same, non-zero if different
         // </summary>
-		public const int COMPARE_FLAGS_VERBOSE = 0;
+		public const short COMPARE_FLAGS_VERBOSE = 0;
 		
 		// 
-		public const int COMPARE_FLAGS_BRIEF = 1;
+		public const short COMPARE_FLAGS_BRIEF = 1;
 	}
 }

@@ -237,22 +237,22 @@ namespace Gecko
 		// <summary>
         // The event isn't being dispatched.
         // </summary>
-		public const ulong NONE = 0;
+		public const ushort NONE = 0;
 		
 		// <summary>
         // The current event phase is the capturing phase.
         // </summary>
-		public const ulong CAPTURING_PHASE = 1;
+		public const ushort CAPTURING_PHASE = 1;
 		
 		// <summary>
         // The event is currently being evaluated at the target EventTarget.
         // </summary>
-		public const ulong AT_TARGET = 2;
+		public const ushort AT_TARGET = 2;
 		
 		// <summary>
         // The current event phase is the bubbling phase.
         // </summary>
-		public const ulong BUBBLING_PHASE = 3;
+		public const ushort BUBBLING_PHASE = 3;
 		
 		// 
 		public const long ALT_MASK = 0x00000001;

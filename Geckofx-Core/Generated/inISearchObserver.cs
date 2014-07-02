@@ -59,16 +59,16 @@ namespace Gecko
 		// <summary>
         // result codes which are sent to onSearchEnd
         // </summary>
-		public const int IN_SUCCESS = 1;
+		public const short IN_SUCCESS = 1;
 		
 		// <summary>
         // search completed successfully
         // </summary>
-		public const int IN_INTERRUPTED = 2;
+		public const short IN_INTERRUPTED = 2;
 		
 		// <summary>
         // search stopped due to user interruption
         // </summary>
-		public const int IN_ERROR = 3;
+		public const short IN_ERROR = 3;
 	}
 }

@@ -87,30 +87,30 @@ namespace Gecko
 		// <summary>
         // profile items to migrate. use with migrate().
         // </summary>
-		public const ulong ALL = 0x0000;
+		public const ushort ALL = 0x0000;
 		
 		// 
-		public const ulong SETTINGS = 0x0001;
+		public const ushort SETTINGS = 0x0001;
 		
 		// 
-		public const ulong COOKIES = 0x0002;
+		public const ushort COOKIES = 0x0002;
 		
 		// 
-		public const ulong HISTORY = 0x0004;
+		public const ushort HISTORY = 0x0004;
 		
 		// 
-		public const ulong FORMDATA = 0x0008;
+		public const ushort FORMDATA = 0x0008;
 		
 		// 
-		public const ulong PASSWORDS = 0x0010;
+		public const ushort PASSWORDS = 0x0010;
 		
 		// 
-		public const ulong BOOKMARKS = 0x0020;
+		public const ushort BOOKMARKS = 0x0020;
 		
 		// 
-		public const ulong OTHERDATA = 0x0040;
+		public const ushort OTHERDATA = 0x0040;
 		
 		// 
-		public const ulong SESSION = 0x0080;
+		public const ushort SESSION = 0x0080;
 	}
 }

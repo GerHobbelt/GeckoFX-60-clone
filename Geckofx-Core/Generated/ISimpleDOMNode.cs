@@ -133,39 +133,39 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const ulong NODETYPE_ELEMENT = 1;
+		public const ushort NODETYPE_ELEMENT = 1;
 		
 		// 
-		public const ulong NODETYPE_ATTRIBUTE = 2;
+		public const ushort NODETYPE_ATTRIBUTE = 2;
 		
 		// 
-		public const ulong NODETYPE_TEXT = 3;
+		public const ushort NODETYPE_TEXT = 3;
 		
 		// 
-		public const ulong NODETYPE_CDATA_SECTION = 4;
+		public const ushort NODETYPE_CDATA_SECTION = 4;
 		
 		// 
-		public const ulong NODETYPE_ENTITY_REFERENCE = 5;
+		public const ushort NODETYPE_ENTITY_REFERENCE = 5;
 		
 		// 
-		public const ulong NODETYPE_ENTITY = 6;
+		public const ushort NODETYPE_ENTITY = 6;
 		
 		// 
-		public const ulong NODETYPE_PROCESSING_INSTRUCTION = 7;
+		public const ushort NODETYPE_PROCESSING_INSTRUCTION = 7;
 		
 		// 
-		public const ulong NODETYPE_COMMENT = 8;
+		public const ushort NODETYPE_COMMENT = 8;
 		
 		// 
-		public const ulong NODETYPE_DOCUMENT = 9;
+		public const ushort NODETYPE_DOCUMENT = 9;
 		
 		// 
-		public const ulong NODETYPE_DOCUMENT_TYPE = 10;
+		public const ushort NODETYPE_DOCUMENT_TYPE = 10;
 		
 		// 
-		public const ulong NODETYPE_DOCUMENT_FRAGMENT = 11;
+		public const ushort NODETYPE_DOCUMENT_FRAGMENT = 11;
 		
 		// 
-		public const ulong NODETYPE_NOTATION = 12;
+		public const ushort NODETYPE_NOTATION = 12;
 	}
 }

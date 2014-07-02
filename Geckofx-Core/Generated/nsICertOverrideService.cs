@@ -128,16 +128,16 @@ namespace Gecko
 		// <summary>
         // Override Untrusted
         // </summary>
-		public const int ERROR_UNTRUSTED = 1;
+		public const short ERROR_UNTRUSTED = 1;
 		
 		// <summary>
         // Override hostname Mismatch
         // </summary>
-		public const int ERROR_MISMATCH = 2;
+		public const short ERROR_MISMATCH = 2;
 		
 		// <summary>
         // Override Time error
         // </summary>
-		public const int ERROR_TIME = 4;
+		public const short ERROR_TIME = 4;
 	}
 }

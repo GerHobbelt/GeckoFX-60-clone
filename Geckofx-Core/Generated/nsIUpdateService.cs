@@ -651,13 +651,13 @@ namespace Gecko
         // ANY_CHECKS:        Stops all checking, any session from now on
         // (disables update checking preferences)
         // </summary>
-		public const ulong CURRENT_CHECK = 1;
+		public const ushort CURRENT_CHECK = 1;
 		
 		// 
-		public const ulong CURRENT_SESSION = 2;
+		public const ushort CURRENT_SESSION = 2;
 		
 		// 
-		public const ulong ANY_CHECKS = 3;
+		public const ushort ANY_CHECKS = 3;
 	}
 	
 	/// <summary>

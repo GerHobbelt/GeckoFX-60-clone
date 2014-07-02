@@ -803,19 +803,19 @@ namespace Gecko
         // 3 LOADING  Downloading, responseText holds the partial data.
         // 4 DONE     Finished with all operations.
         // </summary>
-		public const ulong UNSENT = 0;
+		public const ushort UNSENT = 0;
 		
 		// 
-		public const ulong OPENED = 1;
+		public const ushort OPENED = 1;
 		
 		// 
-		public const ulong HEADERS_RECEIVED = 2;
+		public const ushort HEADERS_RECEIVED = 2;
 		
 		// 
-		public const ulong LOADING = 3;
+		public const ushort LOADING = 3;
 		
 		// 
-		public const ulong DONE = 4;
+		public const ushort DONE = 4;
 	}
 	
 	/// <summary>nsIXHRSendable </summary>

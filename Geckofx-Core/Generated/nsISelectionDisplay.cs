@@ -70,21 +70,21 @@ namespace Gecko
         // This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int DISPLAY_TEXT = 1;
+		public const short DISPLAY_TEXT = 1;
 		
 		// <summary>
         //display text selected.
         // </summary>
-		public const int DISPLAY_IMAGES = 2;
+		public const short DISPLAY_IMAGES = 2;
 		
 		// <summary>
         //show images selected
         // </summary>
-		public const int DISPLAY_FRAMES = 4;
+		public const short DISPLAY_FRAMES = 4;
 		
 		// <summary>
         //display hrules ect.
         // </summary>
-		public const int DISPLAY_ALL = 7;
+		public const short DISPLAY_ALL = 7;
 	}
 }

@@ -91,33 +91,33 @@ namespace Gecko
         // Make sure to keep this list in sync with the list in:
         // embedding/android/GeckoSmsManager.java
         // </summary>
-		public const ulong SUCCESS_NO_ERROR = 0;
+		public const ushort SUCCESS_NO_ERROR = 0;
 		
 		// 
-		public const ulong NO_SIGNAL_ERROR = 1;
+		public const ushort NO_SIGNAL_ERROR = 1;
 		
 		// 
-		public const ulong NOT_FOUND_ERROR = 2;
+		public const ushort NOT_FOUND_ERROR = 2;
 		
 		// 
-		public const ulong UNKNOWN_ERROR = 3;
+		public const ushort UNKNOWN_ERROR = 3;
 		
 		// 
-		public const ulong INTERNAL_ERROR = 4;
+		public const ushort INTERNAL_ERROR = 4;
 		
 		// 
-		public const ulong NO_SIM_CARD_ERROR = 5;
+		public const ushort NO_SIM_CARD_ERROR = 5;
 		
 		// 
-		public const ulong RADIO_DISABLED_ERROR = 6;
+		public const ushort RADIO_DISABLED_ERROR = 6;
 		
 		// 
-		public const ulong INVALID_ADDRESS_ERROR = 7;
+		public const ushort INVALID_ADDRESS_ERROR = 7;
 		
 		// 
-		public const ulong FDN_CHECK_ERROR = 8;
+		public const ushort FDN_CHECK_ERROR = 8;
 		
 		// 
-		public const ulong NON_ACTIVE_SIM_CARD_ERROR = 9;
+		public const ushort NON_ACTIVE_SIM_CARD_ERROR = 9;
 	}
 }

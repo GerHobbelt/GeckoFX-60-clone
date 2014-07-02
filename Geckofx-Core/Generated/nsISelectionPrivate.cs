@@ -349,10 +349,10 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int ENDOFPRECEDINGLINE = 0;
+		public const short ENDOFPRECEDINGLINE = 0;
 		
 		// 
-		public const int STARTOFNEXTLINE = 1;
+		public const short STARTOFNEXTLINE = 1;
 		
 		// <summary>
         //Table selection stuff

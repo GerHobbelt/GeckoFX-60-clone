@@ -121,31 +121,31 @@ namespace Gecko
 		// <summary>
         // Possible values for the searchResult attribute
         // </summary>
-		public const ulong RESULT_IGNORED = 1;
+		public const ushort RESULT_IGNORED = 1;
 		
 		// <summary>
         //indicates invalid searchString </summary>
-		public const ulong RESULT_FAILURE = 2;
+		public const ushort RESULT_FAILURE = 2;
 		
 		// <summary>
         //indicates failure </summary>
-		public const ulong RESULT_NOMATCH = 3;
+		public const ushort RESULT_NOMATCH = 3;
 		
 		// <summary>
         //indicates success with no matches
         //                                              and that the search is complete </summary>
-		public const ulong RESULT_SUCCESS = 4;
+		public const ushort RESULT_SUCCESS = 4;
 		
 		// <summary>
         //indicates success with matches
         //                                              and that the search is complete </summary>
-		public const ulong RESULT_NOMATCH_ONGOING = 5;
+		public const ushort RESULT_NOMATCH_ONGOING = 5;
 		
 		// <summary>
         //indicates success
         //                                                      with no matches
         //                                                      and that the search
         //                                                      is still ongoing </summary>
-		public const ulong RESULT_SUCCESS_ONGOING = 6;
+		public const ushort RESULT_SUCCESS_ONGOING = 6;
 	}
 }

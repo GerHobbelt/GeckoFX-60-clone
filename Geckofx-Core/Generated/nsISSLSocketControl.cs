@@ -126,22 +126,22 @@ namespace Gecko
 	{
 		
 		// 
-		public const int KEY_EXCHANGE_UNKNOWN = -1;
+		public const short KEY_EXCHANGE_UNKNOWN = -1;
 		
 		// <summary>
         //These values are defined by TLS. </summary>
-		public const int SSL_VERSION_3 = 0x0300;
+		public const short SSL_VERSION_3 = 0x0300;
 		
 		// 
-		public const int TLS_VERSION_1 = 0x0301;
+		public const short TLS_VERSION_1 = 0x0301;
 		
 		// 
-		public const int TLS_VERSION_1_1 = 0x0302;
+		public const short TLS_VERSION_1_1 = 0x0302;
 		
 		// 
-		public const int TLS_VERSION_1_2 = 0x0303;
+		public const short TLS_VERSION_1_2 = 0x0303;
 		
 		// 
-		public const int SSL_VERSION_UNKNOWN = -1;
+		public const short SSL_VERSION_UNKNOWN = -1;
 	}
 }

@@ -302,16 +302,16 @@ namespace Gecko
 		// <summary>
         // Indicates the livemark is inactive.
         // </summary>
-		public const ulong STATUS_READY = 0;
+		public const ushort STATUS_READY = 0;
 		
 		// <summary>
         // Indicates the livemark is fetching new contents.
         // </summary>
-		public const ulong STATUS_LOADING = 1;
+		public const ushort STATUS_LOADING = 1;
 		
 		// <summary>
         // Indicates the livemark failed to fetch new contents.
         // </summary>
-		public const ulong STATUS_FAILED = 2;
+		public const ushort STATUS_FAILED = 2;
 	}
 }

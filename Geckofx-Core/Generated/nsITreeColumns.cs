@@ -103,13 +103,13 @@ namespace Gecko
 	{
 		
 		// 
-		public const int TYPE_TEXT = 1;
+		public const short TYPE_TEXT = 1;
 		
 		// 
-		public const int TYPE_CHECKBOX = 2;
+		public const short TYPE_CHECKBOX = 2;
 		
 		// 
-		public const int TYPE_PROGRESSMETER = 3;
+		public const short TYPE_PROGRESSMETER = 3;
 	}
 	
 	/// <summary>nsITreeColumns </summary>

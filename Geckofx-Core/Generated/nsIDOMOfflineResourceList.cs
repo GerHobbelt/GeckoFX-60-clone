@@ -164,26 +164,26 @@ namespace Gecko
 		
 		// <summary>
         //This object is not associated with an application cache. </summary>
-		public const ulong UNCACHED = 0;
+		public const ushort UNCACHED = 0;
 		
 		// <summary>
         //The application cache is not being updated. </summary>
-		public const ulong IDLE = 1;
+		public const ushort IDLE = 1;
 		
 		// <summary>
         //The manifest is being fetched and checked for updates </summary>
-		public const ulong CHECKING = 2;
+		public const ushort CHECKING = 2;
 		
 		// <summary>
         //Resources are being downloaded to be added to the cache </summary>
-		public const ulong DOWNLOADING = 3;
+		public const ushort DOWNLOADING = 3;
 		
 		// <summary>
         //There is a new version of the application cache available </summary>
-		public const ulong UPDATEREADY = 4;
+		public const ushort UPDATEREADY = 4;
 		
 		// <summary>
         //The application cache group is now obsolete. </summary>
-		public const ulong OBSOLETE = 5;
+		public const ushort OBSOLETE = 5;
 	}
 }

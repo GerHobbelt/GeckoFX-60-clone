@@ -131,21 +131,21 @@ namespace Gecko
         // mozilla/security/nss/lib/softoken/pkcs11t.h and are
         // switched to CKM_*_HMAC constant.
         // </summary>
-		public const int MD2 = 1;
+		public const short MD2 = 1;
 		
 		// 
-		public const int MD5 = 2;
+		public const short MD5 = 2;
 		
 		// 
-		public const int SHA1 = 3;
+		public const short SHA1 = 3;
 		
 		// 
-		public const int SHA256 = 4;
+		public const short SHA256 = 4;
 		
 		// 
-		public const int SHA384 = 5;
+		public const short SHA384 = 5;
 		
 		// 
-		public const int SHA512 = 6;
+		public const short SHA512 = 6;
 	}
 }

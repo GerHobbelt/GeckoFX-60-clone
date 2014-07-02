@@ -270,25 +270,25 @@ namespace Gecko
 	{
 		
 		// 
-		public const int DROP_BEFORE = -1;
+		public const short DROP_BEFORE = -1;
 		
 		// 
-		public const int DROP_ON = 0;
+		public const short DROP_ON = 0;
 		
 		// 
-		public const int DROP_AFTER = 1;
+		public const short DROP_AFTER = 1;
 		
 		// <summary>
         // The progress mode for a given cell. This method is only called for
         // columns of type |progressmeter|.
         // </summary>
-		public const int PROGRESS_NORMAL = 1;
+		public const short PROGRESS_NORMAL = 1;
 		
 		// 
-		public const int PROGRESS_UNDETERMINED = 2;
+		public const short PROGRESS_UNDETERMINED = 2;
 		
 		// 
-		public const int PROGRESS_NONE = 3;
+		public const short PROGRESS_NONE = 3;
 	}
 	
 	/// <summary>

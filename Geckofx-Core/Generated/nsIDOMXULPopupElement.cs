@@ -800,36 +800,36 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const ulong BEFORE_START = 1;
+		public const ushort BEFORE_START = 1;
 		
 		// 
-		public const ulong BEFORE_END = 2;
+		public const ushort BEFORE_END = 2;
 		
 		// 
-		public const ulong AFTER_START = 3;
+		public const ushort AFTER_START = 3;
 		
 		// 
-		public const ulong AFTER_END = 4;
+		public const ushort AFTER_END = 4;
 		
 		// 
-		public const ulong START_BEFORE = 5;
+		public const ushort START_BEFORE = 5;
 		
 		// 
-		public const ulong START_AFTER = 6;
+		public const ushort START_AFTER = 6;
 		
 		// 
-		public const ulong END_BEFORE = 7;
+		public const ushort END_BEFORE = 7;
 		
 		// 
-		public const ulong END_AFTER = 8;
+		public const ushort END_AFTER = 8;
 		
 		// 
-		public const ulong OVERLAP = 9;
+		public const ushort OVERLAP = 9;
 		
 		// 
-		public const ulong AT_POINTER = 10;
+		public const ushort AT_POINTER = 10;
 		
 		// 
-		public const ulong AFTER_POINTER = 11;
+		public const ushort AFTER_POINTER = 11;
 	}
 }

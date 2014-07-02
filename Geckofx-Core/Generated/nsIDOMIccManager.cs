@@ -278,355 +278,355 @@ namespace Gecko
 		// <summary>
         // STK menu presentation types.
         // </summary>
-		public const ulong STK_MENU_TYPE_NOT_SPECIFIED = 0x00;
+		public const ushort STK_MENU_TYPE_NOT_SPECIFIED = 0x00;
 		
 		// 
-		public const ulong STK_MENU_TYPE_DATA_VALUES = 0x01;
+		public const ushort STK_MENU_TYPE_DATA_VALUES = 0x01;
 		
 		// 
-		public const ulong STK_MENU_TYPE_NAVIGATION_OPTIONS = 0x03;
+		public const ushort STK_MENU_TYPE_NAVIGATION_OPTIONS = 0x03;
 		
 		// <summary>
         // Browser launch mode.
         // </summary>
-		public const ulong STK_BROWSER_MODE_LAUNCH_IF_NOT_ALREADY_LAUNCHED = 0x00;
+		public const ushort STK_BROWSER_MODE_LAUNCH_IF_NOT_ALREADY_LAUNCHED = 0x00;
 		
 		// 
-		public const ulong STK_BROWSER_MODE_USING_EXISTING_BROWSER = 0x02;
+		public const ushort STK_BROWSER_MODE_USING_EXISTING_BROWSER = 0x02;
 		
 		// 
-		public const ulong STK_BROWSER_MODE_USING_NEW_BROWSER = 0x03;
+		public const ushort STK_BROWSER_MODE_USING_NEW_BROWSER = 0x03;
 		
 		// <summary>
         // STK proactive commands.
         //
         // @see TS 11.14, clause 13.4
         // </summary>
-		public const ulong STK_CMD_REFRESH = 0x01;
+		public const ushort STK_CMD_REFRESH = 0x01;
 		
 		// 
-		public const ulong STK_CMD_POLL_INTERVAL = 0x03;
+		public const ushort STK_CMD_POLL_INTERVAL = 0x03;
 		
 		// 
-		public const ulong STK_CMD_POLL_OFF = 0x04;
+		public const ushort STK_CMD_POLL_OFF = 0x04;
 		
 		// 
-		public const ulong STK_CMD_SET_UP_EVENT_LIST = 0x05;
+		public const ushort STK_CMD_SET_UP_EVENT_LIST = 0x05;
 		
 		// 
-		public const ulong STK_CMD_SET_UP_CALL = 0x10;
+		public const ushort STK_CMD_SET_UP_CALL = 0x10;
 		
 		// 
-		public const ulong STK_CMD_SEND_SS = 0x11;
+		public const ushort STK_CMD_SEND_SS = 0x11;
 		
 		// 
-		public const ulong STK_CMD_SEND_USSD = 0x12;
+		public const ushort STK_CMD_SEND_USSD = 0x12;
 		
 		// 
-		public const ulong STK_CMD_SEND_SMS = 0x13;
+		public const ushort STK_CMD_SEND_SMS = 0x13;
 		
 		// 
-		public const ulong STK_CMD_SEND_DTMF = 0x14;
+		public const ushort STK_CMD_SEND_DTMF = 0x14;
 		
 		// 
-		public const ulong STK_CMD_LAUNCH_BROWSER = 0x15;
+		public const ushort STK_CMD_LAUNCH_BROWSER = 0x15;
 		
 		// 
-		public const ulong STK_CMD_PLAY_TONE = 0x20;
+		public const ushort STK_CMD_PLAY_TONE = 0x20;
 		
 		// 
-		public const ulong STK_CMD_DISPLAY_TEXT = 0x21;
+		public const ushort STK_CMD_DISPLAY_TEXT = 0x21;
 		
 		// 
-		public const ulong STK_CMD_GET_INKEY = 0x22;
+		public const ushort STK_CMD_GET_INKEY = 0x22;
 		
 		// 
-		public const ulong STK_CMD_GET_INPUT = 0x23;
+		public const ushort STK_CMD_GET_INPUT = 0x23;
 		
 		// 
-		public const ulong STK_CMD_SELECT_ITEM = 0x24;
+		public const ushort STK_CMD_SELECT_ITEM = 0x24;
 		
 		// 
-		public const ulong STK_CMD_SET_UP_MENU = 0x25;
+		public const ushort STK_CMD_SET_UP_MENU = 0x25;
 		
 		// 
-		public const ulong STK_CMD_PROVIDE_LOCAL_INFO = 0x26;
+		public const ushort STK_CMD_PROVIDE_LOCAL_INFO = 0x26;
 		
 		// 
-		public const ulong STK_CMD_TIMER_MANAGEMENT = 0x27;
+		public const ushort STK_CMD_TIMER_MANAGEMENT = 0x27;
 		
 		// 
-		public const ulong STK_CMD_SET_UP_IDLE_MODE_TEXT = 0x28;
+		public const ushort STK_CMD_SET_UP_IDLE_MODE_TEXT = 0x28;
 		
 		// 
-		public const ulong STK_CMD_OPEN_CHANNEL = 0x40;
+		public const ushort STK_CMD_OPEN_CHANNEL = 0x40;
 		
 		// 
-		public const ulong STK_CMD_CLOSE_CHANNEL = 0x41;
+		public const ushort STK_CMD_CLOSE_CHANNEL = 0x41;
 		
 		// 
-		public const ulong STK_CMD_RECEIVE_DATA = 0x42;
+		public const ushort STK_CMD_RECEIVE_DATA = 0x42;
 		
 		// 
-		public const ulong STK_CMD_SEND_DATA = 0x43;
+		public const ushort STK_CMD_SEND_DATA = 0x43;
 		
 		// <summary>
         //Command performed successfully </summary>
-		public const ulong STK_RESULT_OK = 0x00;
+		public const ushort STK_RESULT_OK = 0x00;
 		
 		// <summary>
         //Command performed with partial comprehension </summary>
-		public const ulong STK_RESULT_PRFRMD_WITH_PARTIAL_COMPREHENSION = 0x01;
+		public const ushort STK_RESULT_PRFRMD_WITH_PARTIAL_COMPREHENSION = 0x01;
 		
 		// <summary>
         //Command performed, with missing information </summary>
-		public const ulong STK_RESULT_PRFRMD_WITH_MISSING_INFO = 0x02;
+		public const ushort STK_RESULT_PRFRMD_WITH_MISSING_INFO = 0x02;
 		
 		// <summary>
         //REFRESH performed with additional EFs read </summary>
-		public const ulong STK_RESULT_PRFRMD_WITH_ADDITIONAL_EFS_READ = 0x03;
+		public const ushort STK_RESULT_PRFRMD_WITH_ADDITIONAL_EFS_READ = 0x03;
 		
 		// <summary>
         //Command performed successfully, limited service </summary>
-		public const ulong STK_RESULT_PRFRMD_LIMITED_SERVICE = 0x06;
+		public const ushort STK_RESULT_PRFRMD_LIMITED_SERVICE = 0x06;
 		
 		// <summary>
         //Proactive UICC session terminated by the user </summary>
-		public const ulong STK_RESULT_UICC_SESSION_TERM_BY_USER = 0x10;
+		public const ushort STK_RESULT_UICC_SESSION_TERM_BY_USER = 0x10;
 		
 		// <summary>
         //Backward move in the proactive UICC session requested by the user </summary>
-		public const ulong STK_RESULT_BACKWARD_MOVE_BY_USER = 0x11;
+		public const ushort STK_RESULT_BACKWARD_MOVE_BY_USER = 0x11;
 		
 		// <summary>
         //No response from user </summary>
-		public const ulong STK_RESULT_NO_RESPONSE_FROM_USER = 0x12;
+		public const ushort STK_RESULT_NO_RESPONSE_FROM_USER = 0x12;
 		
 		// <summary>
         //Help information required by the user </summary>
-		public const ulong STK_RESULT_HELP_INFO_REQUIRED = 0x13;
+		public const ushort STK_RESULT_HELP_INFO_REQUIRED = 0x13;
 		
 		// <summary>
         //USSD or SS transaction terminated by the user </summary>
-		public const ulong STK_RESULT_USSD_SS_SESSION_TERM_BY_USER = 0x14;
+		public const ushort STK_RESULT_USSD_SS_SESSION_TERM_BY_USER = 0x14;
 		
 		// <summary>
         //Terminal currently unable to process command </summary>
-		public const ulong STK_RESULT_TERMINAL_CRNTLY_UNABLE_TO_PROCESS = 0x20;
+		public const ushort STK_RESULT_TERMINAL_CRNTLY_UNABLE_TO_PROCESS = 0x20;
 		
 		// <summary>
         //Network currently unable to process command </summary>
-		public const ulong STK_RESULT_NETWORK_CRNTLY_UNABLE_TO_PROCESS = 0x21;
+		public const ushort STK_RESULT_NETWORK_CRNTLY_UNABLE_TO_PROCESS = 0x21;
 		
 		// <summary>
         //User did not accept the proactive command </summary>
-		public const ulong STK_RESULT_USER_NOT_ACCEPT = 0x22;
+		public const ushort STK_RESULT_USER_NOT_ACCEPT = 0x22;
 		
 		// <summary>
         //User cleared down call before connection or network release </summary>
-		public const ulong STK_RESULT_USER_CLEAR_DOWN_CALL = 0x23;
+		public const ushort STK_RESULT_USER_CLEAR_DOWN_CALL = 0x23;
 		
 		// <summary>
         //Launch browser generic error code </summary>
-		public const ulong STK_RESULT_LAUNCH_BROWSER_ERROR = 0x26;
+		public const ushort STK_RESULT_LAUNCH_BROWSER_ERROR = 0x26;
 		
 		// <summary>
         //Command beyond terminal's capabilities </summary>
-		public const ulong STK_RESULT_BEYOND_TERMINAL_CAPABILITY = 0x30;
+		public const ushort STK_RESULT_BEYOND_TERMINAL_CAPABILITY = 0x30;
 		
 		// <summary>
         //Command type not understood by terminal </summary>
-		public const ulong STK_RESULT_CMD_TYPE_NOT_UNDERSTOOD = 0x31;
+		public const ushort STK_RESULT_CMD_TYPE_NOT_UNDERSTOOD = 0x31;
 		
 		// <summary>
         //Command data not understood by terminal </summary>
-		public const ulong STK_RESULT_CMD_DATA_NOT_UNDERSTOOD = 0x32;
+		public const ushort STK_RESULT_CMD_DATA_NOT_UNDERSTOOD = 0x32;
 		
 		// <summary>
         //Command number not known by terminal </summary>
-		public const ulong STK_RESULT_CMD_NUM_NOT_KNOWN = 0x33;
+		public const ushort STK_RESULT_CMD_NUM_NOT_KNOWN = 0x33;
 		
 		// <summary>
         //SS return error </summary>
-		public const ulong STK_RESULT_SS_RETURN_ERROR = 0x34;
+		public const ushort STK_RESULT_SS_RETURN_ERROR = 0x34;
 		
 		// <summary>
         //SMS RP-ERROR </summary>
-		public const ulong STK_RESULT_SMS_RP_ERROR = 0x35;
+		public const ushort STK_RESULT_SMS_RP_ERROR = 0x35;
 		
 		// <summary>
         //Error, required values are missing </summary>
-		public const ulong STK_RESULT_REQUIRED_VALUES_MISSING = 0x36;
+		public const ushort STK_RESULT_REQUIRED_VALUES_MISSING = 0x36;
 		
 		// <summary>
         //USSD return error </summary>
-		public const ulong STK_RESULT_USSD_RETURN_ERROR = 0x37;
+		public const ushort STK_RESULT_USSD_RETURN_ERROR = 0x37;
 		
 		// <summary>
         //MultipleCard commands error </summary>
-		public const ulong STK_RESULT_MULTI_CARDS_CMD_ERROR = 0x38;
+		public const ushort STK_RESULT_MULTI_CARDS_CMD_ERROR = 0x38;
 		
 		// <summary>
         // Interaction with call control by USIM or MO short message control by
         // USIM, permanent problem.
         // </summary>
-		public const ulong STK_RESULT_USIM_CALL_CONTROL_PERMANENT = 0x39;
+		public const ushort STK_RESULT_USIM_CALL_CONTROL_PERMANENT = 0x39;
 		
 		// <summary>
         //Bearer independent protocol error </summary>
-		public const ulong STK_RESULT_BIP_ERROR = 0x3a;
+		public const ushort STK_RESULT_BIP_ERROR = 0x3a;
 		
 		// <summary>
         // STK event list.
         // </summary>
-		public const ulong STK_EVENT_TYPE_MT_CALL = 0x00;
+		public const ushort STK_EVENT_TYPE_MT_CALL = 0x00;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_CALL_CONNECTED = 0x01;
+		public const ushort STK_EVENT_TYPE_CALL_CONNECTED = 0x01;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_CALL_DISCONNECTED = 0x02;
+		public const ushort STK_EVENT_TYPE_CALL_DISCONNECTED = 0x02;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_LOCATION_STATUS = 0x03;
+		public const ushort STK_EVENT_TYPE_LOCATION_STATUS = 0x03;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_USER_ACTIVITY = 0x04;
+		public const ushort STK_EVENT_TYPE_USER_ACTIVITY = 0x04;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_IDLE_SCREEN_AVAILABLE = 0x05;
+		public const ushort STK_EVENT_TYPE_IDLE_SCREEN_AVAILABLE = 0x05;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_CARD_READER_STATUS = 0x06;
+		public const ushort STK_EVENT_TYPE_CARD_READER_STATUS = 0x06;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_LANGUAGE_SELECTION = 0x07;
+		public const ushort STK_EVENT_TYPE_LANGUAGE_SELECTION = 0x07;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_BROWSER_TERMINATION = 0x08;
+		public const ushort STK_EVENT_TYPE_BROWSER_TERMINATION = 0x08;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_DATA_AVAILABLE = 0x09;
+		public const ushort STK_EVENT_TYPE_DATA_AVAILABLE = 0x09;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_CHANNEL_STATUS = 0x0a;
+		public const ushort STK_EVENT_TYPE_CHANNEL_STATUS = 0x0a;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_SINGLE_ACCESS_TECHNOLOGY_CHANGED = 0x0b;
+		public const ushort STK_EVENT_TYPE_SINGLE_ACCESS_TECHNOLOGY_CHANGED = 0x0b;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_DISPLAY_PARAMETER_CHANGED = 0x0c;
+		public const ushort STK_EVENT_TYPE_DISPLAY_PARAMETER_CHANGED = 0x0c;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_LOCAL_CONNECTION = 0x0d;
+		public const ushort STK_EVENT_TYPE_LOCAL_CONNECTION = 0x0d;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_NETWORK_SEARCH_MODE_CHANGED = 0x0e;
+		public const ushort STK_EVENT_TYPE_NETWORK_SEARCH_MODE_CHANGED = 0x0e;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_BROWSING_STATUS = 0x0f;
+		public const ushort STK_EVENT_TYPE_BROWSING_STATUS = 0x0f;
 		
 		// 
-		public const ulong STK_EVENT_TYPE_FRAMES_INFORMATION_CHANGED = 0x10;
+		public const ushort STK_EVENT_TYPE_FRAMES_INFORMATION_CHANGED = 0x10;
 		
 		// <summary>
         // The service state of STK location status.
         // </summary>
-		public const ulong STK_SERVICE_STATE_NORMAL = 0x00;
+		public const ushort STK_SERVICE_STATE_NORMAL = 0x00;
 		
 		// 
-		public const ulong STK_SERVICE_STATE_LIMITED = 0x01;
+		public const ushort STK_SERVICE_STATE_LIMITED = 0x01;
 		
 		// 
-		public const ulong STK_SERVICE_STATE_UNAVAILABLE = 0x02;
+		public const ushort STK_SERVICE_STATE_UNAVAILABLE = 0x02;
 		
 		// <summary>
         // Tone type.
         // </summary>
-		public const ulong STK_TONE_TYPE_DIAL_TONE = 0x01;
+		public const ushort STK_TONE_TYPE_DIAL_TONE = 0x01;
 		
 		// 
-		public const ulong STK_TONE_TYPE_CALLED_SUBSCRIBER_BUSY = 0x02;
+		public const ushort STK_TONE_TYPE_CALLED_SUBSCRIBER_BUSY = 0x02;
 		
 		// 
-		public const ulong STK_TONE_TYPE_CONGESTION = 0x03;
+		public const ushort STK_TONE_TYPE_CONGESTION = 0x03;
 		
 		// 
-		public const ulong STK_TONE_TYPE_RADIO_PATH_ACK = 0x04;
+		public const ushort STK_TONE_TYPE_RADIO_PATH_ACK = 0x04;
 		
 		// 
-		public const ulong STK_TONE_TYPE_RADIO_PATH_NOT_AVAILABLE = 0x05;
+		public const ushort STK_TONE_TYPE_RADIO_PATH_NOT_AVAILABLE = 0x05;
 		
 		// 
-		public const ulong STK_TONE_TYPE_ERROR = 0x06;
+		public const ushort STK_TONE_TYPE_ERROR = 0x06;
 		
 		// 
-		public const ulong STK_TONE_TYPE_CALL_WAITING_TONE = 0x07;
+		public const ushort STK_TONE_TYPE_CALL_WAITING_TONE = 0x07;
 		
 		// 
-		public const ulong STK_TONE_TYPE_RINGING_TONE = 0x08;
+		public const ushort STK_TONE_TYPE_RINGING_TONE = 0x08;
 		
 		// 
-		public const ulong STK_TONE_TYPE_GENERAL_BEEP = 0x10;
+		public const ushort STK_TONE_TYPE_GENERAL_BEEP = 0x10;
 		
 		// 
-		public const ulong STK_TONE_TYPE_POSITIVE_ACK_TONE = 0x11;
+		public const ushort STK_TONE_TYPE_POSITIVE_ACK_TONE = 0x11;
 		
 		// 
-		public const ulong STK_TONE_TYPE_NEGATIVE_ACK_TONE = 0x12;
+		public const ushort STK_TONE_TYPE_NEGATIVE_ACK_TONE = 0x12;
 		
 		// <summary>
         // Time unit.
         // </summary>
-		public const ulong STK_TIME_UNIT_MINUTE = 0x00;
+		public const ushort STK_TIME_UNIT_MINUTE = 0x00;
 		
 		// 
-		public const ulong STK_TIME_UNIT_SECOND = 0x01;
+		public const ushort STK_TIME_UNIT_SECOND = 0x01;
 		
 		// 
-		public const ulong STK_TIME_UNIT_TENTH_SECOND = 0x02;
+		public const ushort STK_TIME_UNIT_TENTH_SECOND = 0x02;
 		
 		// <summary>
         // Local Information list.
         //
         // @see TS 102.223, clause 8.6
         // </summary>
-		public const ulong STK_LOCAL_INFO_LOCATION_INFO = 0x00;
+		public const ushort STK_LOCAL_INFO_LOCATION_INFO = 0x00;
 		
 		// 
-		public const ulong STK_LOCAL_INFO_IMEI = 0x01;
+		public const ushort STK_LOCAL_INFO_IMEI = 0x01;
 		
 		// 
-		public const ulong STK_LOCAL_INFO_DATE_TIME_ZONE = 0x03;
+		public const ushort STK_LOCAL_INFO_DATE_TIME_ZONE = 0x03;
 		
 		// 
-		public const ulong STK_LOCAL_INFO_LANGUAGE = 0x04;
+		public const ushort STK_LOCAL_INFO_LANGUAGE = 0x04;
 		
 		// <summary>
         // Timer management.
         // </summary>
-		public const ulong STK_TIMER_START = 0x00;
+		public const ushort STK_TIMER_START = 0x00;
 		
 		// 
-		public const ulong STK_TIMER_DEACTIVATE = 0x01;
+		public const ushort STK_TIMER_DEACTIVATE = 0x01;
 		
 		// 
-		public const ulong STK_TIMER_GET_CURRENT_VALUE = 0x02;
+		public const ushort STK_TIMER_GET_CURRENT_VALUE = 0x02;
 		
 		// <summary>
         // Browser termination cause.
         // </summary>
-		public const ulong STK_BROWSER_TERMINATION_CAUSE_USER = 0x00;
+		public const ushort STK_BROWSER_TERMINATION_CAUSE_USER = 0x00;
 		
 		// 
-		public const ulong STK_BROWSER_TERMINATION_CAUSE_ERROR = 0x01;
+		public const ushort STK_BROWSER_TERMINATION_CAUSE_ERROR = 0x01;
 		
 		// <summary>
         // Next Action Indicator.
         // </summary>
-		public const ulong STK_NEXT_ACTION_NULL = 0x00;
+		public const ushort STK_NEXT_ACTION_NULL = 0x00;
 		
 		// 
-		public const ulong STK_NEXT_ACTION_END_PROACTIVE_SESSION = 0x81;
+		public const ushort STK_NEXT_ACTION_END_PROACTIVE_SESSION = 0x81;
 	}
 }

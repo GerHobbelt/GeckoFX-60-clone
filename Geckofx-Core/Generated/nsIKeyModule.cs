@@ -61,24 +61,24 @@ namespace Gecko
 		// <summary>
         // Key types
         // </summary>
-		public const int SYM_KEY = 1;
+		public const short SYM_KEY = 1;
 		
 		// 
-		public const int PRIVATE_KEY = 2;
+		public const short PRIVATE_KEY = 2;
 		
 		// 
-		public const int PUBLIC_KEY = 3;
+		public const short PUBLIC_KEY = 3;
 		
 		// <summary>
         // Algorithm types
         // </summary>
-		public const int RC4 = 1;
+		public const short RC4 = 1;
 		
 		// 
-		public const int AES_CBC = 2;
+		public const short AES_CBC = 2;
 		
 		// 
-		public const int HMAC = 257;
+		public const short HMAC = 257;
 	}
 	
 	/// <summary>nsIKeyObjectFactory </summary>

@@ -134,7 +134,7 @@ namespace Gecko
         //
         // Tasks are given the highest priority of all lists when space is limited.
         // </summary>
-		public const int JUMPLIST_CATEGORY_TASKS = 0;
+		public const short JUMPLIST_CATEGORY_TASKS = 0;
 		
 		// <summary>
         // Recent or Frequent list
@@ -144,10 +144,10 @@ namespace Gecko
         // or frequent lists should keep document use tracking up to date by calling
         // the SHAddToRecentDocs shell api.
         // </summary>
-		public const int JUMPLIST_CATEGORY_RECENT = 1;
+		public const short JUMPLIST_CATEGORY_RECENT = 1;
 		
 		// 
-		public const int JUMPLIST_CATEGORY_FREQUENT = 2;
+		public const short JUMPLIST_CATEGORY_FREQUENT = 2;
 		
 		// <summary>
         // Custom Lists
@@ -155,6 +155,6 @@ namespace Gecko
         // Custom lists can be made up of tasks, links, and separators. The title of
         // of the list is passed through the optional string parameter of addBuildList.
         // </summary>
-		public const int JUMPLIST_CATEGORY_CUSTOMLIST = 3;
+		public const short JUMPLIST_CATEGORY_CUSTOMLIST = 3;
 	}
 }

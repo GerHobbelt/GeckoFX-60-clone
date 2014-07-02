@@ -103,10 +103,10 @@ namespace Gecko
         // as needed. Other possible event types might include email events,
         // media related events, and IM events.
         // </summary>
-		public const int ePCLog_URIVisit = 1;
+		public const short ePCLog_URIVisit = 1;
 		
 		// <summary>
         //Web content </summary>
-		public const int ePCLog_FileDownload = 2;
+		public const short ePCLog_FileDownload = 2;
 	}
 }

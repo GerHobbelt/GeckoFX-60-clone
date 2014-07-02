@@ -148,25 +148,25 @@ namespace Gecko
 		// <summary>
         // List of primitive types for parameter values.
         // </summary>
-		public const int eNoType = 0;
+		public const short eNoType = 0;
 		
 		// <summary>
         //Only used for sanity checking </summary>
-		public const int eBooleanType = 1;
+		public const short eBooleanType = 1;
 		
 		// 
-		public const int eLongType = 2;
+		public const short eLongType = 2;
 		
 		// 
-		public const int eDoubleType = 3;
+		public const short eDoubleType = 3;
 		
 		// 
-		public const int eWStringType = 4;
+		public const short eWStringType = 4;
 		
 		// 
-		public const int eISupportsType = 5;
+		public const short eISupportsType = 5;
 		
 		// 
-		public const int eStringType = 6;
+		public const short eStringType = 6;
 	}
 }

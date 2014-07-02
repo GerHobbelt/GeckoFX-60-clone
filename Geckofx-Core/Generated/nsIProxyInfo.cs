@@ -110,6 +110,6 @@ namespace Gecko
         // this is the case, the hostname is used in some fashion, and we shouldn't
         // do any form of DNS lookup ourselves.
         // </summary>
-		public const ulong TRANSPARENT_PROXY_RESOLVES_HOST = 1<<0;
+		public const ushort TRANSPARENT_PROXY_RESOLVES_HOST = 1<<0;
 	}
 }

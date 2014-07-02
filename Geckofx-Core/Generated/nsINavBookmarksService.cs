@@ -608,20 +608,20 @@ namespace Gecko
         // where an index is not known, or not required to be specified.
         // e.g.: When appending an item to a folder.
         // </summary>
-		public const int DEFAULT_INDEX = -1;
+		public const short DEFAULT_INDEX = -1;
 		
 		// 
-		public const ulong TYPE_BOOKMARK = 1;
+		public const ushort TYPE_BOOKMARK = 1;
 		
 		// 
-		public const ulong TYPE_FOLDER = 2;
+		public const ushort TYPE_FOLDER = 2;
 		
 		// 
-		public const ulong TYPE_SEPARATOR = 3;
+		public const ushort TYPE_SEPARATOR = 3;
 		
 		// <summary>
         // This const exists just to avoid reusing the value.
         // </summary>
-		public const ulong TYPE_DYNAMIC_CONTAINER = 4;
+		public const ushort TYPE_DYNAMIC_CONTAINER = 4;
 	}
 }

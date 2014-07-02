@@ -46,18 +46,18 @@ namespace Gecko
 		// <summary>
         // OperationType
         // </summary>
-		public const ulong NODE_CLONED = 1;
+		public const ushort NODE_CLONED = 1;
 		
 		// 
-		public const ulong NODE_IMPORTED = 2;
+		public const ushort NODE_IMPORTED = 2;
 		
 		// 
-		public const ulong NODE_DELETED = 3;
+		public const ushort NODE_DELETED = 3;
 		
 		// 
-		public const ulong NODE_RENAMED = 4;
+		public const ushort NODE_RENAMED = 4;
 		
 		// 
-		public const ulong NODE_ADOPTED = 5;
+		public const ushort NODE_ADOPTED = 5;
 	}
 }

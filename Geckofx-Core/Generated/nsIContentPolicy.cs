@@ -265,7 +265,7 @@ namespace Gecko
         // Returned from shouldLoad or shouldProcess if the load or process request
         // is rejected based on details of the request.
         // </summary>
-		public const int REJECT_REQUEST = -1;
+		public const short REJECT_REQUEST = -1;
 		
 		// <summary>
         // Returned from shouldLoad or shouldProcess if the load/process is rejected
@@ -274,7 +274,7 @@ namespace Gecko
         // NOTE that it is not meant to stop future requests for this type--only the
         // current request.
         // </summary>
-		public const int REJECT_TYPE = -2;
+		public const short REJECT_TYPE = -2;
 		
 		// <summary>
         // Returned from shouldLoad or shouldProcess if the load/process is rejected
@@ -286,7 +286,7 @@ namespace Gecko
         // NOTE that it is not meant to stop future requests for this server--only the
         // current request.
         // </summary>
-		public const int REJECT_SERVER = -3;
+		public const short REJECT_SERVER = -3;
 		
 		// <summary>
         // Returned from shouldLoad or shouldProcess if the load/process is rejected
@@ -295,12 +295,12 @@ namespace Gecko
         // direct their own callers to consult the extra parameter for additional
         // details.
         // </summary>
-		public const int REJECT_OTHER = -4;
+		public const short REJECT_OTHER = -4;
 		
 		// <summary>
         // Returned from shouldLoad or shouldProcess if the load or process request
         // is not rejected.
         // </summary>
-		public const int ACCEPT = 1;
+		public const short ACCEPT = 1;
 	}
 }

@@ -59,15 +59,15 @@ namespace Gecko
 		// <summary>
         // UnitTypes
         // </summary>
-		public const ulong CSS_INHERIT = 0;
+		public const ushort CSS_INHERIT = 0;
 		
 		// 
-		public const ulong CSS_PRIMITIVE_VALUE = 1;
+		public const ushort CSS_PRIMITIVE_VALUE = 1;
 		
 		// 
-		public const ulong CSS_VALUE_LIST = 2;
+		public const ushort CSS_VALUE_LIST = 2;
 		
 		// 
-		public const ulong CSS_CUSTOM = 3;
+		public const ushort CSS_CUSTOM = 3;
 	}
 }

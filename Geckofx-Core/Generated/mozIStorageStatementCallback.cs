@@ -77,12 +77,12 @@ namespace Gecko
         // finished (REASON_FINISHED), was canceled (REASON_CANCELED), or
         // a fatal error occurred (REASON_ERROR).
         // </summary>
-		public const ulong REASON_FINISHED = 0;
+		public const ushort REASON_FINISHED = 0;
 		
 		// 
-		public const ulong REASON_CANCELED = 1;
+		public const ushort REASON_CANCELED = 1;
 		
 		// 
-		public const ulong REASON_ERROR = 2;
+		public const ushort REASON_ERROR = 2;
 	}
 }

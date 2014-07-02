@@ -76,7 +76,7 @@ namespace Gecko
 		// <summary>
         // Native data constants
         // </summary>
-		public const int kNativeDataPrintRecord = 0;
+		public const short kNativeDataPrintRecord = 0;
 	}
 	
 	/// <summary>nsIPrinterEnumerator </summary>

@@ -609,15 +609,15 @@ namespace Gecko
 		// <summary>
         // used by GetAlignment()
         // </summary>
-		public const int eLeft = 0;
+		public const short eLeft = 0;
 		
 		// 
-		public const int eCenter = 1;
+		public const short eCenter = 1;
 		
 		// 
-		public const int eRight = 2;
+		public const short eRight = 2;
 		
 		// 
-		public const int eJustify = 3;
+		public const short eJustify = 3;
 	}
 }

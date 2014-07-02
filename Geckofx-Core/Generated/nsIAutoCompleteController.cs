@@ -202,15 +202,15 @@ namespace Gecko
 		// <summary>
         // Possible values for the searchStatus attribute
         // </summary>
-		public const ulong STATUS_NONE = 1;
+		public const ushort STATUS_NONE = 1;
 		
 		// 
-		public const ulong STATUS_SEARCHING = 2;
+		public const ushort STATUS_SEARCHING = 2;
 		
 		// 
-		public const ulong STATUS_COMPLETE_NO_MATCH = 3;
+		public const ushort STATUS_COMPLETE_NO_MATCH = 3;
 		
 		// 
-		public const ulong STATUS_COMPLETE_MATCH = 4;
+		public const ushort STATUS_COMPLETE_MATCH = 4;
 	}
 }

@@ -223,6 +223,6 @@ namespace Gecko
 		// <summary>
         // XPathNodeType
         // </summary>
-		public const ulong XPATH_NAMESPACE_NODE = 13;
+		public const ushort XPATH_NAMESPACE_NODE = 13;
 	}
 }

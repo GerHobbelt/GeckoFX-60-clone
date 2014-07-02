@@ -125,27 +125,27 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int eTopLeft = 0;
+		public const short eTopLeft = 0;
 		
 		// 
-		public const int eTop = 1;
+		public const short eTop = 1;
 		
 		// 
-		public const int eTopRight = 2;
+		public const short eTopRight = 2;
 		
 		// 
-		public const int eLeft = 3;
+		public const short eLeft = 3;
 		
 		// 
-		public const int eRight = 4;
+		public const short eRight = 4;
 		
 		// 
-		public const int eBottomLeft = 5;
+		public const short eBottomLeft = 5;
 		
 		// 
-		public const int eBottom = 6;
+		public const short eBottom = 6;
 		
 		// 
-		public const int eBottomRight = 7;
+		public const short eBottomRight = 7;
 	}
 }

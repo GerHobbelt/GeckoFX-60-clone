@@ -251,37 +251,37 @@ namespace Gecko
 	{
 		
 		// 
-		public const int modeOpen = 0;
+		public const short modeOpen = 0;
 		
 		// <summary>
         // Load a file or directory
         // </summary>
-		public const int modeSave = 1;
+		public const short modeSave = 1;
 		
 		// <summary>
         // Save a file or directory
         // </summary>
-		public const int modeGetFolder = 2;
+		public const short modeGetFolder = 2;
 		
 		// <summary>
         // Select a folder/directory
         // </summary>
-		public const int modeOpenMultiple = 3;
+		public const short modeOpenMultiple = 3;
 		
 		// <summary>
         // Load multiple files
         // </summary>
-		public const int returnOK = 0;
+		public const short returnOK = 0;
 		
 		// <summary>
         // User hit Ok, process selection
         // </summary>
-		public const int returnCancel = 1;
+		public const short returnCancel = 1;
 		
 		// <summary>
         // User hit cancel, ignore selection
         // </summary>
-		public const int returnReplace = 2;
+		public const short returnReplace = 2;
 		
 		// <summary>
         // User acknowledged file already exists so ok to replace, process selection

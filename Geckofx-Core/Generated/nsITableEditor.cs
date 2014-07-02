@@ -409,12 +409,12 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int eNoSearch = 0;
+		public const short eNoSearch = 0;
 		
 		// 
-		public const int ePreviousColumn = 1;
+		public const short ePreviousColumn = 1;
 		
 		// 
-		public const int ePreviousRow = 2;
+		public const short ePreviousRow = 2;
 	}
 }

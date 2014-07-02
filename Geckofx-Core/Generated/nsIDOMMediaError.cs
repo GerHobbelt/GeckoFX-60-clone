@@ -47,20 +47,20 @@ namespace Gecko
 		// <summary>
         //The download of the media resource was aborted by
         //     the user agent at the user's requet </summary>
-		public const ulong MEDIA_ERR_ABORTED = 1;
+		public const ushort MEDIA_ERR_ABORTED = 1;
 		
 		// <summary>
         //A network error of some description caused the
         //     user agent to stop downloading the media resource </summary>
-		public const ulong MEDIA_ERR_NETWORK = 2;
+		public const ushort MEDIA_ERR_NETWORK = 2;
 		
 		// <summary>
         //An error of some description occurred while decoding
         //     the media resource </summary>
-		public const ulong MEDIA_ERR_DECODE = 3;
+		public const ushort MEDIA_ERR_DECODE = 3;
 		
 		// <summary>
         //No suitable media resource could be found </summary>
-		public const ulong MEDIA_ERR_SRC_NOT_SUPPORTED = 4;
+		public const ushort MEDIA_ERR_SRC_NOT_SUPPORTED = 4;
 	}
 }

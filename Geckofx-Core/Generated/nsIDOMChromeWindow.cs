@@ -108,15 +108,15 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const ulong STATE_MAXIMIZED = 1;
+		public const ushort STATE_MAXIMIZED = 1;
 		
 		// 
-		public const ulong STATE_MINIMIZED = 2;
+		public const ushort STATE_MINIMIZED = 2;
 		
 		// 
-		public const ulong STATE_NORMAL = 3;
+		public const ushort STATE_NORMAL = 3;
 		
 		// 
-		public const ulong STATE_FULLSCREEN = 4;
+		public const ushort STATE_FULLSCREEN = 4;
 	}
 }

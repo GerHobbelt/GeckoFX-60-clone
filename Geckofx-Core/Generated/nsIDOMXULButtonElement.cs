@@ -910,12 +910,12 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int CHECKSTATE_UNCHECKED = 0;
+		public const short CHECKSTATE_UNCHECKED = 0;
 		
 		// 
-		public const int CHECKSTATE_CHECKED = 1;
+		public const short CHECKSTATE_CHECKED = 1;
 		
 		// 
-		public const int CHECKSTATE_MIXED = 2;
+		public const short CHECKSTATE_MIXED = 2;
 	}
 }

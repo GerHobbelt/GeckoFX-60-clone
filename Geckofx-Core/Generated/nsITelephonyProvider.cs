@@ -243,42 +243,42 @@ namespace Gecko
         // XPCOM component (in the content process) that provides the telephony
         // information.
         // </summary>
-		public const ulong CALL_STATE_UNKNOWN = 0;
+		public const ushort CALL_STATE_UNKNOWN = 0;
 		
 		// 
-		public const ulong CALL_STATE_DIALING = 1;
+		public const ushort CALL_STATE_DIALING = 1;
 		
 		// 
-		public const ulong CALL_STATE_ALERTING = 2;
+		public const ushort CALL_STATE_ALERTING = 2;
 		
 		// 
-		public const ulong CALL_STATE_CONNECTING = 3;
+		public const ushort CALL_STATE_CONNECTING = 3;
 		
 		// 
-		public const ulong CALL_STATE_CONNECTED = 4;
+		public const ushort CALL_STATE_CONNECTED = 4;
 		
 		// 
-		public const ulong CALL_STATE_HOLDING = 5;
+		public const ushort CALL_STATE_HOLDING = 5;
 		
 		// 
-		public const ulong CALL_STATE_HELD = 6;
+		public const ushort CALL_STATE_HELD = 6;
 		
 		// 
-		public const ulong CALL_STATE_RESUMING = 7;
+		public const ushort CALL_STATE_RESUMING = 7;
 		
 		// 
-		public const ulong CALL_STATE_DISCONNECTING = 8;
+		public const ushort CALL_STATE_DISCONNECTING = 8;
 		
 		// 
-		public const ulong CALL_STATE_DISCONNECTED = 9;
+		public const ushort CALL_STATE_DISCONNECTED = 9;
 		
 		// 
-		public const ulong CALL_STATE_INCOMING = 10;
+		public const ushort CALL_STATE_INCOMING = 10;
 		
 		// 
-		public const ulong NOTIFICATION_REMOTE_HELD = 0;
+		public const ushort NOTIFICATION_REMOTE_HELD = 0;
 		
 		// 
-		public const ulong NOTIFICATION_REMOTE_RESUMED = 1;
+		public const ushort NOTIFICATION_REMOTE_RESUMED = 1;
 	}
 }

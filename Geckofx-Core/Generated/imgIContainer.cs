@@ -277,10 +277,10 @@ namespace Gecko
 		// <summary>
         // Enumerated values for the 'type' attribute (below).
         // </summary>
-		public const ulong TYPE_RASTER = 0;
+		public const ushort TYPE_RASTER = 0;
 		
 		// 
-		public const ulong TYPE_VECTOR = 1;
+		public const ushort TYPE_VECTOR = 1;
 		
 		// <summary>
         // Flags for imgIContainer operations.
@@ -348,12 +348,12 @@ namespace Gecko
         // 1 = don't animate
         // 2 = loop once
         // </summary>
-		public const int kNormalAnimMode = 0;
+		public const short kNormalAnimMode = 0;
 		
 		// 
-		public const int kDontAnimMode = 1;
+		public const short kDontAnimMode = 1;
 		
 		// 
-		public const int kLoopOnceAnimMode = 2;
+		public const short kLoopOnceAnimMode = 2;
 	}
 }

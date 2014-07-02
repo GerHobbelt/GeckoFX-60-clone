@@ -104,11 +104,11 @@ namespace Gecko
 		// <summary>
         // nsIAutoCompleteInput implementation.
         // </summary>
-		public const ulong SEARCH_TYPE_DELAYED = 0;
+		public const ushort SEARCH_TYPE_DELAYED = 0;
 		
 		// <summary>
         // The search is started synchronously, before any delayed searches.
         // </summary>
-		public const ulong SEARCH_TYPE_IMMEDIATE = 1;
+		public const ushort SEARCH_TYPE_IMMEDIATE = 1;
 	}
 }

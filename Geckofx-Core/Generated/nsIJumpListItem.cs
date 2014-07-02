@@ -75,22 +75,22 @@ namespace Gecko
         // and add support to addListBuild & removed items processing.
         //
         // </summary>
-		public const int JUMPLIST_ITEM_EMPTY = 0;
+		public const short JUMPLIST_ITEM_EMPTY = 0;
 		
 		// <summary>
         // Empty list item
         // </summary>
-		public const int JUMPLIST_ITEM_SEPARATOR = 1;
+		public const short JUMPLIST_ITEM_SEPARATOR = 1;
 		
 		// <summary>
         // Separator
         // </summary>
-		public const int JUMPLIST_ITEM_LINK = 2;
+		public const short JUMPLIST_ITEM_LINK = 2;
 		
 		// <summary>
         // Web link item
         // </summary>
-		public const int JUMPLIST_ITEM_SHORTCUT = 3;
+		public const short JUMPLIST_ITEM_SHORTCUT = 3;
 	}
 	
 	/// <summary>

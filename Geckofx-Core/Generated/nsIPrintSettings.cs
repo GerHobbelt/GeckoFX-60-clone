@@ -837,69 +837,69 @@ namespace Gecko
 		// <summary>
         // FrameSet Default Type Constants
         // </summary>
-		public const int kUseInternalDefault = 0;
+		public const short kUseInternalDefault = 0;
 		
 		// 
-		public const int kUseSettingWhenPossible = 1;
+		public const short kUseSettingWhenPossible = 1;
 		
 		// <summary>
         // Page Size Type Constants
         // </summary>
-		public const int kPaperSizeNativeData = 0;
+		public const short kPaperSizeNativeData = 0;
 		
 		// 
-		public const int kPaperSizeDefined = 1;
+		public const short kPaperSizeDefined = 1;
 		
 		// <summary>
         // Page Size Unit Constants
         // </summary>
-		public const int kPaperSizeInches = 0;
+		public const short kPaperSizeInches = 0;
 		
 		// 
-		public const int kPaperSizeMillimeters = 1;
+		public const short kPaperSizeMillimeters = 1;
 		
 		// <summary>
         // Orientation Constants
         // </summary>
-		public const int kPortraitOrientation = 0;
+		public const short kPortraitOrientation = 0;
 		
 		// 
-		public const int kLandscapeOrientation = 1;
+		public const short kLandscapeOrientation = 1;
 		
 		// <summary>
         // Print Frame Constants
         // </summary>
-		public const int kNoFrames = 0;
+		public const short kNoFrames = 0;
 		
 		// 
-		public const int kFramesAsIs = 1;
+		public const short kFramesAsIs = 1;
 		
 		// 
-		public const int kSelectedFrame = 2;
+		public const short kSelectedFrame = 2;
 		
 		// 
-		public const int kEachFrameSep = 3;
+		public const short kEachFrameSep = 3;
 		
 		// <summary>
         // How to Enable Frame Set Printing Constants
         // </summary>
-		public const int kFrameEnableNone = 0;
+		public const short kFrameEnableNone = 0;
 		
 		// 
-		public const int kFrameEnableAll = 1;
+		public const short kFrameEnableAll = 1;
 		
 		// 
-		public const int kFrameEnableAsIsAndEach = 2;
+		public const short kFrameEnableAsIsAndEach = 2;
 		
 		// <summary>
         // Output file format
         // </summary>
-		public const int kOutputFormatNative = 0;
+		public const short kOutputFormatNative = 0;
 		
 		// 
-		public const int kOutputFormatPS = 1;
+		public const short kOutputFormatPS = 1;
 		
 		// 
-		public const int kOutputFormatPDF = 2;
+		public const short kOutputFormatPDF = 2;
 	}
 }

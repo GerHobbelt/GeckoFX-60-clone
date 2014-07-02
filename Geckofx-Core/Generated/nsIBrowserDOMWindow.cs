@@ -87,7 +87,7 @@ namespace Gecko
         // Do whatever the default is based on application state, user preferences,
         // and the value of the aContext parameter to openURI.
         // </summary>
-		public const int OPEN_DEFAULTWINDOW = 0;
+		public const short OPEN_DEFAULTWINDOW = 0;
 		
 		// <summary>
         // Open in the "current window".  If aOpener is provided, this should be the
@@ -95,33 +95,33 @@ namespace Gecko
         // application-dependent.  If aOpener is not provided, it's up to the
         // application to decide what constitutes a "current window".
         // </summary>
-		public const int OPEN_CURRENTWINDOW = 1;
+		public const short OPEN_CURRENTWINDOW = 1;
 		
 		// <summary>
         // Open in a new window.
         // </summary>
-		public const int OPEN_NEWWINDOW = 2;
+		public const short OPEN_NEWWINDOW = 2;
 		
 		// <summary>
         // Open in a new content tab in the toplevel browser window corresponding to
         // this nsIBrowserDOMWindow.
         // </summary>
-		public const int OPEN_NEWTAB = 3;
+		public const short OPEN_NEWTAB = 3;
 		
 		// <summary>
         // Open in an existing content tab based on the URI. If a match can't be
         // found, revert to OPEN_NEWTAB behavior.
         // </summary>
-		public const int OPEN_SWITCHTAB = 4;
+		public const short OPEN_SWITCHTAB = 4;
 		
 		// <summary>
         // external link (load request from another application, xremote, etc).
         // </summary>
-		public const int OPEN_EXTERNAL = 1;
+		public const short OPEN_EXTERNAL = 1;
 		
 		// <summary>
         // internal open new window
         // </summary>
-		public const int OPEN_NEW = 2;
+		public const short OPEN_NEW = 2;
 	}
 }

@@ -302,12 +302,12 @@ namespace Gecko
 	{
 		
 		// 
-		public const ulong EMPTY = 0;
+		public const ushort EMPTY = 0;
 		
 		// 
-		public const ulong LOADING = 1;
+		public const ushort LOADING = 1;
 		
 		// 
-		public const ulong DONE = 2;
+		public const ushort DONE = 2;
 	}
 }

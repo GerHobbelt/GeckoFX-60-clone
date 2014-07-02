@@ -476,13 +476,13 @@ namespace Gecko
 	{
 		
 		// 
-		public const ulong STATE_CLOSED = 0;
+		public const ushort STATE_CLOSED = 0;
 		
 		// 
-		public const ulong STATE_LOADING = 1;
+		public const ushort STATE_LOADING = 1;
 		
 		// 
-		public const ulong STATE_OPENED = 2;
+		public const ushort STATE_OPENED = 2;
 	}
 	
 	/// <summary>
@@ -1468,12 +1468,12 @@ namespace Gecko
 		// <summary>
         // Removed by the user.
         // </summary>
-		public const ulong REASON_DELETED = 0;
+		public const ushort REASON_DELETED = 0;
 		
 		// <summary>
         // Removed by automatic expiration.
         // </summary>
-		public const ulong REASON_EXPIRED = 1;
+		public const ushort REASON_EXPIRED = 1;
 		
 		// <summary>
         // onPageChanged attribute indicating that favicon has been updated.
@@ -2085,73 +2085,73 @@ namespace Gecko
         //
         // For bookmark items, SORT_BY_NONE means sort by the natural bookmark order.
         // </summary>
-		public const ulong SORT_BY_NONE = 0;
+		public const ushort SORT_BY_NONE = 0;
 		
 		// 
-		public const ulong SORT_BY_TITLE_ASCENDING = 1;
+		public const ushort SORT_BY_TITLE_ASCENDING = 1;
 		
 		// 
-		public const ulong SORT_BY_TITLE_DESCENDING = 2;
+		public const ushort SORT_BY_TITLE_DESCENDING = 2;
 		
 		// 
-		public const ulong SORT_BY_DATE_ASCENDING = 3;
+		public const ushort SORT_BY_DATE_ASCENDING = 3;
 		
 		// 
-		public const ulong SORT_BY_DATE_DESCENDING = 4;
+		public const ushort SORT_BY_DATE_DESCENDING = 4;
 		
 		// 
-		public const ulong SORT_BY_URI_ASCENDING = 5;
+		public const ushort SORT_BY_URI_ASCENDING = 5;
 		
 		// 
-		public const ulong SORT_BY_URI_DESCENDING = 6;
+		public const ushort SORT_BY_URI_DESCENDING = 6;
 		
 		// 
-		public const ulong SORT_BY_VISITCOUNT_ASCENDING = 7;
+		public const ushort SORT_BY_VISITCOUNT_ASCENDING = 7;
 		
 		// 
-		public const ulong SORT_BY_VISITCOUNT_DESCENDING = 8;
+		public const ushort SORT_BY_VISITCOUNT_DESCENDING = 8;
 		
 		// 
-		public const ulong SORT_BY_KEYWORD_ASCENDING = 9;
+		public const ushort SORT_BY_KEYWORD_ASCENDING = 9;
 		
 		// 
-		public const ulong SORT_BY_KEYWORD_DESCENDING = 10;
+		public const ushort SORT_BY_KEYWORD_DESCENDING = 10;
 		
 		// 
-		public const ulong SORT_BY_DATEADDED_ASCENDING = 11;
+		public const ushort SORT_BY_DATEADDED_ASCENDING = 11;
 		
 		// 
-		public const ulong SORT_BY_DATEADDED_DESCENDING = 12;
+		public const ushort SORT_BY_DATEADDED_DESCENDING = 12;
 		
 		// 
-		public const ulong SORT_BY_LASTMODIFIED_ASCENDING = 13;
+		public const ushort SORT_BY_LASTMODIFIED_ASCENDING = 13;
 		
 		// 
-		public const ulong SORT_BY_LASTMODIFIED_DESCENDING = 14;
+		public const ushort SORT_BY_LASTMODIFIED_DESCENDING = 14;
 		
 		// 
-		public const ulong SORT_BY_TAGS_ASCENDING = 17;
+		public const ushort SORT_BY_TAGS_ASCENDING = 17;
 		
 		// 
-		public const ulong SORT_BY_TAGS_DESCENDING = 18;
+		public const ushort SORT_BY_TAGS_DESCENDING = 18;
 		
 		// 
-		public const ulong SORT_BY_ANNOTATION_ASCENDING = 19;
+		public const ushort SORT_BY_ANNOTATION_ASCENDING = 19;
 		
 		// 
-		public const ulong SORT_BY_ANNOTATION_DESCENDING = 20;
+		public const ushort SORT_BY_ANNOTATION_DESCENDING = 20;
 		
 		// 
-		public const ulong SORT_BY_FRECENCY_ASCENDING = 21;
+		public const ushort SORT_BY_FRECENCY_ASCENDING = 21;
 		
 		// 
-		public const ulong SORT_BY_FRECENCY_DESCENDING = 22;
+		public const ushort SORT_BY_FRECENCY_DESCENDING = 22;
 		
 		// <summary>
         // "URI" results, one for each URI visited in the range. Individual result
         // nodes will be of type "URI".
         // </summary>
-		public const ulong RESULTS_AS_URI = 0;
+		public const ushort RESULTS_AS_URI = 0;
 		
 		// <summary>
         // "Visit" results, with one for each time a page was visited (this will
@@ -2160,7 +2160,7 @@ namespace Gecko
         //
         // @note This result type is only supported by QUERY_TYPE_HISTORY.
         // </summary>
-		public const ulong RESULTS_AS_VISIT = 1;
+		public const ushort RESULTS_AS_VISIT = 1;
 		
 		// <summary>
         // This is identical to RESULT_TYPE_VISIT except that individual result nodes
@@ -2171,7 +2171,7 @@ namespace Gecko
         // @note Not yet implemented. See bug 409662.
         // @note This result type is only supported by QUERY_TYPE_HISTORY.
         // </summary>
-		public const ulong RESULTS_AS_FULL_VISIT = 2;
+		public const ushort RESULTS_AS_FULL_VISIT = 2;
 		
 		// <summary>
         // This returns query nodes for each predefined date range where we
@@ -2180,7 +2180,7 @@ namespace Gecko
         //
         // @note This result type is only supported by QUERY_TYPE_HISTORY.
         // </summary>
-		public const ulong RESULTS_AS_DATE_QUERY = 3;
+		public const ushort RESULTS_AS_DATE_QUERY = 3;
 		
 		// <summary>
         // This returns nsINavHistoryQueryResultNode nodes for each site where we
@@ -2189,7 +2189,7 @@ namespace Gecko
         //
         // @note This result type is only supported by QUERY_TYPE_HISTORY.
         // </summary>
-		public const ulong RESULTS_AS_SITE_QUERY = 4;
+		public const ushort RESULTS_AS_SITE_QUERY = 4;
 		
 		// <summary>
         // This returns nsINavHistoryQueryResultNode nodes for each day where we
@@ -2198,7 +2198,7 @@ namespace Gecko
         //
         // @note This result type is only supported by QUERY_TYPE_HISTORY.
         // </summary>
-		public const ulong RESULTS_AS_DATE_SITE_QUERY = 5;
+		public const ushort RESULTS_AS_DATE_SITE_QUERY = 5;
 		
 		// <summary>
         // This returns nsINavHistoryQueryResultNode nodes for each tag.
@@ -2207,7 +2207,7 @@ namespace Gecko
         //
         // @note Setting this resultType will force queryType to QUERY_TYPE_BOOKMARKS.
         // </summary>
-		public const ulong RESULTS_AS_TAG_QUERY = 6;
+		public const ushort RESULTS_AS_TAG_QUERY = 6;
 		
 		// <summary>
         // This is a container with an URI result type that contains the last
@@ -2216,17 +2216,17 @@ namespace Gecko
         //
         // @note Setting this resultType will force queryType to QUERY_TYPE_BOOKMARKS.
         // </summary>
-		public const ulong RESULTS_AS_TAG_CONTENTS = 7;
+		public const ushort RESULTS_AS_TAG_CONTENTS = 7;
 		
 		// 
-		public const ulong QUERY_TYPE_HISTORY = 0;
+		public const ushort QUERY_TYPE_HISTORY = 0;
 		
 		// 
-		public const ulong QUERY_TYPE_BOOKMARKS = 1;
+		public const ushort QUERY_TYPE_BOOKMARKS = 1;
 		
 		// <summary>
         //Unified queries are not yet implemented. See bug 378798 </summary>
-		public const ulong QUERY_TYPE_UNIFIED = 2;
+		public const ushort QUERY_TYPE_UNIFIED = 2;
 	}
 	
 	/// <summary>nsINavHistoryService </summary>
@@ -2461,22 +2461,22 @@ namespace Gecko
 		// <summary>
         // Set when database is coherent
         // </summary>
-		public const ulong DATABASE_STATUS_OK = 0;
+		public const ushort DATABASE_STATUS_OK = 0;
 		
 		// <summary>
         // Set when database did not exist and we created a new one
         // </summary>
-		public const ulong DATABASE_STATUS_CREATE = 1;
+		public const ushort DATABASE_STATUS_CREATE = 1;
 		
 		// <summary>
         // Set when database was corrupt and we replaced it
         // </summary>
-		public const ulong DATABASE_STATUS_CORRUPT = 2;
+		public const ushort DATABASE_STATUS_CORRUPT = 2;
 		
 		// <summary>
         // Set when database schema has been upgraded
         // </summary>
-		public const ulong DATABASE_STATUS_UPGRADED = 3;
+		public const ushort DATABASE_STATUS_UPGRADED = 3;
 	}
 	
 	/// <summary>

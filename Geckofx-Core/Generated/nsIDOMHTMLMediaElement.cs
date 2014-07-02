@@ -263,32 +263,32 @@ namespace Gecko
 	{
 		
 		// 
-		public const ulong NETWORK_EMPTY = 0;
+		public const ushort NETWORK_EMPTY = 0;
 		
 		// 
-		public const ulong NETWORK_IDLE = 1;
+		public const ushort NETWORK_IDLE = 1;
 		
 		// 
-		public const ulong NETWORK_LOADING = 2;
+		public const ushort NETWORK_LOADING = 2;
 		
 		// 
-		public const ulong NETWORK_NO_SOURCE = 3;
+		public const ushort NETWORK_NO_SOURCE = 3;
 		
 		// <summary>
         // ready state
         // </summary>
-		public const ulong HAVE_NOTHING = 0;
+		public const ushort HAVE_NOTHING = 0;
 		
 		// 
-		public const ulong HAVE_METADATA = 1;
+		public const ushort HAVE_METADATA = 1;
 		
 		// 
-		public const ulong HAVE_CURRENT_DATA = 2;
+		public const ushort HAVE_CURRENT_DATA = 2;
 		
 		// 
-		public const ulong HAVE_FUTURE_DATA = 3;
+		public const ushort HAVE_FUTURE_DATA = 3;
 		
 		// 
-		public const ulong HAVE_ENOUGH_DATA = 4;
+		public const ushort HAVE_ENOUGH_DATA = 4;
 	}
 }

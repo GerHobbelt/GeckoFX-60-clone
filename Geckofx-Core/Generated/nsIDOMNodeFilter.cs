@@ -46,13 +46,13 @@ namespace Gecko
 		// <summary>
         // Constants returned by acceptNode
         // </summary>
-		public const int FILTER_ACCEPT = 1;
+		public const short FILTER_ACCEPT = 1;
 		
 		// 
-		public const int FILTER_REJECT = 2;
+		public const short FILTER_REJECT = 2;
 		
 		// 
-		public const int FILTER_SKIP = 3;
+		public const short FILTER_SKIP = 3;
 		
 		// <summary>
         // Constants for whatToShow

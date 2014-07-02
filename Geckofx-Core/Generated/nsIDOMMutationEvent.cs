@@ -253,12 +253,12 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const ulong MODIFICATION = 1;
+		public const ushort MODIFICATION = 1;
 		
 		// 
-		public const ulong ADDITION = 2;
+		public const ushort ADDITION = 2;
 		
 		// 
-		public const ulong REMOVAL = 3;
+		public const ushort REMOVAL = 3;
 	}
 }

@@ -379,10 +379,10 @@ namespace Gecko
 	{
 		
 		// 
-		public const ulong COMPLETE_OK = 0;
+		public const ushort COMPLETE_OK = 0;
 		
 		// 
-		public const ulong COMPLETE_ERROR = 1;
+		public const ushort COMPLETE_ERROR = 1;
 	}
 	
 	/// <summary>nsIContentPref </summary>

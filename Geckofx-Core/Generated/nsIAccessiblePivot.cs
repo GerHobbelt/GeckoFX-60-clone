@@ -305,15 +305,15 @@ namespace Gecko
 		
 		// <summary>
         //Ignore this accessible object </summary>
-		public const ulong FILTER_IGNORE = 0x0;
+		public const ushort FILTER_IGNORE = 0x0;
 		
 		// <summary>
         //Accept this accessible object </summary>
-		public const ulong FILTER_MATCH = 0x1;
+		public const ushort FILTER_MATCH = 0x1;
 		
 		// <summary>
         //Don't traverse accessibles children </summary>
-		public const ulong FILTER_IGNORE_SUBTREE = 0x2;
+		public const ushort FILTER_IGNORE_SUBTREE = 0x2;
 		
 		// <summary>
         //Pre-filters </summary>

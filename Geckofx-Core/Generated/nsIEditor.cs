@@ -673,30 +673,30 @@ namespace Gecko
         // This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int eNone = 0;
+		public const short eNone = 0;
 		
 		// 
-		public const int eNext = 1;
+		public const short eNext = 1;
 		
 		// 
-		public const int ePrevious = 2;
+		public const short ePrevious = 2;
 		
 		// 
-		public const int eNextWord = 3;
+		public const short eNextWord = 3;
 		
 		// 
-		public const int ePreviousWord = 4;
+		public const short ePreviousWord = 4;
 		
 		// 
-		public const int eToBeginningOfLine = 5;
+		public const short eToBeginningOfLine = 5;
 		
 		// 
-		public const int eToEndOfLine = 6;
+		public const short eToEndOfLine = 6;
 		
 		// 
-		public const int eStrip = 0;
+		public const short eStrip = 0;
 		
 		// 
-		public const int eNoStrip = 1;
+		public const short eNoStrip = 1;
 	}
 }

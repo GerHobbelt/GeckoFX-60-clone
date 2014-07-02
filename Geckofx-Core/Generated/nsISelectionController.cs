@@ -285,79 +285,79 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int SELECTION_NONE = 0;
+		public const short SELECTION_NONE = 0;
 		
 		// 
-		public const int SELECTION_NORMAL = 1;
+		public const short SELECTION_NORMAL = 1;
 		
 		// 
-		public const int SELECTION_SPELLCHECK = 2;
+		public const short SELECTION_SPELLCHECK = 2;
 		
 		// 
-		public const int SELECTION_IME_RAWINPUT = 4;
+		public const short SELECTION_IME_RAWINPUT = 4;
 		
 		// 
-		public const int SELECTION_IME_SELECTEDRAWTEXT = 8;
+		public const short SELECTION_IME_SELECTEDRAWTEXT = 8;
 		
 		// 
-		public const int SELECTION_IME_CONVERTEDTEXT = 16;
+		public const short SELECTION_IME_CONVERTEDTEXT = 16;
 		
 		// 
-		public const int SELECTION_IME_SELECTEDCONVERTEDTEXT = 32;
+		public const short SELECTION_IME_SELECTEDCONVERTEDTEXT = 32;
 		
 		// 
-		public const int SELECTION_ACCESSIBILITY = 64;
+		public const short SELECTION_ACCESSIBILITY = 64;
 		
 		// <summary>
         // For accessibility API usage
         // </summary>
-		public const int SELECTION_FIND = 128;
+		public const short SELECTION_FIND = 128;
 		
 		// 
-		public const int SELECTION_URLSECONDARY = 256;
+		public const short SELECTION_URLSECONDARY = 256;
 		
 		// 
-		public const int NUM_SELECTIONTYPES = 10;
+		public const short NUM_SELECTIONTYPES = 10;
 		
 		// 
-		public const int SELECTION_ANCHOR_REGION = 0;
+		public const short SELECTION_ANCHOR_REGION = 0;
 		
 		// 
-		public const int SELECTION_FOCUS_REGION = 1;
+		public const short SELECTION_FOCUS_REGION = 1;
 		
 		// 
-		public const int SELECTION_WHOLE_SELECTION = 2;
+		public const short SELECTION_WHOLE_SELECTION = 2;
 		
 		// 
-		public const int NUM_SELECTION_REGIONS = 3;
+		public const short NUM_SELECTION_REGIONS = 3;
 		
 		// 
-		public const int SELECTION_OFF = 0;
+		public const short SELECTION_OFF = 0;
 		
 		// 
-		public const int SELECTION_HIDDEN = 1;
+		public const short SELECTION_HIDDEN = 1;
 		
 		// <summary>
         //>HIDDEN displays selection
         // </summary>
-		public const int SELECTION_ON = 2;
+		public const short SELECTION_ON = 2;
 		
 		// 
-		public const int SELECTION_DISABLED = 3;
+		public const short SELECTION_DISABLED = 3;
 		
 		// 
-		public const int SELECTION_ATTENTION = 4;
+		public const short SELECTION_ATTENTION = 4;
 		
 		// 
-		public const int SCROLL_SYNCHRONOUS = 1<<1;
+		public const short SCROLL_SYNCHRONOUS = 1<<1;
 		
 		// 
-		public const int SCROLL_FIRST_ANCESTOR_ONLY = 1<<2;
+		public const short SCROLL_FIRST_ANCESTOR_ONLY = 1<<2;
 		
 		// 
-		public const int SCROLL_CENTER_VERTICALLY = 1<<4;
+		public const short SCROLL_CENTER_VERTICALLY = 1<<4;
 		
 		// 
-		public const int SCROLL_OVERFLOW_HIDDEN = 1<<5;
+		public const short SCROLL_OVERFLOW_HIDDEN = 1<<5;
 	}
 }

@@ -287,24 +287,24 @@ namespace Gecko
 	{
 		
 		// 
-		public const ulong VIOLATION_TYPE_INLINE_SCRIPT = 1;
+		public const ushort VIOLATION_TYPE_INLINE_SCRIPT = 1;
 		
 		// 
-		public const ulong VIOLATION_TYPE_EVAL = 2;
+		public const ushort VIOLATION_TYPE_EVAL = 2;
 		
 		// 
-		public const ulong VIOLATION_TYPE_INLINE_STYLE = 3;
+		public const ushort VIOLATION_TYPE_INLINE_STYLE = 3;
 		
 		// 
-		public const ulong VIOLATION_TYPE_NONCE_SCRIPT = 4;
+		public const ushort VIOLATION_TYPE_NONCE_SCRIPT = 4;
 		
 		// 
-		public const ulong VIOLATION_TYPE_NONCE_STYLE = 5;
+		public const ushort VIOLATION_TYPE_NONCE_STYLE = 5;
 		
 		// 
-		public const ulong VIOLATION_TYPE_HASH_SCRIPT = 6;
+		public const ushort VIOLATION_TYPE_HASH_SCRIPT = 6;
 		
 		// 
-		public const ulong VIOLATION_TYPE_HASH_STYLE = 7;
+		public const ushort VIOLATION_TYPE_HASH_STYLE = 7;
 	}
 }

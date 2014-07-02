@@ -117,21 +117,21 @@ namespace Gecko
 		
 		// <summary>
         //Find return codes </summary>
-		public const ulong FIND_FOUND = 0;
+		public const ushort FIND_FOUND = 0;
 		
 		// <summary>
         // Successful find
         // </summary>
-		public const ulong FIND_NOTFOUND = 1;
+		public const ushort FIND_NOTFOUND = 1;
 		
 		// <summary>
         // Unsuccessful find
         // </summary>
-		public const ulong FIND_WRAPPED = 2;
+		public const ushort FIND_WRAPPED = 2;
 		
 		// <summary>
         // Successful find, but wrapped around
         // </summary>
-		public const ulong FIND_PENDING = 3;
+		public const ushort FIND_PENDING = 3;
 	}
 }

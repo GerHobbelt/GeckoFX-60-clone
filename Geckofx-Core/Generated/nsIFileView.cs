@@ -79,12 +79,12 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int sortName = 0;
+		public const short sortName = 0;
 		
 		// 
-		public const int sortSize = 1;
+		public const short sortSize = 1;
 		
 		// 
-		public const int sortDate = 2;
+		public const short sortDate = 2;
 	}
 }

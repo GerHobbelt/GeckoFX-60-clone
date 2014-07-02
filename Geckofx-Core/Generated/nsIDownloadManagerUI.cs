@@ -78,12 +78,12 @@ namespace Gecko
         // The reason that should be passed when the user requests to show the
         // download manager's UI.
         // </summary>
-		public const int REASON_USER_INTERACTED = 0;
+		public const short REASON_USER_INTERACTED = 0;
 		
 		// <summary>
         // The reason that should be passed to the show method when we are displaying
         // the UI because a new download is being added to it.
         // </summary>
-		public const int REASON_NEW_DOWNLOAD = 1;
+		public const short REASON_NEW_DOWNLOAD = 1;
 	}
 }

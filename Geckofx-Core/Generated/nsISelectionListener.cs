@@ -48,30 +48,30 @@ namespace Gecko
         //This Source Code Form is subject to the terms of the Mozilla Public
         // License, v. 2.0. If a copy of the MPL was not distributed with this
         // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const int NO_REASON = 0;
+		public const short NO_REASON = 0;
 		
 		// 
-		public const int DRAG_REASON = 1;
+		public const short DRAG_REASON = 1;
 		
 		// 
-		public const int MOUSEDOWN_REASON = 2;
+		public const short MOUSEDOWN_REASON = 2;
 		
 		// <summary>
         //bitflags </summary>
-		public const int MOUSEUP_REASON = 4;
+		public const short MOUSEUP_REASON = 4;
 		
 		// <summary>
         //bitflags </summary>
-		public const int KEYPRESS_REASON = 8;
+		public const short KEYPRESS_REASON = 8;
 		
 		// <summary>
         //bitflags </summary>
-		public const int SELECTALL_REASON = 16;
+		public const short SELECTALL_REASON = 16;
 		
 		// 
-		public const int COLLAPSETOSTART_REASON = 32;
+		public const short COLLAPSETOSTART_REASON = 32;
 		
 		// 
-		public const int COLLAPSETOEND_REASON = 64;
+		public const short COLLAPSETOEND_REASON = 64;
 	}
 }

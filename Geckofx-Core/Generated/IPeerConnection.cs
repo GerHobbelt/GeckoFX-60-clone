@@ -132,13 +132,13 @@ namespace Gecko
 		
 		// <summary>
         //for 'type' in DataChannelInit dictionary </summary>
-		public const ulong kDataChannelReliable = 0;
+		public const ushort kDataChannelReliable = 0;
 		
 		// 
-		public const ulong kDataChannelPartialReliableRexmit = 1;
+		public const ushort kDataChannelPartialReliableRexmit = 1;
 		
 		// 
-		public const ulong kDataChannelPartialReliableTimed = 2;
+		public const ushort kDataChannelPartialReliableTimed = 2;
 		
 		// <summary>
         //Constants for 'name' in error callbacks </summary>
