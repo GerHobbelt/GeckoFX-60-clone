@@ -1274,7 +1274,28 @@ namespace Gecko
 			
 			if (e.ContextMenu != null && e.ContextMenu.MenuItems.Count > 0)
 			{
+#if GTK
+				// When using GTK we can't use SWF to display the context menu: SWF displays
+				// the context menu and then tries to track the mouse so that it knows when to
+				// close the context menu. However, GTK intercepts the mouse click before SWF gets
+				// it, so the menu never closes. Instead we display a GTK menu and translate
+				// the SWF menu items into Gtk.MenuItems.
+				// TODO: currently this code only handles text menu items. Would be nice to also
+				// translate images etc.
+				var popupMenu = new Gtk.Menu();
+
+				foreach (MenuItem swfMenuItem in e.ContextMenu.MenuItems)
+				{
+					var gtkMenuItem = new Gtk.MenuItem(swfMenuItem.Text);
+					gtkMenuItem.Sensitive = swfMenuItem.Enabled;
+					gtkMenuItem.Activated += (sender, ev) => swfMenuItem.PerformClick();
+					popupMenu.Append(gtkMenuItem);
+				}
+				popupMenu.ShowAll();
+				popupMenu.Popup();
+#else
 				e.ContextMenu.Show(this, e.Location);
+#endif
 			}
 		}
 
