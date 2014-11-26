@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.InteropServices;
 using System.IO;
 using Gecko.Interop;
 
@@ -29,6 +30,33 @@ namespace Gecko
 			_prefService = Xpcom.GetService2<nsIPrefService>( Contracts.PreferenceService );
 		}
 
+		/// <summary>
+		/// Gets the string value of a pref. This is a replacement of nsIPrefBranch::GetCharPref(), which can't handle unicode values.
+		/// See also <a href="http://www-archive.mozilla.org/projects/intl/changefontpref2.html">How to change the font setting in Gecko from the Embedding Application</a>
+		/// </summary>
+		static string GetUnicodePref(nsIPrefBranch branch, string name)
+		{
+			var iid = typeof(nsISupportsString).GUID;
+			IntPtr pStr = branch.GetComplexValue (name, ref iid);
+			if (pStr == IntPtr.Zero)
+				return null;
+			var sStr = (nsISupportsString) Xpcom.GetObjectForIUnknown(pStr);
+			Marshal.Release(pStr);
+			nsAString value = new nsAString();
+			sStr.GetDataAttribute(value);
+			return value.ToString();
+		}
+
+		/// <summary>
+		/// Sets the string value of a pref. This is a replacement of nsIPrefBranch::SetCharPref(), which can't handle unicode values.
+		/// </summary>
+		static void SetUnicodePref(nsIPrefBranch branch, string name, string value)
+		{
+			var iid = typeof(nsISupportsString).GUID;
+			var str = Xpcom.CreateInstance<nsISupportsString>(Contracts.SupportsString);
+			str.SetDataAttribute(new nsAString(value));
+			branch.SetComplexValue(name, ref iid, Xpcom.QueryInterface<nsISupports>(str));
+		}
 
 		#region Properties
 		/// <summary>
@@ -141,7 +169,7 @@ namespace Gecko
 				switch (type)
 				{
 					case PREF_INVALID: return null;
-					case PREF_STRING: return _branch.Instance.GetCharPref(prefName);
+					case PREF_STRING: return GetUnicodePref(_branch.Instance, prefName);
 					case PREF_INT: return _branch.Instance.GetIntPref(prefName);
 					case PREF_BOOL: return _branch.Instance.GetBoolPref(prefName);
 				}
@@ -162,7 +190,7 @@ namespace Gecko
 
 				if (value is string)
 				{
-					_branch.Instance.SetCharPref( prefName, (string) value );
+					SetUnicodePref(_branch.Instance, prefName, (string) value);
 					return;
 				}
 				if (value is int)
@@ -176,7 +204,7 @@ namespace Gecko
 				}
 				if (value is float)
 				{
-					_branch.Instance.SetCharPref( prefName, ( (float) value ).ToString() );
+					SetUnicodePref(_branch.Instance, prefName, ( (float) value ).ToString());
 				}
 			}
 		}
@@ -303,7 +331,7 @@ namespace Gecko
 					value = null;
 					return true;
 				case PREF_STRING:
-					value = _branch.Instance.GetCharPref(prefName);
+					value = GetUnicodePref(_branch.Instance, prefName);
 					return true;
 				default:
 					value = null;
@@ -321,13 +349,13 @@ namespace Gecko
 				case PREF_INVALID:
 					if (value != null)
 					{
-						_branch.Instance.SetCharPref(prefName, value);
+						SetUnicodePref(_branch.Instance, prefName, value);
 					}
 					return true;
 				case PREF_STRING:
 					if (value != null)
 					{
-						_branch.Instance.SetCharPref(prefName, value);
+						SetUnicodePref(_branch.Instance, prefName, value);
 					}
 					else
 					{
@@ -372,13 +400,13 @@ namespace Gecko
 				case PREF_INVALID:
 					if (value != null)
 					{
-						_branch.Instance.SetCharPref( prefName, value.Value.ToString() );
+						SetUnicodePref(_branch.Instance, prefName, value.Value.ToString());
 					}
 					return true;
 				case PREF_STRING:
 					if (value != null)
 					{
-						_branch.Instance.SetCharPref(prefName, value.Value.ToString());
+						SetUnicodePref(_branch.Instance, prefName, value.Value.ToString());
 					}
 					else
 					{
