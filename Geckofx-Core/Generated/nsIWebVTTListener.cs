@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2953cf08-403e-4419-8d20-ce286aac026b")]
+	[Guid("8a2d7780-2045-4a29-99f4-df15cae5fc49")]
 	public interface nsIWebVTTListener
 	{
 		
@@ -51,5 +51,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnRegion(Gecko.JsVal region, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Is called when the WebVTT parser encounters a parsing error.
+        ///
+        /// @param error The error code of the ParserError the occured.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnParsingError(int errorCode, System.IntPtr jsContext);
 	}
 }

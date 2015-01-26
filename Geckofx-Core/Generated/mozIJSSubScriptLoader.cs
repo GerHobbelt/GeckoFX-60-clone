@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b21f1579-d994-4e99-a85d-a685140f3ec1")]
+	[Guid("19533e7b-f321-4ef1-bc59-6e812dc2a733")]
 	public interface mozIJSSubScriptLoader
 	{
 		
@@ -68,5 +68,22 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal LoadSubScriptWithOptions([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, Gecko.JsVal options, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Compiles a JS script off the main thread and calls back the
+        /// observer once it's done.
+        /// The script will be cached in temporary or persistent storage depending
+        /// on the principal used.
+        /// We fire the notification callback in all cases - there is no fatal
+        /// error there.
+        /// @param uri       the uri of the script to load.
+        /// @param principal the principal from which we get the app id if any.
+        /// @param observer  this observer will be called once the script has
+        /// been precompiled. The notification topic will be
+        /// 'script-precompiled' and the subject the uri of the
+        /// script as a nsIURI.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PrecompileScript([MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.Interface)] nsIObserver observer);
 	}
 }

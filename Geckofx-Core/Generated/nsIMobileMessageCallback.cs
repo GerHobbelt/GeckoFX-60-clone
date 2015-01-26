@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0ee2ada1-fa98-40f1-adb3-0d7fd6df3f48")]
+	[Guid("41db87b0-b0a1-11e3-a04f-cf487d837ee3")]
 	public interface nsIMobileMessageCallback
 	{
 		
@@ -119,5 +119,11 @@ namespace Gecko
 		
 		// 
 		public const ushort NON_ACTIVE_SIM_CARD_ERROR = 9;
+		
+		// 
+		public const ushort STORAGE_FULL_ERROR = 10;
+		
+		// 
+		public const ushort SIM_NOT_MATCHED_ERROR = 11;
 	}
 }

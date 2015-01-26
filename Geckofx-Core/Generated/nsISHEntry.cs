@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c2a5827e-0fc0-11e3-bb95-59e799890b3c")]
+	[Guid("9eed7e92-1121-46f2-95e5-2f5c0dca46f0")]
 	public interface nsISHEntry
 	{
 		
@@ -483,6 +483,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSrcdocDataAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSrcdocData);
+		
+		/// <summary>
+        /// When isSrcdocEntry is true, this contains the baseURI of the srcdoc
+        /// document for use in situations where it cannot otherwise be determined,
+        /// for example with view-source.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetBaseURIAttribute();
+		
+		/// <summary>
+        /// When isSrcdocEntry is true, this contains the baseURI of the srcdoc
+        /// document for use in situations where it cannot otherwise be determined,
+        /// for example with view-source.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBaseURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
 	}
 	
 	/// <summary>nsISHEntryInternal </summary>

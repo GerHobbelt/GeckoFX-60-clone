@@ -38,7 +38,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b4440e2e-0fc2-11e3-971f-59e799890b3c")]
+	[Guid("7b807041-e60a-4384-935f-af3061d8b815")]
 	public interface nsISHistory
 	{
 		
@@ -87,6 +87,7 @@ namespace Gecko
         /// given index.
         ///
         /// @param index             The index value whose entry is requested.
+        /// The oldest entry is located at index == 0.
         /// @param modifyIndex       A boolean flag that indicates if the current
         /// index of session history should be modified
         /// to the parameter index.
@@ -177,5 +178,18 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ReloadCurrentEntry();
+		
+		/// <summary>
+        /// Called to obtain the index to a given history entry.
+        ///
+        /// @param aEntry            The entry to obtain the index of.
+        ///
+        /// @return                  <code>NS_OK</code> index for the history entry
+        /// is obtained successfully.
+        /// <code>NS_ERROR_FAILURE</code> Error in obtaining
+        /// index for the given history entry.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetIndexOfEntry([MarshalAs(UnmanagedType.Interface)] nsISHEntry aEntry);
 	}
 }

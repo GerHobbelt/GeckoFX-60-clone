@@ -30,7 +30,7 @@ namespace Gecko
     ///Defines the abstract interface for a principal. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f09d8a53-a6c8-4f68-b329-9a76a709d24e")]
+	[Guid("204555e7-04ad-4cc8-9f0e-840615cc43e8")]
 	public interface nsIPrincipal : nsISerializable
 	{
 		
@@ -65,11 +65,11 @@ namespace Gecko
 		bool Equals([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
 		
 		/// <summary>
-        /// Like equals, but doesn't take document.domain changes into account.
+        /// Like equals, but takes document.domain changes into account.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool EqualsIgnoringDomain([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
+		bool EqualsConsideringDomain([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
 		
 		/// <summary>
         /// Returns a hash value for the principal.
@@ -128,12 +128,12 @@ namespace Gecko
 		bool Subsumes([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
 		
 		/// <summary>
-        /// Same as the previous method, subsumes(), but for codebase principals
-        /// ignores changes to document.domain.
+        /// Same as the previous method, subsumes(), but takes document.domain into
+        /// account.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool SubsumesIgnoringDomain([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
+		bool SubsumesConsideringDomain([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
 		
 		/// <summary>
         /// Checks whether this principal is allowed to load the network resource

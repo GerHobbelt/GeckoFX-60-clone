@@ -84,9 +84,21 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("86279644-6b86-4875-a228-2d2ff2f3e33b")]
+	[Guid("f2507add-dc39-48e0-9147-e0270376148b")]
 	public interface nsIContentPrefService2
 	{
+		
+		/// <summary>
+        /// Gets all the preferences with the given name.
+        ///
+        /// @param name      The preferences' name.
+        /// @param context   The private-browsing context, if any.
+        /// @param callback  handleResult is called once for each preference unless
+        /// no such preferences exist, in which case handleResult
+        /// is not called at all.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetByName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name, [MarshalAs(UnmanagedType.Interface)] nsILoadContext context, [MarshalAs(UnmanagedType.Interface)] nsIContentPrefCallback2 callback);
 		
 		/// <summary>
         /// Gets the preference with the given domain and name.

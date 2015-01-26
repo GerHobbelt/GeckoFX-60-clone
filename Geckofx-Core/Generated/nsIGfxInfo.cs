@@ -30,7 +30,7 @@ namespace Gecko
     ///NOTE: this interface is completely undesigned, not stable and likely to change </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8a9797ae-22d4-431d-a628-18fd5900c53c")]
+	[Guid("1194ba76-aeb5-48df-abfd-844740ce3696")]
 	public interface nsIGfxInfo
 	{
 		
@@ -181,6 +181,10 @@ namespace Gecko
 		// <summary>
         //Whether Stagefright is supported </summary>
 		public const long FEATURE_STAGEFRIGHT = 9;
+		
+		// <summary>
+        //Whether Webrtc Hardware acceleration is supported </summary>
+		public const long FEATURE_WEBRTC_HW_ACCELERATION = 10;
 		
 		// <summary>
         //We don't explicitly block or discourage the feature. Which means we'll try getting it from the

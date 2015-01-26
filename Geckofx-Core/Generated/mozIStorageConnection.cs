@@ -146,6 +146,19 @@ namespace Gecko
 		new mozIStoragePendingStatement ExecuteAsync([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] mozIStorageBaseStatement[] aStatements, uint aNumStatements, mozIStorageStatementCallback aCallback);
 		
 		/// <summary>
+        /// Execute asynchronously an SQL expression, expecting no arguments.
+        ///
+        /// @param aSQLStatement
+        /// The SQL statement to execute
+        /// @param aCallback [optional]
+        /// The callback object that will be notified of progress, errors, and
+        /// completion.
+        /// @return an object that can be used to cancel the statement execution.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new mozIStoragePendingStatement ExecuteSimpleSQLAsync([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSQLStatement, mozIStorageStatementCallback aCallback);
+		
+		/// <summary>
         /// Create a new SQL function.  If you use your connection on multiple threads,
         /// your function needs to be threadsafe, or it should only be called on one
         /// thread.

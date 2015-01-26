@@ -160,23 +160,23 @@ namespace Gecko
 		/// <summary>
         /// Called before the capture phase of the event flow.
         /// This is used to create the event target chain and implementations
-        /// should set the necessary members of nsEventChainPreVisitor.
+        /// should set the necessary members of EventChainPreVisitor.
         /// At least aVisitor.mCanHandle must be set,
         /// usually also aVisitor.mParentTarget if mCanHandle is PR_TRUE.
         /// First one tells that this object can handle the aVisitor.mEvent event and
         /// the latter one is the possible parent object for the event target chain.
-        /// @see nsEventDispatcher.h for more documentation about aVisitor.
+        /// @see EventDispatcher.h for more documentation about aVisitor.
         ///
         /// @param aVisitor the visitor object which is used to create the
         /// event target chain for event dispatching.
         ///
-        /// @note Only nsEventDispatcher should call this method.
+        /// @note Only EventDispatcher should call this method.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void PreHandleEvent(System.IntPtr aVisitor);
 		
 		/// <summary>
-        /// If nsEventChainPreVisitor.mWantsWillHandleEvent is set PR_TRUE,
+        /// If EventChainPreVisitor.mWantsWillHandleEvent is set PR_TRUE,
         /// called just before possible event handlers on this object will be called.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -187,8 +187,8 @@ namespace Gecko
         /// The default handling of the event should happen here.
         /// @param aVisitor the visitor object which is used during post handling.
         ///
-        /// @see nsEventDispatcher.h for documentation about aVisitor.
-        /// @note Only nsEventDispatcher should call this method.
+        /// @see EventDispatcher.h for documentation about aVisitor.
+        /// @note Only EventDispatcher should call this method.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void PostHandleEvent(System.IntPtr aVisitor);
@@ -336,8 +336,9 @@ namespace Gecko
         /// @param type
         /// DOMString indicates the desired preferred network type.
         /// Possible values: 'wcdma/gsm', 'gsm', 'wcdma', 'wcdma/gsm-auto',
-        /// 'cdma/evdo', 'cdma', 'evdo', or
-        /// 'wcdma/gsm/cdma/evdo'.
+        /// 'cdma/evdo', 'cdma', 'evdo', 'wcdma/gsm/cdma/evdo',
+        /// 'lte/cdma/evdo', 'lte/wcdma/gsm',
+        /// 'lte/wcdma/gsm/cdma/evdo' or 'lte'.
         ///
         /// If successful, the request's onsuccess will be called.
         ///
@@ -358,7 +359,8 @@ namespace Gecko
         /// If successful, the request's onsuccess will be called. And the request's
         /// result will be a string indicating the current preferred network type.
         /// The value will be either 'wcdma/gsm', 'gsm', 'wcdma', 'wcdma/gsm-auto',
-        /// 'cdma/evdo', 'cdma', 'evdo', or 'wcdma/gsm/cdma/evdo'.
+        /// 'cdma/evdo', 'cdma', 'evdo', 'wcdma/gsm/cdma/evdo', 'lte/cdma/evdo',
+        /// 'lte/wcdma/gsm', 'lte/wcdma/gsm/cdma/evdo' or 'lte'.
         ///
         /// Otherwise, the request's onerror will be called, and the request's error
         /// will be either 'RadioNotAvailable', 'RequestNotSupported',

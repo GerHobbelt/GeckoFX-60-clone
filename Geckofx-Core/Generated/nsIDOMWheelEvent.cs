@@ -317,7 +317,7 @@ namespace Gecko
 		new bool GetMetaKeyAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new ushort GetButtonAttribute();
+		new short GetButtonAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new ushort GetButtonsAttribute();

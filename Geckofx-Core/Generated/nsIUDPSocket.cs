@@ -208,7 +208,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("333D5D69-8117-4AA6-9E16-2DD4FD6AEBA6")]
+	[Guid("afdc743f-9cc0-40d8-b442-695dc54bbb74")]
 	public interface nsIUDPMessage
 	{
 		
@@ -231,5 +231,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIOutputStream GetOutputStreamAttribute();
+		
+		/// <summary>
+        /// Raw Data of the message
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetRawDataAttribute(System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Uint8TArrayRef GetDataAsTArray();
 	}
 }

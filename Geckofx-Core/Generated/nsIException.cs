@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("60abee59-717e-477d-8bbb-a1c3e7067126")]
+	[Guid("3bc4793f-e6be-44d6-b839-d6b9e85e5346")]
 	public interface nsIStackFrame
 	{
 		
@@ -45,10 +45,10 @@ namespace Gecko
 		void GetLanguageNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aLanguageName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFilenameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aFilename);
+		void GetFilenameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilename);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
+		void GetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
 		
 		/// <summary>
         /// Valid line numbers begin at '1'. '0' indicates unknown.
@@ -70,7 +70,7 @@ namespace Gecko
 	/// <summary>nsIException </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6738090a-ba6f-4f3f-8aa0-b9f6311262a5")]
+	[Guid("1caf1461-be1d-4b79-a552-5292b6bf3c35")]
 	public interface nsIException
 	{
 		
@@ -96,7 +96,7 @@ namespace Gecko
         /// null indicates "no data"
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFilenameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aFilename);
+		void GetFilenameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilename);
 		
 		/// <summary>
         /// Valid line numbers begin at '1'. '0' indicates unknown.

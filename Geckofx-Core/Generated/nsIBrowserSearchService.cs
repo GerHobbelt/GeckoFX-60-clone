@@ -55,7 +55,7 @@ namespace Gecko
 	/// <summary>nsISearchEngine </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7914c4b8-f05b-40c9-a982-38a058cd1769")]
+	[Guid("77de6680-57ec-4105-a183-cc7cf7e84b09")]
 	public interface nsISearchEngine
 	{
 		
@@ -205,6 +205,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetIdentifierAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier);
+		
+		/// <summary>
+        /// Gets a string representing the hostname from which search results for a
+        /// given responseType are returned, minus the leading "www." (if present).
+        /// This can be specified as an url attribute in the engine description file,
+        /// but will default to host from the <Url>'s template otherwise.
+        ///
+        /// @param  responseType [optional]
+        /// The MIME type to get resultDomain for.  Defaults to "text/html".
+        ///
+        /// @return the resultDomain for the given responseType.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetResultDomain([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase responseType, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 	}
 	
 	/// <summary>nsISearchEngineConsts </summary>

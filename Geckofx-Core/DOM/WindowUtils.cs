@@ -130,9 +130,9 @@ namespace Gecko.DOM
         /// The caller of this method must have UniversalXPConnect
         /// privileges.
         /// </summary>		
-		public void SetDisplayPortForElement(float aXPx, float aYPx, float aWidthPx, float aHeightPx, GeckoElement aElement)
+		public void SetDisplayPortForElement(float aXPx, float aYPx, float aWidthPx, float aHeightPx, GeckoElement aElement, uint aPriority)
 		{
-			_windowUtils.Instance.SetDisplayPortForElement( aXPx, aYPx, aWidthPx, aHeightPx, ( nsIDOMElement ) aElement.DomObject );
+			_windowUtils.Instance.SetDisplayPortForElement( aXPx, aYPx, aWidthPx, aHeightPx, ( nsIDOMElement ) aElement.DomObject, aPriority);
 		}
 
 

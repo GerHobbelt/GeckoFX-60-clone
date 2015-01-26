@@ -145,6 +145,7 @@
     <Compile Include="Events\GeckoNSSErrorEventArgs.cs" />
     <Compile Include="GeckoError.cs" />
     <Compile Include="Generated\mozIStorageAsyncConnection.cs" />
+    <Compile Include="Generated\nsIAccessibleTextRange.cs" />
     <Compile Include="Generated\nsICompositionStringSynthesizer.cs" />
     <Compile Include="Generated\nsIDomainPolicy.cs" />
     <Compile Include="Generated\nsIDOMIccInfo.cs" />
@@ -165,7 +166,6 @@
     <Compile Include="Generated\nsIDOMCSSConditionRule.cs" />
     <Compile Include="Generated\nsIDOMCSSGroupingRule.cs" />
     <Compile Include="Generated\nsIDOMDOMCursor.cs" />
-    <Compile Include="Generated\nsIDOMIccManager.cs" />
     <Compile Include="Generated\nsIDOMMozCellBroadcastEvent.cs" />
     <Compile Include="Generated\nsIDOMMozCellBroadcastMessage.cs" />
     <Compile Include="Generated\nsIDOMMozNamedAttrMap.cs" />
@@ -391,7 +391,6 @@
     <Compile Include="GeckoMouseButton.cs" />
     <Compile Include="DOM\GeckoNode.cs" />
     <Compile Include="GeckoWrapperCache.cs" />
-    <Compile Include="Generated\amIInstallTrigger.cs" />
     <Compile Include="Generated\amIWebInstaller.cs" />
     <Compile Include="Generated\amIWebInstallListener.cs" />
     <Compile Include="Generated\domstubs.cs" />
@@ -530,7 +529,6 @@
     <Compile Include="Generated\nsICacheVisitor.cs" />
     <Compile Include="Generated\nsICachingChannel.cs" />
     <Compile Include="Generated\nsICancelable.cs" />
-    <Compile Include="Generated\nsICanvasGLPrivate.cs" />
     <Compile Include="Generated\nsICategoryManager.cs" />
     <Compile Include="Generated\nsICertificateDialogs.cs" />
     <Compile Include="Generated\nsICertOverrideService.cs" />
@@ -610,7 +608,6 @@
     <Compile Include="Generated\nsIDataSignatureVerifier.cs" />
     <Compile Include="Generated\nsIDebug.cs" />
     <Compile Include="Generated\nsIDebug2.cs" />
-    <Compile Include="Generated\nsIDialogCreator.cs" />
     <Compile Include="Generated\nsIDialogParamBlock.cs" />
     <Compile Include="Generated\nsIDirectoryEnumerator.cs" />
     <Compile Include="Generated\nsIDirectoryService.cs" />
@@ -672,7 +669,6 @@
     <Compile Include="Generated\nsIDOMDocumentXBL.cs" />
     <Compile Include="Generated\nsIDOMDOMException.cs" />
     <Compile Include="Generated\nsIDOMDOMImplementation.cs" />
-    <Compile Include="Generated\nsIDOMDOMStringList.cs" />
     <Compile Include="Generated\nsIDOMDragEvent.cs" />
     <Compile Include="Generated\nsIDOMElement.cs" />
     <Compile Include="Generated\nsIDOMElementCSSInlineStyle.cs" />
@@ -702,7 +698,6 @@
     <Compile Include="Generated\nsIDOMHTMLBodyElement.cs" />
     <Compile Include="Generated\nsIDOMHTMLBRElement.cs" />
     <Compile Include="Generated\nsIDOMHTMLButtonElement.cs" />
-    <Compile Include="Generated\nsIDOMHTMLByteRanges.cs" />
     <Compile Include="Generated\nsIDOMHTMLCanvasElement.cs" />
     <Compile Include="Generated\nsIDOMHTMLCollection.cs" />
     <Compile Include="Generated\nsIDOMHTMLDirectoryElement.cs" />
@@ -765,7 +760,6 @@
     <Compile Include="Generated\nsIDOMNodeFilter.cs" />
     <Compile Include="Generated\nsIDOMNodeIterator.cs" />
     <Compile Include="Generated\nsIDOMNodeList.cs" />
-    <Compile Include="Generated\nsIDOMNotifyAudioAvailableEvent.cs" />
     <Compile Include="Generated\nsIDOMNotifyPaintEvent.cs" />
     <Compile Include="Generated\nsIDOMNSEditableElement.cs" />
     <Compile Include="Generated\nsIDOMNSEvent.cs" />
@@ -796,7 +790,6 @@
     <Compile Include="Generated\nsIDOMText.cs" />
     <Compile Include="Generated\nsIDOMTimeEvent.cs" />
     <Compile Include="Generated\nsIDOMTimeRanges.cs" />
-    <Compile Include="Generated\nsIDOMToString.cs" />
     <Compile Include="Generated\nsIDOMTouchEvent.cs" />
     <Compile Include="Generated\nsIDOMTransitionEvent.cs" />
     <Compile Include="Generated\nsIDOMTreeWalker.cs" />
@@ -810,7 +803,6 @@
     <Compile Include="Generated\nsIDOMXMLDocument.cs" />
     <Compile Include="Generated\nsIDOMXPathEvaluator.cs" />
     <Compile Include="Generated\nsIDOMXPathExpression.cs" />
-    <Compile Include="Generated\nsIDOMXPathNamespace.cs" />
     <Compile Include="Generated\nsIDOMXPathNSResolver.cs" />
     <Compile Include="Generated\nsIDOMXPathResult.cs" />
     <Compile Include="Generated\nsIDOMXULButtonElement.cs" />
@@ -881,7 +873,6 @@
     <Compile Include="Generated\nsIFeedResult.cs" />
     <Compile Include="Generated\nsIFeedResultService.cs" />
     <Compile Include="Generated\nsIFeedTextConstruct.cs" />
-    <Compile Include="Generated\nsIFeedWriter.cs" />
     <Compile Include="Generated\nsIFile.cs" />
     <Compile Include="Generated\nsIFileChannel.cs" />
     <Compile Include="Generated\nsIFilePicker.cs" />
@@ -977,7 +968,6 @@
     <Compile Include="Generated\nsILocaleService.cs" />
     <Compile Include="Generated\nsILocalFile.cs" />
     <Compile Include="Generated\nsILocalFileMac.cs" />
-    <Compile Include="Generated\nsILocalFileOS2.cs" />
     <Compile Include="Generated\nsILocalFileWin.cs" />
     <Compile Include="Generated\nsILoginInfo.cs" />
     <Compile Include="Generated\nsILoginManager.cs" />
@@ -1114,7 +1104,6 @@
     <Compile Include="Generated\nsIResProtocolHandler.cs" />
     <Compile Include="Generated\nsIResumableChannel.cs" />
     <Compile Include="Generated\nsIRunnable.cs" />
-    <Compile Include="Generated\nsIRwsService.cs" />
     <Compile Include="Generated\nsISafeOutputStream.cs" />
     <Compile Include="Generated\nsISample.cs" />
     <Compile Include="Generated\nsISaveAsCharset.cs" />
@@ -1166,7 +1155,6 @@
     <Compile Include="Generated\nsISHistoryInternal.cs" />
     <Compile Include="Generated\nsISHistoryListener.cs" />
     <Compile Include="Generated\nsISHTransaction.cs" />
-    <Compile Include="Generated\nsISidebar.cs" />
     <Compile Include="Generated\nsISignatureVerifier.cs" />
     <Compile Include="Generated\nsISimpleEnumerator.cs" />
     <Compile Include="Generated\nsISimpleStreamListener.cs" />
@@ -1240,7 +1228,6 @@
     <Compile Include="Generated\nsITooltipListener.cs" />
     <Compile Include="Generated\nsITooltipTextProvider.cs" />
     <Compile Include="Generated\nsITraceableChannel.cs" />
-    <Compile Include="Generated\nsITraceRefcnt.cs" />
     <Compile Include="Generated\nsITransaction.cs" />
     <Compile Include="Generated\nsITransactionList.cs" />
     <Compile Include="Generated\nsITransactionListener.cs" />

@@ -69,8 +69,9 @@ namespace Gecko
         /// @param aStates - accessible states.
         /// @param aExtraStates - accessible extra states.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetStringStates(uint aStates, uint aExtraStates);
+		nsISupports GetStringStates(uint aStates, uint aExtraStates);
 		
 		/// <summary>
         /// Get the type of accessible event as a string.

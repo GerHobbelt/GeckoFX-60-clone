@@ -36,7 +36,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e72f94b2-5f85-11d4-9877-00c04fa0cf4a")]
+	[Guid("afe1f190-a3c2-11e3-a5e2-0800200c9a66")]
 	public interface nsIErrorService
 	{
 		
@@ -59,28 +59,5 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string GetErrorStringBundle(short errorModule);
-		
-		/// <summary>
-        /// Registers a key in a string bundle for an nsresult error code. Only the code portion
-        /// of the nsresult is used (obtained with NS_ERROR_GET_CODE) in this registration. The
-        /// string bundle key is used to look up internationalized messages in the string bundle.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RegisterErrorStringBundleKey(int error, [MarshalAs(UnmanagedType.LPStr)] string stringBundleKey);
-		
-		/// <summary>
-        /// Unregisters a key in a string bundle for an nsresult error code.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnregisterErrorStringBundleKey(int error);
-		
-		/// <summary>
-        /// Retrieves a key in a string bundle for an nsresult error code. If no key is registered
-        /// for the specified nsresult's code (obtained with NS_ERROR_GET_CODE), then the stringified
-        /// version of the nsresult code is returned.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetErrorStringBundleKey(int error);
 	}
 }

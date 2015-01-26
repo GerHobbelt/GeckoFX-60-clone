@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("45b24b0a-6189-4b05-af0b-8d4d66d57c59")]
+	[Guid("6286dd8c-c1a1-11e3-941d-180373d97f24")]
 	public interface nsIX509Cert
 	{
 		
@@ -237,6 +237,13 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool Equals([MarshalAs(UnmanagedType.Interface)] nsIX509Cert other);
+		
+		/// <summary>
+        /// The base64 encoding of the DER encoded public key info using the specified
+        /// digest.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetSha256SubjectPublicKeyInfoDigestAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSha256SubjectPublicKeyInfoDigest);
 	}
 	
 	/// <summary>nsIX509CertConsts </summary>

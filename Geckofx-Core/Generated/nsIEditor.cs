@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("753b38d1-ee03-4e58-a650-1076ccccdb7f")]
+	[Guid("65523eab-db1f-44aa-893e-dfe57ad306f0")]
 	public interface nsIEditor
 	{
 		
@@ -54,7 +54,7 @@ namespace Gecko
         /// of the editor.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument doc, System.IntPtr aRoot, [MarshalAs(UnmanagedType.Interface)] nsISelectionController aSelCon, uint aFlags);
+		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument doc, System.IntPtr aRoot, [MarshalAs(UnmanagedType.Interface)] nsISelectionController aSelCon, uint aFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase initialValue);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAttributeOrEquivalent([MarshalAs(UnmanagedType.Interface)] nsIDOMElement element, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceAttrName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceAttrValue, [MarshalAs(UnmanagedType.U1)] bool aSuppressTransaction);

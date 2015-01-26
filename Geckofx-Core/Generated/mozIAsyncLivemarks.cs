@@ -48,6 +48,9 @@ namespace Gecko
         /// @return {Promise}
         /// @throws NS_ERROR_INVALID_ARG if the supplied information is insufficient
         /// for the creation.
+        /// @deprecated passing a callback is deprecated. Moreover, for backwards
+        /// compatibility reasons, when a callback is provided this method
+        /// won't return a promise.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal AddLivemark(Gecko.JsVal aLivemarkInfo, mozILivemarkCallback aCallback);
@@ -64,6 +67,9 @@ namespace Gecko
         ///
         /// @return {Promise}
         /// @throws NS_ERROR_INVALID_ARG if the id/guid is invalid.
+        /// @deprecated passing a callback is deprecated. Moreover, for backwards
+        /// compatibility reasons, when a callback is provided this method
+        /// won't return a promise.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal RemoveLivemark(Gecko.JsVal aLivemarkInfo, mozILivemarkCallback aCallback);
@@ -81,6 +87,9 @@ namespace Gecko
         /// @return {Promise}
         /// @throws NS_ERROR_INVALID_ARG if the id/guid is invalid or an invalid
         /// callback is provided.
+        /// @deprecated passing a callback is deprecated. Moreover, for backwards
+        /// compatibility reasons, when a callback is provided this method
+        /// won't return a promise.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetLivemark(Gecko.JsVal aLivemarkInfo, mozILivemarkCallback aCallback);

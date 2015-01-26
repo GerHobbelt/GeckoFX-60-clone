@@ -27,6 +27,30 @@ namespace Gecko
 	
 	
 	/// <summary>
+    /// A callback function used to notify webpages when a requested install has
+    /// ended.
+    ///
+    /// NOTE: This is *not* the same as InstallListener.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("bb22f5c0-3ca1-48f6-873c-54e87987700f")]
+	public interface amIInstallCallback
+	{
+		
+		/// <summary>
+        /// Called when an install completes or fails.
+        ///
+        /// @param  aUrl
+        /// The url of the add-on being installed
+        /// @param  aStatus
+        /// 0 if the install was successful or negative if not
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnInstallEnded([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aUrl, int aStatus);
+	}
+	
+	/// <summary>
     /// This interface is used to allow webpages to start installing add-ons.
     /// </summary>
 	[ComImport()]

@@ -27,14 +27,12 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// Interface allows access to a content to request
-    /// permission to perform a privileged operation such as
-    /// geolocation.
+    /// Interface provides the request type and its access.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1de67000-2de8-11e2-81c1-0800200c9a66")]
-	public interface nsIContentPermissionRequest
+	[Guid("ef4db3b8-ca9c-4b1d-8f81-fd88ec32af13")]
+	public interface nsIContentPermissionType
 	{
 		
 		/// <summary>
@@ -50,6 +48,33 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetAccessAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aAccess);
+		
+		/// <summary>
+        /// The array of available options.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIArray GetOptionsAttribute();
+	}
+	
+	/// <summary>
+    /// Interface allows access to a content to request
+    /// permission to perform a privileged operation such as
+    /// geolocation.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("69a39d88-d1c4-4ba9-9b19-bafc7a1bb783")]
+	public interface nsIContentPermissionRequest
+	{
+		
+		/// <summary>
+        /// The array will include the request types. Elements of this array are
+        /// nsIContentPermissionType object.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIArray GetTypesAttribute();
 		
 		/// <summary>
         /// The principal of the permission request.
@@ -79,7 +104,7 @@ namespace Gecko
 		void Cancel();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Allow();
+		void Allow(Gecko.JsVal choices);
 	}
 	
 	/// <summary>

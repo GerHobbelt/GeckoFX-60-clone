@@ -32,15 +32,16 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c105fe6f-5603-40b2-b3d0-84cb51fab9f4")]
+	[Guid("6044702d-e4a9-420c-b711-558b7d6a3b9f")]
 	public interface nsIDOMOfflineResourceList
 	{
 		
 		/// <summary>
         /// Get the list of dynamically-managed entries.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetMozItemsAttribute();
+		nsISupports GetMozItemsAttribute();
 		
 		/// <summary>
         /// Check that an entry exists in the list of dynamically-managed entries.

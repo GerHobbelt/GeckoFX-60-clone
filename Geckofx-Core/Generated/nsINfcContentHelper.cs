@@ -53,7 +53,7 @@ namespace Gecko
 	/// <summary>nsINfcContentHelper </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("70cac000-7e3c-11e3-baa7-0800200c9a66")]
+	[Guid("10b2eb1b-3fe0-4c98-9c67-9e4c2274cd78")]
 	public interface nsINfcContentHelper
 	{
 		
@@ -208,6 +208,27 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void NotifySendFileStatus([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, System.IntPtr status, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase requestId);
+		
+		/// <summary>
+        /// Power on the NFC hardware and start polling for NFC tags or devices.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMDOMRequest StartPoll([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		
+		/// <summary>
+        /// Stop polling for NFC tags or devices. i.e. enter low power mode.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMDOMRequest StopPoll([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		
+		/// <summary>
+        /// Power off the NFC hardware.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMDOMRequest PowerOff([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
 	}
 	
 	/// <summary>nsINfcContentHelperConsts </summary>

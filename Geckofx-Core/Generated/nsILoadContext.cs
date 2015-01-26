@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d0029474-0cc4-42fd-bb21-d9ff22f5293c")]
+	[Guid("852ed1f0-8ec0-11e3-baa8-0800200c9a66")]
 	public interface nsILoadContext
 	{
 		
@@ -105,10 +105,23 @@ namespace Gecko
 		void SetUsePrivateBrowsingAttribute([MarshalAs(UnmanagedType.U1)] bool aUsePrivateBrowsing);
 		
 		/// <summary>
+        /// Attribute that determines if remote (out-of-process) tabs should be used.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetUseRemoteTabsAttribute();
+		
+		/// <summary>
         /// Set the private browsing state of the load context, meant to be used internally.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetPrivateBrowsing([MarshalAs(UnmanagedType.U1)] bool aInPrivateBrowsing);
+		
+		/// <summary>
+        /// Set the remote tabs state of the load context, meant to be used internally.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRemoteTabs([MarshalAs(UnmanagedType.U1)] bool aUseRemoteTabs);
 		
 		/// <summary>
         /// Returns true iff the load is occurring inside a browser element.

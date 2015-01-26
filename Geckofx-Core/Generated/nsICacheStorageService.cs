@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d669bf30-b6d9-48e1-a8fb-33cd18b0d752")]
+	[Guid("44de2fa4-1b0e-4cd3-9e32-211e936f721e")]
 	public interface nsICacheStorageService
 	{
 		
@@ -92,6 +92,17 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIEventTarget GetIoTargetAttribute();
+		
+		/// <summary>
+        /// Asynchronously determine how many bytes of the disk space the cache takes.
+        /// @see nsICacheStorageConsumptionObserver
+        /// @param aObserver
+        /// A mandatory (weak referred) observer.  Documented at
+        /// nsICacheStorageConsumptionObserver.
+        /// NOTE: the observer MUST implement nsISupportsWeakReference.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AsyncGetDiskConsumption([MarshalAs(UnmanagedType.Interface)] nsICacheStorageConsumptionObserver aObserver);
 	}
 	
 	/// <summary>nsICacheStorageServiceConsts </summary>
@@ -115,5 +126,24 @@ namespace Gecko
         // entries.  This may be dangerous to use.
         // </summary>
 		public const long PURGE_EVERYTHING = 3;
+	}
+	
+	/// <summary>nsICacheStorageConsumptionObserver </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("7728ab5b-4c01-4483-a606-32bf5b8136cb")]
+	public interface nsICacheStorageConsumptionObserver
+	{
+		
+		/// <summary>
+        /// Callback invoked to answer asyncGetDiskConsumption call. Always triggered
+        /// on the main thread.
+        /// NOTE: implementers must also implement nsISupportsWeakReference.
+        ///
+        /// @param aDiskSize
+        /// The disk consumption in bytes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnNetworkCacheDiskConsumption(long aDiskSize);
 	}
 }

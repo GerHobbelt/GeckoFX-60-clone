@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a3efb7eb-ae02-447b-99a5-bebca100afbd")]
+	[Guid("b73be9dd-bcc8-44df-8b01-3389e277427f")]
 	public interface nsIDOMHTMLDocument : nsIDOMDocument
 	{
 		
@@ -544,8 +544,9 @@ namespace Gecko
         ///
         /// @see <http://dev.w3.org/csswg/cssom/#dom-document-styleSheetSets>
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new System.IntPtr GetStyleSheetSetsAttribute();
+		new nsISupports GetStyleSheetSetsAttribute();
 		
 		/// <summary>
         /// Calling this method must change the disabled attribute on each StyleSheet
@@ -950,9 +951,9 @@ namespace Gecko
         /// the implementation is no-op.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CaptureEvents(int eventFlags);
+		void CaptureEvents();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReleaseEvents(int eventFlags);
+		void ReleaseEvents();
 	}
 }

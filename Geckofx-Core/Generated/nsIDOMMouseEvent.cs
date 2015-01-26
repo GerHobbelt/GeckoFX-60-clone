@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("afb2e57b-2822-4969-b2a9-0cada6859534")]
+	[Guid("df068636-9a5b-11e3-b71f-2c27d728e7f9")]
 	public interface nsIDOMMouseEvent : nsIDOMUIEvent
 	{
 		
@@ -320,7 +320,7 @@ namespace Gecko
 		bool GetMetaKeyAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ushort GetButtonAttribute();
+		short GetButtonAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ushort GetButtonsAttribute();

@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b1c81100-9d66-11e2-9e96-0800200c9a66")]
+	[Guid("0c81b265-34b8-472d-be98-099b2512e3ec")]
 	public interface nsITransfer : nsIWebProgressListener2
 	{
 		
@@ -253,5 +253,15 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSha256Hash([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHash);
+		
+		/// <summary>
+        /// Used to notify the transfer object of the signature of the downloaded
+        /// file.  Must be called on the main thread, only after the download has
+        /// finished successfully.
+        /// @param aSignatureInfo The nsIArray of nsIX509CertList of nsIX509Cert
+        /// certificates of the downloaded file.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetSignatureInfo([MarshalAs(UnmanagedType.Interface)] nsIArray aSignatureInfo);
 	}
 }

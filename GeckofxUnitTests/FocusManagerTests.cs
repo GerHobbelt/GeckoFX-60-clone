@@ -245,7 +245,12 @@ namespace GeckofxUnitTests
 			throw new NotImplementedException();
 		}
 
-		public nsIDOMElement GetFrameElementAttribute()
+	    public void SetOpenerWindowAttribute(nsIDOMWindow aOpenerWindow)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public nsIDOMElement GetFrameElementAttribute()
 		{
 			throw new NotImplementedException();
 		}
@@ -1033,8 +1038,18 @@ namespace GeckofxUnitTests
 			throw new NotImplementedException();
 		}
 
+	    public JsVal GetConsoleAttribute(IntPtr jsContext)
+	    {
+	        throw new NotImplementedException();
+	    }
 
-		public nsIDOMWindow GetRealTopAttribute()
+	    public void SetConsoleAttribute(JsVal aConsole, IntPtr jsContext)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+
+	    public nsIDOMWindow GetRealTopAttribute()
 		{
 			throw new NotImplementedException();
 		}
@@ -1044,7 +1059,22 @@ namespace GeckofxUnitTests
 			throw new NotImplementedException();
 		}
 
-		public nsIDOMElement GetRealFrameElementAttribute()
+	    public JsVal GetOpenerAttribute(IntPtr jsContext)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public void SetOpenerAttribute(JsVal aOpener, IntPtr jsContext)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public nsIDOMWindow GetOpenerWindowAttribute()
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public nsIDOMElement GetRealFrameElementAttribute()
 		{
 			throw new NotImplementedException();
 		}

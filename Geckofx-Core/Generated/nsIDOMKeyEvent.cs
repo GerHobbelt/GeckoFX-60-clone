@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2bbf1087-e404-45a5-880a-4f3702aebd4e")]
+	[Guid("d2b3e35f-8627-4732-a92d-cda54c8f8054")]
 	public interface nsIDOMKeyEvent : nsIDOMUIEvent
 	{
 		
@@ -340,10 +340,9 @@ namespace Gecko
 		// 
 		public const ulong DOM_VK_RETURN = 0x0D;
 		
-		// 
-		public const ulong DOM_VK_ENTER = 0x0E;
-		
-		// 
+		// <summary>
+        // const unsigned long DOM_VK_ENTER          = 0x0E;
+        // </summary>
 		public const ulong DOM_VK_SHIFT = 0x10;
 		
 		// 

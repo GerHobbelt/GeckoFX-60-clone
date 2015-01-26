@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("33bd1630-611e-11e3-949a-0800200c9a66")]
+	[Guid("e080b1f6-8452-4bde-9368-c795808b86d1")]
 	public interface nsIXULRuntime
 	{
 		
@@ -100,6 +100,12 @@ namespace Gecko
 		uint GetProcessTypeAttribute();
 		
 		/// <summary>
+        /// The system process ID of the caller's process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetProcessIDAttribute();
+		
+		/// <summary>
         /// If true, browser tabs may be opened in a different process from the main
         /// browser UI.
         /// </summary>
@@ -139,6 +145,32 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetLastRunCrashIDAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aLastRunCrashID);
+		
+		/// <summary>
+        /// True if this is a RELEASE_BUILD.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsReleaseBuildAttribute();
+		
+		/// <summary>
+        /// True if this build uses official branding (MOZ_OFFICIAL_BRANDING).
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsOfficialBrandingAttribute();
+		
+		/// <summary>
+        /// The default update channel (MOZ_UPDATE_CHANNEL).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetDefaultUpdateChannelAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDefaultUpdateChannel);
+		
+		/// <summary>
+        /// The distribution ID for this build (MOZ_DISTRIBUTION_ID).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetDistributionIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDistributionID);
 	}
 	
 	/// <summary>nsIXULRuntimeConsts </summary>

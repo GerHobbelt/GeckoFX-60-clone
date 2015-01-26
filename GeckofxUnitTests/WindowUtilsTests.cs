@@ -78,7 +78,7 @@ namespace GeckofxUnitTests
 		[Test]
 		public void SetDisplayPortForElement()
 		{
-			browser.Window.WindowUtils.SetDisplayPortForElement(100, 100, 100, 100, browser.Document.Body);
+			browser.Window.WindowUtils.SetDisplayPortForElement(100, 100, 100, 100, browser.Document.Body, 0);
 		}
 
 		[Test]
@@ -206,7 +206,12 @@ namespace GeckofxUnitTests
 				
 			}
 
-			public void BeginResults()
+		    public void NoteIncrementalRoot(ulong aAddress)
+		    {
+		        throw new NotImplementedException();
+		    }
+
+		    public void BeginResults()
 			{
 				_beginResults++;
 			}

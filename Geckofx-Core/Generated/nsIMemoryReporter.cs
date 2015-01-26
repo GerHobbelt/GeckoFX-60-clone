@@ -223,7 +223,7 @@ namespace Gecko
 	/// <summary>nsIMemoryReporterManager </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e4e4ca56-13e0-46f1-b3c5-62d2c09fc98e")]
+	[Guid("b6e5ec8a-71d9-48db-8ae9-68b4c5bbf2c3")]
 	public interface nsIMemoryReporterManager
 	{
 		
@@ -300,11 +300,29 @@ namespace Gecko
 		void GetReports([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData);
 		
 		/// <summary>
+        /// As above, but: If |minimizeMemoryUsage| is true, then each process will
+        /// minimize its memory usage (see the |minimizeMemoryUsage| method) before
+        /// gathering its report.  If DMD is enabled and |DMDDumpIdent| is non-empty
+        /// then write a DMD report to a file in the usual temporary directory (see
+        /// |dumpMemoryInfoToTempDir| in |nsIMemoryInfoDumper|.)
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetReportsExtended([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData, [MarshalAs(UnmanagedType.U1)] bool minimizeMemoryUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase DMDDumpIdent);
+		
+		/// <summary>
         /// Get memory reports in the current process only.  |handleReport| is called
         /// for each report.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetReportsForThisProcess([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData);
+		
+		/// <summary>
+        /// As above, but if DMD is enabled and |DMDDumpIdent| is non-empty
+        /// then write a DMD report to a file in the usual temporary directory (see
+        /// |dumpMemoryInfoToTempDir| in |nsIMemoryInfoDumper|.)
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetReportsForThisProcessExtended([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase DMDDumpIdent);
 		
 		/// <summary>
         /// The memory reporter manager, for the most part, treats reporters
@@ -466,11 +484,10 @@ namespace Gecko
 		/// <summary>
         /// Run a series of GC/CC's in an attempt to minimize the application's memory
         /// usage.  When we're finished, we invoke the given runnable if it's not
-        /// null.  Returns a reference to the runnable used for carrying out the task.
+        /// null.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsICancelableRunnable MinimizeMemoryUsage([MarshalAs(UnmanagedType.Interface)] nsIRunnable callback);
+		void MinimizeMemoryUsage([MarshalAs(UnmanagedType.Interface)] nsIRunnable callback);
 		
 		/// <summary>
         /// Measure the memory that is known to be owned by this tab, split up into

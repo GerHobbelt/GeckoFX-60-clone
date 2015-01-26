@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("cb7edc1c-096f-44de-957c-cb93de1545f6")]
+	[Guid("3ed1d288-5324-46ee-8a98-33ac37d1080b")]
 	public interface nsIParentRedirectingChannel : nsIParentChannel
 	{
 		
@@ -81,6 +81,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void OnDataAvailable([MarshalAs(UnmanagedType.Interface)] nsIRequest aRequest, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aInputStream, ulong aOffset, uint aCount);
+		
+		/// <summary>
+        /// Called to set the HttpChannelParentListener object (optional).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetParentListener(System.IntPtr listener);
 		
 		/// <summary>
         /// Called to invoke deletion of the IPC protocol.

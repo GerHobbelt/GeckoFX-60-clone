@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("bcdf4ce4-9785-4e31-a851-1d51ea16da20")]
+	[Guid("e732649a-4f78-4ded-abe1-dbdc36fd59d3")]
 	public interface nsIDOMScreen : nsIDOMEventTarget
 	{
 		
@@ -160,23 +160,23 @@ namespace Gecko
 		/// <summary>
         /// Called before the capture phase of the event flow.
         /// This is used to create the event target chain and implementations
-        /// should set the necessary members of nsEventChainPreVisitor.
+        /// should set the necessary members of EventChainPreVisitor.
         /// At least aVisitor.mCanHandle must be set,
         /// usually also aVisitor.mParentTarget if mCanHandle is PR_TRUE.
         /// First one tells that this object can handle the aVisitor.mEvent event and
         /// the latter one is the possible parent object for the event target chain.
-        /// @see nsEventDispatcher.h for more documentation about aVisitor.
+        /// @see EventDispatcher.h for more documentation about aVisitor.
         ///
         /// @param aVisitor the visitor object which is used to create the
         /// event target chain for event dispatching.
         ///
-        /// @note Only nsEventDispatcher should call this method.
+        /// @note Only EventDispatcher should call this method.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void PreHandleEvent(System.IntPtr aVisitor);
 		
 		/// <summary>
-        /// If nsEventChainPreVisitor.mWantsWillHandleEvent is set PR_TRUE,
+        /// If EventChainPreVisitor.mWantsWillHandleEvent is set PR_TRUE,
         /// called just before possible event handlers on this object will be called.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -187,8 +187,8 @@ namespace Gecko
         /// The default handling of the event should happen here.
         /// @param aVisitor the visitor object which is used during post handling.
         ///
-        /// @see nsEventDispatcher.h for documentation about aVisitor.
-        /// @note Only nsEventDispatcher should call this method.
+        /// @see EventDispatcher.h for documentation about aVisitor.
+        /// @note Only EventDispatcher should call this method.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void PostHandleEvent(System.IntPtr aVisitor);
@@ -269,39 +269,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetMozOrientationAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMozOrientation);
-		
-		/// <summary>
-        /// Lock the screen to the specified orientations(s).  This method returns true
-        /// if the lock was acquired successfully, and false otherwise.
-        ///
-        /// The parameter can be a DOMString or an Array of DOMStrings.  If you pass a
-        /// string, we lock the screen to that one orientation.  If you pass an Array,
-        /// we ensure that the screen is always in one of the given orientations.
-        ///
-        /// Valid orientations are "portrait", "portrait-primary",
-        /// "portrait-secondary", "landscape", "landscape-primary", and
-        /// "landscape-secondary".
-        /// These tokens are case-sensitive.
-        ///
-        /// If you pass a string that's not one of the valid orientations, or if you
-        /// pass an array of orientations and any of the orientations in the array is
-        /// not valid, we reject the lock and return false.
-        ///
-        /// The "-primary" orientations correspond to holding the device right-side up,
-        /// while the "-secondary" orientations correspond to holding the device
-        /// upside-down.	Locking the orientation in "portrait" is the same as locking
-        /// the orientation in ['portrait-primary', 'portrait-secondary'], and the
-        /// "landscape" orientation similarly corresponds to the set
-        /// ['landscape-primary', 'landscape-secondary'].
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool MozLockOrientation(Gecko.JsVal orientation, System.IntPtr jsContext);
-		
-		/// <summary>
-        /// Unlock the screen orientation.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MozUnlockOrientation();
 	}
 }

@@ -54,7 +54,7 @@ namespace Gecko
 	/// <summary>nsINetworkInterfaceListService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5be50bcb-bfe9-4742-b7e6-3e9bb4835369")]
+	[Guid("ee0e7cd7-1baa-44fd-86cb-f70acb549163")]
 	public interface nsINetworkInterfaceListService
 	{
 		
@@ -74,9 +74,15 @@ namespace Gecko
 	{
 		
 		// 
-		public const long LIST_NOT_INCLUDE_MMS_INTERFACES = 1;
+		public const long LIST_NOT_INCLUDE_MMS_INTERFACES = (1<<0);
 		
 		// 
-		public const long LIST_NOT_INCLUDE_SUPL_INTERFACES = 2;
+		public const long LIST_NOT_INCLUDE_SUPL_INTERFACES = (1<<1);
+		
+		// 
+		public const long LIST_NOT_INCLUDE_IMS_INTERFACES = (1<<2);
+		
+		// 
+		public const long LIST_NOT_INCLUDE_DUN_INTERFACES = (1<<3);
 	}
 }

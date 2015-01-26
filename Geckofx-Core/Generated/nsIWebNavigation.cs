@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("dbd6241d-c76e-42c0-9410-930589d803a2")]
+	[Guid("b7568a50-4c50-442c-a6be-3a340a48d89a")]
 	public interface nsIWebNavigation
 	{
 		
@@ -123,6 +123,50 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void LoadURI([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aURI, uint aLoadFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostData, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeaders);
+		
+		/// <summary>
+        /// Loads a given URI.  This will give priority to loading the requested URI
+        /// in the object implementing this interface.  If it can't be loaded here
+        /// however, the URI dispatcher will go through its normal process of content
+        /// loading.
+        /// Behaves like loadURI, except an additional parameter is provided to supply
+        /// a base URI to be used in specific situations where one cannot be inferred
+        /// by other means, for example when this is called to view selection source.
+        /// Outside of these situations, the behaviour of this function is no
+        /// different to loadURI.
+        ///
+        /// @param aURI
+        /// The URI string to load.  For HTTP and FTP URLs and possibly others,
+        /// characters above U+007F will be converted to UTF-8 and then URL-
+        /// escaped per the rules of RFC 2396.
+        /// @param aLoadFlags
+        /// Flags modifying load behaviour.  This parameter is a bitwise
+        /// combination of the load flags defined above.  (Undefined bits are
+        /// reserved for future use.)  Generally you will pass LOAD_FLAGS_NONE
+        /// for this parameter.
+        /// @param aReferrer
+        /// The referring URI.  If this argument is null, then the referring
+        /// URI will be inferred internally.
+        /// @param aPostData
+        /// If the URI corresponds to a HTTP request, then this stream is
+        /// appended directly to the HTTP request headers.  It may be prefixed
+        /// with additional HTTP headers.  This stream must contain a "\r\n"
+        /// sequence separating any HTTP headers from the HTTP request body.
+        /// This parameter is optional and may be null.
+        /// @param aHeaders
+        /// If the URI corresponds to a HTTP request, then any HTTP headers
+        /// contained in this stream are set on the HTTP request.  The HTTP
+        /// header stream is formatted as:
+        /// ( HEADER "\r\n" )*
+        /// This parameter is optional and may be null.
+        /// @param aBaseURI
+        /// Set to indicate a base URI to be associated with the load. Note
+        /// that at present this argument is only used with view-source aURIs
+        /// and cannot be used to resolve aURI.
+        /// This parameter is optional and may be null.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void LoadURIWithBase([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aURI, uint aLoadFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostData, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeaders, [MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
 		
 		/// <summary>
         /// Tells the Object to reload the current page.  There may be cases where the

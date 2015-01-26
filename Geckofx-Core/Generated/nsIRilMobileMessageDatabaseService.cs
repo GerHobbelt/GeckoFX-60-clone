@@ -58,10 +58,24 @@ namespace Gecko
 		void Notify(int aRv, Gecko.JsVal aMessageRecord, [MarshalAs(UnmanagedType.Interface)] nsISupports aDomMessage);
 	}
 	
+	/// <summary>nsIRilMobileMessageDatabaseConcatenationCallback </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("1b0ff03c-a2bc-11e3-a443-838d034c9805")]
+	public interface nsIRilMobileMessageDatabaseConcatenationCallback
+	{
+		
+		/// <summary>
+        /// |aCompleteMessage|: jsval: the completely concatenated message. Noted, this value might be null.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Notify(int aRv, Gecko.JsVal aCompleteMessage);
+	}
+	
 	/// <summary>nsIRilMobileMessageDatabaseService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a92eba51-e619-4f70-98c5-175a33590582")]
+	[Guid("0b437a5c-a2bc-11e3-bd1b-dbb173eb35f8")]
 	public interface nsIRilMobileMessageDatabaseService : nsIMobileMessageDatabaseService
 	{
 		
@@ -186,5 +200,21 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetMessageRecordByTransactionId([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTransactionId, [MarshalAs(UnmanagedType.Interface)] nsIRilMobileMessageDatabaseRecordCallback aCallback);
+		
+		/// <summary>
+        /// |aCrError| nsresult: the NS_ERROR defined in Components.results.
+        ///
+        /// @returns the error code defined in nsIMobileMessageCallback
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal TranslateCrErrorToMessageCallbackError(int aCrError);
+		
+		/// <summary>
+        /// |aSmsSegment| jsval: Decoded Single SMS PDU.
+        /// |aCallback| nsIRilMobileMessageDatabaseConcatenationCallback: a callback which
+        /// takes result flag, and complete mesage as parameters.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SaveSmsSegment(Gecko.JsVal aSmsSegment, [MarshalAs(UnmanagedType.Interface)] nsIRilMobileMessageDatabaseConcatenationCallback aCallback);
 	}
 }

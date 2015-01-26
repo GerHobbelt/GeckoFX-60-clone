@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6385282b-4413-4cd6-b60a-de43e0b5c307")]
+	[Guid("c25d3993-6481-4e12-acee-55e32f6e1454")]
 	public interface nsITelephonyListener
 	{
 		
@@ -55,9 +55,15 @@ namespace Gecko
         /// Indicates whether this call is an emergency call.
         /// @param isConference
         /// Indicates whether this call is a conference call.
+        /// @param isSwitchable
+        /// Indicates whether this call can be switched between states of
+        /// nsITelephonyProvider::CALL_STATE_CONNECTED and
+        /// nsITelephonyProvider::CALL_STATE_HELD.
+        /// @param isMergeable
+        /// Indicates whether this call be be added into a conference.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CallStateChanged(uint clientId, uint callIndex, ushort callState, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase number, [MarshalAs(UnmanagedType.U1)] bool isActive, [MarshalAs(UnmanagedType.U1)] bool isOutgoing, [MarshalAs(UnmanagedType.U1)] bool isEmergency, [MarshalAs(UnmanagedType.U1)] bool isConference);
+		void CallStateChanged(uint clientId, uint callIndex, ushort callState, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase number, [MarshalAs(UnmanagedType.U1)] bool isActive, [MarshalAs(UnmanagedType.U1)] bool isOutgoing, [MarshalAs(UnmanagedType.U1)] bool isEmergency, [MarshalAs(UnmanagedType.U1)] bool isConference, [MarshalAs(UnmanagedType.U1)] bool isSwitchable, [MarshalAs(UnmanagedType.U1)] bool isMergeable);
 		
 		/// <summary>
         /// Called when participants of a conference call have been updated, and the
@@ -97,9 +103,15 @@ namespace Gecko
         /// Indicates whether this call is outgoing or incoming.
         /// @param isConference
         /// Indicates whether this call is a conference call.
+        /// @param isSwitchable
+        /// Indicates whether this call can be switched between states of
+        /// nsITelephonyProvider::CALL_STATE_CONNECTED and
+        /// nsITelephonyProvider::CALL_STATE_HELD.
+        /// @param isMergeable
+        /// Indicates whether this call be be added into a conference.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void EnumerateCallState(uint clientId, uint callIndex, ushort callState, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase number, [MarshalAs(UnmanagedType.U1)] bool isActive, [MarshalAs(UnmanagedType.U1)] bool isOutgoing, [MarshalAs(UnmanagedType.U1)] bool isEmergency, [MarshalAs(UnmanagedType.U1)] bool isConference);
+		void EnumerateCallState(uint clientId, uint callIndex, ushort callState, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase number, [MarshalAs(UnmanagedType.U1)] bool isActive, [MarshalAs(UnmanagedType.U1)] bool isOutgoing, [MarshalAs(UnmanagedType.U1)] bool isEmergency, [MarshalAs(UnmanagedType.U1)] bool isConference, [MarshalAs(UnmanagedType.U1)] bool isSwitchable, [MarshalAs(UnmanagedType.U1)] bool isMergeable);
 		
 		/// <summary>
         /// Notify when RIL receives supplementary service notification.
@@ -150,13 +162,35 @@ namespace Gecko
 		void NotifyConferenceError([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase message);
 	}
 	
+	/// <summary>nsITelephonyCallback </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("c095aa82-aacb-4e53-a787-56a89c3f638e")]
+	public interface nsITelephonyCallback
+	{
+		
+		/// <summary>
+        /// Called when a dial request fails.
+        /// @param error
+        /// Error from RIL.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyDialError([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase error);
+		
+		/// <summary>
+        /// Called when a dial request succeeds.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyDialSuccess();
+	}
+	
 	/// <summary>
     /// XPCOM component (in the content process) that provides the telephony
     /// information.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4ff3ecb7-b024-4752-9dd6-c3623c6e6b8a")]
+	[Guid("b16ca98f-994f-4ae1-8c2d-e7b18e08d1f3")]
 	public interface nsITelephonyProvider
 	{
 		
@@ -185,7 +219,7 @@ namespace Gecko
         /// Functionality for making and managing phone calls.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Dial(uint clientId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase number, [MarshalAs(UnmanagedType.U1)] bool isEmergency);
+		void Dial(uint clientId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase number, [MarshalAs(UnmanagedType.U1)] bool isEmergency, [MarshalAs(UnmanagedType.Interface)] nsITelephonyCallback callback);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void HangUp(uint clientId, uint callIndex);

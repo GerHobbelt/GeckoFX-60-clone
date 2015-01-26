@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c7227506-5f8e-11e2-8bb3-10bf48d64bd4")]
+	[Guid("194b55d9-39c0-45c6-b8ef-b8049f978ea5")]
 	public interface nsIAudioChannelAgentCallback
 	{
 		
@@ -47,12 +47,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void CanPlayChanged(int canPlay);
+		
+		/// <summary>
+        /// Notified when the window volume/mute is changed
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void WindowVolumeChanged();
 	}
 	
 	/// <summary>
     /// This interface provides an agent for gecko components to participate
     /// in the audio channel service. Gecko components are responsible for
-    /// 1. Indicating what channel type they are using (via the init() member function).
+    /// 1. Indicating what channel type they are using (via the init() member
+    /// function).
     /// 2. Before playing, checking the playable status of the channel.
     /// 3. Notifying the agent when they start/stop using this channel.
     /// 4. Notifying the agent of changes to the visibility of the component using
@@ -63,7 +70,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("86ef883d-9cec-4c04-994f-5de198286e7c")]
+	[Guid("2b0222a5-8f7b-49d2-9ab8-cd01b744b23e")]
 	public interface nsIAudioChannelAgent
 	{
 		
@@ -77,17 +84,20 @@ namespace Gecko
         /// Initialize the agent with a channel type.
         /// Note: This function should only be called once.
         ///
+        /// @param window
+        /// The window
         /// @param channelType
         /// Audio Channel Type listed as above
         /// @param callback
-        /// 1. Once the playable status changes, agent uses this callback function to notify
-        /// Gecko component.
-        /// 2. The callback is allowed to be null. Ex: telephony doesn't need to listen change
-        /// of the playable status.
-        /// 3. The AudioChannelAgent keeps a strong reference to the callback object.
+        /// 1. Once the playable status changes, agent uses this callback function
+        /// to notify Gecko component.
+        /// 2. The callback is allowed to be null. Ex: telephony doesn't need to
+        /// listen change of the playable status.
+        /// 3. The AudioChannelAgent keeps a strong reference to the callback
+        /// object.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init(int channelType, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback);
+		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, int channelType, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback);
 		
 		/// <summary>
         /// This method is just like init(), except the audio channel agent keeps a
@@ -97,16 +107,17 @@ namespace Gecko
         /// nsISupportsWeakReference.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitWithWeakCallback(int channelType, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback);
+		void InitWithWeakCallback([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, int channelType, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback);
 		
 		/// <summary>
-        /// This method is just like init(), and specify the channel is associated with video.
+        /// This method is just like init(), and specify the channel is associated
+        /// with video.
         ///
         /// @param weak
         /// true if weak reference should be hold.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitWithVideo(int channelType, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback, [MarshalAs(UnmanagedType.U1)] bool weak);
+		void InitWithVideo([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, int channelType, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback, [MarshalAs(UnmanagedType.U1)] bool weak);
 		
 		/// <summary>
         /// Notify the agent that we want to start playing.
@@ -143,6 +154,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetVisibilityState([MarshalAs(UnmanagedType.U1)] bool visible);
+		
+		/// <summary>
+        /// Retrieve the volume from the window.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		float GetWindowVolumeAttribute();
 	}
 	
 	/// <summary>nsIAudioChannelAgentConsts </summary>
@@ -152,7 +169,8 @@ namespace Gecko
 		// <summary>
         // This interface provides an agent for gecko components to participate
         // in the audio channel service. Gecko components are responsible for
-        // 1. Indicating what channel type they are using (via the init() member function).
+        // 1. Indicating what channel type they are using (via the init() member
+        // function).
         // 2. Before playing, checking the playable status of the channel.
         // 3. Notifying the agent when they start/stop using this channel.
         // 4. Notifying the agent of changes to the visibility of the component using

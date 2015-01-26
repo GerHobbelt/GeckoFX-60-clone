@@ -1334,7 +1334,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("45e2970b-9b00-4473-9938-39d6beaf4248")]
+	[Guid("0f0f45b0-13a1-44ae-a0ab-c6046ec6d4da")]
 	public interface nsINavHistoryObserver
 	{
 		
@@ -1394,6 +1394,35 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnTitleChanged([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPageTitle, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aGUID);
+		
+		/// <summary>
+        /// Called when an individual page's frecency has changed.
+        ///
+        /// This is not called for pages whose frecencies change as the result of some
+        /// large operation where some large or unknown number of frecencies change at
+        /// once.  Use onManyFrecenciesChanged to detect such changes.
+        ///
+        /// @param aURI
+        /// The page's URI.
+        /// @param aNewFrecency
+        /// The page's new frecency.
+        /// @param aGUID
+        /// The page's GUID.
+        /// @param aHidden
+        /// True if the page is marked as hidden.
+        /// @param aVisitDate
+        /// The page's last visit date.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnFrecencyChanged([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, int aNewFrecency, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aGUID, [MarshalAs(UnmanagedType.U1)] bool aHidden, long aVisitDate);
+		
+		/// <summary>
+        /// Called when the frecencies of many pages have changed at once.
+        ///
+        /// onFrecencyChanged is not called for each of those pages.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnManyFrecenciesChanged();
 		
 		/// <summary>
         /// This page and all of its visits are being deleted. Note: the page may not

@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c738dc26-aa71-4561-a3fd-b5a0e4aa80d2")]
+	[Guid("fe8802f9-c2b7-4141-8e5b-280df3f62251")]
 	public interface nsIAutoCompleteSimpleResult : nsIAutoCompleteResult
 	{
 		
@@ -108,6 +108,13 @@ namespace Gecko
 		new void GetImageAt(int index, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
+        /// Get the final value that should be completed when the user confirms
+        /// the match at the given index.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetFinalCompleteValueAt(int index, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
         /// Remove the value at the given index from the autocomplete results.
         /// If removeFromDb is set to true, the value should be removed from
         /// persistent storage as well.
@@ -151,11 +158,22 @@ namespace Gecko
 		void SetTypeAheadResult([MarshalAs(UnmanagedType.U1)] bool aHidden);
 		
 		/// <summary>
-        /// Appends a result item consisting of the given value, comment, image and style.
-        /// This is how you add results.  Note:  image and style are optional.
+        /// Appends a match consisting of the given value, comment, image, style and
+        /// the value to use for defaultIndex completion.
+        /// @param aValue
+        /// The value to autocomplete to
+        /// @param aComment
+        /// Comment shown in the autocomplete widget to describe this match
+        /// @param aImage
+        /// Image shown in the autocomplete widget for this match.
+        /// @param aStyle
+        /// Describes how to style the match in the autocomplete widget
+        /// @param aFinalCompleteValue
+        /// Value used when the user confirms selecting this match. If not
+        /// provided, aValue will be used.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AppendMatch([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aComment, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aImage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aStyle);
+		void AppendMatch([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aComment, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aImage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aStyle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFinalCompleteValue);
 		
 		/// <summary>
         /// Sets a listener for changes in the result.

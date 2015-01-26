@@ -58,7 +58,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("ba9a466b-8d4a-4b33-ae5c-6ed751068c90")]
+	[Guid("53675068-cb3a-40e5-a026-1be5a97c9b23")]
 	public interface nsIThreadPool : nsIEventTarget
 	{
 		
@@ -142,6 +142,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIdleThreadTimeoutAttribute(uint aIdleThreadTimeout);
+		
+		/// <summary>
+        /// Get/set the number of bytes reserved for the stack of all threads in
+        /// the pool. By default this is nsIThreadManager::DEFAULT_STACK_SIZE.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetThreadStackSizeAttribute();
+		
+		/// <summary>
+        /// Get/set the number of bytes reserved for the stack of all threads in
+        /// the pool. By default this is nsIThreadManager::DEFAULT_STACK_SIZE.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetThreadStackSizeAttribute(uint aThreadStackSize);
 		
 		/// <summary>
         /// An optional listener that will be notified when a thread is created or

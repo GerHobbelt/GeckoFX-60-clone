@@ -147,7 +147,7 @@ namespace Gecko
 	/// <summary>nsIDOMMozCdmaIccInfo </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("10b89660-2988-443a-a6f0-4ed3618fee41")]
+	[Guid("7e937d09-4d1d-43c5-96d8-c91396022809")]
 	public interface nsIDOMMozCdmaIccInfo : nsIDOMMozIccInfo
 	{
 		
@@ -202,5 +202,11 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetMdnAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMdn);
+		
+		/// <summary>
+        /// Preferred Roaming List (PRL) version of the subscriber.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetPrlVersionAttribute();
 	}
 }
