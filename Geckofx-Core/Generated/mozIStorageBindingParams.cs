@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a8d4827c-641c-45e3-a9ea-493570b4106b")]
+	[Guid("7d8763ad-79d9-4674-ada1-37fd702af68c")]
 	public interface mozIStorageBindingParams
 	{
 		
@@ -71,6 +71,12 @@ namespace Gecko
 		void BindBlobByName([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
 		
 		/// <summary>
+        /// underlying pointer.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BindAdoptedBlobByName([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
+		
+		/// <summary>
         /// Binds aValue to the parameter with the index aIndex.
         ///
         /// @param aIndex
@@ -101,5 +107,11 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void BindBlobByIndex(uint aIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
+		
+		/// <summary>
+        /// underlying pointer.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BindAdoptedBlobByIndex(uint aIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
 	}
 }

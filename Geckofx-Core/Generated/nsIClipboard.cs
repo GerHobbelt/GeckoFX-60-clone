@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("38984945-8674-4d04-b786-5c0ca9434457")]
+	[Guid("ceaa0047-647f-4b8e-ad1c-aff9fa62aa51")]
 	public interface nsIClipboard
 	{
 		
@@ -95,6 +95,16 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool SupportsSelectionClipboard();
+		
+		/// <summary>
+        /// Allows clients to determine if the implementation supports the concept of a
+        /// separate clipboard for find search strings.
+        ///
+        /// @result NS_OK if successful.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool SupportsFindClipboard();
 	}
 	
 	/// <summary>nsIClipboardConsts </summary>
@@ -111,5 +121,8 @@ namespace Gecko
 		
 		// 
 		public const long kGlobalClipboard = 1;
+		
+		// 
+		public const long kFindClipboard = 2;
 	}
 }

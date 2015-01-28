@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5a9689e8-5822-4dd5-b231-609b8d0260ab")]
+	[Guid("4237c376-d637-4b6e-9f8a-1da57e867834")]
 	public interface nsIDOMJSWindow
 	{
 		
@@ -78,10 +78,10 @@ namespace Gecko
         /// the implementation is no-op.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CaptureEvents(int eventFlags);
+		void CaptureEvents();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReleaseEvents(int eventFlags);
+		void ReleaseEvents();
 		
 		/// <summary>
         /// This is the scriptable version of nsIDOMWindow::open()

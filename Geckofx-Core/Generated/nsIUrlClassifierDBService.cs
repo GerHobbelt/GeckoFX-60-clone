@@ -96,19 +96,19 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8a389f21-f821-4e29-9c6b-3de6f33cd7cf")]
+	[Guid("3f9e61e5-01bd-45d0-8dd2-f1abcd20dbb7")]
 	public interface nsIUrlClassifierDBService
 	{
 		
 		/// <summary>
-        /// Looks up a URI in the database.
+        /// Looks up a URI in the specified tables.
         ///
         /// @param principal: The principal containing the URI to search.
         /// @param c: The callback will be called with a comma-separated list
         /// of tables to which the key belongs.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Lookup([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback c);
+		void Lookup([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tables, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback c);
 		
 		/// <summary>
         /// Lists the tables along with which chunks are available in each table.
@@ -201,19 +201,19 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0445be75-b114-43ea-89dc-aa16af26e77e")]
+	[Guid("abcd7978-c304-4a7d-a44c-33c2ed5441e7")]
 	public interface nsIUrlClassifierDBServiceWorker : nsIUrlClassifierDBService
 	{
 		
 		/// <summary>
-        /// Looks up a URI in the database.
+        /// Looks up a URI in the specified tables.
         ///
         /// @param principal: The principal containing the URI to search.
         /// @param c: The callback will be called with a comma-separated list
         /// of tables to which the key belongs.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Lookup([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback c);
+		new void Lookup([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tables, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback c);
 		
 		/// <summary>
         /// Lists the tables along with which chunks are available in each table.

@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7D73CFBF-EC30-4F8E-B6A4-BB31EB943580")]
+	[Guid("c71180e3-298b-4fbb-9ccb-82c822474741")]
 	public interface nsIDOMDataTransfer
 	{
 		
@@ -150,8 +150,9 @@ namespace Gecko
         /// item, in the same order the data was added. An empty list will be
         /// returned if no data was added.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetTypesAttribute();
+		nsISupports GetTypesAttribute();
 		
 		/// <summary>
         /// Remove the data associated with a given format. If format is empty or not
@@ -255,8 +256,9 @@ namespace Gecko
         /// at the specified index. If the index is not in the range from 0 to
         /// itemCount - 1, an empty string list is returned.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr MozTypesAt(uint index);
+		nsISupports MozTypesAt(uint index);
 		
 		/// <summary>
         /// Remove the data associated with the given format for an item at the
@@ -355,15 +357,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetEffectAllowedIntAttribute(uint aEffectAllowedInt);
-		
-		/// <summary>
-        /// Creates a copy of the data transfer object, for the given event type and
-        /// user cancelled flag. If isCrossDomainSubFrameDrop is set, then this is a
-        /// cross-domain drop from a subframe where access to the data should be
-        /// prevented.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDataTransfer Clone(uint aEventType, [MarshalAs(UnmanagedType.U1)] bool aUserCancelled, [MarshalAs(UnmanagedType.U1)] bool isCrossDomainSubFrameDrop);
 	}
 }

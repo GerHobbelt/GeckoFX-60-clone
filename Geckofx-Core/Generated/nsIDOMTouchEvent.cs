@@ -27,131 +27,56 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// @see http://dvcs.w3.org/hg/webevents/raw-file/tip/touchevents.html
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2311671f-ff7e-43d2-adfb-d9e07006955e")]
-	public interface nsIDOMTouch
-	{
-		
-		/// <summary>
-        /// @see http://dvcs.w3.org/hg/webevents/raw-file/tip/touchevents.html
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetIdentifierAttribute();
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMEventTarget GetTargetAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetPageXAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetPageYAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetScreenXAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetScreenYAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetClientXAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetClientYAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetRadiusXAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetRadiusYAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		float GetRotationAngleAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		float GetForceAttribute();
-	}
-	
-	/// <summary>nsITouchEventReceiver </summary>
+    ///This Source Code Form is subject to the terms of the Mozilla Public
+    /// License, v. 2.0. If a copy of the MPL was not distributed with this
+    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("6d5484f7-92ac-45f8-9388-39b5bad055ce")]
 	public interface nsITouchEventReceiver
 	{
 		
-		/// <summary>Member GetOntouchstartAttribute </summary>
-		/// <param name='jsContext'> </param>
-		/// <returns>A Gecko.JsVal</returns>
+		/// <summary>
+        ///This Source Code Form is subject to the terms of the Mozilla Public
+        /// License, v. 2.0. If a copy of the MPL was not distributed with this
+        /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOntouchstartAttribute(System.IntPtr jsContext);
 		
-		/// <summary>Member SetOntouchstartAttribute </summary>
-		/// <param name='aOntouchstart'> </param>
-		/// <param name='jsContext'> </param>
+		/// <summary>
+        ///This Source Code Form is subject to the terms of the Mozilla Public
+        /// License, v. 2.0. If a copy of the MPL was not distributed with this
+        /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOntouchstartAttribute(Gecko.JsVal aOntouchstart, System.IntPtr jsContext);
 		
-		/// <summary>Member GetOntouchendAttribute </summary>
-		/// <param name='jsContext'> </param>
-		/// <returns>A Gecko.JsVal</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOntouchendAttribute(System.IntPtr jsContext);
 		
-		/// <summary>Member SetOntouchendAttribute </summary>
-		/// <param name='aOntouchend'> </param>
-		/// <param name='jsContext'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOntouchendAttribute(Gecko.JsVal aOntouchend, System.IntPtr jsContext);
 		
-		/// <summary>Member GetOntouchmoveAttribute </summary>
-		/// <param name='jsContext'> </param>
-		/// <returns>A Gecko.JsVal</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOntouchmoveAttribute(System.IntPtr jsContext);
 		
-		/// <summary>Member SetOntouchmoveAttribute </summary>
-		/// <param name='aOntouchmove'> </param>
-		/// <param name='jsContext'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOntouchmoveAttribute(Gecko.JsVal aOntouchmove, System.IntPtr jsContext);
 		
-		/// <summary>Member GetOntouchenterAttribute </summary>
-		/// <param name='jsContext'> </param>
-		/// <returns>A Gecko.JsVal</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOntouchenterAttribute(System.IntPtr jsContext);
 		
-		/// <summary>Member SetOntouchenterAttribute </summary>
-		/// <param name='aOntouchenter'> </param>
-		/// <param name='jsContext'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOntouchenterAttribute(Gecko.JsVal aOntouchenter, System.IntPtr jsContext);
 		
-		/// <summary>Member GetOntouchleaveAttribute </summary>
-		/// <param name='jsContext'> </param>
-		/// <returns>A Gecko.JsVal</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOntouchleaveAttribute(System.IntPtr jsContext);
 		
-		/// <summary>Member SetOntouchleaveAttribute </summary>
-		/// <param name='aOntouchleave'> </param>
-		/// <param name='jsContext'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOntouchleaveAttribute(Gecko.JsVal aOntouchleave, System.IntPtr jsContext);
 		
-		/// <summary>Member GetOntouchcancelAttribute </summary>
-		/// <param name='jsContext'> </param>
-		/// <returns>A Gecko.JsVal</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOntouchcancelAttribute(System.IntPtr jsContext);
 		
-		/// <summary>Member SetOntouchcancelAttribute </summary>
-		/// <param name='aOntouchcancel'> </param>
-		/// <param name='jsContext'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOntouchcancelAttribute(Gecko.JsVal aOntouchcancel, System.IntPtr jsContext);
 	}

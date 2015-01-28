@@ -42,7 +42,7 @@ namespace Gecko.Interop
 		public COMGC()
 		{
 			_timer = Xpcom.CreateInstance<nsITimer>("@mozilla.org/timer;1");
-			_timer.InitWithCallback(this, 5000, nsITimerConsts.TYPE_REPEATING_SLACK);
+			_timer.InitWithCallback(this, 5000, (uint)nsITimerConsts.TYPE_REPEATING_SLACK);
 		}
 
 		public void SetDelay(uint delay)

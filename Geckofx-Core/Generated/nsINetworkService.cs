@@ -173,7 +173,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c14cabaf-bb8e-470d-a2f1-2cb6de6c5e5c")]
+	[Guid("f96461fa-e844-45d2-a6c3-8cd23ab0916b")]
 	public interface nsINetworkService
 	{
 		
@@ -315,11 +315,11 @@ namespace Gecko
 		/// <summary>
         /// Remove default route.
         ///
-        /// @param interfaceName
+        /// @param networkInterface
         /// The network interface we want remove from the default route.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveDefaultRoute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase interfaceName);
+		void RemoveDefaultRoute([MarshalAs(UnmanagedType.Interface)] nsINetworkInterface networkInterface);
 		
 		/// <summary>
         /// Add host route.
@@ -369,6 +369,34 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RemoveHostRouteWithResolve([MarshalAs(UnmanagedType.Interface)] nsINetworkInterface network, Gecko.JsVal hosts);
+		
+		/// <summary>
+        /// Add route to secondary routing table.
+        ///
+        /// @param interfaceName
+        /// The network interface for this route.
+        /// @param route
+        /// The route info should have the following fields:
+        /// .ip: destination ip address
+        /// .prefix: destination prefix
+        /// .gateway: gateway ip address
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AddSecondaryRoute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase interfaceName, Gecko.JsVal route);
+		
+		/// <summary>
+        /// Remove route from secondary routing table.
+        ///
+        /// @param interfaceName
+        /// The network interface for the route we want to remove.
+        /// @param route
+        /// The route info should have the following fields:
+        /// .ip: destination ip address
+        /// .prefix: destination prefix
+        /// .gateway: gateway ip address
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveSecondaryRoute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase interfaceName, Gecko.JsVal route);
 		
 		/// <summary>
         /// Enable or disable usb rndis.

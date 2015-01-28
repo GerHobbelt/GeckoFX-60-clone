@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("52d22585-7737-460e-9731-c658df03304a")]
+	[Guid("b1723fac-4814-4429-82cb-dc54ba0d46d6")]
 	public interface nsIDOMBlob
 	{
 		
@@ -60,10 +60,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMBlob Slice(long start, long end, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase contentType, int argc);
 		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMBlob MozSlice(long start, long end, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase contentType, System.IntPtr jsContext, int argc);
-		
 		/// <summary>
         /// Intended only for testing. It can be called on any thread.
         /// </summary>
@@ -81,12 +77,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetFileInfo(System.IntPtr aFileManager);
+		
+		/// <summary>
+        /// Return true if this blob is a memory file.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsMemoryFile();
 	}
 	
 	/// <summary>nsIDOMFile </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0acb4135-9f79-4516-ba92-b5fba5203620")]
+	[Guid("4e7d1a8b-e2d5-4304-a753-4affb731660c")]
 	public interface nsIDOMFile : nsIDOMBlob
 	{
 		
@@ -124,17 +127,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMBlob Slice(long start, long end, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase contentType, int argc);
 		
-		/// <summary>Member MozSlice </summary>
-		/// <param name='start'> </param>
-		/// <param name='end'> </param>
-		/// <param name='contentType'> </param>
-		/// <param name='jsContext'> </param>
-		/// <param name='argc'> </param>
-		/// <returns>A nsIDOMBlob</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMBlob MozSlice(long start, long end, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase contentType, System.IntPtr jsContext, int argc);
-		
 		/// <summary>
         /// Intended only for testing. It can be called on any thread.
         /// </summary>
@@ -152,6 +144,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new System.IntPtr GetFileInfo(System.IntPtr aFileManager);
+		
+		/// <summary>
+        /// Return true if this blob is a memory file.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool IsMemoryFile();
 		
 		/// <summary>Member GetNameAttribute </summary>
 		/// <param name='aName'> </param>

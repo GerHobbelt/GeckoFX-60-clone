@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d83d38f3-68b9-4ea2-8748-1cc738d74333")]
+	[Guid("1f9393e8-2df0-4072-87b9-c26999b09acc")]
 	public interface nsIDOMHTMLMediaElement
 	{
 		
@@ -217,21 +217,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetMozAudioCapturedAttribute();
-		
-		/// <summary>
-        /// audio is (mozChannels * 1024).
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetMozChannelsAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetMozSampleRateAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetMozFrameBufferLengthAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetMozFrameBufferLengthAttribute(uint aMozFrameBufferLength);
 		
 		/// <summary>
         /// player interfaces to display the song title, artist, etc.

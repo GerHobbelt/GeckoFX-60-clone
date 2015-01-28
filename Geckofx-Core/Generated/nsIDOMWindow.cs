@@ -36,7 +36,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("97b6784b-ab12-4f79-8422-d7868a4cc7dc")]
+	[Guid("1b4a23a2-2ccf-4690-9da7-f3a7a8308381")]
 	public interface nsIDOMWindow
 	{
 		
@@ -197,12 +197,18 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMWindow GetRealParentAttribute();
 		
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetOpenerAttribute();
+		Gecko.JsVal GetOpenerAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOpenerAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aOpener);
+		void SetOpenerAttribute(Gecko.JsVal aOpener, System.IntPtr jsContext);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMWindow GetOpenerWindowAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOpenerWindowAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aOpenerWindow);
 		
 		/// <summary>
         /// |frameElement| gets this window's <iframe> or <frame> element, if it has
@@ -786,6 +792,18 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOnmouseleaveAttribute(Gecko.JsVal aOnmouseleave, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Console API
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetConsoleAttribute(System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Console API
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetConsoleAttribute(Gecko.JsVal aConsole, System.IntPtr jsContext);
 	}
 	
 	/// <summary>nsIDOMWindowPerformance </summary>
@@ -970,12 +988,18 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMWindow GetRealParentAttribute();
 		
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMWindow GetOpenerAttribute();
+		new Gecko.JsVal GetOpenerAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetOpenerAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aOpener);
+		new void SetOpenerAttribute(Gecko.JsVal aOpener, System.IntPtr jsContext);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIDOMWindow GetOpenerWindowAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetOpenerWindowAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aOpenerWindow);
 		
 		/// <summary>
         /// |frameElement| gets this window's <iframe> or <frame> element, if it has
@@ -1559,5 +1583,17 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetOnmouseleaveAttribute(Gecko.JsVal aOnmouseleave, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Console API
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new Gecko.JsVal GetConsoleAttribute(System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Console API
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetConsoleAttribute(Gecko.JsVal aConsole, System.IntPtr jsContext);
 	}
 }

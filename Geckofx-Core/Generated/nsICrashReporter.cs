@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4b525eab-d4b8-4f71-bf43-b698e306631b")]
+	[Guid("a2080795-e54c-4ecb-b001-bdc08a2021dd")]
 	public interface nsICrashReporter
 	{
 		
@@ -170,5 +170,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSubmitReportsAttribute([MarshalAs(UnmanagedType.U1)] bool aSubmitReports);
+		
+		/// <summary>
+        /// Cause the crash reporter to re-evaluate where crash events should go.
+        ///
+        /// This should be called during application startup and whenever profiles
+        /// change.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void UpdateCrashEventsDir();
 	}
 }

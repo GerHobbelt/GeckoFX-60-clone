@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("fa0fe174-7c07-11e3-a5ba-000c290c393e")]
+	[Guid("d4ed34fc-9c07-4cef-b9e1-623794558db3")]
 	public interface nsIDOMWindowUtils
 	{
 		
@@ -160,9 +160,38 @@ namespace Gecko
         /// avoided if at all possible. Client code should do checks before
         /// calling this so that duplicate sets are not made with the same
         /// displayport.
+        ///
+        /// aPriority is recorded along with the displayport rectangle. If this
+        /// method is called with a lower priority than the current priority, the
+        /// call is ignored.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDisplayPortForElement(float aXPx, float aYPx, float aWidthPx, float aHeightPx, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
+		void SetDisplayPortForElement(float aXPx, float aYPx, float aWidthPx, float aHeightPx, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, uint aPriority);
+		
+		/// <summary>
+        /// An alternate way to represent a displayport rect as a set of margins and a
+        /// base rect to apply those margins to. A consumer of pixels may ask for as
+        /// many extra pixels as it would like in each direction. Layout then sets
+        /// the base rect to the "visible rect" of the element, which is just the
+        /// subrect of the element that is drawn (it does not take in account content
+        /// covering the element).
+        ///
+        /// If both a displayport rect and displayport margins with corresponding base
+        /// rect are set with the same priority then the margins will take precendence.
+        ///
+        /// Specifying an alignment value will ensure that after the base rect has
+        /// been expanded by the displayport margins, it will be further expanded so
+        /// that each edge is located at a multiple of the "alignment" value.
+        ///
+        /// Note that both the margin values and alignment are treated as values in
+        /// LayerPixels. Refer to layout/base/Units.h for a description of this unit.
+        /// The base rect values are in app units.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDisplayPortMarginsForElement(float aLeftMargin, float aTopMargin, float aRightMargin, float aBottomMargin, uint aAlignmentX, uint aAlignmentY, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, uint aPriority);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDisplayPortBaseForElement(int aX, int aY, int aWidth, int aHeight, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
 		
 		/// <summary>
         /// When a display port is set, this allows a sub-section of that
@@ -203,6 +232,17 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetResolution(ref float aXResolution, ref float aYResolution);
+		
+		/// <summary>
+        /// Whether the resolution has been set by the user.
+        /// This gives a way to check whether the provided resolution is the default
+        /// value or restored from a previous session.
+        ///
+        /// Can only be accessed with chrome privileges.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsResolutionSetAttribute();
 		
 		/// <summary>
         /// Whether the next paint should be flagged as the first paint for a document.
@@ -271,6 +311,74 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool SendMouseEvent([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aType, float aX, float aY, int aButton, int aClickCount, int aModifiers, [MarshalAs(UnmanagedType.U1)] bool aIgnoreRootScrollFrame, float aPressure, ushort aInputSourceArg, [MarshalAs(UnmanagedType.U1)] bool aIsSynthesized, int argc);
+		
+		/// <summary>
+        ///Synthesize a pointer event. The event types supported are:
+        /// pointerdown, pointerup, pointermove, pointerover, pointerout
+        ///
+        /// Events are sent in coordinates offset by aX and aY from the window.
+        ///
+        /// Note that additional events may be fired as a result of this call. For
+        /// instance, typically a click event will be fired as a result of a
+        /// mousedown and mouseup in sequence.
+        ///
+        /// Normally at this level of events, the pointerover and pointerout events are
+        /// only fired when the window is entered or exited. For inter-element
+        /// pointerover and pointerout events, a movemove event fired on the new element
+        /// should be sufficient to generate the correct over and out events as well.
+        ///
+        /// Cannot be accessed from unprivileged context (not content-accessible)
+        /// Will throw a DOM security error if called without chrome privileges.
+        ///
+        /// The event is dispatched via the toplevel window, so it could go to any
+        /// window under the toplevel window, in some cases it could never reach this
+        /// window at all.
+        ///
+        /// @param aType event type
+        /// @param aX x offset in CSS pixels
+        /// @param aY y offset in CSS pixels
+        /// @param aButton button to synthesize
+        /// @param aClickCount number of clicks that have been performed
+        /// @param aModifiers modifiers pressed, using constants defined as MODIFIER_*
+        /// @param aIgnoreRootScrollFrame whether the event should ignore viewport bounds
+        /// during dispatch
+        /// @param aPressure touch input pressure: 0.0 -> 1.0
+        /// @param aInputSourceArg input source, see nsIDOMMouseEvent for values,
+        /// defaults to mouse input.
+        /// @param aPointerId A unique identifier for the pointer causing the event. default is 0
+        /// @param aWidth The width (magnitude on the X axis), default is 0
+        /// @param aHeight The height (magnitude on the Y axis), default is 0
+        /// @param aTilt The plane angle between the Y-Z plane
+        /// and the plane containing both the transducer (e.g. pen stylus) axis and the Y axis. default is 0
+        /// @param aTiltX The plane angle between the X-Z plane
+        /// and the plane containing both the transducer (e.g. pen stylus) axis and the X axis. default is 0
+        /// @param aIsPrimary  Indicates if the pointer represents the primary pointer of this pointer type.
+        /// @param aIsSynthesized controls nsIDOMEvent.isSynthesized value
+        /// that helps identifying test related events,
+        /// defaults to true
+        ///
+        /// returns true if the page called prevent default on this event
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool SendPointerEvent(
+					[MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aType, 
+					float aX, 
+					float aY, 
+					int aButton, 
+					int aClickCount, 
+					int aModifiers, 
+					[MarshalAs(UnmanagedType.U1)] bool aIgnoreRootScrollFrame, 
+					float aPressure, 
+					ushort aInputSourceArg, 
+					int aPointerId, 
+					int aWidth, 
+					int aHeight, 
+					int tiltX, 
+					int tiltY, 
+					[MarshalAs(UnmanagedType.U1)] bool aIsPrimary, 
+					[MarshalAs(UnmanagedType.U1)] bool aIsSynthesized, 
+					int argc);
 		
 		/// <summary>
         ///Synthesize a touch event. The event types supported are:
@@ -490,6 +598,13 @@ namespace Gecko
 		void CycleCollect([MarshalAs(UnmanagedType.Interface)] nsICycleCollectorListener aListener, int aExtraForgetSkippableCalls);
 		
 		/// <summary>
+        /// Trigger whichever GC or CC timer is currently active and waiting to fire.
+        /// Don't do this too much for initiating heavy actions, like the start of a IGC.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RunNextCollectorTimer();
+		
+		/// <summary>
         ///Synthesize a simple gesture event for a window. The event types
         /// supported are: MozSwipeGestureStart, MozSwipeGestureUpdate,
         /// MozSwipeGestureEnd, MozSwipeGesture, MozMagnifyGestureStart,
@@ -541,6 +656,17 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMNodeList NodesFromRect(float aX, float aY, float aTopSize, float aRightSize, float aBottomSize, float aLeftSize, [MarshalAs(UnmanagedType.U1)] bool aIgnoreRootScrollFrame, [MarshalAs(UnmanagedType.U1)] bool aFlushLayout);
+		
+		/// <summary>
+        /// Get a list of nodes that have meaningful textual content to
+        /// be translated. The implementation of this algorithm is in flux
+        /// as we experiment and refine which approach works best.
+        ///
+        /// This method requires chrome privileges.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsITranslationNodeList GetTranslationNodes([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aRoot);
 		
 		/// <summary>
         /// Compare the two canvases, returning the number of differing pixels and
@@ -736,10 +862,11 @@ namespace Gecko
         ///
         /// @param aType  One of the following const values.  And see also each comment
         /// for the other parameters and the result.
+        /// @param aAdditionalFlags See the description of QUERY_CONTENT_FLAG_*.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIQueryContentEventResult SendQueryContentEvent(uint aType, uint aOffset, uint aLength, int aX, int aY);
+		nsIQueryContentEventResult SendQueryContentEvent(uint aType, uint aOffset, uint aLength, int aX, int aY, uint aAdditionalFlags);
 		
 		/// <summary>
         /// Called when the remote child frame has changed its fullscreen state,
@@ -773,14 +900,12 @@ namespace Gecko
         /// @param aOffset  The caret offset of the selection start.
         /// @param aLength  The length of the selection.  If this is too long, the
         /// extra length is ignored.
-        /// @param aReverse If true, the selection set from |aOffset + aLength| to
-        /// |aOffset|.  Otherwise, set from |aOffset| to
-        /// |aOffset + aLength|.
+        /// @param aAdditionalFlags See the description of SELECTION_SET_FLAG_*.
         /// @return True, if succeeded.  Otherwise, false.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool SendSelectionSetEvent(uint aOffset, uint aLength, [MarshalAs(UnmanagedType.U1)] bool aReverse);
+		bool SendSelectionSetEvent(uint aOffset, uint aLength, uint aAdditionalFlags);
 		
 		/// <summary>
         /// Select content at a client point based on a selection behavior if the
@@ -966,6 +1091,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsTestControllingRefreshesAttribute();
+		
+		/// <summary>
+        /// Set async scroll offset on an element. The next composite will render
+        /// with that offset if async scrolling is enabled, and then the offset
+        /// will be removed. Only call this while test-controlled refreshes is enabled.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAsyncScrollOffset([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, int aX, int aY);
 		
 		/// <summary>
         /// Method for testing nsStyleAnimation::ComputeDistance.
@@ -1189,7 +1322,7 @@ namespace Gecko
 		/// <summary>
         /// Returns true if a user input is being handled.
         ///
-        /// This calls nsEventStateManager::IsHandlingUserInput().
+        /// This calls EventStateManager::IsHandlingUserInput().
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -1264,11 +1397,51 @@ namespace Gecko
 		void RunBeforeNextEvent([MarshalAs(UnmanagedType.Interface)] nsIRunnable runnable);
 		
 		/// <summary>
-        /// Returns the value of a given property.  If the property is animated off the
-        /// main thread, this function will fetch the correct value from the compositor.
+        /// Returns the value of a given property animated on the compositor thread.
+        /// If the property is NOT currently being animated on the compositor thread,
+        /// returns an empty string.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetOMTAOrComputedStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		void GetOMTAStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// Returns the value of a given property.  If the property is animated off
+        /// the main thread, this function will fetch the correct value from the
+        /// compositor.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetOMTAOrComputedStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// With this it's possible to mute all the MediaElements in this window.
+        /// We have audioMuted and audioVolume to preserve the volume across
+        /// mute/umute.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAudioMutedAttribute();
+		
+		/// <summary>
+        /// With this it's possible to mute all the MediaElements in this window.
+        /// We have audioMuted and audioVolume to preserve the volume across
+        /// mute/umute.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAudioMutedAttribute([MarshalAs(UnmanagedType.U1)] bool aAudioMuted);
+		
+		/// <summary>
+        /// range: greater or equal to 0. The real volume level is affected by the
+        /// volume of all ancestor windows.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		float GetAudioVolumeAttribute();
+		
+		/// <summary>
+        /// range: greater or equal to 0. The real volume level is affected by the
+        /// volume of all ancestor windows.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAudioVolumeAttribute(float aAudioVolume);
 	}
 	
 	/// <summary>nsIDOMWindowUtilsConsts </summary>
@@ -1332,11 +1505,11 @@ namespace Gecko
         // @param aModifiers         modifiers pressed, using constants defined as
         // MODIFIER_*
         // @param aLineOrPageDeltaX  If you set this value non-zero for
-        // DOM_DELTA_PIXEL event, nsEventStateManager will
+        // DOM_DELTA_PIXEL event, EventStateManager will
         // dispatch NS_MOUSE_SCROLL event for horizontal
         // scroll.
         // @param aLineOrPageDeltaY  If you set this value non-zero for
-        // DOM_DELTA_PIXEL event, nsEventStateManager will
+        // DOM_DELTA_PIXEL event, EventStateManager will
         // dispatch NS_MOUSE_SCROLL event for vertical
         // scroll.
         // @param aOptions           Set following flags.
@@ -1455,6 +1628,19 @@ namespace Gecko
 		public const ulong IME_STATUS_PLUGIN = 3;
 		
 		// <summary>
+        // If sendQueryContentEvent()'s aAdditionalFlags argument is
+        // QUERY_CONTENT_FLAG_USE_XP_LINE_BREAK, plain text generated from content
+        // is created with "\n".
+        // Otherwise, platform dependent.  E.g., on Windows, "\r\n" is used.
+        // aOffset and aLength are offset and length in/of the plain text content.
+        // This flag also affects the result values such as offset, length and string.
+        // </summary>
+		public const ulong QUERY_CONTENT_FLAG_USE_NATIVE_LINE_BREAK = 0x0000;
+		
+		// 
+		public const ulong QUERY_CONTENT_FLAG_USE_XP_LINE_BREAK = 0x0001;
+		
+		// <summary>
         // QUERY_SELECTED_TEXT queries the first selection range's information.
         //
         // @param aOffset   Not used.
@@ -1541,6 +1727,24 @@ namespace Gecko
 		public const ulong QUERY_CHARACTER_AT_POINT = 3208;
 		
 		// <summary>
+        // If sendQueryContentEvent()'s aAdditionalFlags argument is
+        // SELECTION_SET_FLAG_USE_NATIVE_LINE_BREAK, aOffset and aLength are offset
+        // and length in/of plain text generated from content is created with "\n".
+        // Otherwise, platform dependent.  E.g., on Windows, "\r\n" is used.
+        // </summary>
+		public const ulong SELECTION_SET_FLAG_USE_NATIVE_LINE_BREAK = 0x0000;
+		
+		// 
+		public const ulong SELECTION_SET_FLAG_USE_XP_LINE_BREAK = 0x0001;
+		
+		// <summary>
+        // If SELECTION_SET_FLAG_REVERSE is set, the selection is set from
+        // |aOffset + aLength| to |aOffset|.  Otherwise, it's set from |aOffset| to
+        // |aOffset + aLength|.
+        // </summary>
+		public const ulong SELECTION_SET_FLAG_REVERSE = 0x0002;
+		
+		// <summary>
         //Selection behaviors - mirror nsIFrame's nsSelectionAmount constants </summary>
 		public const ulong SELECT_CHARACTER = 0;
 		
@@ -1573,5 +1777,32 @@ namespace Gecko
 		
 		// 
 		public const ulong AUTHOR_SHEET = 2;
+	}
+	
+	/// <summary>nsITranslationNodeList </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("c694e359-7227-4392-a138-33c0cc1f15a6")]
+	public interface nsITranslationNodeList
+	{
+		
+		/// <summary>Member GetLengthAttribute </summary>
+		/// <returns>A System.UInt32</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetLengthAttribute();
+		
+		/// <summary>Member Item </summary>
+		/// <param name='index'> </param>
+		/// <returns>A nsIDOMNode</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMNode Item(uint index);
+		
+		/// <summary>
+        /// which its parent is not a translation node.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsTranslationRootAtIndex(uint index);
 	}
 }

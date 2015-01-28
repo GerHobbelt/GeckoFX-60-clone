@@ -114,7 +114,12 @@ namespace Gecko
 			return backXulRuntime.GetProcessTypeAttribute();
 		}
 
-		public bool GetBrowserTabsRemoteAttribute()
+	    public uint GetProcessIDAttribute()
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public bool GetBrowserTabsRemoteAttribute()
 		{
 			return backXulRuntime.GetBrowserTabsRemoteAttribute();
 		}
@@ -138,5 +143,25 @@ namespace Gecko
 		{
 			backXulRuntime.GetLastRunCrashIDAttribute(aLastRunCrashID);
 		}
+
+	    public bool GetIsReleaseBuildAttribute()
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public bool GetIsOfficialBrandingAttribute()
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public void GetDefaultUpdateChannelAttribute(nsAUTF8StringBase aDefaultUpdateChannel)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public void GetDistributionIDAttribute(nsAUTF8StringBase aDistributionID)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

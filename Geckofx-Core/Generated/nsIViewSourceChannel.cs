@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0d92a16a-8235-4c4c-81c9-a4fa65c65f5c")]
+	[Guid("0073d67c-a64f-4f45-8f36-02cd0abfeca1")]
 	public interface nsIViewSourceChannel : nsIChannel
 	{
 		
@@ -521,5 +521,26 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsSrcdocChannelAttribute();
+		
+		/// <summary>
+        /// Set to indicate the base URI.  If this channel is a srcdoc channel, it
+        /// returns the base URI provided by the embedded channel.  It is used to
+        /// provide an indication of the base URI in circumstances where it isn't
+        /// otherwise recoverable.  Returns null when it isn't set and isn't a
+        /// srcdoc channel.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetBaseURIAttribute();
+		
+		/// <summary>
+        /// Set to indicate the base URI.  If this channel is a srcdoc channel, it
+        /// returns the base URI provided by the embedded channel.  It is used to
+        /// provide an indication of the base URI in circumstances where it isn't
+        /// otherwise recoverable.  Returns null when it isn't set and isn't a
+        /// srcdoc channel.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBaseURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
 	}
 }

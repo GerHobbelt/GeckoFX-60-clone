@@ -160,7 +160,7 @@ namespace Gecko
     /// interface of Components.utils </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("cd4bccf4-3433-492e-8dfd-dfdb3fe9efa1")]
+	[Guid("45b80e00-fb0d-439e-b7bf-54f24af0c4a6")]
 	public interface nsIXPCComponents_Utils
 	{
 		
@@ -326,6 +326,13 @@ namespace Gecko
 		void SchedulePreciseShrinkingGC(ScheduledGCCallback callback);
 		
 		/// <summary>
+        /// In a debug build, unlink any ghost windows. This is only for debugging
+        /// leaks, and can cause bad things to happen if called.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void UnlinkGhostWindows();
+		
+		/// <summary>
         /// Return the keys in a weak map.  This operation is
         /// non-deterministic because it is affected by the scheduling of the
         /// garbage collector and the cycle collector.
@@ -352,7 +359,7 @@ namespace Gecko
         /// @return the corresponding global.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetGlobalForObject(Gecko.JsVal obj, System.IntPtr jsContext);
+		Gecko.JsVal GetGlobalForObject(ref Gecko.JsVal obj, System.IntPtr jsContext);
 		
 		/// <summary>
         /// To be called from JS only.
@@ -372,7 +379,7 @@ namespace Gecko
         /// Principal of the caller must subsume the target's.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal EvalInWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase source, Gecko.JsVal window, System.IntPtr jsContext);
+		Gecko.JsVal EvalInWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase source, ref Gecko.JsVal window, System.IntPtr jsContext);
 		
 		/// <summary>
         /// To be called from JS only.
@@ -404,22 +411,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal CreateObjectIn(Gecko.JsVal vobj, Gecko.JsVal voptions, System.IntPtr jsContext);
-		
-		/// <summary>
-        /// To be called from JS only.
-        ///
-        /// Returns an array created in |vobj|'s compartment.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal CreateArrayIn(Gecko.JsVal vobj, System.IntPtr jsContext);
-		
-		/// <summary>
-        /// To be called from JS only.
-        ///
-        /// Returns a date given timestamp |msec| created in |vobj|'s compartment.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal CreateDateIn(Gecko.JsVal vobj, long msec, System.IntPtr jsContext);
 		
 		/// <summary>
         /// To be called from JS only.
@@ -563,19 +554,19 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsXrayWrapper(Gecko.JsVal obj);
+		bool IsXrayWrapper(ref Gecko.JsVal obj);
 		
 		/// <summary>
         /// Waive Xray on a given value. Identity op for primitives.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal WaiveXrays(Gecko.JsVal aVal, System.IntPtr jsContext);
+        Gecko.JsVal WaiveXrays(ref Gecko.JsVal aVal, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Strip off Xray waivers on a given value. Identity op for primitives.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal UnwaiveXrays(Gecko.JsVal aVal, System.IntPtr jsContext);
+		Gecko.JsVal UnwaiveXrays(ref Gecko.JsVal aVal, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Gets the name of the JSClass of the object.
@@ -644,6 +635,32 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal CloneInto(Gecko.JsVal value, Gecko.JsVal scope, Gecko.JsVal options, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// When C++-Implemented code does security checks, it can generally query
+        /// the subject principal (i.e. the principal of the most-recently-executed
+        /// script) in order to determine the responsible party. However, when an API
+        /// is implemented in JS, this doesn't work - the most-recently-executed
+        /// script is always the System-Principaled API implementation. So we need
+        /// another mechanism.
+        ///
+        /// Hence the notion of the "WebIDL Caller". If the current Entry Script on
+        /// the Script Settings Stack represents the invocation of JS-implemented
+        /// WebIDL, this API returns the principal of the caller at the time
+        /// of invocation. Otherwise (i.e. outside of JS-implemented WebIDL), this
+        /// function throws. If it throws, you probably shouldn't be using it.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPrincipal GetWebIDLCallerPrincipal();
+		
+		/// <summary>
+        /// Gets the principal of a script object, after unwrapping any cross-
+        /// compartment wrappers.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPrincipal GetObjectPrincipal(Gecko.JsVal obj, System.IntPtr jsContext);
 	}
 	
 	/// <summary>

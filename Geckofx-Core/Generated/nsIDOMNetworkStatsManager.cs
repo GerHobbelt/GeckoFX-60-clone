@@ -48,28 +48,31 @@ namespace Gecko
 		void GetIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aId);
 	}
 	
-	/// <summary>
-    /// Date object
-    /// </summary>
+	/// <summary>nsIDOMMozNetworkStatsAlarm </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("063ebeb2-5c6e-47ae-bdcd-5e6ebdc7a68c")]
 	public interface nsIDOMMozNetworkStatsAlarm
 	{
 		
-		/// <summary>
-        /// Date object
-        /// </summary>
+		/// <summary>Member GetAlarmIdAttribute </summary>
+		/// <returns>A System.UInt32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetAlarmIdAttribute();
 		
+		/// <summary>Member GetNetworkAttribute </summary>
+		/// <returns>A nsIDOMMozNetworkStatsInterface</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMMozNetworkStatsInterface GetNetworkAttribute();
 		
+		/// <summary>Member GetThresholdAttribute </summary>
+		/// <returns>A System.Int32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetThresholdAttribute();
 		
+		/// <summary>Member GetDataAttribute </summary>
+		/// <returns>A Gecko.JsVal</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetDataAttribute();
 	}

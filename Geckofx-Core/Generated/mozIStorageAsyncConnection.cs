@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0e661a1d-27ff-4e6b-ac5a-126314cef61a")]
+	[Guid("8bfd34d5-4ddf-4e4b-89dd-9b14f33534c6")]
 	public interface mozIStorageAsyncConnection
 	{
 		
@@ -140,6 +140,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		mozIStoragePendingStatement ExecuteAsync([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] mozIStorageBaseStatement[] aStatements, uint aNumStatements, mozIStorageStatementCallback aCallback);
+		
+		/// <summary>
+        /// Execute asynchronously an SQL expression, expecting no arguments.
+        ///
+        /// @param aSQLStatement
+        /// The SQL statement to execute
+        /// @param aCallback [optional]
+        /// The callback object that will be notified of progress, errors, and
+        /// completion.
+        /// @return an object that can be used to cancel the statement execution.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		mozIStoragePendingStatement ExecuteSimpleSQLAsync([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSQLStatement, mozIStorageStatementCallback aCallback);
 		
 		/// <summary>
         /// Create a new SQL function.  If you use your connection on multiple threads,

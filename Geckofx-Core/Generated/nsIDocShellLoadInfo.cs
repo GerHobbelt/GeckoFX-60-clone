@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c6b15de3-2f4f-4e80-bb20-95f43b5598c7")]
+	[Guid("c8d3b1e1-565a-427e-9d68-b109910ce9b7")]
 	public interface nsIDocShellLoadInfo
 	{
 		
@@ -201,6 +201,21 @@ namespace Gecko
         ///When set, this is the Source Browsing Context for the navigation. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSourceDocShellAttribute([MarshalAs(UnmanagedType.Interface)] nsIDocShell aSourceDocShell);
+		
+		/// <summary>
+        /// Used for srcdoc loads to give view-source knowledge of the load's base
+        /// URI as this information isn't embedded in the load's URI.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetBaseURIAttribute();
+		
+		/// <summary>
+        /// Used for srcdoc loads to give view-source knowledge of the load's base
+        /// URI as this information isn't embedded in the load's URI.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBaseURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
 	}
 	
 	/// <summary>nsIDocShellLoadInfoConsts </summary>

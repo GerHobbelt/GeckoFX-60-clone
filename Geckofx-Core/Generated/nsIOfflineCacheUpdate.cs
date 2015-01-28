@@ -256,7 +256,7 @@ namespace Gecko
 	/// <summary>nsIOfflineCacheUpdateService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6ee353ba-11ea-4008-a78a-55b343fb2a49")]
+	[Guid("0668910d-d14f-4cee-8db5-25faebc360ab")]
 	public interface nsIOfflineCacheUpdateService
 	{
 		
@@ -283,15 +283,6 @@ namespace Gecko
 		nsIOfflineCacheUpdate ScheduleUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
 		
 		/// <summary>
-        /// Schedule a cache update for a given offline manifest and let the data
-        /// be stored to a custom profile directory.  There is no coalescing of
-        /// manifests by manifest URL.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIOfflineCacheUpdate ScheduleCustomProfileUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, [MarshalAs(UnmanagedType.Interface)] nsIFile aProfileDir);
-		
-		/// <summary>
         /// Schedule a cache update for a given offline manifest using app cache
         /// bound to the given appID+inBrowser flag.  If an existing update is
         /// scheduled or running, that update will be returned. Otherwise a new
@@ -299,7 +290,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIOfflineCacheUpdate ScheduleAppUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, uint aAppID, [MarshalAs(UnmanagedType.U1)] bool aInBrowser);
+		nsIOfflineCacheUpdate ScheduleAppUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, uint aAppID, [MarshalAs(UnmanagedType.U1)] bool aInBrowser, [MarshalAs(UnmanagedType.Interface)] nsIFile aProfileDir);
 		
 		/// <summary>
         /// Schedule a cache update for a manifest when the document finishes

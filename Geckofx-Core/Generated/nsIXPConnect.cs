@@ -680,9 +680,10 @@ namespace Gecko
 		// 
 		public const long INIT_JS_STANDARD_CLASSES = 1<<0;
 		
-		// <summary>
-        // Free bit here!
-        // </summary>
+		// 
+		public const long DONT_FIRE_ONNEWGLOBALHOOK = 1<<1;
+		
+		// 
 		public const long OMIT_COMPONENTS_OBJECT = 1<<2;
 	}
 }

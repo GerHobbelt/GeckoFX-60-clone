@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3927a495-575a-4a12-b9ab-6b948f76ec1f")]
+	[Guid("2fa2f813-c216-4efb-8a8c-de60108ce5e5")]
 	public interface nsIAppShellService
 	{
 		
@@ -143,6 +143,20 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetHasHiddenPrivateWindowAttribute();
+		
+		/// <summary>
+        /// Start/stop tracking lags in the event loop.
+        /// If the event loop gets unresponsive, a "event-loop-lag" notification
+        /// is sent. Note that calling `startEventLoopLagTracking` when tracking
+        /// is already enabled has no effect.
+        /// @return true if tracking succeeded.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool StartEventLoopLagTracking();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void StopEventLoopLagTracking();
 	}
 	
 	/// <summary>nsIAppShellServiceConsts </summary>

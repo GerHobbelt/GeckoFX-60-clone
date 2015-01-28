@@ -143,7 +143,7 @@ namespace Gecko
 	/// <summary>nsIFrameLoader </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4c9f91c0-7a5d-11e3-981f-0800200c9a66")]
+	[Guid("a5cefcc8-551b-4901-83f3-7436b09ecaba")]
 	public interface nsIFrameLoader
 	{
 		
@@ -248,17 +248,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SendCrossProcessKeyEvent([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aType, int aKeyCode, int aCharCode, int aModifiers, [MarshalAs(UnmanagedType.U1)] bool aPreventDefault);
 		
-		/// <summary>Member GetDelayRemoteDialogsAttribute </summary>
-		/// <returns>A System.Boolean</returns>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetDelayRemoteDialogsAttribute();
-		
-		/// <summary>Member SetDelayRemoteDialogsAttribute </summary>
-		/// <param name='aDelayRemoteDialogs'> </param>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDelayRemoteDialogsAttribute([MarshalAs(UnmanagedType.U1)] bool aDelayRemoteDialogs);
-		
 		/// <summary>Member GetRenderModeAttribute </summary>
 		/// <returns>A System.UInt32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -350,6 +339,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetVisibleAttribute([MarshalAs(UnmanagedType.U1)] bool aVisible);
+		
+		/// <summary>
+        /// Find out whether the owner content really is a browser or app frame
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetOwnerIsBrowserOrAppFrameAttribute();
 	}
 	
 	/// <summary>nsIFrameLoaderConsts </summary>
@@ -374,7 +370,7 @@ namespace Gecko
 		
 		// <summary>
         // The default event mode automatically forwards the events
-        // handled in nsEventStateManager::HandleCrossProcessEvent to
+        // handled in EventStateManager::HandleCrossProcessEvent to
         // the child content process when these events are targeted to
         // the remote browser element.
         //

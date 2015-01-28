@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("90903f50-7611-42c1-a13c-dac4e735bee2")]
+	[Guid("ebf9f390-7cd2-4456-bc53-4869019370ea")]
 	public interface nsIDOMXMLDocument : nsIDOMDocument
 	{
 		
@@ -542,8 +542,9 @@ namespace Gecko
         ///
         /// @see <http://dev.w3.org/csswg/cssom/#dom-document-styleSheetSets>
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new System.IntPtr GetStyleSheetSetsAttribute();
+		new nsISupports GetStyleSheetSetsAttribute();
 		
 		/// <summary>
         /// Calling this method must change the disabled attribute on each StyleSheet

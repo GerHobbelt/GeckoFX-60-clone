@@ -37,7 +37,7 @@ namespace Gecko
     /// the asynchronous thread performs some long-running operation.
     /// </summary>
 	[ComImport()]
-	[Guid("2400f64d-2cb3-49a9-b01e-f03cacb8aa6e")]
+	[Guid("52e49370-3b2e-4a27-a3fc-79e20ad4056b")]
 	public interface mozIStorageAsyncStatement : mozIStorageBaseStatement
 	{
 		
@@ -93,6 +93,9 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void BindBlobParameter(uint aParamIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void BindAdoptedBlobParameter(uint aParamIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
 		
 		/// <summary>
         /// Binds the array of parameters to the statement.  When executeAsync is

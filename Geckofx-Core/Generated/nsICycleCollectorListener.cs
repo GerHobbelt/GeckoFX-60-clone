@@ -27,9 +27,13 @@ namespace Gecko
 	
 	
 	/// <summary>
-    ///This Source Code Form is subject to the terms of the Mozilla Public
-    /// License, v. 2.0. If a copy of the MPL was not distributed with this
-    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+    /// The interface JS code should implement to receive annotations logged by an
+    /// @mozilla.org/cycle-collector-logger;1 instance. Pass an instance of this to
+    /// the logger's 'processNext' method.
+    ///
+    /// The methods are a subset of those in nsICycleCollectorListener; see the
+    /// descriptions there.
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("39a8f80e-7eee-4141-b9ef-6e2a7d6e466d")]
@@ -37,9 +41,13 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        ///This Source Code Form is subject to the terms of the Mozilla Public
-        /// License, v. 2.0. If a copy of the MPL was not distributed with this
-        /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+        /// The interface JS code should implement to receive annotations logged by an
+        /// @mozilla.org/cycle-collector-logger;1 instance. Pass an instance of this to
+        /// the logger's 'processNext' method.
+        ///
+        /// The methods are a subset of those in nsICycleCollectorListener; see the
+        /// descriptions there.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void NoteRefCountedObject([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aAddress, uint aRefCount, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aObjectDescription);
 		
@@ -57,69 +65,97 @@ namespace Gecko
 	}
 	
 	/// <summary>
-    ///Interface to pass to the cycle collector to get information about
-    /// the CC graph while it's being built. The order of calls will be a
-    /// call to begin(); then for every node in the graph a call to either
-    /// noteRefCountedObject() or noteGCedObject(), followed by calls to
-    /// noteEdge() for every edge starting at that node; then a call to
-    /// beginResults(); then a mixture of describeRoot() for ref counted
-    /// nodes the CC has identified as roots and describeGarbage() for
-    /// nodes the CC has identified as garbage.  Ref counted nodes that are
-    /// not identified as either roots or garbage are neither, and have a
-    /// known edges count equal to their ref count.  Finally, there will be
-    /// a call to end().  If begin() returns an error none of the other
-    /// functions will be called.
+    /// Given an instance of this interface, the cycle collector calls the instance's
+    /// methods to report the objects it visits, the edges between them, and its
+    /// conclusions about which objects are roots and which are garbage.
+    ///
+    /// For a single cycle collection pass, the cycle collector calls this
+    /// interface's methods in the following order:
+    ///
+    /// - First, |begin|. If |begin| returns an error, none of the listener's other
+    /// methods will be called.
+    ///
+    /// - Then, for each node in the graph:
+    /// - a call to either |noteRefCountedObject| or |noteGCedObject|, to describe
+    /// the node itself; and
+    /// - for each edge starting at that node, a call to |noteEdge|.
+    ///
+    /// - Then, zero or more calls to |noteIncrementalRoot|; an "incremental
+    /// root" is an object that may have had a new reference to it created
+    /// during an incremental collection, and must therefore be treated as
+    /// live for safety.
+    ///
+    /// - After all the nodes have been described, a call to |beginResults|.
+    ///
+    /// - A series of calls to:
+    /// - |describeRoot|, for reference-counted nodes that the CC has identified as
+    /// roots of collection. (The cycle collector didn't find enough incoming
+    /// edges to account for these nodes' reference counts, so there must be code
+    /// holding on to them that the cycle collector doesn't know about.)
+    /// - |describeGarbage|, for nodes the cycle collector has identified as garbage.
+    ///
+    /// Any node not mentioned in a call to |describeRoot| or |describeGarbage| is
+    /// neither a root nor garbage. (The cycle collector was able to find all the
+    /// edges implied by the node's reference count.)
+    ///
+    /// - Finally, a call to |end|.
+    ///
+    ///
+    /// This interface cannot be implemented by JavaScript code, as it is called
+    /// while the cycle collector works. To analyze cycle collection data in JS:
+    ///
+    /// - Create an instance of @mozilla.org/cycle-collector-logger;1, which
+    /// implements this interface.
+    ///
+    /// - Set its |disableLog| property to true. This prevents the logger from
+    /// printing messages about each method call to a temporary log file.
+    ///
+    /// - Set its |wantAfterProcessing| property to true. This tells the logger
+    /// to record calls to its methods in memory. The |processNext| method
+    /// returns events from this record.
+    ///
+    /// - Perform a collection using the logger. For example, call
+    /// |nsIDOMWindowUtils|'s |garbageCollect| method, passing the logger as
+    /// the |aListener| argument.
+    ///
+    /// - When the collection is complete, loop calling the logger's
+    /// |processNext| method, passing a JavaScript object that implements
+    /// nsICycleCollectorHandler. This JS code is free to allocate and operate
+    /// on objects however it pleases: the cycle collector has finished its
+    /// work, and the JS code is simply consuming recorded data.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("786215b7-1e4b-433b-b617-96b176273601")]
+	[Guid("c46e6947-9076-4a0e-bb27-d4aa3706c54d")]
 	public interface nsICycleCollectorListener
 	{
 		
 		/// <summary>
-        ///Interface to pass to the cycle collector to get information about
-        /// the CC graph while it's being built. The order of calls will be a
-        /// call to begin(); then for every node in the graph a call to either
-        /// noteRefCountedObject() or noteGCedObject(), followed by calls to
-        /// noteEdge() for every edge starting at that node; then a call to
-        /// beginResults(); then a mixture of describeRoot() for ref counted
-        /// nodes the CC has identified as roots and describeGarbage() for
-        /// nodes the CC has identified as garbage.  Ref counted nodes that are
-        /// not identified as either roots or garbage are neither, and have a
-        /// known edges count equal to their ref count.  Finally, there will be
-        /// a call to end().  If begin() returns an error none of the other
-        /// functions will be called.
+        /// simply set a flag on this listener (a side effect!) and return it.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsICycleCollectorListener AllTraces();
 		
 		/// <summary>
-        /// false if allTraces() has not been called.
+        /// True if this listener will behave like one returned by allTraces().
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetWantAllTracesAttribute();
 		
 		/// <summary>
-        /// a log to a file unless disableLog is set to true.
+        /// Initially false.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetDisableLogAttribute();
 		
 		/// <summary>
-        /// a log to a file unless disableLog is set to true.
+        /// Initially false.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDisableLogAttribute([MarshalAs(UnmanagedType.U1)] bool aDisableLog);
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetWantAfterProcessingAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetWantAfterProcessingAttribute([MarshalAs(UnmanagedType.U1)] bool aWantAfterProcessing);
 		
 		/// <summary>
         /// This string will appear somewhere in the log's filename.
@@ -132,6 +168,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetFilenameIdentifierAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilenameIdentifier);
+		
+		/// <summary>
+        /// using |processNext|. Initially false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetWantAfterProcessingAttribute();
+		
+		/// <summary>
+        /// using |processNext|. Initially false.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetWantAfterProcessingAttribute([MarshalAs(UnmanagedType.U1)] bool aWantAfterProcessing);
 		
 		/// <summary>
         /// This string will indicate the full path of the GC log if enabled.
@@ -161,6 +210,9 @@ namespace Gecko
 		void NoteWeakMapEntry(ulong aMap, ulong aKey, ulong aKeyDelegate, ulong aValue);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NoteIncrementalRoot(ulong aAddress);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void BeginResults();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -173,7 +225,7 @@ namespace Gecko
 		void End();
 		
 		/// <summary>
-        /// Returns false if there isn't anything more to process.
+        /// |wantAfterProcessing| property is true.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

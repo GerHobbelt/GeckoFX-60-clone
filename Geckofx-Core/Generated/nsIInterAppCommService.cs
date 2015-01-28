@@ -38,7 +38,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7fdd8b68-0b0a-11e3-9b4c-afbc236da250")]
+	[Guid("b3d711a4-c6a4-11e3-8fd3-738e7fbcb6d6")]
 	public interface nsIInterAppCommService
 	{
 		
@@ -50,11 +50,9 @@ namespace Gecko
         /// @param handlerPageURI The URI of the handler's page.
         /// @param manifestURI    The webapp's manifest URI.
         /// @param description    The connection's description.
-        /// @param appStatus      The app status can be Ci.nsIPrincipal.APP_STATUS_[
-        /// NOT_INSTALLED, INSTALLED, PRIVILEGED, CERTIFIED].
         /// @param rules          The connection's rules.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RegisterConnection([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase keyword, [MarshalAs(UnmanagedType.Interface)] nsIURI handlerPageURI, [MarshalAs(UnmanagedType.Interface)] nsIURI manifestURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase description, ushort appStatus, Gecko.JsVal rules);
+		void RegisterConnection([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase keyword, [MarshalAs(UnmanagedType.Interface)] nsIURI handlerPageURI, [MarshalAs(UnmanagedType.Interface)] nsIURI manifestURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase description, Gecko.JsVal rules);
 	}
 }

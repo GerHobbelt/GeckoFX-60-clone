@@ -209,6 +209,11 @@ namespace Gecko
 		public const ulong CHROME_MODAL_CONTENT_WINDOW = 0x00080000;
 		
 		// <summary>
+        // Whether this window should use remote (out-of-process) tabs.
+        // </summary>
+		public const ulong CHROME_REMOTE_WINDOW = 0x00100000;
+		
+		// <summary>
         // platforms.
         // </summary>
 		public const ulong CHROME_MAC_SUPPRESS_ANIMATION = 0x01000000;

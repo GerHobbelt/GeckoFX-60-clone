@@ -192,6 +192,17 @@ namespace Gecko
 		new void MoveToNative([MarshalAs(UnmanagedType.Interface)] nsIFile newParentDir, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase newName);
 		
 		/// <summary>
+        /// renameTo
+        ///
+        /// This method is identical to moveTo except that if this file or directory
+        /// is moved to a a different volume, it fails and returns an error
+        /// (NS_ERROR_FILE_ACCESS_DENIED).
+        /// This object will still point to the old location after renaming.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void RenameTo([MarshalAs(UnmanagedType.Interface)] nsIFile newParentDir, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase newName);
+		
+		/// <summary>
         /// This will try to delete this file.  The 'recursive' flag
         /// must be PR_TRUE to delete directories which are not empty.
         ///

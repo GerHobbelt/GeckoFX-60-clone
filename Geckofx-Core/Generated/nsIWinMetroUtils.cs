@@ -29,15 +29,23 @@ namespace Gecko
 	/// <summary>
     /// Integration with the "Metro"/"Modern" UI environment in Windows 8.
     ///
-    /// Note: browser/metro/base/content/browser-scripts.js contains a stub
+    /// Note: browser/metro/base/content/browser.js contains a stub
     /// implementation of this interface for non-Windows systems, for testing and
     /// development purposes only.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b6cbef4a-eec1-470b-8e74-9f4120f678c6")]
+	[Guid("319faae0-82ca-4c2f-8a24-2b2445e5a72a")]
 	public interface nsIWinMetroUtils
 	{
+		
+		/// <summary>
+        /// Determine if the current device has the hardware capabilities to run
+        /// in metro mode.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetSupportedAttribute();
 		
 		/// <summary>
         /// Determine if the current browser is running in the metro immersive
@@ -79,6 +87,13 @@ namespace Gecko
 		void SetUpdatePendingAttribute([MarshalAs(UnmanagedType.U1)] bool aUpdatePending);
 		
 		/// <summary>
+        /// Determine if metro firefox is running in the foreground.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetForegroundAttribute();
+		
+		/// <summary>
         /// Show the settings flyout
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -93,9 +108,12 @@ namespace Gecko
 		
 		/// <summary>
         /// Displays a native Windows 8 toast.
+        ///
+        /// @param aAppId  Application ID for current application.
+        /// If using Metro mode, it can be null string.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ShowNativeToast([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTitle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMessage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase anImage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCookie);
+		void ShowNativeToast([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTitle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMessage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase anImage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCookie, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAppId);
 		
 		/// <summary>
         /// Pins a new tile to the Windows 8 start screen.

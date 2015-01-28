@@ -33,7 +33,7 @@ namespace Gecko
     /// purposes.
     /// </summary>
 	[ComImport()]
-	[Guid("da2ec336-fbbb-4ba1-9778-8c9825980d01")]
+	[Guid("5d34f333-ed3f-4aa2-ba51-f2a8b0cfa33a")]
 	public interface mozIStorageBaseStatement : mozIStorageBindingParams
 	{
 		
@@ -89,6 +89,9 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void BindBlobParameter(uint aParamIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BindAdoptedBlobParameter(uint aParamIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
 		
 		/// <summary>
         /// Binds the array of parameters to the statement.  When executeAsync is

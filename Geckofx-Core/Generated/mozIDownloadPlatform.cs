@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("314A0972-E6E3-413A-8BD4-2C052BCB2C74")]
+	[Guid("9f556e4a-d9b3-46c3-9f8f-d0db1ac6c8c1")]
 	public interface mozIDownloadPlatform
 	{
 		
@@ -62,5 +62,39 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DownloadDone([MarshalAs(UnmanagedType.Interface)] nsIURI aSource, [MarshalAs(UnmanagedType.Interface)] nsIFile aTarget, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentType, [MarshalAs(UnmanagedType.U1)] bool aIsPrivate);
+		
+		/// <summary>
+        /// Proxy for IInternetSecurityManager::MapUrlToZone().
+        ///
+        /// Windows only.
+        ///
+        /// @param aURL
+        /// URI of the download
+        /// @return Security Zone corresponding to aURL.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint MapUrlToZone([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aURL);
+	}
+	
+	/// <summary>mozIDownloadPlatformConsts </summary>
+	public class mozIDownloadPlatformConsts
+	{
+		
+		// <summary>
+        // Security Zone constants. Used by mapUrlToZone().
+        // </summary>
+		public const ulong ZONE_MY_COMPUTER = 0;
+		
+		// 
+		public const ulong ZONE_INTRANET = 1;
+		
+		// 
+		public const ulong ZONE_TRUSTED = 2;
+		
+		// 
+		public const ulong ZONE_INTERNET = 3;
+		
+		// 
+		public const ulong ZONE_RESTRICTED = 4;
 	}
 }

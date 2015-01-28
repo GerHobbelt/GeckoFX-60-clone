@@ -36,7 +36,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e48e3024-f302-4a16-b8b6-2034d3a4b279")]
+	[Guid("b6a71698-c117-441d-86b9-480cf06e3952")]
 	public interface nsIContentPolicy
 	{
 		
@@ -260,6 +260,11 @@ namespace Gecko
         // Indicates a style sheet transformation.
         // </summary>
 		public const long TYPE_XSLT = 18;
+		
+		// <summary>
+        // Indicates a beacon post.
+        // </summary>
+		public const long TYPE_BEACON = 19;
 		
 		// <summary>
         // Returned from shouldLoad or shouldProcess if the load or process request

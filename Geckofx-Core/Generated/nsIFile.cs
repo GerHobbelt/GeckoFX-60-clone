@@ -53,7 +53,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("272a5020-64f5-485c-a8c4-44b2882ae0a2")]
+	[Guid("a99a6a06-f90d-4659-8fce-c2f87feb1167")]
 	public interface nsIFile
 	{
 		
@@ -210,6 +210,17 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void MoveToNative([MarshalAs(UnmanagedType.Interface)] nsIFile newParentDir, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase newName);
+		
+		/// <summary>
+        /// renameTo
+        ///
+        /// This method is identical to moveTo except that if this file or directory
+        /// is moved to a a different volume, it fails and returns an error
+        /// (NS_ERROR_FILE_ACCESS_DENIED).
+        /// This object will still point to the old location after renaming.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RenameTo([MarshalAs(UnmanagedType.Interface)] nsIFile newParentDir, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase newName);
 		
 		/// <summary>
         /// This will try to delete this file.  The 'recursive' flag

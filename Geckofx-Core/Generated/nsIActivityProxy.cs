@@ -31,14 +31,14 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c7a258f7-26a6-46c6-a887-a6c936034f98")]
+	[Guid("60adef0f-c1a7-4dc5-bc0d-4b879f1e59ca")]
 	public interface nsIActivityProxy
 	{
 		
 		/// <summary>
         ///MozActivity </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void StartActivity([MarshalAs(UnmanagedType.Interface)] nsISupports activity, [MarshalAs(UnmanagedType.Interface)] nsIDOMMozActivityOptions options, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		void StartActivity([MarshalAs(UnmanagedType.Interface)] nsISupports activity, Gecko.JsVal options, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Cleanup();

@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a73d693a-6260-468a-ae64-d64237f0858c")]
+	[Guid("0cb321bd-5b38-4586-8fcd-d43b366886fb")]
 	public interface nsIContentViewer
 	{
 		
@@ -51,7 +51,7 @@ namespace Gecko
 		void SetContainerAttribute([MarshalAs(UnmanagedType.Interface)] nsIDocShell aContainer);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LoadStart([MarshalAs(UnmanagedType.Interface)] nsISupports aDoc);
+		void LoadStart(System.IntPtr aDoc);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void LoadComplete(int aStatus);
@@ -67,6 +67,13 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool PermitUnload([MarshalAs(UnmanagedType.U1)] bool aCallerClosesWindow);
+		
+		/// <summary>
+        /// Exposes whether we're blocked in a call to permitUnload.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetInPermitUnloadAttribute();
 		
 		/// <summary>
         /// As above, but this passes around the aShouldPrompt argument to keep

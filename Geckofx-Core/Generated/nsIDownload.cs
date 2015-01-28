@@ -263,6 +263,16 @@ namespace Gecko
 		new void SetSha256Hash([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHash);
 		
 		/// <summary>
+        /// Used to notify the transfer object of the signature of the downloaded
+        /// file.  Must be called on the main thread, only after the download has
+        /// finished successfully.
+        /// @param aSignatureInfo The nsIArray of nsIX509CertList of nsIX509Cert
+        /// certificates of the downloaded file.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetSignatureInfo([MarshalAs(UnmanagedType.Interface)] nsIArray aSignatureInfo);
+		
+		/// <summary>
         /// The target of a download is always a file on the local file system.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]

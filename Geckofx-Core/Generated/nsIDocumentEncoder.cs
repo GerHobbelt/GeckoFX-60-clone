@@ -55,7 +55,7 @@ namespace Gecko
 	/// <summary>nsIDocumentEncoder </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7222bdf1-c2b9-41f1-a40a-a3d65283a95b")]
+	[Guid("1158bd7e-a08b-4ff6-9417-6f99144cfccc")]
 	public interface nsIDocumentEncoder
 	{
 		
@@ -180,6 +180,22 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EncodeToStringWithContext([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aContextString, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aInfoString, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// Encode the document into a string of limited size.
+        /// @param aMaxLength After aMaxLength characters, the encoder will stop
+        /// encoding new data.
+        /// Only values > 0 will be considered.
+        /// The returned string may be slightly larger than
+        /// aMaxLength because some serializers (eg. HTML)
+        /// may need to close some tags after they stop
+        /// encoding new data, or finish a line (72 columns
+        /// by default for the plain text serializer).
+        ///
+        /// @return The document encoded into a string.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void EncodeToStringWithMaxLength(uint aMaxLength, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// Set the fixup object associated with node persistence.

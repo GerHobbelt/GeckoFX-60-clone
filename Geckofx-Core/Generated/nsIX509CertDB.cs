@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e12aec59-7153-4e84-9376-2e851311b7a3")]
+	[Guid("0927baea-622d-4e41-a76d-255af426e7fb")]
 	public interface nsIOpenSignedAppFileCallback
 	{
 		
@@ -54,7 +54,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("398dfa21-f29d-4530-bb42-136c6e7d9486")]
+	[Guid("7446a5b1-84ca-491f-a2fe-0bc60a71ffa5")]
 	public interface nsIX509CertDB
 	{
 		
@@ -212,6 +212,15 @@ namespace Gecko
 		void SetCertTrust([MarshalAs(UnmanagedType.Interface)] nsIX509Cert cert, uint type, uint trust);
 		
 		/// <summary>
+        /// @param cert        The certificate for which to modify trust.
+        /// @param trustString decoded by CERT_DecodeTrustString. 3 comma separated
+        /// characters, indicating SSL, Email, and Obj signing
+        /// trust.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetCertTrustFromString([MarshalAs(UnmanagedType.Interface)] nsIX509Cert3 cert, [MarshalAs(UnmanagedType.LPStr)] string trustString);
+		
+		/// <summary>
         /// Query whether a certificate is trusted for a particular use.
         ///
         /// @param cert Obtain the stored trust of this certificate.
@@ -318,6 +327,12 @@ namespace Gecko
         ///SECCertificateUsage </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int VerifyCertNow([MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, long aUsage, uint aFlags, [MarshalAs(UnmanagedType.Interface)] ref nsIX509CertList verifiedChain, [MarshalAs(UnmanagedType.U1)] ref bool aHasEVPolicy);
+		
+		/// <summary>
+        /// implementation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ClearOCSPCache();
 	}
 	
 	/// <summary>nsIX509CertDBConsts </summary>

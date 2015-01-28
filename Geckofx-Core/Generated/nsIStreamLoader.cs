@@ -52,9 +52,9 @@ namespace Gecko
         /// If the observer wants to take over responsibility for the
         /// data buffer (result), it returns NS_SUCCESS_ADOPTED_DATA
         /// in place of NS_OK as its success code. The loader will then
-        /// "forget" about the data, and not NS_Free() it in its own
-        /// destructor; observer must call NS_Free() when the data is
-        /// no longer required.
+        /// "forget" about the data and not NS_Free() it after
+        /// onStreamComplete() returns; observer must call NS_Free()
+        /// when the data is no longer required.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnStreamComplete([MarshalAs(UnmanagedType.Interface)] nsIStreamLoader loader, [MarshalAs(UnmanagedType.Interface)] nsISupports ctxt, int status, uint resultLength, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] byte[] result);

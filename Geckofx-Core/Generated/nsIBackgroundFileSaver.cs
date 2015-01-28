@@ -57,7 +57,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("581a99ca-dc8d-4cee-ac95-99156e7517ed")]
+	[Guid("c43544a4-682c-4262-b407-2453d26e660d")]
 	public interface nsIBackgroundFileSaver
 	{
 		
@@ -85,14 +85,18 @@ namespace Gecko
 		void SetObserverAttribute([MarshalAs(UnmanagedType.Interface)] nsIBackgroundFileSaverObserver aObserver);
 		
 		/// <summary>
-        /// Instructs the component to compute the SHA-256 hash of the target file, and
-        /// make it available in the sha256Hash property.
+        /// An nsIArray of nsIX509CertList, representing a chain of X.509 signatures on
+        /// the downloaded file. Each list may belong to a different signer and contain
+        /// certificates all the way up to the root.
         ///
-        /// @remarks This must be set on the main thread before the first call to
-        /// setTarget.
+        /// @throws NS_ERROR_NOT_AVAILABLE
+        /// In case this is called before the onSaveComplete method has been
+        /// called to notify success, or enableSignatureInfo has not been
+        /// called.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void EnableSha256();
+		nsIArray GetSignatureInfoAttribute();
 		
 		/// <summary>
         /// The SHA-256 hash, in raw bytes, associated with the data that was saved.
@@ -106,6 +110,26 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetSha256HashAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSha256Hash);
+		
+		/// <summary>
+        /// Instructs the component to compute the signatureInfo of the target file,
+        /// and make it available in the signatureInfo property.
+        ///
+        /// @remarks This must be set on the main thread before the first call to
+        /// setTarget.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void EnableSignatureInfo();
+		
+		/// <summary>
+        /// Instructs the component to compute the SHA-256 hash of the target file, and
+        /// make it available in the sha256Hash property.
+        ///
+        /// @remarks This must be set on the main thread before the first call to
+        /// setTarget.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void EnableSha256();
 		
 		/// <summary>
         /// Instructs the component to append data to the initial target file, that

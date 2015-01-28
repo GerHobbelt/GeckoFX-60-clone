@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1785f6f1-18b3-4cb4-ae99-6c5545c1de19")]
+	[Guid("3058bf1e-5116-41cf-826b-e6981308d414")]
 	public interface nsICacheEntry
 	{
 		
@@ -42,25 +42,13 @@ namespace Gecko
 		void GetKeyAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aKey);
 		
 		/// <summary>
-        /// Whether the data can be persist to disk.
-        /// NOTE: This attribute must be set BEFORE opening the output stream.
-        /// Switching this flag does not immediately affect creation of the disk
-        /// file from memory-only data or eviction of the disk file and loading it
-        /// to memory-only.
+        /// Whether the entry is memory/only or persisted to disk.
+        /// Note: private browsing entries are reported as persistent for consistency
+        /// while are not actually persisted to disk.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetPersistToDiskAttribute();
-		
-		/// <summary>
-        /// Whether the data can be persist to disk.
-        /// NOTE: This attribute must be set BEFORE opening the output stream.
-        /// Switching this flag does not immediately affect creation of the disk
-        /// file from memory-only data or eviction of the disk file and loading it
-        /// to memory-only.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPersistToDiskAttribute([MarshalAs(UnmanagedType.U1)] bool aPersistToDisk);
+		bool GetPersistentAttribute();
 		
 		/// <summary>
         /// Get the number of times the cache entry has been opened.
@@ -102,7 +90,7 @@ namespace Gecko
         /// read starting from this offset into the cached data.  an offset
         /// beyond the end of the stream has undefined consequences.
         ///
-        /// @return blocking, unbuffered input stream.
+        /// @return non-blocking, buffered input stream.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -119,7 +107,7 @@ namespace Gecko
         /// write starting from this offset into the cached data.  an offset
         /// beyond the end of the stream has undefined consequences.
         ///
-        /// @return blocking, unbuffered output stream.
+        /// @return blocking, buffered output stream.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -203,9 +191,12 @@ namespace Gecko
 		
 		/// <summary>
         /// Doom this entry and open a new, empty, entry for write.  Consumer has
-        /// to exchange this entry for the newly created.
+        /// to exchange the entry this method is called on for the newly created.
         /// Used on 200 responses to conditional requests.
         ///
+        /// @param aMemoryOnly
+        /// - whether the entry is to be created as memory/only regardless how
+        /// the entry being recreated persistence is set
         /// @returns
         /// - an entry that can be used to write to
         /// @throws
@@ -214,7 +205,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsICacheEntry Recreate();
+		nsICacheEntry Recreate([MarshalAs(UnmanagedType.U1)] bool aMemoryOnly);
 		
 		/// <summary>
         /// Returns the length of data this entry holds.
@@ -225,6 +216,7 @@ namespace Gecko
 		long GetDataSizeAttribute();
 		
 		/// <summary>
+        /// @deprecated
         /// FOR BACKWARD COMPATIBILITY ONLY
         /// When the old cache backend is eventually removed, this method
         /// can be removed too.
@@ -236,6 +228,7 @@ namespace Gecko
 		void Close();
 		
 		/// <summary>
+        /// @deprecated
         /// FOR BACKWARD COMPATIBILITY ONLY
         /// Marks the entry as valid so that others can use it and get only readonly
         /// access when the entry is held by the 1st writer.
@@ -244,6 +237,7 @@ namespace Gecko
 		void MarkValid();
 		
 		/// <summary>
+        /// @deprecated
         /// FOR BACKWARD COMPATIBILITY ONLY
         /// Marks the entry as valid when write access is acquired.
         /// </summary>
@@ -251,28 +245,27 @@ namespace Gecko
 		void MaybeMarkValid();
 		
 		/// <summary>
+        /// @deprecated
         /// FOR BACKWARD COMPATIBILITY ONLY / KINDA HACK
         /// @param aWriteAllowed
-        /// consumer indicates whether write to the entry is allowed for it
-        /// depends on implementation how the flag is handled
+        /// Consumer indicates whether write to the entry is allowed for it.
+        /// Depends on implementation how the flag is handled.
         /// @returns
-        /// true when write access is acquired for this entry
+        /// true when write access is acquired for this entry,
         /// false otherwise
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool HasWriteAccess([MarshalAs(UnmanagedType.U1)] bool aWriteAllowed);
+	}
+	
+	/// <summary>nsICacheEntryConsts </summary>
+	public class nsICacheEntryConsts
+	{
 		
-		/// <summary>
-        /// ************** GET RID OF THESE ??? ***************
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDataSize(uint size);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetStoragePolicyAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetStoragePolicyAttribute(System.IntPtr aStoragePolicy);
+		// <summary>
+        // Placeholder for the initial value of expiration time.
+        // </summary>
+		public const ulong NO_EXPIRATION_TIME = 0xFFFFFFFF;
 	}
 }

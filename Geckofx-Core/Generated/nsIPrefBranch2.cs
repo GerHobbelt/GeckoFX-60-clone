@@ -75,7 +75,8 @@ namespace Gecko
         /// @param aPrefName The boolean preference to set the state of.
         /// @param aValue    The boolean value to set the preference to.
         ///
-        /// @throws Error if setting failed or the value is the wrong type.
+        /// @throws Error if setting failed or the preference has a default
+        ///             value of a type other than boolean.
         ///
         /// @see getBoolPref
         /// </summary>
@@ -115,7 +116,8 @@ namespace Gecko
         /// @param aPrefName The string preference to set.
         /// @param aValue    The string value to set the preference to.
         ///
-        /// @throws Error if setting failed or the value is the wrong type.
+        /// @throws Error if setting failed or the preference has a default
+        ///             value of a type other than string.
         ///
         /// @see getCharPref
         /// </summary>
@@ -140,7 +142,8 @@ namespace Gecko
         /// @param aPrefName The integer preference to set the value of.
         /// @param aValue    The integer value to set the preference to.
         ///
-        /// @throws Error if setting failed or the value is the wrong type.
+        /// @throws Error if setting failed or the preference has a default
+        ///             value of a type other than integer.
         ///
         /// @see getIntPref
         /// </summary>

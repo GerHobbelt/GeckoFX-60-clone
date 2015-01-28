@@ -47,7 +47,7 @@ namespace Gecko
 	/// <summary>nsITelemetry </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6c31f68d-4a54-4dca-b6c8-ddb264d5a154")]
+	[Guid("4e4bfc35-dac6-4b28-ade4-7e45760051d5")]
 	public interface nsITelemetry
 	{
 		
@@ -280,10 +280,20 @@ namespace Gecko
         ///
         /// The statistics are returned as an object whose propoerties are the names
         /// of the files that have been accessed and whose corresponding values are
-        /// arrays of the form [total_time, #creates, #reads, #writes, #fsyncs, #stats]
+        /// arrays of size three, representing startup, normal, and shutdown stages.
+        /// Each stage's entry is either null or an array with the layout
+        /// [total_time, #creates, #reads, #writes, #fsyncs, #stats]
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetFileIOReportsAttribute(System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Return the number of seconds since process start using monotonic
+        /// timestamps (unaffected by system clock changes).
+        /// @throws NS_ERROR_NOT_AVAILABLE if TimeStamp doesn't have the data.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double MsSinceProcessStart();
 	}
 	
 	/// <summary>nsITelemetryConsts </summary>

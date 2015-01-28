@@ -2053,7 +2053,12 @@ namespace Gecko
 			return !e.Cancel;
 		}
 
-		#endregion
+	    public void OnHistoryReplaceEntry(int aIndex)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    #endregion
 
 		#region nsITooltipListener Members
 

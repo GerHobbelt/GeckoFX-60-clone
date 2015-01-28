@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("A30E916F-B1DE-452A-BDD0-C59BB516D427")]
+	[Guid("17a17ce4-9a07-43fb-a0a3-947a6e21476c")]
 	public interface nsIInputStreamChannel
 	{
 		
@@ -114,5 +114,20 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsSrcdocChannelAttribute();
+		
+		/// <summary>
+        /// The base URI to be used for the channel.  Used when the base URI cannot
+        /// be inferred by other means, for example when this is a srcdoc channel.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetBaseURIAttribute();
+		
+		/// <summary>
+        /// The base URI to be used for the channel.  Used when the base URI cannot
+        /// be inferred by other means, for example when this is a srcdoc channel.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBaseURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
 	}
 }

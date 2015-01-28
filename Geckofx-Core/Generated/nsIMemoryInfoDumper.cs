@@ -47,7 +47,7 @@ namespace Gecko
 	/// <summary>nsIMemoryInfoDumper </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("294df03b-e2ae-4fdd-b4fc-4c66a501e0ef")]
+	[Guid("815bf31b-f5bd-425d-85c3-4657a7a91dad")]
 	public interface nsIMemoryInfoDumper
 	{
 		
@@ -130,19 +130,17 @@ namespace Gecko
 		
 		/// <summary>
         /// Similar to dumpMemoryReportsToNamedFile, this method dumps gzipped memory
-        /// reports for this process and possibly its child processes (and their
-        /// children, recursively) to a file in the tmp directory called
-        /// memory-reports-<identifier>-<pid>.json.gz (or something similar, such as
-        /// memory-reports-<identifier>-<pid>-1.json.gz; no existing file will be
-        /// overwritten).
+        /// reports for this process and its child processes to files in the tmp
+        /// directory called memory-reports-<identifier>-<pid>.json.gz (or something
+        /// similar, such as memory-reports-<identifier>-<pid>-1.json.gz; no existing
+        /// file will be overwritten).
         ///
         /// If DMD is enabled, this method also dumps gzipped DMD output to a file in
         /// the tmp directory called dmd-<identifier>-<pid>.txt.gz (or something
         /// similar; again, no existing file will be overwritten).
         ///
         /// @param aIdentifier this identifier will appear in the filename of our
-        /// about:memory dump and those of our children (if aDumpChildProcesses is
-        /// true).
+        /// about:memory dump and those of our children.
         ///
         /// If the identifier is empty, the implementation may set it arbitrarily
         /// and use that new value for its own dump and the dumps of its child
@@ -152,13 +150,9 @@ namespace Gecko
         /// @param aMinimizeMemoryUsage indicates whether we should run a series of
         /// gc/cc's in an attempt to reduce our memory usage before collecting our
         /// memory report.
-        ///
-        /// @param aDumpChildProcesses indicates whether we should call
-        /// dumpMemoryInfoToTempDir in our child processes.  If
-        /// so, the child processes will also dump their children, and so on.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DumpMemoryInfoToTempDir([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier, [MarshalAs(UnmanagedType.U1)] bool aMinimizeMemoryUsage, [MarshalAs(UnmanagedType.U1)] bool aDumpChildProcesses);
+		void DumpMemoryInfoToTempDir([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier, [MarshalAs(UnmanagedType.U1)] bool aMinimizeMemoryUsage);
 		
 		/// <summary>
         /// Dump GC and CC logs to files in the OS's temp directory (or in

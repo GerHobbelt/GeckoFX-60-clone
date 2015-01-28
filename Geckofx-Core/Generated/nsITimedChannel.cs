@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c259b593-a9bf-4d08-8149-ef89e1977dc4")]
+	[Guid("E94AB245-B40D-4154-8B7F-B6E0F2461031")]
 	public interface nsITimedChannel
 	{
 		
@@ -47,6 +47,18 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetTimingEnabledAttribute([MarshalAs(UnmanagedType.U1)] bool aTimingEnabled);
+		
+		/// <summary>
+        /// The number of redirects
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ushort GetRedirectCountAttribute();
+		
+		/// <summary>
+        /// The number of redirects
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRedirectCountAttribute(ushort aRedirectCount);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ulong GetChannelCreationAttribute();
@@ -77,6 +89,49 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ulong GetResponseEndAttribute();
+		
+		/// <summary>
+        /// the data from one channel to the redirected channel.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetRedirectStartAttribute();
+		
+		/// <summary>
+        /// the data from one channel to the redirected channel.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRedirectStartAttribute(ulong aRedirectStart);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetRedirectEndAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRedirectEndAttribute(ulong aRedirectEnd);
+		
+		/// <summary>
+        /// The initiator type
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetInitiatorTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aInitiatorType);
+		
+		/// <summary>
+        /// The initiator type
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetInitiatorTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aInitiatorType);
+		
+		/// <summary>
+        /// This flag should be set to false only if a cross-domain redirect occurred
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAllRedirectsSameOriginAttribute();
+		
+		/// <summary>
+        /// This flag should be set to false only if a cross-domain redirect occurred
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAllRedirectsSameOriginAttribute([MarshalAs(UnmanagedType.U1)] bool aAllRedirectsSameOrigin);
 		
 		/// <summary>
         /// cache
@@ -122,5 +177,11 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		long GetCacheReadEndTimeAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetRedirectStartTimeAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetRedirectEndTimeAttribute();
 	}
 }

@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f19a03ae-e97d-41e9-95dd-681b910c4093")]
+	[Guid("2968fcd5-1872-4ddc-8c16-62b27e357f31")]
 	public interface nsIQuotaManager
 	{
 		
@@ -68,7 +68,7 @@ namespace Gecko
         /// The URI whose storages are to be cleared.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ClearStoragesForURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aAppId, [MarshalAs(UnmanagedType.U1)] bool aInMozBrowserOnly, int argc);
+		void ClearStoragesForURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aAppId, [MarshalAs(UnmanagedType.U1)] bool aInMozBrowserOnly, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPersistenceType, int argc);
 		
 		/// <summary>
         /// Resets quota and storage management. This can be used to force

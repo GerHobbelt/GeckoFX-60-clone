@@ -41,7 +41,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3b07f591-e8e1-11d4-9882-00c04fa02f40")]
+	[Guid("125c0833-746a-400e-9b89-d2d18545c08a")]
 	public interface nsISHistoryListener
 	{
 		
@@ -119,5 +119,16 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool OnHistoryPurge(int aNumEntries);
+		
+		/// <summary>
+        /// Called when an entry is replaced in the session history. Entries are
+        /// replaced when navigating away from non-persistent history entries (such as
+        /// about pages) and when history.replaceState is called.
+        ///
+        /// @param aIndex        The index in session history of the entry being
+        /// replaced
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnHistoryReplaceEntry(int aIndex);
 	}
 }

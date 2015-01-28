@@ -64,5 +64,10 @@ namespace Gecko.Listeners
             else
                 return false;
         }
+
+	    public void OnHistoryReplaceEntry(int aIndex)
+	    {
+	        throw new NotImplementedException();
+	    }
     }
 }

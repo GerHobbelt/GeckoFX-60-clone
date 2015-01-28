@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3b6e408b-e774-4612-89e8-3ef303564392")]
+	[Guid("4c087cc3-e0cc-4ec3-88df-8d68f3023b45")]
 	public interface nsIScriptSecurityManager : nsIXPCSecurityManager
 	{
 		
@@ -157,13 +157,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPrincipal GetCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri);
-		
-		/// <summary>
-        /// Return the principal of the specified object in the specified context.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal GetObjectPrincipal(Gecko.JsVal aObject, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Returns true if the principal of the currently running script is the

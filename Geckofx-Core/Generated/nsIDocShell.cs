@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("af035c67-1690-431b-9c4d-d38e3cc3137a")]
+	[Guid("e46d924d-c20f-4add-8cf5-1e1c817b2181")]
 	public interface nsIDocShell : nsIDocShellTreeItem
 	{
 		
@@ -284,6 +284,9 @@ namespace Gecko
         /// contents of this parameter will be loaded instead
         /// of aURI.
         /// @param aSourceDocShell - The source browsing context for the navigation.
+        /// @param aBaseURI        - The base URI to be used for the load.  Set in
+        /// srcdoc loads as it cannot otherwise be inferred
+        /// in certain situations such as view-source.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void InternalLoad(
@@ -301,6 +304,7 @@ namespace Gecko
 					[MarshalAs(UnmanagedType.U1)] bool firstParty, 
 					[MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSrcdoc, 
 					[MarshalAs(UnmanagedType.Interface)] nsIDocShell aSourceDocShell, 
+					[MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI, 
 					[MarshalAs(UnmanagedType.Interface)] ref nsIDocShell aDocShell, 
 					[MarshalAs(UnmanagedType.Interface)] ref nsIRequest aRequest);
 		
@@ -1042,6 +1046,27 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void NotifyReflowObservers([MarshalAs(UnmanagedType.U1)] bool interruptible, DOMHighResTimeStamp start, DOMHighResTimeStamp end);
+		
+		/// <summary>
+        /// Add an observer to the list of parties to be notified when scroll position
+        /// of some elements is changed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AddWeakScrollObserver(System.IntPtr obs);
+		
+		/// <summary>
+        /// Add an observer to the list of parties to be notified when scroll position
+        /// of some elements is changed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveWeakScrollObserver(System.IntPtr obs);
+		
+		/// <summary>
+        /// Notify all attached observers that the scroll position of some element
+        /// has changed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyScrollObservers();
 		
 		/// <summary>
         /// Returns true if this docshell corresponds to an <iframe mozbrowser>.

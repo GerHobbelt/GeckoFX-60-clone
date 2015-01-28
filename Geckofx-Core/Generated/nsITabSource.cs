@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("ff9c0e45-4646-45ec-b2f0-3b16d9e41875")]
+	[Guid("b3a7a402-2760-4583-b4a3-af095fe00c84")]
 	public interface nsITabSource
 	{
 		
@@ -43,5 +43,11 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMWindow GetTabToStream();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyStreamStart([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyStreamStop([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
 	}
 }

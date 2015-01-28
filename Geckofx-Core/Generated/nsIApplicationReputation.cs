@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9c12a510-eb1c-11e2-a98a-fa916188709b")]
+	[Guid("c9f03479-fd68-4393-acb2-c88d4f563174")]
 	public interface nsIApplicationReputationService
 	{
 		
@@ -65,7 +65,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5a054991-e489-4a1c-a0aa-ea7c69b20e3d")]
+	[Guid("2c781cbe-ab0c-4c53-b06e-f0cb56f8a30b")]
 	public interface nsIApplicationReputationQuery
 	{
 		
@@ -75,6 +75,13 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIURI GetSourceURIAttribute();
+		
+		/// <summary>
+        /// The reference, if any.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetReferrerURIAttribute();
 		
 		/// <summary>
         /// The target filename for the downloaded file, as inferred from the source
@@ -98,6 +105,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetSha256HashAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSha256Hash);
+		
+		/// <summary>
+        /// The nsIArray of nsIX509CertList of nsIX509Cert that verify for this
+        /// binary, if it is signed.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIArray GetSignatureInfoAttribute();
 	}
 	
 	/// <summary>nsIApplicationReputationCallback </summary>

@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("32de7b6e-90c3-11e1-b57e-001fbc092072")]
+	[Guid("bc5869e7-53a6-4195-8ab8-32e7116b87dd")]
 	public interface nsPISocketTransportService : nsISocketTransportService
 	{
 		
@@ -177,5 +177,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOfflineAttribute([MarshalAs(UnmanagedType.U1)] bool aOffline);
+		
+		/// <summary>
+        /// Controls the default timeout (in seconds) for sending keepalive probes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetKeepaliveIdleTimeAttribute();
+		
+		/// <summary>
+        /// Controls the default interval (in seconds) between retrying keepalive probes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetKeepaliveRetryIntervalAttribute();
+		
+		/// <summary>
+        /// Controls the default retransmission count for keepalive probes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetKeepaliveProbeCountAttribute();
 	}
 }

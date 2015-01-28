@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5805ac8b-7cbe-4fbd-97ad-d3ae8cd29f79")]
+	[Guid("ab8d0700-9577-11e3-a5e2-0800200c9a66")]
 	public interface nsIFxAccountsUIGlue
 	{
 		
@@ -41,5 +41,11 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal SignInFlow();
+		
+		/// <summary>
+        /// Returns a Promise.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal RefreshAuthentication([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase accountId);
 	}
 }

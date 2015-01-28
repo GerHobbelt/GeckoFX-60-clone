@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c402d6c2-837d-11e3-b47c-3c970e9f4238")]
+	[Guid("33e8571d-5e5d-4000-81cf-e01f5f85d424")]
 	public interface nsITabParent
 	{
 		
@@ -46,5 +46,8 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetUseAsyncPanZoomAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetIsDocShellActive([MarshalAs(UnmanagedType.U1)] bool aIsActive);
 	}
 }

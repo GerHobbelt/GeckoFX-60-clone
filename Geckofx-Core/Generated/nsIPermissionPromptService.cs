@@ -37,7 +37,7 @@ namespace Gecko
 		
 		/// <summary>
         /// Checks if the capability requires a permission, fires the corresponding cancel()
-        /// or allow() method in aRequest after consulting nsIDOMPermissionSettings, etc.
+        /// or allow() method in aRequest after consulting PermissionSettings, etc.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetPermission([MarshalAs(UnmanagedType.Interface)] nsIContentPermissionRequest aRequest);

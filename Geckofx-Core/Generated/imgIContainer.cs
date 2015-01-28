@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8b7db7dd-bfe9-40d3-9114-3a79c0658afd")]
+	[Guid("503a830c-734d-4362-91f6-73f83ac59646")]
 	public interface imgIContainer
 	{
 		
@@ -324,6 +324,9 @@ namespace Gecko
 		
 		// 
 		public const long FLAG_HIGH_QUALITY_SCALING = 0x10;
+		
+		// 
+		public const long FLAG_WANT_DATA_SURFACE = 0x20;
 		
 		// <summary>
         // Constants for specifying various "special" frames.

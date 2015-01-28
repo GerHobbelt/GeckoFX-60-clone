@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e2f5c6e0-4203-11e3-aa6e-0800200c9a66")]
+	[Guid("cb62ae03-6bda-43ff-9560-916d60203d33")]
 	public interface nsINetworkInterface
 	{
 		
@@ -57,42 +57,6 @@ namespace Gecko
 		void GetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
 		
 		/// <summary>
-        /// IP Address
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetIpAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIp);
-		
-		/// <summary>
-        /// Netmask
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetNetmaskAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNetmask);
-		
-		/// <summary>
-        /// Broadcast
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetBroadcastAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aBroadcast);
-		
-		/// <summary>
-        /// Default gateway
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetGatewayAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aGateway);
-		
-		/// <summary>
-        /// Primary DNS address
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDns1Attribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDns1);
-		
-		/// <summary>
-        /// Secondary DNS address
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDns2Attribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDns2);
-		
-		/// <summary>
         /// The host name of the http proxy server.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -103,6 +67,43 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetHttpProxyPortAttribute();
+		
+		/// <summary>
+        /// Get the list of ip addresses and prefix lengths, ip address could be IPv4
+        /// or IPv6, typically 1 IPv4 or 1 IPv6 or one of each.
+        ///
+        /// @param ips
+        /// The list of ip addresses retrieved.
+        /// @param prefixLengths
+        /// The list of prefix lengths retrieved.
+        ///
+        /// @returns the length of the lists.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetAddresses([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref System.IntPtr[] ips, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref uint[] prefixLengths);
+		
+		/// <summary>
+        /// Get the list of gateways, could be IPv4 or IPv6, typically 1 IPv4 or 1
+        /// IPv6 or one of each.
+        ///
+        /// @param count
+        /// The length of the list of gateways
+        ///
+        /// @returns the list of gateways.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetGateways(ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref System.IntPtr[] gateways);
+		
+		/// <summary>
+        /// Get the list of dnses, could be IPv4 or IPv6.
+        ///
+        /// @param count
+        /// The length of the list of dnses.
+        ///
+        /// @returns the list of dnses.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetDnses(ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref System.IntPtr[] dnses);
 	}
 	
 	/// <summary>nsINetworkInterfaceConsts </summary>
@@ -143,6 +144,12 @@ namespace Gecko
 		
 		// 
 		public const long NETWORK_TYPE_WIFI_P2P = 4;
+		
+		// 
+		public const long NETWORK_TYPE_MOBILE_IMS = 5;
+		
+		// 
+		public const long NETWORK_TYPE_MOBILE_DUN = 6;
 	}
 	
 	/// <summary>

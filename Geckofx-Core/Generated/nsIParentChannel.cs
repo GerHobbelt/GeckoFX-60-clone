@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("723188c3-fff8-4d27-b657-a256e7209be0")]
+	[Guid("8bf3aa90-ec5d-4977-bd03-197274befc78")]
 	public interface nsIParentChannel : nsIStreamListener
 	{
 		
@@ -81,6 +81,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void OnDataAvailable([MarshalAs(UnmanagedType.Interface)] nsIRequest aRequest, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aInputStream, ulong aOffset, uint aCount);
+		
+		/// <summary>
+        /// Called to set the HttpChannelParentListener object (optional).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetParentListener(System.IntPtr listener);
 		
 		/// <summary>
         /// Called to invoke deletion of the IPC protocol.

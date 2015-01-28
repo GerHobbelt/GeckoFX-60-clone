@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1e63dd8b-173d-4a68-8ade-fd671abbe1ee")]
+	[Guid("88789f40-54c9-494a-846d-3acaaf4cf46a")]
 	public interface nsIAccessibleText
 	{
 		
@@ -193,6 +193,44 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ScrollSubstringToPoint(int startIndex, int endIndex, uint coordinateType, int x, int y);
+		
+		/// <summary>
+        /// Return a range that encloses this text control or otherwise the document
+        /// this text accessible belongs to.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIAccessibleTextRange GetEnclosingRangeAttribute();
+		
+		/// <summary>
+        /// Return an array of disjoint ranges for selected text within the text control
+        /// or otherwise the document this accessible belongs to.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIArray GetSelectionRangesAttribute();
+		
+		/// <summary>
+        /// Return an array of disjoint ranges of visible text within the text control
+        /// or otherwise the document this accessible belongs to.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIArray GetVisibleRangesAttribute();
+		
+		/// <summary>
+        /// Return a range containing the given accessible.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIAccessibleTextRange GetRangeByChild([MarshalAs(UnmanagedType.Interface)] nsIAccessible child);
+		
+		/// <summary>
+        /// Return a range containing an accessible at the given point.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIAccessibleTextRange GetRangeAtPoint(int x, int y);
 	}
 	
 	/// <summary>nsIAccessibleTextConsts </summary>

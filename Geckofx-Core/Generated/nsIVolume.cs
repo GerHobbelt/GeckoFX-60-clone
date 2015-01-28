@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8c163fe4-5577-11e3-b3d0-10bf48d707fb")]
+	[Guid("13caa69c-8f1f-11e3-8e36-10bf48d707fb")]
 	public interface nsIVolume
 	{
 		
@@ -103,6 +103,18 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Format();
+		
+		/// <summary>
+        /// Automounter will mount it. Otherwise Automounter will skip this.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Mount();
+		
+		/// <summary>
+        /// Automounter will unmount it. Otherwise Automounter will skip this.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Unmount();
 		
 		/// <summary>
         /// Whether this is a fake volume.

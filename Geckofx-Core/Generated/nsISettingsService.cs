@@ -47,6 +47,23 @@ namespace Gecko
 		void HandleError([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aErrorMessage);
 	}
 	
+	/// <summary>nsISettingsTransactionCompleteCallback </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("f1b3d820-8e75-11e3-baa8-0800200c9a66")]
+	public interface nsISettingsTransactionCompleteCallback
+	{
+		
+		/// <summary>Member Handle </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Handle();
+		
+		/// <summary>Member HandleAbort </summary>
+		/// <param name='aErrorMessage'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void HandleAbort([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aErrorMessage);
+	}
+	
 	/// <summary>nsISettingsServiceLock </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -72,14 +89,15 @@ namespace Gecko
 	/// <summary>nsISettingsService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f656f0c0-f776-11e1-a21f-0800200c9a66")]
+	[Guid("0505acf0-8e76-11e3-baa8-0800200c9a66")]
 	public interface nsISettingsService
 	{
 		
 		/// <summary>Member CreateLock </summary>
+		/// <param name='aCallback'> </param>
 		/// <returns>A nsISettingsServiceLock</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISettingsServiceLock CreateLock();
+		nsISettingsServiceLock CreateLock([MarshalAs(UnmanagedType.Interface)] nsISettingsTransactionCompleteCallback aCallback);
 	}
 }

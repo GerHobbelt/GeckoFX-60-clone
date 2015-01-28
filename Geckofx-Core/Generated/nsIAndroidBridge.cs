@@ -251,15 +251,15 @@ namespace Gecko
 	/// <summary>nsIAndroidBridge </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5aa0cfa5-377c-4f5e-8dcf-59ebd9482d65")]
+	[Guid("1beb70d3-70f3-4742-98cc-a3d301b26c0c")]
 	public interface nsIAndroidBridge
 	{
 		
 		/// <summary>Member HandleGeckoMessage </summary>
 		/// <param name='message'> </param>
-		/// <param name='retval'> </param>
+		/// <param name='jsContext'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void HandleGeckoMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase message, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		void HandleGeckoMessage(Gecko.JsVal message, System.IntPtr jsContext);
 		
 		/// <summary>Member GetBrowserAppAttribute </summary>
 		/// <returns>A nsIAndroidBrowserApp</returns>

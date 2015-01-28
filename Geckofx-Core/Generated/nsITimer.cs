@@ -185,7 +185,7 @@ namespace Gecko
 		// <summary>
         // Type of a timer that fires once only.
         // </summary>
-		public const uint TYPE_ONE_SHOT = 0;
+		public const short TYPE_ONE_SHOT = 0;
 		
 		// <summary>
         // After firing, a TYPE_REPEATING_SLACK timer is stopped and not restarted
@@ -195,7 +195,7 @@ namespace Gecko
         //
         // This is the preferable repeating type for most situations.
         // </summary>
-		public const uint TYPE_REPEATING_SLACK = 1;
+		public const short TYPE_REPEATING_SLACK = 1;
 		
 		// <summary>
         // An TYPE_REPEATING_PRECISE repeating timer aims to have constant period
@@ -216,7 +216,7 @@ namespace Gecko
         // this timer type with extreme caution.  Chances are, this is not what you
         // want.
         // </summary>
-		public const uint TYPE_REPEATING_PRECISE = 2;
+		public const short TYPE_REPEATING_PRECISE = 2;
 		
 		// <summary>
         // A TYPE_REPEATING_PRECISE_CAN_SKIP repeating timer aims to have constant
@@ -228,6 +228,6 @@ namespace Gecko
         // afterward, but only once, unlike TYPE_REPEATING_PRECISE.  If you want a
         // non-slack timer, you probably want this one.
         // </summary>
-		public const uint TYPE_REPEATING_PRECISE_CAN_SKIP = 3;
+		public const short TYPE_REPEATING_PRECISE_CAN_SKIP = 3;
 	}
 }

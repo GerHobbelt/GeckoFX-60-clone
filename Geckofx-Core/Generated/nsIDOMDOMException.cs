@@ -143,5 +143,8 @@ namespace Gecko
 		
 		// 
 		public const ushort DATA_CLONE_ERR = 25;
+		
+		// 
+		public const ushort INVALID_POINTER_ERR = 26;
 	}
 }

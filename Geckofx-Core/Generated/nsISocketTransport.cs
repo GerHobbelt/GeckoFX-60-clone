@@ -38,7 +38,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("A8318027-0DDC-4E60-A89B-D81AFE3B5020")]
+	[Guid("3F41704C-CD5D-4537-8C4C-7B2EBFC5D972")]
 	public interface nsISocketTransport : nsITransport
 	{
 		
@@ -282,6 +282,22 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSendBufferSizeAttribute(uint aSendBufferSize);
+		
+		/// <summary>
+        /// TCP keepalive configuration (support varies by platform).
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetKeepaliveEnabledAttribute();
+		
+		/// <summary>
+        /// TCP keepalive configuration (support varies by platform).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetKeepaliveEnabledAttribute([MarshalAs(UnmanagedType.U1)] bool aKeepaliveEnabled);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetKeepaliveVals(int keepaliveIdleTime, int keepaliveRetryInterval);
 	}
 	
 	/// <summary>nsISocketTransportConsts </summary>

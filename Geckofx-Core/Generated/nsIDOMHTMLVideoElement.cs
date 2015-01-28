@@ -225,21 +225,6 @@ namespace Gecko
 		new bool GetMozAudioCapturedAttribute();
 		
 		/// <summary>
-        /// audio is (mozChannels * 1024).
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new uint GetMozChannelsAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new uint GetMozSampleRateAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new uint GetMozFrameBufferLengthAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetMozFrameBufferLengthAttribute(uint aMozFrameBufferLength);
-		
-		/// <summary>
         /// player interfaces to display the song title, artist, etc.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
