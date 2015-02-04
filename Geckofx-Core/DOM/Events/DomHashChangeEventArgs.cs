@@ -1,5 +1,6 @@
 namespace Gecko
 {
+#if DELME
 	public class DomHashChangeEventArgs
 		: DomEventArgs
 	{
@@ -36,4 +37,5 @@ namespace Gecko
 			}
 		}
 	}
+#endif
 }

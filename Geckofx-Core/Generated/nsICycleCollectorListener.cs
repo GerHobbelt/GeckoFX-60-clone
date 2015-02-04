@@ -65,6 +65,70 @@ namespace Gecko
 	}
 	
 	/// <summary>
+    /// This interface allows replacing the log-writing backend for an
+    /// nsICycleCollectorListener.  As this interface is also called while
+    /// the cycle collector is running, it cannot be implemented in JS.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("3ad9875f-d0e4-4ac2-87e3-f127f6c02ce1")]
+	public interface nsICycleCollectorLogSink
+	{
+		
+		/// <summary>
+        /// This interface allows replacing the log-writing backend for an
+        /// nsICycleCollectorListener.  As this interface is also called while
+        /// the cycle collector is running, it cannot be implemented in JS.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Open(ref System.IntPtr aGCLog, ref System.IntPtr aCCLog);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CloseGCLog();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CloseCCLog();
+		
+		/// <summary>
+        /// This string will appear somewhere in the log's filename.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetFilenameIdentifierAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilenameIdentifier);
+		
+		/// <summary>
+        /// This string will appear somewhere in the log's filename.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetFilenameIdentifierAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilenameIdentifier);
+		
+		/// <summary>
+        /// of another process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetProcessIdentifierAttribute();
+		
+		/// <summary>
+        /// of another process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetProcessIdentifierAttribute(int aProcessIdentifier);
+		
+		/// <summary>
+        /// The GC log file, if logging to files.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIFile GetGcLogAttribute();
+		
+		/// <summary>
+        /// The CC log file, if logging to files.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIFile GetCcLogAttribute();
+	}
+	
+	/// <summary>
     /// Given an instance of this interface, the cycle collector calls the instance's
     /// methods to report the objects it visits, the edges between them, and its
     /// conclusions about which objects are roots and which are garbage.
@@ -102,7 +166,7 @@ namespace Gecko
     ///
     ///
     /// This interface cannot be implemented by JavaScript code, as it is called
-    /// while the cycle collector works. To analyze cycle collection data in JS:
+    /// while the cycle collector is running. To analyze cycle collection data in JS:
     ///
     /// - Create an instance of @mozilla.org/cycle-collector-logger;1, which
     /// implements this interface.
@@ -126,7 +190,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c46e6947-9076-4a0e-bb27-d4aa3706c54d")]
+	[Guid("c7d55656-e0d8-4986-88bb-cb28cb55b993")]
 	public interface nsICycleCollectorListener
 	{
 		
@@ -158,16 +222,17 @@ namespace Gecko
 		void SetDisableLogAttribute([MarshalAs(UnmanagedType.U1)] bool aDisableLog);
 		
 		/// <summary>
-        /// This string will appear somewhere in the log's filename.
+        /// If |disableLog| is false, this object will be sent the log text.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFilenameIdentifierAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilenameIdentifier);
+		nsICycleCollectorLogSink GetLogSinkAttribute();
 		
 		/// <summary>
-        /// This string will appear somewhere in the log's filename.
+        /// If |disableLog| is false, this object will be sent the log text.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetFilenameIdentifierAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilenameIdentifier);
+		void SetLogSinkAttribute([MarshalAs(UnmanagedType.Interface)] nsICycleCollectorLogSink aLogSink);
 		
 		/// <summary>
         /// using |processNext|. Initially false.
@@ -181,18 +246,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetWantAfterProcessingAttribute([MarshalAs(UnmanagedType.U1)] bool aWantAfterProcessing);
-		
-		/// <summary>
-        /// This string will indicate the full path of the GC log if enabled.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetGcLogPathAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aGcLogPath);
-		
-		/// <summary>
-        /// This string will indicate the full path of the CC log if enabled.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCcLogPathAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCcLogPath);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Begin();

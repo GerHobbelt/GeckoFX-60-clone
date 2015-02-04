@@ -40,7 +40,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b02be33b-d47c-4bd3-afd9-402a942426b0")]
+	[Guid("2258f465-656e-4566-87cb-f791dbaf0322")]
 	public interface nsIDownload : nsITransfer
 	{
 		
@@ -271,6 +271,16 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetSignatureInfo([MarshalAs(UnmanagedType.Interface)] nsIArray aSignatureInfo);
+		
+		/// <summary>
+        /// Used to notify the transfer object of the redirects associated with the
+        /// channel that terminated in the downloaded file.  Must be called on the
+        /// main thread, only after the download has finished successfully.
+        /// @param aRedirects The nsIArray of nsIPrincipal of redirected URIs
+        /// associated with the downloaded file.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetRedirects([MarshalAs(UnmanagedType.Interface)] nsIArray aRedirects);
 		
 		/// <summary>
         /// The target of a download is always a file on the local file system.

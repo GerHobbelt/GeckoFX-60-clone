@@ -52,7 +52,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e3968acd-b796-4ca3-aec0-e7f0880f2219")]
+	[Guid("256a5283-ebb5-4430-8e15-5ada92156ef7")]
 	public interface nsIImageLoadingContent : imgINotificationObserver
 	{
 		
@@ -189,6 +189,16 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ForceImageState([MarshalAs(UnmanagedType.U1)] bool aForce, ulong aState);
+		
+		/// <summary>
+        /// The intrinsic size and width of this content. May differ from actual image
+        /// size due to things like responsive image density.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetNaturalWidthAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetNaturalHeightAttribute();
 		
 		/// <summary>
         /// A visible count is stored, if it is non-zero then this image is considered

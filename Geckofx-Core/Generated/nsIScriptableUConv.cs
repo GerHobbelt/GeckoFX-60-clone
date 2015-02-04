@@ -104,9 +104,11 @@ namespace Gecko
 		/// <summary>
         /// Internal use
         ///
-        /// When this attribute is set, all charsets may be accessed.
-        /// When it is not set (the default), charsets with the isInternal flag
-        /// may not be accessed.
+        /// When this attribute is set, all encodings may be accessed. Alias
+        /// resolution is not performed for non-Encoding Standard encodings.
+        /// MailNews callers should perform alias resolution first (e.g. using
+        /// nsICharsetConverterManager::getCharsetAlias()) and use the result
+        /// with this API.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -115,9 +117,11 @@ namespace Gecko
 		/// <summary>
         /// Internal use
         ///
-        /// When this attribute is set, all charsets may be accessed.
-        /// When it is not set (the default), charsets with the isInternal flag
-        /// may not be accessed.
+        /// When this attribute is set, all encodings may be accessed. Alias
+        /// resolution is not performed for non-Encoding Standard encodings.
+        /// MailNews callers should perform alias resolution first (e.g. using
+        /// nsICharsetConverterManager::getCharsetAlias()) and use the result
+        /// with this API.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsInternalAttribute([MarshalAs(UnmanagedType.U1)] bool aIsInternal);

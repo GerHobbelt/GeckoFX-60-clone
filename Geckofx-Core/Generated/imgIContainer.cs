@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("503a830c-734d-4362-91f6-73f83ac59646")]
+	[Guid("c9bd1257-45fb-4ea6-a669-6da212479191")]
 	public interface imgIContainer
 	{
 		
@@ -93,8 +93,7 @@ namespace Gecko
 		/// <summary>
         /// Get a surface for the given frame. This may be a platform-native,
         /// optimized surface, so you cannot inspect its pixel data. If you
-        /// need that, use gfxASurface::GetAsReadableARGB32ImageSurface or
-        /// gfxASurface::CopyToARGB32ImageSurface.
+        /// need that, use SourceSurface::GetDataSurface.
         ///
         /// @param aWhichFrame Frame specifier of the FRAME_* variety.
         /// @param aFlags Flags of the FLAG_* variety
@@ -268,6 +267,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAnimationStartTime(ulong aTime);
+		
+		/// <summary>
+        /// Given an invalidation rect in the coordinate system used by the decoder,
+        /// returns an invalidation rect in image space.
+        ///
+        /// This is the identity transformation in most cases, but the result can
+        /// differ if the image is wrapped by an ImageWrapper that changes its size
+        /// or orientation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetImageSpaceInvalidationRect([MarshalAs(UnmanagedType.Interface)] nsIntRect aRect);
+		
+		/// <summary>
+        /// Removes any ImageWrappers and returns the unwrapped base image.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr Unwrap();
 	}
 	
 	/// <summary>imgIContainerConsts </summary>
@@ -325,8 +341,21 @@ namespace Gecko
 		// 
 		public const long FLAG_HIGH_QUALITY_SCALING = 0x10;
 		
-		// 
+		// <summary>
+        // Can be passed to GetFrame when the caller wants a DataSourceSurface
+        // instead of a hardware accelerated surface. This can be important for
+        // performance (by avoiding an upload to/readback from the GPU) when the
+        // caller knows they want a SourceSurface of type DATA.
+        // </summary>
 		public const long FLAG_WANT_DATA_SURFACE = 0x20;
+		
+		// <summary>
+        // Forces drawing to happen rather than taking cached rendering from the
+        // surface cache. This is used when we are printing, for example, where we
+        // want the vector commands from VectorImages to end up in the PDF output
+        // rather than a cached rendering at screen resolution.
+        // </summary>
+		public const long FLAG_BYPASS_SURFACE_CACHE = 0x40;
 		
 		// <summary>
         // Constants for specifying various "special" frames.

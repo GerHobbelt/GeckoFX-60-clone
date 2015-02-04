@@ -26,11 +26,15 @@ namespace Gecko
 					{
 						if (certDbSvc != null)
 						{
+#if PORT
 							using (var recentBadCerts = certDbSvc.Instance.GetRecentBadCerts(false).AsComPtr())
 							{
 								if (recentBadCerts != null)
 									aSSLStatus = recentBadCerts.Instance.GetRecentBadCert(hostWithPort).AsComPtr();
 							}
+#else
+                            throw new NotFiniteNumberException();
+#endif
 						}
 					}
 				}

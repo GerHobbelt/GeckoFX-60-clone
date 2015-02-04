@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("146E194B-333D-4283-8CF6-4BC3EE9B5DFF")]
+	[Guid("5e3e4f0c-7b77-47ca-a7c5-a3d87f2a9c82")]
 	public interface nsIExtendedExpatSink : nsIExpatSink
 	{
 		
@@ -47,13 +47,10 @@ namespace Gecko
         /// and attributes that are defined to have default values in a DTD are
         /// present in aAtts.
         /// @param aAttsCount the number of elements in aAtts.
-        /// @param aIndex If the element has an attribute of type ID, then
-        /// aAtts[aIndex] is the name of that attribute.  Otherwise, aIndex
-        /// is -1
         /// @param aLineNumber the line number of the start tag in the data stream.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void HandleStartElement([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aName, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] aAtts, uint aAttsCount, int aIndex, uint aLineNumber);
+		new void HandleStartElement([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aName, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] aAtts, uint aAttsCount, uint aLineNumber);
 		
 		/// <summary>
         /// Called to handle the closing tag of an element.

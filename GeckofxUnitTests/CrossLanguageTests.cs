@@ -100,7 +100,9 @@ namespace GeckofxUnitTests
 			GeckoPreferences.User["capability.principal.codebase.p0.subjectName"] = "";
 			GeckoPreferences.User["security.fileuri.strict_origin_policy"] = false;
 
+#if PORT
 			browser.JavascriptError += (x, w) => Console.WriteLine(w.Message);
+#endif
 
 			string inithtml = "<html><body></body></html>";
 
@@ -190,7 +192,9 @@ namespace GeckofxUnitTests
 			GeckoPreferences.User["capability.principal.codebase.p0.subjectName"] = "";
 			GeckoPreferences.User["security.fileuri.strict_origin_policy"] = false;
 
+#if PORT
 			browser.JavascriptError += (x, w) => Console.WriteLine("Message = {0}", w.Message);
+#endif
 
 			string intialPage = "<html><body></body></html>";				
 

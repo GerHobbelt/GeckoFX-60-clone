@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6e6cc56d-51eb-4299-a795-dcfd1229ab3d")]
+	[Guid("5a4f8df0-3bd9-45c2-9db9-67e74c3dd47d")]
 	public interface nsIJARChannel : nsIChannel
 	{
 		
@@ -490,6 +490,23 @@ namespace Gecko
 		new void GetContentDispositionHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentDispositionHeader);
 		
 		/// <summary>
+        /// The nsILoadInfo for this load.  This is immutable for the
+        /// lifetime of the load and should be passed through across
+        /// redirects and the like.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsILoadInfo GetLoadInfoAttribute();
+		
+		/// <summary>
+        /// The nsILoadInfo for this load.  This is immutable for the
+        /// lifetime of the load and should be passed through across
+        /// redirects and the like.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetLoadInfoAttribute([MarshalAs(UnmanagedType.Interface)] nsILoadInfo aLoadInfo);
+		
+		/// <summary>
         /// Returns TRUE if the JAR file is not safe (if the content type reported
         /// by the server for a remote JAR is not of an expected type).  Scripting,
         /// redirects, and plugins should be disabled when loading from this
@@ -504,5 +521,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAppURI([MarshalAs(UnmanagedType.Interface)] nsIURI uri);
+		
+		/// <summary>
+        /// Returns the JAR file.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIFile GetJarFileAttribute();
+		
+		/// <summary>
+        /// For child process, set this to make sure that a valid file descriptor of
+        /// JAR file is always provided when calling NSPRFileDesc().
+        /// Must be set before Open() or AsyncOpen() to be effective.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void EnsureChildFd();
 	}
 }

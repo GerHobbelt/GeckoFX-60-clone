@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("243d1a31-db9f-47a1-9922-55a1ad5515fb")]
+	[Guid("4f94b21f-2920-4bd9-8251-5fb60fb054b2")]
 	public interface xpcIJSModuleLoader
 	{
 		
@@ -85,5 +85,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Unload([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI);
+		
+		/// <summary>
+        /// Returns true if the js file located at 'registryLocation' location has
+        /// been loaded previously via the import method above. Returns false
+        /// otherwise.
+        ///
+        /// @param resourceURI A resource:// URI string representing the location of
+        /// the js file to be checked if it is already loaded or not.
+        /// @returns boolean, true if the js file has been loaded via import. false
+        /// otherwise
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsModuleLoaded([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI);
 	}
 }

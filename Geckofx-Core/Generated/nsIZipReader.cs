@@ -261,7 +261,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("748050ac-3ab6-4472-bc2a-cb1564ac6a81")]
+	[Guid("94ecd586-d405-4801-93d3-8ac7bef81bde")]
 	public interface nsIZipReaderCache
 	{
 		
@@ -305,5 +305,21 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIZipReader GetInnerZip([MarshalAs(UnmanagedType.Interface)] nsIFile zipFile, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase zipEntry);
+		
+		/// <summary>
+        /// Whether to keep NSPR file descriptor for newly opened files in the cache.
+        /// When aMustCacheFd is enabled and a file is given, the file will be flushed
+        /// from the cache if its file descriptor was not cached.
+        /// Note: currently not supported on Windows platform.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMustCacheFd([MarshalAs(UnmanagedType.Interface)] nsIFile zipFile, [MarshalAs(UnmanagedType.U1)] bool aMustCacheFd);
+		
+		/// <summary>
+        /// Returns the cached NSPR file descriptor of the file.
+        /// Note: currently not supported on Windows platform.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetFd([MarshalAs(UnmanagedType.Interface)] nsIFile zipFile);
 	}
 }

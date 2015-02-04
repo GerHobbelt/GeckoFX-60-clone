@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("41db87b0-b0a1-11e3-a04f-cf487d837ee3")]
+	[Guid("0e6f8ace-cc59-11e3-aad5-e32847abfda1")]
 	public interface nsIMobileMessageCallback
 	{
 		
@@ -43,7 +43,7 @@ namespace Gecko
 		void NotifyMessageSent([MarshalAs(UnmanagedType.Interface)] nsISupports message);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifySendMessageFailed(int error);
+		void NotifySendMessageFailed(int error, [MarshalAs(UnmanagedType.Interface)] nsISupports message);
 		
 		/// <summary>
         /// |message| can be nsIDOMMoz{Mms,Sms}Message.

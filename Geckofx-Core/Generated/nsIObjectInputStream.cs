@@ -210,10 +210,10 @@ namespace Gecko
         /// Note: passing view.buffer, where view is an ArrayBufferView of an
         /// ArrayBuffer, is not valid unless view.byteOffset == 0.
         ///
-        /// @throws NS_ERROR_FAILURE if it can't read aLength bytes
+        /// @return The number of bytes actually read into aArrayBuffer.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ReadArrayBuffer(uint aLength, ref Gecko.JsVal aArrayBuffer, System.IntPtr jsContext);
+		new uint ReadArrayBuffer(uint aLength, ref Gecko.JsVal aArrayBuffer, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Read an object from this stream to satisfy a strong or weak reference

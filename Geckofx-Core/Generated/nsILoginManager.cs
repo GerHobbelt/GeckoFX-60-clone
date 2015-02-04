@@ -32,9 +32,20 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("338c8597-1e32-4682-b5c7-cf8142c0bd1d")]
+	[Guid("f0c5ca21-db71-4b32-993e-ab63054cc6f5")]
 	public interface nsILoginManager
 	{
+		
+		/// <summary>
+        /// This promise is resolved when initialization is complete, and is rejected
+        /// in case initialization failed.  This includes the initial loading of the
+        /// login data as well as any migration from previous versions.
+        ///
+        /// Calling any method of nsILoginManager before this promise is resolved
+        /// might trigger the synchronous initialization fallback.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetInitializationPromiseAttribute();
 		
 		/// <summary>
         /// Store a new login in the login manager.
@@ -216,9 +227,8 @@ namespace Gecko
         /// which calls it directly. This isn't really ideal, it should
         /// probably be callback registered through the FFC.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIAutoCompleteResult AutoCompleteSearch([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSearchString, [MarshalAs(UnmanagedType.Interface)] nsIAutoCompleteResult aPreviousResult, [MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLInputElement aElement);
+		void AutoCompleteSearchAsync([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSearchString, [MarshalAs(UnmanagedType.Interface)] nsIAutoCompleteResult aPreviousResult, [MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLInputElement aElement, [MarshalAs(UnmanagedType.Interface)] nsIFormAutoCompleteObserver aListener);
 		
 		/// <summary>
         /// Fill a form with login information if we have it. This method will fill
@@ -226,11 +236,10 @@ namespace Gecko
         ///
         /// @param aForm
         /// The form to fill
-        /// @return Success of attempt fill form
+        /// @return Promise that is resolved with whether or not the form was filled.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool FillForm([MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLFormElement aForm);
+		Gecko.JsVal FillForm([MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLFormElement aForm);
 		
 		/// <summary>
         /// Search for logins in the login manager. An array is always returned;

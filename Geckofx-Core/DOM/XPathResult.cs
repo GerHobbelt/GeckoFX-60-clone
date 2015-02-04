@@ -15,6 +15,7 @@ namespace Gecko.DOM
 			this.xpathResult = new ComPtr<nsIDOMXPathResult>( xpathResult );
 		}
 
+#if NEED_WEBIDL
 		public XPathResultType GetResultType()
 		{
 			return (XPathResultType) xpathResult.Instance.GetResultTypeAttribute();
@@ -39,11 +40,12 @@ namespace Gecko.DOM
 		{
 			return xpathResult.Instance.GetSingleNodeValueAttribute().Wrap( GeckoNode.Create );
 		}
-
-		public IEnumerable<GeckoNode> GetNodes()
+#endif
+        public IEnumerable<GeckoNode> GetNodes()
 		{
 			return new GeckoNodeEnumerable( xpathResult.Instance );
 		}
+
 
 	}
 

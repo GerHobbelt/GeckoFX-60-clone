@@ -32,13 +32,13 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2fa2f813-c216-4efb-8a8c-de60108ce5e5")]
+	[Guid("41a2f0c6-3ca1-44f9-8efa-744a43aa399d")]
 	public interface nsIAppShellService
 	{
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIXULWindow CreateTopLevelWindow([MarshalAs(UnmanagedType.Interface)] nsIXULWindow aParent, [MarshalAs(UnmanagedType.Interface)] nsIURI aUrl, uint aChromeMask, int aInitialWidth, int aInitialHeight);
+		nsIXULWindow CreateTopLevelWindow([MarshalAs(UnmanagedType.Interface)] nsIXULWindow aParent, [MarshalAs(UnmanagedType.Interface)] nsIURI aUrl, uint aChromeMask, int aInitialWidth, int aInitialHeight, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab);
 		
 		/// <summary>
         /// This is the constructor for creating an invisible DocShell.
@@ -178,7 +178,8 @@ namespace Gecko
         // tag in the XUL.  Set to NS_SIZETOCONTENT to force
         // the window to wrap to its contents.
         // @param aInitialHeight like aInitialWidth, but subtly different.
-        // @param aResult the newly created window is returned here.
+        // @param aOpeningTab The TabParent that requested that this window be opened.
+        // Can be left null.
         // </summary>
 		public const long SIZE_TO_CONTENT = -1;
 	}

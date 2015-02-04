@@ -27,11 +27,12 @@ namespace Gecko
 	
 	
 	/// <summary>
-    ///-*- Mode: IDL; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+    /// @deprecated
     ///
-    /// This Source Code Form is subject to the terms of the Mozilla Public
-    /// License, v. 2.0. If a copy of the MPL was not distributed with this
-    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+    /// IMPORTANT NOTE: THIS INTERFACE IS NO LONGER SUPPORTED AND PLANNED TO BE
+    /// REMOVED SOON. WE STRONGLY ENCORAGE TO MIGRATE THE EXISTING CODE AND FOR
+    /// THE NEW CODE USE ONLY THE NEW HTTP CACHE API IN netwerk/cache2/.
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("14dbe1e9-f3bc-45af-92f4-2c574fcd4e39")]
@@ -39,6 +40,8 @@ namespace Gecko
 	{
 		
 		/// <summary>
+        /// @throws NS_ERROR_NOT_IMPLEMENTED when the cache v2 is prefered to use.
+        ///
         /// Create a cache session
         ///
         /// A cache session represents a client's access into the cache.  The cache
@@ -63,12 +66,16 @@ namespace Gecko
 		nsICacheSession CreateSession([MarshalAs(UnmanagedType.LPStr)] string clientID, System.IntPtr storagePolicy, [MarshalAs(UnmanagedType.U1)] bool streamBased);
 		
 		/// <summary>
+        /// @throws NS_ERROR_NOT_IMPLEMENTED when the cache v2 is prefered to use.
+        ///
         /// Visit entries stored in the cache.  Used to implement about:cache.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void VisitEntries([MarshalAs(UnmanagedType.Interface)] nsICacheVisitor visitor);
 		
 		/// <summary>
+        /// @throws NS_ERROR_NOT_IMPLEMENTED when the cache v2 is prefered to use.
+        ///
         /// Evicts all entries in all devices implied by the storage policy.
         ///
         /// @note This function may evict some items but will throw if it fails to evict
@@ -93,6 +100,8 @@ namespace Gecko
 	{
 		
 		/// <summary>
+        /// @throws NS_ERROR_NOT_IMPLEMENTED when the cache v2 is prefered to use.
+        ///
         /// Create a cache session
         ///
         /// A cache session represents a client's access into the cache.  The cache
@@ -117,12 +126,16 @@ namespace Gecko
 		new nsICacheSession CreateSession([MarshalAs(UnmanagedType.LPStr)] string clientID, System.IntPtr storagePolicy, [MarshalAs(UnmanagedType.U1)] bool streamBased);
 		
 		/// <summary>
+        /// @throws NS_ERROR_NOT_IMPLEMENTED when the cache v2 is prefered to use.
+        ///
         /// Visit entries stored in the cache.  Used to implement about:cache.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void VisitEntries([MarshalAs(UnmanagedType.Interface)] nsICacheVisitor visitor);
 		
 		/// <summary>
+        /// @throws NS_ERROR_NOT_IMPLEMENTED when the cache v2 is prefered to use.
+        ///
         /// Evicts all entries in all devices implied by the storage policy.
         ///
         /// @note This function may evict some items but will throw if it fails to evict

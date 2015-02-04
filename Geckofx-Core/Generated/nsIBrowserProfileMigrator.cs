@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("44993E0E-74E8-4BEC-9D66-AD8156E0A274")]
+	[Guid("30e5a7ec-f71e-4f41-9dbd-7429c02132ec")]
 	public interface nsIBrowserProfileMigrator
 	{
 		
@@ -43,7 +43,7 @@ namespace Gecko
         /// @param aProfile profile to migrate from, if there is more than one.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Migrate(ushort aItems, [MarshalAs(UnmanagedType.Interface)] nsIProfileStartup aStartup, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aProfile);
+		void Migrate(ushort aItems, [MarshalAs(UnmanagedType.Interface)] nsIProfileStartup aStartup, ref Gecko.JsVal aProfile);
 		
 		/// <summary>
         /// A bit field containing profile items that this migrator
@@ -55,7 +55,7 @@ namespace Gecko
         /// @note    a return value of 0 represents no items rather than ALL.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetMigrateData([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aProfile, [MarshalAs(UnmanagedType.U1)] bool aDoingStartup);
+		uint GetMigrateData(ref Gecko.JsVal aProfile, [MarshalAs(UnmanagedType.U1)] bool aDoingStartup);
 		
 		/// <summary>
         /// Whether or not there is any data that can be imported from this

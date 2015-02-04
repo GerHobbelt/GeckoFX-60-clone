@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1f42a6a2-ab0a-45d4-8a96-396f58ea6c6d")]
+	[Guid("4de68896-e8eb-41de-8237-a797b570ac4a")]
 	public interface nsIStyleSheetService
 	{
 		
@@ -63,6 +63,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool SheetRegistered([MarshalAs(UnmanagedType.Interface)] nsIURI sheetURI, uint type);
+		
+		/// <summary>
+        /// Synchronously loads a style sheet from |sheetURI| and returns the
+        /// new style sheet object. Can be used with nsIDOMWindowUtils.addSheet.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMStyleSheet PreloadSheet([MarshalAs(UnmanagedType.Interface)] nsIURI sheetURI, uint type);
 		
 		/// <summary>
         /// Remove the style sheet at |sheetURI| from the list of style sheets

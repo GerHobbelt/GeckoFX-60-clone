@@ -111,7 +111,7 @@ namespace Gecko
 		void EnableStyleSheet([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aURL, [MarshalAs(UnmanagedType.U1)] bool aEnable);
 		
 		/// <summary>
-        ///Get the nsCSSStyleSheet associated with the given URL.
+        ///Get the CSSStyleSheet associated with the given URL.
         ///
         /// @param aURL         The style sheet's URL
         /// @return             the style sheet
@@ -120,7 +120,7 @@ namespace Gecko
 		System.IntPtr GetStyleSheetForURL([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aURL);
 		
 		/// <summary>
-        ///Get the URL associated with the given nsCSSStyleSheet.
+        ///Get the URL associated with the given CSSStyleSheet.
         ///
         /// @param aStyleSheet  The style sheet
         /// @return             the style sheet's URL

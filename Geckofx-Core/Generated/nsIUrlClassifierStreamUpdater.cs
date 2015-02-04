@@ -33,30 +33,18 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("79e6b710-ce68-4639-ac6b-7d293af424a1")]
+	[Guid("e1797597-f4d6-4dd3-a1e1-745ad352cd80")]
 	public interface nsIUrlClassifierStreamUpdater
 	{
 		
 		/// <summary>
-        /// The Url to download from.  Should be plain ascii text.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetUpdateUrlAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUpdateUrl);
-		
-		/// <summary>
-        /// The Url to download from.  Should be plain ascii text.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetUpdateUrlAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUpdateUrl);
-		
-		/// <summary>
-        /// Try to download updates from updateUrl.  Only one instance of this
-        /// runs at a time, so we return false if another instance is already
-        /// running.
-        /// This is used in nsIUrlListManager as well as in testing.
+        /// Try to download updates from updateUrl. If an update is already in
+        /// progress, queues the requested update. This is used in nsIUrlListManager
+        /// as well as in testing.
         /// @param aRequestTables Comma-separated list of tables included in this
         /// update.
         /// @param aRequestBody The body for the request.
+        /// @param aUpdateUrl The plaintext url from which to request updates.
         /// @param aSuccessCallback Called after a successful update.
         /// @param aUpdateErrorCallback Called for problems applying the update
         /// @param aDownloadErrorCallback Called if we get an http error or a
@@ -64,6 +52,6 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool DownloadUpdates([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestTables, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestBody, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aSuccessCallback, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aUpdateErrorCallback, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aDownloadErrorCallback);
+		bool DownloadUpdates([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestTables, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestBody, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUpdateUrl, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aSuccessCallback, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aUpdateErrorCallback, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aDownloadErrorCallback);
 	}
 }

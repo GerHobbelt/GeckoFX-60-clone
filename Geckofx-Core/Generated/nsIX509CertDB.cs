@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0927baea-622d-4e41-a76d-255af426e7fb")]
+	[Guid("5984db62-d0e5-4671-a082-799cf7271e24")]
 	public interface nsIOpenSignedAppFileCallback
 	{
 		
@@ -45,7 +45,7 @@ namespace Gecko
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OpenSignedAppFileFinished(int rv, [MarshalAs(UnmanagedType.Interface)] nsIZipReader aZipReader, [MarshalAs(UnmanagedType.Interface)] nsIX509Cert3 aSignerCert);
+		void OpenSignedAppFileFinished(int rv, [MarshalAs(UnmanagedType.Interface)] nsIZipReader aZipReader, [MarshalAs(UnmanagedType.Interface)] nsIX509Cert aSignerCert);
 	}
 	
 	/// <summary>
@@ -54,7 +54,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7446a5b1-84ca-491f-a2fe-0bc60a71ffa5")]
+	[Guid("dd6e4af8-23bb-41d9-a1e3-9ce925429f2f")]
 	public interface nsIX509CertDB
 	{
 		
@@ -218,7 +218,7 @@ namespace Gecko
         /// trust.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCertTrustFromString([MarshalAs(UnmanagedType.Interface)] nsIX509Cert3 cert, [MarshalAs(UnmanagedType.LPStr)] string trustString);
+		void SetCertTrustFromString([MarshalAs(UnmanagedType.Interface)] nsIX509Cert cert, [MarshalAs(UnmanagedType.LPStr)] string trustString);
 		
 		/// <summary>
         /// Query whether a certificate is trusted for a particular use.
@@ -297,18 +297,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIX509Cert ConstructX509([MarshalAs(UnmanagedType.LPStr)] string certDER, uint length);
 		
-		/// <summary>
-        /// Obtain a reference to the appropriate service for recent
-        /// bad certificates. May only be called on the main thread.
-        ///
-        /// @param isPrivate True if the service for certs for private connections
-        /// is desired, false otherwise.
-        /// @return The requested service.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIRecentBadCerts GetRecentBadCerts([MarshalAs(UnmanagedType.U1)] bool isPrivate);
-		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OpenSignedAppFileAsync(uint trustedRoot, [MarshalAs(UnmanagedType.Interface)] nsIFile aJarFile, [MarshalAs(UnmanagedType.Interface)] nsIOpenSignedAppFileCallback callback);
 		
@@ -333,6 +321,25 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ClearOCSPCache();
+		
+		/// <summary>
+        /// Add a cert to a cert DB from a base64 encoded string.
+        ///
+        /// @param base64 The raw representation of a certificate,
+        /// encoded as Base 64.
+        /// @param aTrust decoded by CERT_DecodeTrustString. 3 comma separated characters,
+        /// indicating SSL, Email, and Obj signing trust
+        /// @param aName name of the cert for display purposes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AddCertFromBase64([MarshalAs(UnmanagedType.LPStr)] string base64, [MarshalAs(UnmanagedType.LPStr)] string aTrust, [MarshalAs(UnmanagedType.LPStr)] string aName);
+		
+		/// <summary>
+        /// Get all the known certs in the database
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIX509CertList GetCerts();
 	}
 	
 	/// <summary>nsIX509CertDBConsts </summary>

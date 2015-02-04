@@ -27,9 +27,10 @@ namespace Gecko
 	
 	
 	/// <summary>
-    ///This Source Code Form is subject to the terms of the Mozilla Public
-    /// License, v. 2.0. If a copy of the MPL was not distributed with this
-    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+    /// This class will be removed in gecko v33. See comments below for alternatives.
+    ///
+    /// @status DEPRECATED - see comments below.
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("7B4A099F-6F6E-4565-977B-FB622ADBFF49")]
@@ -37,16 +38,18 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        ///This Source Code Form is subject to the terms of the Mozilla Public
-        /// License, v. 2.0. If a copy of the MPL was not distributed with this
-        /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+        /// This class will be removed in gecko v33. See comments below for alternatives.
+        ///
+        /// @status DEPRECATED - see comments below.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetColorAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aColor);
 		
 		/// <summary>
-        ///This Source Code Form is subject to the terms of the Mozilla Public
-        /// License, v. 2.0. If a copy of the MPL was not distributed with this
-        /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+        /// This class will be removed in gecko v33. See comments below for alternatives.
+        ///
+        /// @status DEPRECATED - see comments below.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetColorAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aColor);
 		
@@ -63,12 +66,31 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetThicknessAttribute(ushort aThickness);
 		
+		/// <summary>
+        /// This function now does nothing at all. Use the :-moz-devtools-highlighted
+        /// pseudo-class instead. For example, see the "HIGHLIGHTED_PSEUDO_CLASS" and
+        /// "INVERT" lines in:
+        /// https://hg.mozilla.org/dom-inspector/file/tip/resources/content/Flasher.js
+        ///
+        /// @status DEPRECATED
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DrawElementOutline([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
 		
+		/// <summary>
+        /// This function now does nothing at all.
+        ///
+        /// @status DEPRECATED
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RepaintElement([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
 		
+		/// <summary>
+        /// As of gecko v33 you should use inIDOMUtils::scrollElementIntoView instead
+        /// of this function.
+        ///
+        /// @status DEPRECATED
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ScrollElementIntoView([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
 	}

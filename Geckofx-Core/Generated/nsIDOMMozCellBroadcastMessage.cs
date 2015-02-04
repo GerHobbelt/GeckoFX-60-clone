@@ -32,9 +32,15 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6abe65de-6729-41f7-906a-3f3a2dbe30ae")]
+	[Guid("dc729df4-f1d8-11e3-b00d-d3332542c557")]
 	public interface nsIDOMMozCellBroadcastMessage
 	{
+		
+		/// <summary>
+        /// The Service Id in the device where the message is received from.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetServiceIdAttribute();
 		
 		/// <summary>
         /// Indication of the geographical area over which the Message Code is unique,
@@ -83,7 +89,7 @@ namespace Gecko
         /// System time stamp at receival.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetTimestampAttribute();
+		long GetTimestampAttribute();
 		
 		/// <summary>
         /// Additional ETWS-specific info.

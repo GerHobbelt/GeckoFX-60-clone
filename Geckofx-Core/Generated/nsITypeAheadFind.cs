@@ -30,7 +30,7 @@ namespace Gecko
     ///nsTypeAheadFind </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0749a445-19d3-4eb9-9d66-78eca8c6f604")]
+	[Guid("f4411c5b-761b-498c-8050-dcfc8311f69e")]
 	public interface nsITypeAheadFind
 	{
 		
@@ -53,6 +53,12 @@ namespace Gecko
 		uint FindAgain([MarshalAs(UnmanagedType.U1)] bool findBackwards, [MarshalAs(UnmanagedType.U1)] bool aLinksOnly);
 		
 		/// <summary>
+        ///Return the range of the most recent match. </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMRange GetFoundRange();
+		
+		/// <summary>
         ///Change searched docShell.  This happens when e.g. we use the same
         /// nsITypeAheadFind object to search different tabs. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -70,6 +76,12 @@ namespace Gecko
         /// necessarily happen automatically. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void CollapseSelection();
+		
+		/// <summary>
+        ///Check if a range is visible </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsRangeVisible([MarshalAs(UnmanagedType.Interface)] nsIDOMRange aRange, [MarshalAs(UnmanagedType.U1)] bool aMustBeInViewPort);
 		
 		/// <summary>
         ///Attributes </summary>

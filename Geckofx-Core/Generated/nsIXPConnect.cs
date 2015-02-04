@@ -367,15 +367,9 @@ namespace Gecko
 	/// <summary> </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3d5a6320-8764-11e3-baa7-0800200c9a66")]
+	[Guid("9ec7367c-0dde-4b7a-963c-5a590ee3ee42")]
 	public interface nsIXPConnect
 	{
-		
-		/// <summary>
-        /// Initializes classes on a global object that has already been created.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitClasses(System.IntPtr aJSContext, System.IntPtr aGlobalJSObj);
 		
 		/// <summary>
         /// Creates a new global object using the given aCOMObj as the global
@@ -493,22 +487,12 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISupports GetNativeOfWrapper(System.IntPtr aJSContext, System.IntPtr aJSObj);
 		
-		/// <summary>
-        /// The security manager to use when the current JSContext has no security
-        /// manager.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDefaultSecurityManager([MarshalAs(UnmanagedType.Interface)] nsIXPCSecurityManager aManager);
-		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIStackFrame CreateStackFrameLocation(uint aLanguage, [MarshalAs(UnmanagedType.LPStr)] string aFilename, [MarshalAs(UnmanagedType.LPStr)] string aFunctionName, int aLineNumber, [MarshalAs(UnmanagedType.Interface)] nsIStackFrame aCaller);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetCurrentJSContext();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr InitSafeJSContext();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetSafeJSContext();
@@ -599,17 +583,13 @@ namespace Gecko
         /// the script. The actual evaluation will happen on a new
         /// temporary context.
         /// @param sandbox The sandbox object to evaluate the script in.
-        /// @param returnStringOnly The only results to come out of the
-        /// computation (including exceptions) will
-        /// be coerced into strings created in the
-        /// sandbox.
         /// @return The result of the evaluation as a jsval. If the caller
         /// intends to use the return value from this call the caller
         /// is responsible for rooting the jsval before making a call
         /// to this method.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal EvalInSandboxObject([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase source, [MarshalAs(UnmanagedType.LPStr)] string filename, System.IntPtr cx, System.IntPtr sandbox, [MarshalAs(UnmanagedType.U1)] bool returnStringOnly);
+		Gecko.JsVal EvalInSandboxObject([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase source, [MarshalAs(UnmanagedType.LPStr)] string filename, System.IntPtr cx, System.IntPtr sandbox);
 		
 		/// <summary>
         /// Whether or not XPConnect should report all JS exceptions when returning
@@ -641,16 +621,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIXPConnectJSObjectHolder HoldObject(System.IntPtr aJSContext, System.IntPtr aObject);
-		
-		/// <summary>
-        /// When we place the browser in JS debug mode, there can't be any
-        /// JS on the stack. This is because we currently activate debugMode
-        /// on all scripts in the JSRuntime when the debugger is activated.
-        /// This method will turn debug mode on or off when the context
-        /// stack reaches zero length.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDebugModeWhenPossible([MarshalAs(UnmanagedType.U1)] bool mode, [MarshalAs(UnmanagedType.U1)] bool allowSyncDisable);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void WriteScript([MarshalAs(UnmanagedType.Interface)] nsIObjectOutputStream aStream, System.IntPtr aJSContext, System.IntPtr aJSScript);

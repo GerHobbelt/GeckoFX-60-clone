@@ -262,6 +262,7 @@ namespace Gecko
 			var r = EvaluateXPathInternal( xpath );
 
 			nsIDOMNode singleNode = null;
+#if NEED_WEBIDL
 			switch (r.GetResultTypeAttribute())
 			{
 				case nsIDOMXPathResultConsts.UNORDERED_NODE_ITERATOR_TYPE:
@@ -272,7 +273,7 @@ namespace Gecko
 					singleNode = r.GetSingleNodeValueAttribute();
 					break;
 			}
-
+#endif
 			var ret = singleNode.Wrap( GeckoNode.Create );
 			Xpcom.FreeComObject( ref r );
 			return ret;
@@ -283,6 +284,7 @@ namespace Gecko
 			var r = EvaluateXPathInternal( xpath );
 
 			nsIDOMNode singleNode = null;
+#if NEED_WEBIDL
 			switch (r.GetResultTypeAttribute())
 			{
 				case nsIDOMXPathResultConsts.UNORDERED_NODE_ITERATOR_TYPE:
@@ -301,7 +303,7 @@ namespace Gecko
 					singleNode = r.GetSingleNodeValueAttribute();
 					break;
 			}
-
+#endif
 			var ret = singleNode.Wrap( GeckoNode.Create );
 			Xpcom.FreeComObject( ref r );
 			return ret;

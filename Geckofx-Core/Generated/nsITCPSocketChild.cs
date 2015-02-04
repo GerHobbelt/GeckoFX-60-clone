@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("292ebb3a-beac-4e06-88b0-b5b4e88ebd1c")]
+	[Guid("4277aff0-4c33-11e3-8f96-0800200c9a66")]
 	public interface nsITCPSocketChild
 	{
 		
@@ -77,5 +77,11 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSocketAndWindow([MarshalAs(UnmanagedType.Interface)] nsITCPSocketInternal socket, ref Gecko.JsVal windowVal, System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetHostAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aHost);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ushort GetPortAttribute();
 	}
 }

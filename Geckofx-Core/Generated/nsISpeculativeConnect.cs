@@ -61,7 +61,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2b6d6fb6-ab28-4f4c-af84-bfdbb7866d72")]
+	[Guid("a9cdd875-2ef8-4d53-95d6-e4e18f65e0db")]
 	public interface nsISpeculativeConnectionOverrider
 	{
 		
@@ -89,5 +89,13 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIgnoreIdleAttribute();
+		
+		/// <summary>
+        /// Used by the Predictor to gather telemetry data on speculative connection
+        /// usage.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsFromPredictorAttribute();
 	}
 }

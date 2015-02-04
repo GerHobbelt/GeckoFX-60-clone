@@ -761,7 +761,12 @@ namespace GeckofxUnitTests
 			throw new NotImplementedException();
 		}
 
-		public IntPtr GetOnmessageAttribute(IntPtr jsContext)
+	    public void SetOnlanguagechangeAttribute(JsVal aOnlanguagechange, IntPtr jsContext)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public IntPtr GetOnmessageAttribute(IntPtr jsContext)
 		{
 			throw new NotImplementedException();
 		}
@@ -928,7 +933,12 @@ namespace GeckofxUnitTests
 			throw new NotImplementedException();
 		}
 
-		JsVal nsIDOMWindow.GetOnmessageAttribute(IntPtr jsContext)
+	    public JsVal GetOnlanguagechangeAttribute(IntPtr jsContext)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    JsVal nsIDOMWindow.GetOnmessageAttribute(IntPtr jsContext)
 		{
 			throw new NotImplementedException();
 		}

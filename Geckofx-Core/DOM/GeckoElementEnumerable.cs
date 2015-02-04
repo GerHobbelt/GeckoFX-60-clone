@@ -22,9 +22,13 @@ namespace Gecko
 		public IEnumerator<GeckoHtmlElement> GetEnumerator()
 		{
 			nsIDOMNode node;
+#if NEED_WEBIDL
 			while ((node = xpathResult.IterateNext()) != null)
 				if (node is nsIDOMHTMLElement)
 					yield return GeckoHtmlElement.Create((nsIDOMHTMLElement)node);
+#else
+		    return null;
+#endif
 		}
 
 		#endregion
@@ -34,8 +38,12 @@ namespace Gecko
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
 			nsIDOMNode node;
+#if NEED_WEBIDL
 			while ((node = xpathResult.IterateNext()) != null)
 				yield return GeckoNode.Create(node);
+#else
+		    return null;
+#endif
 		}
 
 		#endregion

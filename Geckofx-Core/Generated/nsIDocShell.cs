@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e46d924d-c20f-4add-8cf5-1e1c817b2181")]
+	[Guid("e5fe5c76-e511-4da3-9709-f8294b8dc5ce")]
 	public interface nsIDocShell : nsIDocShellTreeItem
 	{
 		
@@ -213,6 +213,12 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDocShellTreeItem FindChildWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aName, [MarshalAs(UnmanagedType.U1)] bool aRecurse, [MarshalAs(UnmanagedType.U1)] bool aSameType, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new System.IntPtr GetDocument();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new System.IntPtr GetWindow();
 		
 		/// <summary>
         /// Loads a given URI.  This will give priority to loading the requested URI
@@ -752,6 +758,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DisplayLoadError(int aError, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aURL, [MarshalAs(UnmanagedType.Interface)] nsIChannel aFailedChannel);
+		
+		/// <summary>
+        /// The channel that failed to load and resulted in an error page.
+        /// May be null. Relevant only to error pages.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIChannel GetFailedChannelAttribute();
 		
 		/// <summary>
         /// Keeps track of the previous SHTransaction index and the current
@@ -1474,6 +1488,30 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDeviceSizeIsPageSizeAttribute([MarshalAs(UnmanagedType.U1)] bool aDeviceSizeIsPageSize);
+		
+		/// <summary>
+        /// Regarding setOpener / getOpener - We can't use XPIDL's "attribute"
+        /// for notxpcom, so we're relegated to using explicit gets / sets. This
+        /// should be fine, considering that these methods should only ever be
+        /// called from native code.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOpener([MarshalAs(UnmanagedType.Interface)] nsITabParent aOpener);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsITabParent GetOpener();
+		
+		/// <summary>
+        /// See the documentation for setOpener and getOpener about why we
+        /// don't use attribute here instead.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOpenedRemote([MarshalAs(UnmanagedType.Interface)] nsITabParent aOpenedRemote);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsITabParent GetOpenedRemote();
 	}
 	
 	/// <summary>nsIDocShellConsts </summary>
@@ -1509,7 +1547,7 @@ namespace Gecko
 		public const long INTERNAL_LOAD_FLAGS_IS_SRCDOC = 0x40;
 		
 		// 
-		public const long INTERNAL_LOAD_FLAGS_FIXUP_SCHEME_TYPOS = 0x80;
+		public const long INTERNAL_LOAD_FLAGS_NO_OPENER = 0x100;
 		
 		// <summary>
         // Get an enumerator over this docShell and its children.

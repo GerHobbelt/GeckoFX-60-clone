@@ -32,16 +32,33 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7a16feb4-5a78-4589-9174-b728f26942e2")]
+	[Guid("674b6e69-05f0-41da-aabd-4184ea85c9d8")]
 	public interface nsIActivityUIGlueCallback
 	{
 		
 		/// <summary>
-        ///This Source Code Form is subject to the terms of the Mozilla Public
-        /// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-        /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+        /// Called if the user picked an activitiy to launch.
+        /// @param resultType Inidcates that {@code result} is an index or a native activity result.
+        /// @param result     If WEBAPPS_ACTIVITY, the index of the chosen activity. Send '-1' if no choice is made.
+        ///                          If NATIVE_ACTIVITY, the return value to be sent to the MozActivity.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void HandleEvent(int choice);
+		void HandleEvent(short resultType, ref Gecko.JsVal result);
+	}
+	
+	/// <summary>nsIActivityUIGlueCallbackConsts </summary>
+	public class nsIActivityUIGlueCallbackConsts
+	{
+		
+		// <summary>
+        // The activity service should start the activity at the specified index.
+        // </summary>
+		public const short WEBAPPS_ACTIVITY = 0;
+		
+		// <summary>
+        // The activity service should deliver the specified result to the MozActivity callback.
+        // </summary>
+		public const short NATIVE_ACTIVITY = 1;
 	}
 	
 	/// <summary>
@@ -49,16 +66,19 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8624ad73-937a-400f-9d93-39ab5449b867")]
+	[Guid("3caef69f-3569-4b19-bcea-1cfb0fee4466")]
 	public interface nsIActivityUIGlue
 	{
 		
 		/// <summary>
-        /// @param name        The name of the activity to handle (eg. "share", "pick").
+        /// This method is called even if the size of {@code activities} is 0 so that the callee can
+        /// decide whether or not to defer the request to an alternate activity system.
+        ///
+        /// @param options     The ActivityOptions object in the form of { name: "send", data: { ... } }
         /// @param activities  A json blob which is an array of { "title":"...", "icon":"..." }.
-        /// @param onresult    The callback to send the index of the choosen activity. Send -1 if no choice is made.
+        /// @param callback    The callback to send the index of the choosen activity, or the result.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ChooseActivity([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase title, ref Gecko.JsVal activities, [MarshalAs(UnmanagedType.Interface)] nsIActivityUIGlueCallback onresult);
+		void ChooseActivity(ref Gecko.JsVal options, ref Gecko.JsVal activities, [MarshalAs(UnmanagedType.Interface)] nsIActivityUIGlueCallback callback);
 	}
 }

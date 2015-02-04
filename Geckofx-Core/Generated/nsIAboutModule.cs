@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9575693c-60d9-4332-b6b8-6c29289339cb")]
+	[Guid("1d5992c3-28b0-4ec1-9dbb-f5fde7f72199")]
 	public interface nsIAboutModule
 	{
 		
@@ -52,6 +52,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetURIFlags([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		
+		/// <summary>
+        /// Returns the Indexed DB origin's postfix used for the given about: URI.
+        /// If the postfix returned is null then the URI's path (e.g. "home" for
+        /// about:home) will be used to construct the origin.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetIndexedDBOriginPostfix([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 	}
 	
 	/// <summary>nsIAboutModuleConsts </summary>
@@ -80,5 +88,10 @@ namespace Gecko
         // in about:about, especially if it's not useful without a query string.
         // </summary>
 		public const ulong HIDE_FROM_ABOUTABOUT = (1<<2);
+		
+		// <summary>
+        // A flag that indicates whether this about: URI wants Indexed DB enabled.
+        // </summary>
+		public const ulong ENABLE_INDEXED_DB = (1<<3);
 	}
 }

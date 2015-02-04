@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4080f700-9c16-4884-8f8d-e28094377084")]
+	[Guid("ec72446c-8241-457f-ba75-83d214392289")]
 	public interface nsISSLSocketControl
 	{
 		
@@ -96,11 +96,12 @@ namespace Gecko
 		
 		/// <summary>
         ///The Key Exchange Algorithm is used when determining whether or
-        ///       not to do false start.
+        ///       not to do false start and whether or not HTTP/2 can be used.
         ///       After a handshake is complete it can be read from KEAUsed,
         ///       before a handshake is started it may be set through KEAExpected.
         ///       The values correspond to the SSLKEAType enum in NSS or the
         ///       KEY_EXCHANGE_UNKNOWN constant defined below.
+        ///       KEAKeyBits is the size/security-level used for the KEA.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		short GetKEAUsedAttribute();
@@ -110,6 +111,9 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetKEAExpectedAttribute(short aKEAExpected);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetKEAKeyBitsAttribute();
 		
 		/// <summary>
         /// The original flags from the socket provider.

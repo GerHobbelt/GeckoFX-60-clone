@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a01362a0-5c45-11e2-bcfd-0800200c9a66")]
+	[Guid("22816a32-2179-4b81-9b29-e31d6f9a36c2")]
 	public interface nsIHttpChannel : nsIChannel
 	{
 		
@@ -493,8 +493,25 @@ namespace Gecko
 		new void GetContentDispositionHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentDispositionHeader);
 		
 		/// <summary>
-        /// Set/get the HTTP request method (default is "GET").  Setter is case
-        /// insensitive; getter returns an uppercase string.
+        /// The nsILoadInfo for this load.  This is immutable for the
+        /// lifetime of the load and should be passed through across
+        /// redirects and the like.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsILoadInfo GetLoadInfoAttribute();
+		
+		/// <summary>
+        /// The nsILoadInfo for this load.  This is immutable for the
+        /// lifetime of the load and should be passed through across
+        /// redirects and the like.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetLoadInfoAttribute([MarshalAs(UnmanagedType.Interface)] nsILoadInfo aLoadInfo);
+		
+		/// <summary>
+        /// Set/get the HTTP request method (default is "GET").  Both setter and
+        /// getter are case sensitive.
         ///
         /// This attribute may only be set before the channel is opened.
         ///
@@ -509,8 +526,8 @@ namespace Gecko
 		void GetRequestMethodAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestMethod);
 		
 		/// <summary>
-        /// Set/get the HTTP request method (default is "GET").  Setter is case
-        /// insensitive; getter returns an uppercase string.
+        /// Set/get the HTTP request method (default is "GET").  Both setter and
+        /// getter are case sensitive.
         ///
         /// This attribute may only be set before the channel is opened.
         ///
@@ -648,6 +665,37 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAllowPipeliningAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowPipelining);
+		
+		/// <summary>
+        /// This attribute of the channel indicates whether or not
+        /// the underlying HTTP transaction should be honor stored Strict Transport
+        /// Security directives for its principal. It defaults to true. Using
+        /// OCSP to bootstrap the HTTPs is the likely use case for setting it to
+        /// false.
+        ///
+        /// This attribute may only be set before the channel is opened.
+        ///
+        /// @throws NS_ERROR_IN_PROGRESS or NS_ERROR_ALREADY_OPENED
+        /// if called after the channel has been opened.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAllowSTSAttribute();
+		
+		/// <summary>
+        /// This attribute of the channel indicates whether or not
+        /// the underlying HTTP transaction should be honor stored Strict Transport
+        /// Security directives for its principal. It defaults to true. Using
+        /// OCSP to bootstrap the HTTPs is the likely use case for setting it to
+        /// false.
+        ///
+        /// This attribute may only be set before the channel is opened.
+        ///
+        /// @throws NS_ERROR_IN_PROGRESS or NS_ERROR_ALREADY_OPENED
+        /// if called after the channel has been opened.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAllowSTSAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowSTS);
 		
 		/// <summary>
         /// This attribute specifies the number of redirects this channel is allowed

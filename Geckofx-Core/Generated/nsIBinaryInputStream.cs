@@ -38,7 +38,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("42084755-fedc-4310-831c-4f43e7b42e20")]
+	[Guid("899b826b-2eb3-469c-8b31-4c29f5d341a6")]
 	public interface nsIBinaryInputStream : nsIInputStream
 	{
 		
@@ -216,9 +216,9 @@ namespace Gecko
         /// Note: passing view.buffer, where view is an ArrayBufferView of an
         /// ArrayBuffer, is not valid unless view.byteOffset == 0.
         ///
-        /// @throws NS_ERROR_FAILURE if it can't read aLength bytes
+        /// @return The number of bytes actually read into aArrayBuffer.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReadArrayBuffer(uint aLength, ref Gecko.JsVal aArrayBuffer, System.IntPtr jsContext);
+		uint ReadArrayBuffer(uint aLength, ref Gecko.JsVal aArrayBuffer, System.IntPtr jsContext);
 	}
 }

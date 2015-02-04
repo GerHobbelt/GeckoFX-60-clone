@@ -400,12 +400,12 @@ namespace Gecko
 		new bool Equals([MarshalAs(UnmanagedType.Interface)] nsIFile inFile);
 		
 		/// <summary>
-        /// Will determine if inFile is a descendant of this file
-        /// If |recur| is true, look in subdirectories too
+        /// Will determine if inFile is a descendant of this file.
+        /// This routine looks in subdirectories too.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool Contains([MarshalAs(UnmanagedType.Interface)] nsIFile inFile, [MarshalAs(UnmanagedType.U1)] bool recur);
+		new bool Contains([MarshalAs(UnmanagedType.Interface)] nsIFile inFile);
 		
 		/// <summary>
         /// Parent will be null when this is at the top of the volume.

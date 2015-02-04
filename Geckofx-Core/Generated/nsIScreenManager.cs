@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1C195990-FF9E-412B-AFE7-67D1C660BB27")]
+	[Guid("e8a96e60-6b61-4a14-bacc-53891604b502")]
 	public interface nsIScreenManager
 	{
 		
@@ -43,6 +43,13 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIScreen ScreenForRect(int left, int top, int width, int height);
+		
+		/// <summary>
+        /// interface.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIScreen ScreenForId(uint id);
 		
 		/// <summary>
         /// often.

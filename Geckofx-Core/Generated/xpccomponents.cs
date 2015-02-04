@@ -31,7 +31,7 @@ namespace Gecko
     /// (interesting stuff only reflected into JavaScript) </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c99cffac-5aed-4267-ad2f-f4a4c9d4a081")]
+	[Guid("f235ef76-9919-478b-aa0f-282d994ddf76")]
 	public interface nsIXPCComponents_InterfacesByID
 	{
 	}
@@ -160,7 +160,7 @@ namespace Gecko
     /// interface of Components.utils </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("45b80e00-fb0d-439e-b7bf-54f24af0c4a6")]
+	[Guid("1a6c4db7-4b90-4919-9cd8-161ac14a7189")]
 	public interface nsIXPCComponents_Utils
 	{
 		
@@ -196,6 +196,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal EvalInSandbox([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase source, ref Gecko.JsVal sandbox, ref Gecko.JsVal version, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase filename, int lineNo, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// getSandboxAddonId is designed to be called from JavaScript only.
+        ///
+        /// getSandboxAddonId retrieves the add-on ID associated with
+        /// a sandbox object. It will return undefined if there
+        /// is no add-on ID attached to the sandbox.
+        ///
+        /// var s = C.u.Sandbox(..., { addonId: "123" });
+        /// var id = C.u.getSandboxAddonId(s);
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetSandboxAddonId(ref Gecko.JsVal sandbox, System.IntPtr jsContext);
 		
 		/// <summary>
         /// getSandboxMetadata is designed to be called from JavaScript only.
@@ -258,6 +271,20 @@ namespace Gecko
 		Gecko.JsVal Import([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI, ref Gecko.JsVal targetObj, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
+        /// Returns true if the js file located at 'registryLocation' location has
+        /// been loaded previously via the import method above. Returns false
+        /// otherwise.
+        ///
+        /// @param resourceURI A resource:// URI string representing the location of
+        /// the js file to be checked if it is already loaded or not.
+        /// @returns boolean, true if the js file has been loaded via import. false
+        /// otherwise
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsModuleLoaded([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI);
+		
+		/// <summary>
         /// Unloads the JS module at 'registryLocation'. Existing references to the
         /// module will continue to work but any subsequent import of the module will
         /// reload it and give new reference. If the JS module hasn't yet been
@@ -302,6 +329,42 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ForceCC();
+		
+		/// <summary>
+        /// To be called from JS only.
+        ///
+        /// If any incremental CC is in progress, finish it. For testing.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void FinishCC();
+		
+		/// <summary>
+        /// To be called from JS only.
+        ///
+        /// Do some cycle collector work, with the given work budget.
+        /// The cost of calling Traverse() on a single object is set as 1.
+        /// For testing.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CcSlice(long budget);
+		
+		/// <summary>
+        /// To be called from JS only.
+        ///
+        /// Return the longest cycle collector slice time since the last
+        /// time clearMaxCCTime() was called.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetMaxCCSliceTimeSinceClear();
+		
+		/// <summary>
+        /// To be called from JS only.
+        ///
+        /// Reset the internal max slice time value used for
+        /// getMaxCCSliceTimeSinceClear().
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ClearMaxCCTime();
 		
 		/// <summary>
         /// To be called from JS only.
@@ -433,6 +496,13 @@ namespace Gecko
 		bool IsDeadWrapper(ref Gecko.JsVal obj);
 		
 		/// <summary>
+        /// Determines whether this object is a cross-process wrapper.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsCrossProcessWrapper(ref Gecko.JsVal obj);
+		
+		/// <summary>
         /// To be called from JS only. This is for Gecko internal use only, and may
         /// disappear at any moment.
         ///
@@ -452,6 +522,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetWantXrays(ref Gecko.JsVal vscope, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// For gecko internal automation use only. Calling this in production code
+        /// would result in security vulnerabilities, so it will crash if used outside
+        /// of automation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ForcePermissiveCOWs(System.IntPtr jsContext);
 		
 		/// <summary>
         /// Forces the usage of a privileged |Components| object for a potentially-
@@ -629,9 +707,12 @@ namespace Gecko
 		/// <summary>
         /// Clone an object into a scope.
         /// The 3rd argument is an optional options object:
-        /// - cloneFunction: boolean. If true, any function in the value is are
+        /// - cloneFunctions: boolean. If true, functions in the value are
         /// wrapped in a function forwarder that appears to be a native function in
-        /// the content scope.
+        /// the content scope. Defaults to false.
+        /// - wrapReflectors: boolean. If true, DOM objects are passed through the
+        /// clone directly with cross-compartment wrappers. Otherwise, the clone
+        /// fails when such an object is encountered. Defaults to false.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal CloneInto(ref Gecko.JsVal value, ref Gecko.JsVal scope, ref Gecko.JsVal options, System.IntPtr jsContext);
@@ -661,6 +742,9 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPrincipal GetObjectPrincipal(ref Gecko.JsVal obj, System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAddonInterposition([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase addonId, [MarshalAs(UnmanagedType.Interface)] nsIAddonInterposition interposition, System.IntPtr jsContext);
 	}
 	
 	/// <summary>

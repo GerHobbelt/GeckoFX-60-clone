@@ -258,10 +258,11 @@ namespace Gecko
 				return DoCreateChromeWindow(parent, chromeFlags, 0, null, ref cancel);
 			}
 
-			public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags, uint contextFlags, nsIURI uri, ref bool cancel)
-			{
-				return DoCreateChromeWindow(parent, chromeFlags, contextFlags, uri, ref cancel);
-			}
+		    public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags, uint contextFlags, nsIURI uri,
+		        nsITabParent aOpeningTab, ref bool cancel)
+		    {
+                return DoCreateChromeWindow(parent, chromeFlags, contextFlags, uri, ref cancel);
+		    }		    
 		}
 
 		#region Navigation
@@ -1128,8 +1129,13 @@ namespace Gecko
 		{
 			this.ChromeFlags = (uint)flags;
 		}
-		
-		void nsIWebBrowserChrome.DestroyBrowserWindow()
+
+	    public nsIXULWindow CreateNewWindow(int aChromeFlags, nsITabParent aOpeningTab)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    void nsIWebBrowserChrome.DestroyBrowserWindow()
 		{
 			//throw new NotImplementedException();
 			OnWindowClosed(EventArgs.Empty);			
@@ -1942,9 +1948,11 @@ namespace Gecko
 				case "change":
 					OnDomContentChanged(e);
 					break;
+#if DELME
 				case "hashchange":
 					OnHashChange((DomHashChangeEventArgs)e);
 					break;
+#endif
 				case "dragstart":
 					OnDomDragStart((DomDragEventArgs)e);
 					break;

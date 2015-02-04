@@ -73,31 +73,21 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("ade9b72b-3562-44f5-aba6-e63246be53ae")]
+	[Guid("231fb2ad-ea8a-4e63-a331-eafc3b434811")]
 	public interface nsIUrlClassifierHashCompleter
 	{
 		
 		/// <summary>
-        /// Request a completed hash.
+        /// Request a completed hash from the given gethash url.
         ///
         /// @param partialHash
         /// The 32-bit hash encountered by the url-classifier.
+        /// @param gethashUrl
+        /// The gethash url to use.
         /// @param callback
         /// An nsIUrlClassifierCompleterCallback instance.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Complete([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase partialHash, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierHashCompleterCallback callback);
-		
-		/// <summary>
-        /// The URL for the gethash request
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetGethashUrlAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aGethashUrl);
-		
-		/// <summary>
-        /// The URL for the gethash request
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetGethashUrlAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aGethashUrl);
+		void Complete([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase partialHash, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase gethashUrl, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierHashCompleterCallback callback);
 	}
 }

@@ -43,7 +43,7 @@ namespace Gecko
         /// The new voicemail status
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyStatusChanged(System.IntPtr status);
+		void NotifyStatusChanged(ref Gecko.JsVal status);
 	}
 	
 	/// <summary>
@@ -75,7 +75,7 @@ namespace Gecko
 		void UnregisterVoicemailMsg([MarshalAs(UnmanagedType.Interface)] nsIVoicemailListener listener);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetVoicemailStatus(uint clientId);
+		Gecko.JsVal GetVoicemailStatus(uint clientId);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetVoicemailNumber(uint clientId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);

@@ -167,8 +167,7 @@ namespace Gecko
         /// Consumers will be notified with the 'network-interface-registered'
         /// observer notification.
         ///
-        /// Throws if there's already an interface registered that has the same
-        /// name.
+        /// Throws if there's already an interface registered with the same network id.
         ///
         /// @param network
         /// Network interface to register.
@@ -193,7 +192,9 @@ namespace Gecko
 		
 		/// <summary>
         /// Object containing all known network connections, keyed by their
-        /// interface name.
+        /// network id. Network id is composed of a sub-id + '-' + network
+        /// type. For mobile network types, sub-id is 'ril' + service id; for
+        /// non-mobile network types, sub-id is always 'device'.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetNetworkInterfacesAttribute();

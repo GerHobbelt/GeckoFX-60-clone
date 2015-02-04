@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4af2bdb7-1547-4d10-8886-02a78c3c0b83")]
+	[Guid("1cbc6b7b-dbf4-41fb-96cb-ec52c84cf409")]
 	public interface nsIMediaDevice
 	{
 		
@@ -51,6 +51,9 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetFacingModeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFacingMode);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMediaSourceAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMediaSource);
 	}
 	
 	/// <summary>nsIGetUserMediaDevicesSuccessCallback </summary>

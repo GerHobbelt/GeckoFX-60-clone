@@ -55,7 +55,7 @@ namespace Gecko
 	/// <summary>nsISearchEngine </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("77de6680-57ec-4105-a183-cc7cf7e84b09")]
+	[Guid("65fd517b-6bda-4bac-bbe1-42de1b3a7df6")]
 	public interface nsISearchEngine
 	{
 		
@@ -140,6 +140,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetIcons();
+		
+		/// <summary>
+        /// Opens a speculative connection to the engine's search URI
+        /// (and suggest URI, if different) to reduce request latency
+        ///
+        /// @param  options
+        /// An object that must contain the following fields:
+        /// {window} the content window for the window performing the search
+        ///
+        /// @throws NS_ERROR_INVALID_ARG if options is omitted or lacks required
+        /// elemeents
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SpeculativeConnect(ref Gecko.JsVal options);
 		
 		/// <summary>
         /// An optional shortcut alias for the engine.

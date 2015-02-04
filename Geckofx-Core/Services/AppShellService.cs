@@ -22,7 +22,8 @@ namespace Gecko
 
 		public static nsIXULWindow CreateTopLevelWindow( nsIXULWindow aParent,  nsIURI aUrl, uint aChromeMask, int aInitialWidth, int aInitialHeight)
 		{
-			return _appShellService.Instance.CreateTopLevelWindow( aParent, aUrl, aChromeMask, aInitialWidth, aInitialHeight );
+            // TODO: add a nsITabParent
+			return _appShellService.Instance.CreateTopLevelWindow( aParent, aUrl, aChromeMask, aInitialWidth, aInitialHeight, null );
 		}
 	}
 }

@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("19fe78cc-65ff-4b1d-a5d7-9ea89692cec6")]
+	[Guid("756c326c-eb38-4342-95e5-5eabea809174")]
 	public interface nsIDOMCSSCharsetRule : nsIDOMCSSRule
 	{
 		
@@ -55,6 +55,9 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMCSSRule GetParentRuleAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new System.IntPtr GetCSSRule();
 		
 		/// <summary>
         ///This Source Code Form is subject to the terms of the Mozilla Public

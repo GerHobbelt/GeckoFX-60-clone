@@ -45,7 +45,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0c99811f-6c5f-4a78-9c31-2d266d714175")]
+	[Guid("4580f5eb-693d-423d-b0ce-2cb20a962e4d")]
 	public interface nsISessionStore
 	{
 		
@@ -217,7 +217,7 @@ namespace Gecko
         /// @param aStringValue is the value itself (use JSON.stringify/parse before setting JS objects).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetWindowValue([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aStringValue);
+		void SetWindowValue([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, ref Gecko.JsVal aStringValue);
 		
 		/// <summary>
         /// @param aWindow is the browser window to get the value for.
@@ -241,7 +241,7 @@ namespace Gecko
         /// @param aStringValue is the value itself (use JSON.stringify/parse before setting JS objects).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetTabValue([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aTab, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aStringValue);
+		void SetTabValue([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aTab, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, ref Gecko.JsVal aStringValue);
 		
 		/// <summary>
         /// @param aTab is the tabbrowser tab to get the value for.
@@ -263,7 +263,7 @@ namespace Gecko
         /// @param aStringValue is the value itself (use JSON.stringify/parse before setting JS objects).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetGlobalValue([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aStringValue);
+		void SetGlobalValue([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, ref Gecko.JsVal aStringValue);
 		
 		/// <summary>
         /// @param aTab is the browser tab to get the value for.

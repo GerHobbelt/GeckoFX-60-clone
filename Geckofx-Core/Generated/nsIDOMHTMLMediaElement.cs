@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1f9393e8-2df0-4072-87b9-c26999b09acc")]
+	[Guid("0e14e6ad-2074-48b7-a247-e545a3a15131")]
 	public interface nsIDOMHTMLMediaElement
 	{
 		
@@ -241,6 +241,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetMozAudioChannelTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMozAudioChannelType);
+		
+		/// <summary>
+        /// onmozinterruptend - called when the interruption is concluded
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsVideo();
 	}
 	
 	/// <summary>nsIDOMHTMLMediaElementConsts </summary>

@@ -34,53 +34,6 @@ namespace Gecko
 	[Guid("75506f84-b504-11d5-a7f2-ca108ab8b6fc")]
 	public interface nsIDOMXPathResult
 	{
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ushort GetResultTypeAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		double GetNumberValueAttribute();
-		
-		/// <summary>
-        /// raises(XPathException) on retrieval
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetStringValueAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aStringValue);
-		
-		/// <summary>
-        /// raises(XPathException) on retrieval
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetBooleanValueAttribute();
-		
-		/// <summary>
-        /// raises(XPathException) on retrieval
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMNode GetSingleNodeValueAttribute();
-		
-		/// <summary>
-        /// raises(XPathException) on retrieval
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetInvalidIteratorStateAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetSnapshotLengthAttribute();
-		
-		/// <summary>
-        /// raises(XPathException) on retrieval
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMNode IterateNext();
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMNode SnapshotItem(uint index);
 	}
 	
 	/// <summary>nsIDOMXPathResultConsts </summary>

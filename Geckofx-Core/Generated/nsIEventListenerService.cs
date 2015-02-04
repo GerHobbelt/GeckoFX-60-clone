@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c4776eb7-05bc-49ce-a0ca-6213a346d53a")]
+	[Guid("11ba5fd7-8db2-4b1a-9f67-342cfa11afad")]
 	public interface nsIEventListenerInfo
 	{
 		
@@ -69,14 +69,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ToSource([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
-		
-		/// <summary>
-        /// If jsdIDebuggerService is active and the listener is implemented in JS,
-        /// this returns the listener as a jsdIValue. Otherwise null.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports GetDebugObject();
 	}
 	
 	/// <summary>nsIEventListenerService </summary>

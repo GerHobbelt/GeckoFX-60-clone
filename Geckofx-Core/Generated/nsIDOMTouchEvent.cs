@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6d5484f7-92ac-45f8-9388-39b5bad055ce")]
+	[Guid("fb52e547-9cfc-4304-9ef0-e43be1207fd6")]
 	public interface nsITouchEventReceiver
 	{
 		
@@ -61,18 +61,6 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOntouchmoveAttribute(Gecko.JsVal aOntouchmove, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOntouchenterAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOntouchenterAttribute(Gecko.JsVal aOntouchenter, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOntouchleaveAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOntouchleaveAttribute(Gecko.JsVal aOntouchleave, System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOntouchcancelAttribute(System.IntPtr jsContext);

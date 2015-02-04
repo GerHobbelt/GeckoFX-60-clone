@@ -124,7 +124,12 @@ namespace Gecko
 			return backXulRuntime.GetBrowserTabsRemoteAttribute();
 		}
 
-		public void InvalidateCachesOnRestart()
+	    public bool GetBrowserTabsRemoteAutostartAttribute()
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public void InvalidateCachesOnRestart()
 		{
 			backXulRuntime.InvalidateCachesOnRestart();
 		}

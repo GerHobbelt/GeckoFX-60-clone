@@ -38,7 +38,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f673ec81-a4b0-11d6-964b-eb5a2bf216fc")]
+	[Guid("e28f810b-9b49-4927-a4be-62a74fadfe21")]
 	public interface nsIWindowCreator2 : nsIWindowCreator
 	{
 		
@@ -70,6 +70,8 @@ namespace Gecko
         ///                 may use the URL to help determine what sort of window
         ///                 to open or whether to cancel window creation. It will not
         ///                 load the URL.
+        ///      @param aOpeningTab The TabParent that is trying to open this new chrome
+        ///                         window. Can be nullptr.
         ///      @param cancel Return |true| to reject window creation. If true the
         ///                    implementation has determined the window should not
         ///                    be created at all. The caller should not default
@@ -78,7 +80,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIWebBrowserChrome CreateChromeWindow2([MarshalAs(UnmanagedType.Interface)] nsIWebBrowserChrome parent, uint chromeFlags, uint contextFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.U1)] ref bool cancel);
+		nsIWebBrowserChrome CreateChromeWindow2([MarshalAs(UnmanagedType.Interface)] nsIWebBrowserChrome parent, uint chromeFlags, uint contextFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab, [MarshalAs(UnmanagedType.U1)] ref bool cancel);
 	}
 	
 	/// <summary>nsIWindowCreator2Consts </summary>

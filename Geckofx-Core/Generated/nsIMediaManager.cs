@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2efff6ab-0e3e-4cc4-8f9b-4aaca59a1140")]
+	[Guid("f431b523-4536-4ba7-a2c1-7e1bf670d32a")]
 	public interface nsIMediaManagerService
 	{
 		
@@ -45,6 +45,6 @@ namespace Gecko
 		/// <summary>
         ///Get the capture state for the given window and all descendant windows (iframes, etc) </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MediaCaptureWindowState([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.U1)] ref bool aVideo, [MarshalAs(UnmanagedType.U1)] ref bool aAudio);
+		void MediaCaptureWindowState([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.U1)] ref bool aVideo, [MarshalAs(UnmanagedType.U1)] ref bool aAudio, [MarshalAs(UnmanagedType.U1)] ref bool aScreenShare, [MarshalAs(UnmanagedType.U1)] ref bool aWindowShare);
 	}
 }

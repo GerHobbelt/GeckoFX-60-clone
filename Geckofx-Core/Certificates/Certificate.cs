@@ -9,11 +9,11 @@ namespace Gecko.Certificates
 	public sealed class Certificate
 		: System.IEquatable<Certificate>
 	{
-		internal ComPtr<nsIX509Cert3> _cert;
+		internal ComPtr<nsIX509Cert> _cert;
 
-		private Certificate(nsIX509Cert3 cert)
+		private Certificate(nsIX509Cert cert)
 		{
-			_cert = new ComPtr<nsIX509Cert3>( cert );
+			_cert = new ComPtr<nsIX509Cert>( cert );
 		}
 
 		public string Nickname
@@ -61,10 +61,12 @@ namespace Gecko.Certificates
 			get { return nsString.Get(_cert.Instance.GetSha1FingerprintAttribute); }
 		}
 
+#if PORT
 		public string Md5Fingerprint
 		{
 			get { return nsString.Get(_cert.Instance.GetMd5FingerprintAttribute); }
 		}
+#endif
 
 		public string TokenName
 		{
@@ -100,7 +102,7 @@ namespace Gecko.Certificates
 		{
 			get
 			{
-				return ( (nsIX509Cert3) _cert.Instance.GetIssuerAttribute() ).Wrap( Create );
+				return ( (nsIX509Cert) _cert.Instance.GetIssuerAttribute() ).Wrap( Create );
 			}
 		}
 
@@ -116,12 +118,12 @@ namespace Gecko.Certificates
 
 		public string WindowTitle
 		{
-			get { return _cert.Instance.GetWindowTitleAttribute(); }
+		    get { return nsString.Get(_cert.Instance.GetWindowTitleAttribute); }
 		}
 
 		public Collections.IGeckoArray<Certificate> Chain
 		{
-			get { return new Collections.GeckoArray<Certificate, nsIX509Cert3>(_cert.Instance.GetChain(), Certificate.Create ); }
+			get { return new Collections.GeckoArray<Certificate, nsIX509Cert>(_cert.Instance.GetChain(), Certificate.Create ); }
 		}
 
 		public void GetUsagesArray(bool localOnly,ref uint verified,ref uint count,ref System.IntPtr[] usages)
@@ -194,9 +196,9 @@ namespace Gecko.Certificates
 			{
 				return Equals( ( Certificate ) obj );
 			}
-			if (obj is nsIX509Cert3)
+			if (obj is nsIX509Cert)
 			{
-				return _cert.Instance.Equals( ( nsIX509Cert3 ) obj );
+				return _cert.Instance.Equals( ( nsIX509Cert ) obj );
 			}
 			return false;
 		}
@@ -206,7 +208,7 @@ namespace Gecko.Certificates
 		}
 
 
-		public static Certificate Create(nsIX509Cert3 certificate)
+		public static Certificate Create(nsIX509Cert certificate)
 		{
 			return new Certificate(certificate);
 		}

@@ -27,60 +27,12 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// Represents a data interface for which the manager is recording statistics.
-    /// </summary>
+    ///This Source Code Form is subject to the terms of the Mozilla Public
+    /// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+    /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f540615b-d803-43ff-8200-2a9d145a5645")]
-	public interface nsIDOMMozNetworkStatsInterface
-	{
-		
-		/// <summary>
-        /// Represents a data interface for which the manager is recording statistics.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetTypeAttribute();
-		
-		/// <summary>
-        /// Id value is '0' for wifi or the iccid for mobile (SIM).
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aId);
-	}
-	
-	/// <summary>nsIDOMMozNetworkStatsAlarm </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("063ebeb2-5c6e-47ae-bdcd-5e6ebdc7a68c")]
-	public interface nsIDOMMozNetworkStatsAlarm
-	{
-		
-		/// <summary>Member GetAlarmIdAttribute </summary>
-		/// <returns>A System.UInt32</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetAlarmIdAttribute();
-		
-		/// <summary>Member GetNetworkAttribute </summary>
-		/// <returns>A nsIDOMMozNetworkStatsInterface</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMMozNetworkStatsInterface GetNetworkAttribute();
-		
-		/// <summary>Member GetThresholdAttribute </summary>
-		/// <returns>A System.Int32</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetThresholdAttribute();
-		
-		/// <summary>Member GetDataAttribute </summary>
-		/// <returns>A Gecko.JsVal</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetDataAttribute();
-	}
-	
-	/// <summary>nsIDOMMozNetworkStatsManager </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8a66f4c1-0c25-4a66-9fc5-0106947b91f9")]
+	[Guid("ceb874cd-cc1a-4e65-b404-cc2d3e42425f")]
 	public interface nsIDOMMozNetworkStatsManager
 	{
 		
@@ -88,13 +40,13 @@ namespace Gecko
         ///NetworkStatsGetOptions </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest GetSamples([MarshalAs(UnmanagedType.Interface)] nsIDOMMozNetworkStatsInterface network, ref Gecko.JsVal start, ref Gecko.JsVal end, ref Gecko.JsVal options);
+		nsIDOMDOMRequest GetSamples([MarshalAs(UnmanagedType.Interface)] nsISupports network, ref Gecko.JsVal start, ref Gecko.JsVal end, ref Gecko.JsVal options);
 		
 		/// <summary>
         ///NetworkStatsAlarmOptions </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest AddAlarm([MarshalAs(UnmanagedType.Interface)] nsIDOMMozNetworkStatsInterface network, int threshold, ref Gecko.JsVal options);
+		nsIDOMDOMRequest AddAlarm([MarshalAs(UnmanagedType.Interface)] nsISupports network, int threshold, ref Gecko.JsVal options);
 		
 		/// <summary>
         /// Obtain all alarms for those networks returned by getAvailableNetworks().
@@ -110,7 +62,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest GetAllAlarms([MarshalAs(UnmanagedType.Interface)] nsIDOMMozNetworkStatsInterface network);
+		nsIDOMDOMRequest GetAllAlarms([MarshalAs(UnmanagedType.Interface)] nsISupports network);
 		
 		/// <summary>
         /// Remove all network alarms. If an |alarmId| is provided, then only that
@@ -125,7 +77,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest ClearStats([MarshalAs(UnmanagedType.Interface)] nsIDOMMozNetworkStatsInterface network);
+		nsIDOMDOMRequest ClearStats([MarshalAs(UnmanagedType.Interface)] nsISupports network);
 		
 		/// <summary>
         /// Remove all stats in the database.

@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d983ba0c-433f-4017-abc1-93af737c82e4")]
+	[Guid("35d104a6-d252-4fd4-8a56-3c14657cad3b")]
 	public interface nsICacheStorage
 	{
 		
@@ -62,6 +62,33 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AsyncOpenURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aIdExtension, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsICacheEntryOpenCallback aCallback);
+		
+		/// <summary>
+        /// Immediately opens a new and empty cache entry in the storage, any existing
+        /// entries are immediately doomed.  This is similar to the recreate() method
+        /// on nsICacheEntry.
+        ///
+        /// Storage may not implement this method and throw NS_ERROR_NOT_IMPLEMENTED.
+        /// In that case consumer must use asyncOpen with OPEN_TRUNCATE flag and get
+        /// the new entry via a callback.
+        ///
+        /// @param aURI @see asyncOpenURI
+        /// @param aIdExtension @see asyncOpenURI
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsICacheEntry OpenTruncate([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aIdExtension);
+		
+		/// <summary>
+        /// Synchronously check on existance of an entry.  In case of disk entries
+        /// this uses information from the cache index.  When the index data are not
+        /// up to date or index is still building, NS_ERROR_NOT_AVAILABLE is thrown.
+        /// The same error may throw any storage implementation that cannot determine
+        /// entry state without blocking the caller.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool Exists([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aIdExtension);
 		
 		/// <summary>
         /// Asynchronously removes an entry belonging to the URI from the cache.

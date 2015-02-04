@@ -65,7 +65,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2c781cbe-ab0c-4c53-b06e-f0cb56f8a30b")]
+	[Guid("812d7509-a9a3-446e-a66f-3ed8cc91ebd0")]
 	public interface nsIApplicationReputationQuery
 	{
 		
@@ -113,6 +113,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIArray GetSignatureInfoAttribute();
+		
+		/// <summary>
+        /// The nsIArray of nsIPrincipal of redirects that lead to this download. The
+        /// most recent redirect is the last element.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIArray GetRedirectsAttribute();
 	}
 	
 	/// <summary>nsIApplicationReputationCallback </summary>

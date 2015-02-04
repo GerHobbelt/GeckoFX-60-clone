@@ -71,7 +71,7 @@ namespace Gecko
         /// "unstrusted because missing or untrusted issuer"
         /// and
         /// "untrusted because self signed"
-        /// query nsIX509Cert3::isSelfSigned
+        /// query nsIX509Cert::isSelfSigned
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

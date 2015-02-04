@@ -31,7 +31,7 @@ namespace Gecko
     ///   bookkeeping methods, not part of the public (embedding) interface. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("00788A84-152F-4BD8-A814-FD8EB545DB29")]
+	[Guid("0f2d9d75-c46b-4114-802e-83b4655e61d2")]
 	public interface nsPIWindowWatcher
 	{
 		
@@ -70,6 +70,9 @@ namespace Gecko
         ///      @param aDialog use dialog defaults (see nsIDOMWindow::openDialog)
         ///      @param aNavigate true if we should navigate the new window to the
         ///             specified URL.
+        ///      @param aOpeningTab the nsITabParent that is opening the new window. The
+        ///                         nsITabParent is a remote tab belonging to aParent. Can
+        ///                         be nullptr if this window is not being opened from a tab.
         ///      @param aArgs Window argument
         ///      @return the new window
         ///      @note This method may examine the JS context stack for purposes of
@@ -82,7 +85,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow OpenWindow2([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent, [MarshalAs(UnmanagedType.LPStr)] string aUrl, [MarshalAs(UnmanagedType.LPStr)] string aName, [MarshalAs(UnmanagedType.LPStr)] string aFeatures, [MarshalAs(UnmanagedType.U1)] bool aCalledFromScript, [MarshalAs(UnmanagedType.U1)] bool aDialog, [MarshalAs(UnmanagedType.U1)] bool aNavigate, [MarshalAs(UnmanagedType.Interface)] nsISupports aArgs);
+		nsIDOMWindow OpenWindow2([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent, [MarshalAs(UnmanagedType.LPStr)] string aUrl, [MarshalAs(UnmanagedType.LPStr)] string aName, [MarshalAs(UnmanagedType.LPStr)] string aFeatures, [MarshalAs(UnmanagedType.U1)] bool aCalledFromScript, [MarshalAs(UnmanagedType.U1)] bool aDialog, [MarshalAs(UnmanagedType.U1)] bool aNavigate, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab, [MarshalAs(UnmanagedType.Interface)] nsISupports aArgs);
 		
 		/// <summary>
         /// Find a named docshell tree item amongst all windows registered

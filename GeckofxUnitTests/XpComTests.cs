@@ -65,6 +65,7 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
+#if DELME
 		[Ignore("This test fails with System.OutOfMemoryException exception when the nsIRandomGenerator service is used.")]
 		[Test]
 		public void CreateInstance_CreatingPSM_ReturnsValidInstance()
@@ -73,6 +74,7 @@ namespace GeckofxUnitTests
 			Assert.IsNotNull(instance);
 			Marshal.ReleaseComObject(instance);
 		}
+#endif
 
 		[Test]
 		public void CreateInstance_CreatingNullPrincipal_ReturnsValidInstance()
@@ -647,6 +649,7 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 	
+#if DELME
 		[Test]
 		public void CreateInstance_CreatingCharsetConverterManager_ReturnsValidInstance()
 		{			
@@ -654,6 +657,7 @@ namespace GeckofxUnitTests
 			Assert.IsNotNull(instance);
 			Marshal.ReleaseComObject(instance);
 		}
+#endif
 
 		[Test]
 		public void CreateInstance_CreatingScriptableUnicodeConverter_ReturnsValidInstance()
@@ -1541,9 +1545,11 @@ namespace GeckofxUnitTests
 			Assert.IsNotNull(instance);
 			instance.Dispose();
 
+#if DELME
 			var instance2 = Xpcom.GetService2<nsIX509CertDB2>(Contracts.X509CertDb);
 			Assert.IsNotNull(instance2);
 			instance2.Dispose();
+#endif
 		}
 #endregion
 	}

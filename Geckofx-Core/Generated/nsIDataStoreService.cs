@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("bd02d09c-41ab-47b7-9319-57aa8e5059b0")]
+	[Guid("43a731b9-0b5d-400a-8711-8c912c3c3572")]
 	public interface nsIDataStoreService
 	{
 		
@@ -50,10 +50,8 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISupports GetDataStores([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name);
 		
-		/// <summary>
-        /// - enabled: true/false - true if this dataStore is ready to be used.
-        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetDataStoresInfo([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name, uint appId);
+		bool CheckPermission([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal);
 	}
 }

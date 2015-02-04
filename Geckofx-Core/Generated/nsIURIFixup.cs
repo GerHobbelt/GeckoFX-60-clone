@@ -27,11 +27,83 @@ namespace Gecko
 	
 	
 	/// <summary>
+    /// Interface indicating what we found/corrected when fixing up a URI
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("62aac1e0-3da8-4920-bd1b-a54fc2e2eb24")]
+	public interface nsIURIFixupInfo
+	{
+		
+		/// <summary>
+        /// Consumer that asked for fixed up URI.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISupports GetConsumerAttribute();
+		
+		/// <summary>
+        /// Consumer that asked for fixed up URI.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetConsumerAttribute([MarshalAs(UnmanagedType.Interface)] nsISupports aConsumer);
+		
+		/// <summary>
+        /// Our best guess as to what URI the consumer will want. Might
+        /// be null if we couldn't salvage anything (for instance, because
+        /// the input was invalid as a URI and FIXUP_FLAG_ALLOW_KEYWORD_LOOKUP
+        /// was not passed)
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetPreferredURIAttribute();
+		
+		/// <summary>
+        /// The fixed-up original input, *never* using a keyword search.
+        /// (might be null if the original input was not recoverable as
+        /// a URL, e.g. "foo bar"!)
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetFixedURIAttribute();
+		
+		/// <summary>
+        /// Whether the preferred option ended up using a keyword search.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetFixupUsedKeywordAttribute();
+		
+		/// <summary>
+        /// Whether we changed the protocol instead of using one from the input as-is.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetFixupChangedProtocolAttribute();
+		
+		/// <summary>
+        /// Whether we created an alternative URI. We might have added a prefix and/or
+        /// suffix, the contents of which are controlled by the
+        /// browser.fixup.alternate.prefix and .suffix prefs, with the defaults being
+        /// "www." and ".com", respectively.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetFixupCreatedAlternateURIAttribute();
+		
+		/// <summary>
+        /// The original input
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetOriginalInputAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aOriginalInput);
+	}
+	
+	/// <summary>
     /// Interface implemented by objects capable of fixing up strings into URIs
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("731877f8-973b-414c-b772-9ca1f3fffb7e")]
+	[Guid("80d4932e-bb2e-4afb-98e0-de9cc9ea7d82")]
 	public interface nsIURIFixup
 	{
 		
@@ -62,6 +134,20 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIURI CreateFixupURI([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIText, uint aFixupFlags, [MarshalAs(UnmanagedType.Interface)] ref nsIInputStream aPostData);
+		
+		/// <summary>
+        /// Same as createFixupURI, but returns information about what it corrected
+        /// (e.g. whether we could rescue the URI or "just" generated a keyword
+        /// search URI instead).
+        ///
+        /// @param aURIText    Candidate URI.
+        /// @param aFixupFlags Flags that govern ways the URI may be fixed up.
+        /// @param aPostData   The POST data to submit with the returned
+        /// URI (see nsISearchSubmission).
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURIFixupInfo GetFixupURIInfo([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIText, uint aFixupFlags, [MarshalAs(UnmanagedType.Interface)] ref nsIInputStream aPostData);
 		
 		/// <summary>
         /// Converts the specified keyword string into a URI.  Note that it's the

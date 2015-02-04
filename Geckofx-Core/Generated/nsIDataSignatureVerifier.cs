@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0a84b3d5-6ba9-432d-89da-4fbd0b0f2aec")]
+	[Guid("577f097f-15e4-4043-bc0e-6d2fadcacae2")]
 	public interface nsIDataSignatureVerifier
 	{
 		
@@ -49,5 +49,24 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool VerifyData([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aData, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSignature, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPublicKey);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsICertificatePrincipal VerifySignature([MarshalAs(UnmanagedType.LPStr)] string aSignature, uint aSignatureLen, [MarshalAs(UnmanagedType.LPStr)] string plaintext, uint plaintextLen, ref int errorCode);
+	}
+	
+	/// <summary>nsIDataSignatureVerifierConsts </summary>
+	public class nsIDataSignatureVerifierConsts
+	{
+		
+		// <summary>
+        //Sig Verification Error Codes </summary>
+		public const long VERIFY_OK = 0;
+		
+		// 
+		public const long VERIFY_ERROR_UNKNOWN_ISSUER = 1;
+		
+		// 
+		public const long VERIFY_ERROR_OTHER = 2;
 	}
 }

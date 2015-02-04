@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("acb93ff8-aa6d-4bc8-bedd-2a6a3b802a74")]
+	[Guid("bc24fb33-a0c1-49ca-aa43-05f167e02fb6")]
 	public interface nsIRecoveryService
 	{
 		
@@ -43,7 +43,7 @@ namespace Gecko
         /// @throws NS_ERROR_FAILURE when rebooting into recovery fails for some reason.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FactoryReset();
+		void FactoryReset([MarshalAs(UnmanagedType.LPStr)] string reason);
 		
 		/// <summary>
         /// Use recovery to install an OTA update.zip. If this call is

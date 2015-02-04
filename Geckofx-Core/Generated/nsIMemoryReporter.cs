@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3a61be3b-b93b-461a-a4f8-388214f558b1")]
+	[Guid("62ef0e1c-dbd6-11e3-aa75-3c970e9f4238")]
 	public interface nsIMemoryReporterCallback
 	{
 		
@@ -166,15 +166,37 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0884cd0f-5829-4381-979b-0f53904030ed")]
+	[Guid("92a36db1-46bd-4fe6-988e-47db47236d8b")]
 	public interface nsIMemoryReporter
 	{
 		
 		/// <summary>
         /// Run the reporter.
+        ///
+        /// If |anonymize| is true, the memory reporter should anonymize any
+        /// privacy-sensitive details in memory report paths, by replacing them with a
+        /// string such as "<anonymized>". Anonymized memory reports may be sent
+        /// automatically via crash reports or telemetry.
+        ///
+        /// The following things are considered privacy-sensitive.
+        ///
+        /// - Content domains and URLs, and information derived from them.
+        /// - Content data, such as strings.
+        /// - Details about content code, such as filenames, function names or stack
+        /// traces.
+        /// - Details about or data from the user's system, such as filenames.
+        /// - Running apps.
+        ///
+        /// In short, anything that could identify parts of the user's browsing
+        /// history is considered privacy-sensitive.
+        ///
+        /// The following thing are not considered privacy-sensitive.
+        ///
+        /// - Chrome domains and URLs.
+        /// - Information about installed extensions.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CollectReports([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback callback, [MarshalAs(UnmanagedType.Interface)] nsISupports data);
+		void CollectReports([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback callback, [MarshalAs(UnmanagedType.Interface)] nsISupports data, [MarshalAs(UnmanagedType.U1)] bool anonymize);
 	}
 	
 	/// <summary>nsIMemoryReporterConsts </summary>
@@ -182,7 +204,7 @@ namespace Gecko
 	{
 		
 		// <summary>
-        // Kinds.  See the |kind| comment in nsIMemoryReporterCallback.
+        // Kinds. See the |kind| comment in nsIMemoryReporterCallback.
         // </summary>
 		public const long KIND_NONHEAP = 0;
 		
@@ -193,7 +215,7 @@ namespace Gecko
 		public const long KIND_OTHER = 2;
 		
 		// <summary>
-        // Units.  See the |units| comment in nsIMemoryReporterCallback.
+        // Units. See the |units| comment in nsIMemoryReporterCallback.
         // </summary>
 		public const long UNITS_BYTES = 0;
 		
@@ -223,7 +245,7 @@ namespace Gecko
 	/// <summary>nsIMemoryReporterManager </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b6e5ec8a-71d9-48db-8ae9-68b4c5bbf2c3")]
+	[Guid("51e17609-e98a-47cc-9f95-095ef3c3823e")]
 	public interface nsIMemoryReporterManager
 	{
 		
@@ -295,9 +317,12 @@ namespace Gecko
         /// finished invoking |finishReporting|.  The silent abort is because the
         /// in-flight request will finish soon, and the caller would very likely just
         /// catch and ignore any error anyway.
+        ///
+        /// If |anonymize| is true, it indicates that the memory reporters should
+        /// anonymize any privacy-sensitive data (see above).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetReports([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData);
+		void GetReports([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData, [MarshalAs(UnmanagedType.U1)] bool anonymize);
 		
 		/// <summary>
         /// As above, but: If |minimizeMemoryUsage| is true, then each process will
@@ -307,22 +332,21 @@ namespace Gecko
         /// |dumpMemoryInfoToTempDir| in |nsIMemoryInfoDumper|.)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetReportsExtended([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData, [MarshalAs(UnmanagedType.U1)] bool minimizeMemoryUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase DMDDumpIdent);
+		void GetReportsExtended([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData, [MarshalAs(UnmanagedType.U1)] bool anonymize, [MarshalAs(UnmanagedType.U1)] bool minimizeMemoryUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase DMDDumpIdent);
 		
 		/// <summary>
         /// Get memory reports in the current process only.  |handleReport| is called
         /// for each report.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetReportsForThisProcess([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData);
+		void GetReportsForThisProcess([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.U1)] bool anonymize);
 		
 		/// <summary>
-        /// As above, but if DMD is enabled and |DMDDumpIdent| is non-empty
-        /// then write a DMD report to a file in the usual temporary directory (see
-        /// |dumpMemoryInfoToTempDir| in |nsIMemoryInfoDumper|.)
+        /// As above, but if DMD is enabled and |DMDFile| is non-null then
+        /// write a DMD report to that file and close it.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetReportsForThisProcessExtended([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase DMDDumpIdent);
+		void GetReportsForThisProcessExtended([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.U1)] bool anonymize, System.IntPtr DMDFile);
 		
 		/// <summary>
         /// The memory reporter manager, for the most part, treats reporters
@@ -361,6 +385,8 @@ namespace Gecko
         /// |residentFast|, and so |resident| and |residentFast| should not be used
         /// together.
         ///
+        /// |residentUnique| (UNITS_BYTES)  The unique set size (a.k.a. USS).
+        ///
         /// |heapAllocated| (UNITS_BYTES)  Memory mapped by the heap allocator.
         ///
         /// |heapOverheadRatio| (UNITS_PERCENTAGE)  In the heap allocator, this is the
@@ -378,7 +404,7 @@ namespace Gecko
         /// {system,user} compartments in the main JS runtime.
         ///
         /// |imagesContentUsedUncompressed| (UNITS_BYTES)  Memory used for decoded
-        /// images in content.
+        /// raster images in content.
         ///
         /// |storageSQLite| (UNITS_BYTES)  Memory used by SQLite.
         ///
@@ -413,6 +439,11 @@ namespace Gecko
 		/// <returns>A System.Int64</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		long GetResidentFastAttribute();
+		
+		/// <summary>Member GetResidentUniqueAttribute </summary>
+		/// <returns>A System.Int64</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetResidentUniqueAttribute();
 		
 		/// <summary>Member GetHeapAllocatedAttribute </summary>
 		/// <returns>A System.Int64</returns>
@@ -480,6 +511,20 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetHasMozMallocUsableSizeAttribute();
+		
+		/// <summary>
+        /// These attributes indicate DMD's status. "Enabled" means enabled at
+        /// build-time.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsDMDEnabledAttribute();
+		
+		/// <summary>Member GetIsDMDRunningAttribute </summary>
+		/// <returns>A System.Boolean</returns>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsDMDRunningAttribute();
 		
 		/// <summary>
         /// Run a series of GC/CC's in an attempt to minimize the application's memory

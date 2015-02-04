@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("852ed1f0-8ec0-11e3-baa8-0800200c9a66")]
+	[Guid("6ec837fa-af93-4350-bbb8-0985d54c74ca")]
 	public interface nsILoadContext
 	{
 		
@@ -68,6 +68,15 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMElement GetTopFrameElementAttribute();
+		
+		/// <summary>
+        /// If this LoadContext corresponds to a nested remote iframe, we don't have
+        /// access to the topFrameElement.  Instead, we must use this id to send
+        /// messages. A return value of 0 signifies that this load context is not for
+        /// a nested frame.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetNestedFrameIdAttribute();
 		
 		/// <summary>
         /// Check whether the load is happening in a particular type of application.

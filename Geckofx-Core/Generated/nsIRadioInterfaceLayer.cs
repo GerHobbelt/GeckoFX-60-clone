@@ -156,7 +156,7 @@ namespace Gecko
 	/// <summary>nsIRilContext </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("95e1be50-c912-11e2-8b8b-0800200c9a66")]
+	[Guid("8f33281f-b262-4bc6-9862-2cab897245ac")]
 	public interface nsIRilContext
 	{
 		
@@ -192,16 +192,16 @@ namespace Gecko
 		nsIDOMMozIccInfo GetIccInfoAttribute();
 		
 		/// <summary>Member GetVoiceAttribute </summary>
-		/// <returns>A nsIDOMMozMobileConnectionInfo</returns>
+		/// <returns>A nsIMobileConnectionInfo</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMMozMobileConnectionInfo GetVoiceAttribute();
+		nsIMobileConnectionInfo GetVoiceAttribute();
 		
 		/// <summary>Member GetDataAttribute </summary>
-		/// <returns>A nsIDOMMozMobileConnectionInfo</returns>
+		/// <returns>A nsIMobileConnectionInfo</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMMozMobileConnectionInfo GetDataAttribute();
+		nsIMobileConnectionInfo GetDataAttribute();
 	}
 	
 	/// <summary>nsIRilSendWorkerMessageCallback </summary>
@@ -222,7 +222,7 @@ namespace Gecko
 	/// <summary>nsIRadioInterface </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("181d460e-220e-4274-8ba4-43f122eb518d")]
+	[Guid("c13a8890-797b-4557-b92f-6b959f56c1d8")]
 	public interface nsIRadioInterface
 	{
 		
@@ -278,12 +278,25 @@ namespace Gecko
 		/// <param name='request'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetSmscAddress([MarshalAs(UnmanagedType.Interface)] nsIMobileMessageCallback request);
+		
+		/// <summary>
+        /// Request neighboring cell ids in GSM/UMTS network.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetNeighboringCellIds([MarshalAs(UnmanagedType.Interface)] nsINeighboringCellIdsCallback callback);
+		
+		/// <summary>
+        /// Request all of the current cell information known to the radio, including
+        /// neighboring cells.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetCellInfoList([MarshalAs(UnmanagedType.Interface)] nsICellInfoListCallback callback);
 	}
 	
 	/// <summary>nsIRadioInterfaceLayer </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d035c32e-b491-11e3-9f9d-c716fab88bd6")]
+	[Guid("78b65e8c-68e7-4510-9a05-65bba12b283e")]
 	public interface nsIRadioInterfaceLayer
 	{
 		
@@ -298,6 +311,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIRadioInterface GetRadioInterface(uint clientId);
+		
+		/// <summary>
+        /// Select a proper client for dialing emergency call.
+        ///
+        /// @return clientId or -1 if none of the clients are avaialble.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetClientIdForEmergencyCall();
 		
 		/// <summary>Member SetMicrophoneMuted </summary>
 		/// <param name='muted'> </param>

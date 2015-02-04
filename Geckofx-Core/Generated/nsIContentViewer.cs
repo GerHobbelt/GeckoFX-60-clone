@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0cb321bd-5b38-4586-8fcd-d43b366886fb")]
+	[Guid("f92298b8-4fe3-40d1-aad7-44e704fffd0d")]
 	public interface nsIContentViewer
 	{
 		
@@ -242,10 +242,20 @@ namespace Gecko
 		
 		/// <summary>
         /// Returns whether this content viewer is in a hidden state.
+        ///
+        /// @note Only Gecko internal code should set the attribute!
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsHiddenAttribute();
+		
+		/// <summary>
+        /// Returns whether this content viewer is in a hidden state.
+        ///
+        /// @note Only Gecko internal code should set the attribute!
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetIsHiddenAttribute([MarshalAs(UnmanagedType.U1)] bool aIsHidden);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetPresShellAttribute();

@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("93cde78d-56f6-4322-b707-9b23eb80d90d")]
+	[Guid("2e884bbe-7a3d-4b01-ad92-fcd65a449043")]
 	public interface nsIAppsService
 	{
 		
@@ -42,6 +42,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		mozIApplication GetAppByManifestURL([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase manifestURL);
+		
+		/// <summary>
+        /// Returns a Promise for the manifest for a given manifestURL.
+        /// This is only supported in the parent process: the promise will be rejected
+        /// in content processes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetManifestFor([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase manifestURL);
 		
 		/// <summary>
         /// Returns the |localId| of the app associated with the |manifestURL| passed

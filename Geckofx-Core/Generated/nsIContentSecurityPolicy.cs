@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8b91f829-b1bf-4327-8ece-4000aa823394")]
+	[Guid("3e923bf6-a974-4f3b-91c4-b4fd48b37732")]
 	public interface nsIContentSecurityPolicy : nsISerializable
 	{
 		
@@ -69,14 +69,6 @@ namespace Gecko
 		bool GetIsInitializedAttribute();
 		
 		/// <summary>
-        /// Set to true when the CSP has been read in and parsed and is ready to
-        /// enforce.  This is a barrier for the nsDocument so it doesn't load any
-        /// sub-content until either it knows that a CSP is ready or will not be used.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsInitializedAttribute([MarshalAs(UnmanagedType.U1)] bool aIsInitialized);
-		
-		/// <summary>
         /// Accessor method for a read-only string version of the policy at a given
         /// index.
         /// </summary>
@@ -88,14 +80,7 @@ namespace Gecko
         /// getPolicy().
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetPolicyCountAttribute();
-		
-		/// <summary>
-        /// Returns the number of policies attached to this CSP instance.  Useful with
-        /// getPolicy().
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPolicyCountAttribute(int aPolicyCount);
+		uint GetPolicyCountAttribute();
 		
 		/// <summary>
         /// Remove a policy associated with this CSP context.
@@ -113,13 +98,9 @@ namespace Gecko
         /// @param reportOnly
         /// Should this policy affect content, script and style processing or
         /// just send reports if it is violated?
-        /// @param specCompliant
-        /// Whether or not the policy conforms to the W3C specification.
-        /// If this is false, that indicates this policy is from the older
-        /// implementation with different semantics and directive names.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AppendPolicy([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase policyString, [MarshalAs(UnmanagedType.Interface)] nsIURI selfURI, [MarshalAs(UnmanagedType.U1)] bool reportOnly, [MarshalAs(UnmanagedType.U1)] bool specCompliant);
+		void AppendPolicy([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase policyString, [MarshalAs(UnmanagedType.Interface)] nsIURI selfURI, [MarshalAs(UnmanagedType.U1)] bool reportOnly);
 		
 		/// <summary>
         /// Whether this policy allows in-page script.
@@ -271,15 +252,7 @@ namespace Gecko
         /// this value should not be cached.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		short ShouldLoad(uint aContentType, [MarshalAs(UnmanagedType.Interface)] nsIURI aContentLocation, [MarshalAs(UnmanagedType.Interface)] nsIURI aRequestOrigin, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeTypeGuess, [MarshalAs(UnmanagedType.Interface)] nsISupports aExtra);
-		
-		/// <summary>
-        /// Delegate method called by the service when sub-elements of the protected
-        /// document are being processed.  Given a bit of information about the request,
-        /// decides whether or not the policy is satisfied.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		short ShouldProcess(uint aContentType, [MarshalAs(UnmanagedType.Interface)] nsIURI aContentLocation, [MarshalAs(UnmanagedType.Interface)] nsIURI aRequestOrigin, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType, [MarshalAs(UnmanagedType.Interface)] nsISupports aExtra);
+		short ShouldLoad(System.IntPtr aContentType, [MarshalAs(UnmanagedType.Interface)] nsIURI aContentLocation, [MarshalAs(UnmanagedType.Interface)] nsIURI aRequestOrigin, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeTypeGuess, [MarshalAs(UnmanagedType.Interface)] nsISupports aExtra);
 	}
 	
 	/// <summary>nsIContentSecurityPolicyConsts </summary>

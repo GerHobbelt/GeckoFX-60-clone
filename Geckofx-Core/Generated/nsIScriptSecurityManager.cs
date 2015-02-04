@@ -32,8 +32,8 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4c087cc3-e0cc-4ec3-88df-8d68f3023b45")]
-	public interface nsIScriptSecurityManager : nsIXPCSecurityManager
+	[Guid("f6e1e37e-14d0-44fa-a9bb-712bfad6c5f7")]
+	public interface nsIScriptSecurityManager
 	{
 		
 		/// <summary>
@@ -44,13 +44,13 @@ namespace Gecko
         /// if that is appropriate.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CanCreateWrapper(System.IntPtr aJSContext, ref System.Guid aIID, [MarshalAs(UnmanagedType.Interface)] nsISupports aObj, [MarshalAs(UnmanagedType.Interface)] nsIClassInfo aClassInfo);
+		void CanCreateWrapper(System.IntPtr aJSContext, ref System.Guid aIID, [MarshalAs(UnmanagedType.Interface)] nsISupports aObj, [MarshalAs(UnmanagedType.Interface)] nsIClassInfo aClassInfo);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CanCreateInstance(System.IntPtr aJSContext, ref System.Guid aCID);
+		void CanCreateInstance(System.IntPtr aJSContext, ref System.Guid aCID);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CanGetService(System.IntPtr aJSContext, ref System.Guid aCID);
+		void CanGetService(System.IntPtr aJSContext, ref System.Guid aCID);
 		
 		/// <summary>
         /// Check that the script currently running in context "cx" can load "uri".
@@ -97,15 +97,6 @@ namespace Gecko
 		bool ScriptAllowed(System.IntPtr aGlobal);
 		
 		/// <summary>
-        /// Return the principal of the innermost frame of the currently
-        /// executing script. Will return null if there is no script
-        /// currently executing.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal GetSubjectPrincipal();
-		
-		/// <summary>
         /// Return the all-powerful system principal.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -130,6 +121,15 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPrincipal GetAppCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri, uint appId, [MarshalAs(UnmanagedType.U1)] bool inMozBrowser);
+		
+		/// <summary>
+        /// Returns a principal that has the appId and inMozBrowser of the load
+        /// context.
+        /// @param loadContext to get appId/inMozBrowser from.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPrincipal GetLoadContextCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.Interface)] nsILoadContext loadContext);
 		
 		/// <summary>
         /// Returns a principal that has the appId and inMozBrowser of the docshell
@@ -157,14 +157,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPrincipal GetCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri);
-		
-		/// <summary>
-        /// Returns true if the principal of the currently running script is the
-        /// system principal, false otherwise.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool SubjectPrincipalIsSystem();
 		
 		/// <summary>
         /// Returns OK if aJSContext and target have the same "origin"
@@ -199,16 +191,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsSystemPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
-		
-		/// <summary>
-        /// Same as getSubjectPrincipal(), only faster. cx must *never* be
-        /// passed null, and it must be the context on the top of the
-        /// context stack. Does *not* reference count the returned
-        /// principal.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal GetCxSubjectPrincipal(System.IntPtr cx);
 		
 		/// <summary>
         /// Returns the jar prefix for the app.

@@ -53,14 +53,16 @@ namespace Gecko
 	/// <summary>nsINfcContentHelper </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("10b2eb1b-3fe0-4c98-9c67-9e4c2274cd78")]
+	[Guid("26e8123f-ba00-4708-ac77-d1902457168c")]
 	public interface nsINfcContentHelper
 	{
 		
 		/// <summary>Member SetSessionToken </summary>
 		/// <param name='sessionToken'> </param>
+		/// <returns>A System.Boolean</returns>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetSessionToken([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionToken);
+		bool SetSessionToken([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionToken);
 		
 		/// <summary>Member GetDetailsNDEF </summary>
 		/// <param name='window'> </param>
@@ -201,7 +203,6 @@ namespace Gecko
         ///
         /// @param status
         /// Status of sendFile operation
-        /// (GECKO_NFC_ERROR_SUCCESS, GECKO_NFC_ERROR_GENERIC_FAILURE)
         ///
         /// @param requestId
         /// Request ID of SendFile DOM Request

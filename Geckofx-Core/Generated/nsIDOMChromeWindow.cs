@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0c10226f-8abb-4345-aa6b-2780a6f4687e")]
+	[Guid("78bdcb41-1efa-409f-aaba-70842213f80f")]
 	public interface nsIDOMChromeWindow
 	{
 		
@@ -84,6 +84,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIMessageBroadcaster GetMessageManagerAttribute();
+		
+		/// <summary>
+        /// Returns the message manager identified by the given group name that
+        /// manages all frame loaders belonging to that group.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIMessageBroadcaster GetGroupMessageManager([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase group);
 		
 		/// <summary>
         /// On some operating systems, we must allow the window manager to

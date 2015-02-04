@@ -962,6 +962,7 @@ namespace Gecko
 		}
 		#endregion
 
+#if DELME
         #region public event GeckoDomEventHandler HashChange
         [Category("DOM Events")]
 		public event EventHandler<DomHashChangeEventArgs> HashChange
@@ -978,6 +979,7 @@ namespace Gecko
             if (evnt != null) evnt(this, e);
         }
         #endregion
+#endif
 
 		#region drag events
 
@@ -1171,6 +1173,7 @@ namespace Gecko
 
 		#region event JavascriptErrorEventHandler JavascriptError
 
+#if PORT
 		internal class JSErrorHandler : jsdIErrorHook
 		{
 			GeckoWebBrowser m_browser;
@@ -1227,7 +1230,7 @@ namespace Gecko
 			if (_JavascriptError != null)
 				_JavascriptError(this, e);
 		}
-
+#endif
 		#endregion
 
 		#region event EventHandler<ConsoleMessageEventArgs> ConsoleMessage

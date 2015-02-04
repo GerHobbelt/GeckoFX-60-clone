@@ -36,7 +36,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1b4a23a2-2ccf-4690-9da7-f3a7a8308381")]
+	[Guid("d4316591-d16e-405c-8093-b441cbef3230")]
 	public interface nsIDOMWindow
 	{
 		
@@ -684,6 +684,12 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOnhashchangeAttribute(Gecko.JsVal aOnhashchange, System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetOnlanguagechangeAttribute(System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOnlanguagechangeAttribute(Gecko.JsVal aOnlanguagechange, System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOnmessageAttribute(System.IntPtr jsContext);
@@ -1475,6 +1481,12 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetOnhashchangeAttribute(Gecko.JsVal aOnhashchange, System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new Gecko.JsVal GetOnlanguagechangeAttribute(System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetOnlanguagechangeAttribute(Gecko.JsVal aOnlanguagechange, System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new Gecko.JsVal GetOnmessageAttribute(System.IntPtr jsContext);

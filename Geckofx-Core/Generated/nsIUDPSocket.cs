@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6EFE692D-F0B0-4A9E-9E63-837C7452446D")]
+	[Guid("3240F793-80FA-4088-987A-9C7378F0AC88")]
 	public interface nsIUDPSocket
 	{
 		
@@ -153,6 +153,103 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint SendWithAddress(System.IntPtr addr, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] data, uint dataLength);
+		
+		/// <summary>
+        /// joinMulticast
+        ///
+        /// Join the multicast group specified by |addr|.  You are then able to
+        /// receive future datagrams addressed to the group.
+        ///
+        /// @param addr
+        /// The multicast group address.
+        /// @param iface
+        /// The local address of the interface on which to join the group.  If
+        /// this is not specified, the OS may join the group on all interfaces
+        /// or only the primary interface.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void JoinMulticast([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase addr, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase iface);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void JoinMulticastAddr(System.IntPtr addr, System.IntPtr iface);
+		
+		/// <summary>
+        /// leaveMulticast
+        ///
+        /// Leave the multicast group specified by |addr|.  You will no longer
+        /// receive future datagrams addressed to the group.
+        ///
+        /// @param addr
+        /// The multicast group address.
+        /// @param iface
+        /// The local address of the interface on which to leave the group.
+        /// If this is not specified, the OS may leave the group on all
+        /// interfaces or only the primary interface.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void LeaveMulticast([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase addr, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase iface);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void LeaveMulticastAddr(System.IntPtr addr, System.IntPtr iface);
+		
+		/// <summary>
+        /// multicastLoopback
+        ///
+        /// Whether multicast datagrams sent via this socket should be looped back to
+        /// this host (assuming this host has joined the relevant group).  Defaults
+        /// to true.
+        /// Note: This is currently write-only.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetMulticastLoopbackAttribute();
+		
+		/// <summary>
+        /// multicastLoopback
+        ///
+        /// Whether multicast datagrams sent via this socket should be looped back to
+        /// this host (assuming this host has joined the relevant group).  Defaults
+        /// to true.
+        /// Note: This is currently write-only.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMulticastLoopbackAttribute([MarshalAs(UnmanagedType.U1)] bool aMulticastLoopback);
+		
+		/// <summary>
+        /// multicastInterface
+        ///
+        /// The interface that should be used for sending future multicast datagrams.
+        /// Note: This is currently write-only.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetMulticastInterfaceAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aMulticastInterface);
+		
+		/// <summary>
+        /// multicastInterface
+        ///
+        /// The interface that should be used for sending future multicast datagrams.
+        /// Note: This is currently write-only.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMulticastInterfaceAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aMulticastInterface);
+		
+		/// <summary>
+        /// multicastInterfaceAddr
+        ///
+        /// The interface that should be used for sending future multicast datagrams.
+        /// Note: This is currently write-only.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetMulticastInterfaceAddrAttribute();
+		
+		/// <summary>
+        /// multicastInterfaceAddr
+        ///
+        /// The interface that should be used for sending future multicast datagrams.
+        /// Note: This is currently write-only.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetMulticastInterfaceAddrAttribute(System.IntPtr aMulticastInterfaceAddr);
 	}
 	
 	/// <summary>

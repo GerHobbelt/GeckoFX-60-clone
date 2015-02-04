@@ -44,10 +44,43 @@ namespace Gecko
 		void Callback([MarshalAs(UnmanagedType.Interface)] nsISupports data);
 	}
 	
+	/// <summary>
+    /// Callback interface for |dumpGCAndCCLogsToFile|, below.  Note that
+    /// these method calls can occur before |dumpGCAndCCLogsToFile|
+    /// returns.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("dc1b2b24-65bd-441b-b6bd-cb5825a7ed14")]
+	public interface nsIDumpGCAndCCLogsCallback
+	{
+		
+		/// <summary>
+        /// Called whenever a process has successfully finished dumping its GC/CC logs.
+        /// Incomplete dumps (e.g., if the child crashes or is killed due to memory
+        /// exhaustion) are not reported.
+        ///
+        /// @param aGCLog The file that the GC log was written to.
+        ///
+        /// @param aCCLog The file that the CC log was written to.
+        ///
+        /// @param aIsParent indicates whether this log file pair is from the
+        /// parent process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnDump([MarshalAs(UnmanagedType.Interface)] nsIFile aGCLog, [MarshalAs(UnmanagedType.Interface)] nsIFile aCCLog, [MarshalAs(UnmanagedType.U1)] bool aIsParent);
+		
+		/// <summary>
+        /// Called when GC/CC logging has finished, after all calls to |onDump|.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnFinish();
+	}
+	
 	/// <summary>nsIMemoryInfoDumper </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("815bf31b-f5bd-425d-85c3-4657a7a91dad")]
+	[Guid("48541b74-47ee-4a62-9557-7f4b809bda5c")]
 	public interface nsIMemoryInfoDumper
 	{
 		
@@ -56,6 +89,12 @@ namespace Gecko
         /// processes.  If a file of the given name exists, it will be overwritten.
         ///
         /// @param aFilename The output file.
+        ///
+        /// @param aFinishDumping The callback called on completion.
+        ///
+        /// @param aFinishDumpingData The environment for the callback.
+        ///
+        /// @param aAnonymize Should the reports be anonymized?
         ///
         /// Sample output:
         ///
@@ -126,7 +165,7 @@ namespace Gecko
         /// }
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DumpMemoryReportsToNamedFile([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilename, [MarshalAs(UnmanagedType.Interface)] nsIFinishDumpingCallback aFinishDumping, [MarshalAs(UnmanagedType.Interface)] nsISupports aFinishDumpingData);
+		void DumpMemoryReportsToNamedFile([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilename, [MarshalAs(UnmanagedType.Interface)] nsIFinishDumpingCallback aFinishDumping, [MarshalAs(UnmanagedType.Interface)] nsISupports aFinishDumpingData, [MarshalAs(UnmanagedType.U1)] bool aAnonymize);
 		
 		/// <summary>
         /// Similar to dumpMemoryReportsToNamedFile, this method dumps gzipped memory
@@ -147,12 +186,14 @@ namespace Gecko
         /// processes.  For example, the implementation may set |aIdentifier| to the
         /// number of seconds since the epoch.
         ///
+        /// @param aAnonymize Should the reports be anonymized?
+        ///
         /// @param aMinimizeMemoryUsage indicates whether we should run a series of
         /// gc/cc's in an attempt to reduce our memory usage before collecting our
         /// memory report.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DumpMemoryInfoToTempDir([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier, [MarshalAs(UnmanagedType.U1)] bool aMinimizeMemoryUsage);
+		void DumpMemoryInfoToTempDir([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier, [MarshalAs(UnmanagedType.U1)] bool aAnonymize, [MarshalAs(UnmanagedType.U1)] bool aMinimizeMemoryUsage);
 		
 		/// <summary>
         /// Dump GC and CC logs to files in the OS's temp directory (or in
@@ -181,11 +222,16 @@ namespace Gecko
         /// DumpGCAndCCLogsToFile in our child processes.  If so, the child processes
         /// will dump their children, and so on.
         ///
-        /// @param aGCLogPath The full path of the file that the GC log was written to.
-        ///
-        /// @param aCCLogPath The full path of the file that the CC log was written to.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DumpGCAndCCLogsToFile([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier, [MarshalAs(UnmanagedType.U1)] bool aDumpAllTraces, [MarshalAs(UnmanagedType.U1)] bool aDumpChildProcesses, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aGCLogPath, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCCLogPath);
+		void DumpGCAndCCLogsToFile([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier, [MarshalAs(UnmanagedType.U1)] bool aDumpAllTraces, [MarshalAs(UnmanagedType.U1)] bool aDumpChildProcesses, [MarshalAs(UnmanagedType.Interface)] nsIDumpGCAndCCLogsCallback aCallback);
+		
+		/// <summary>
+        /// Like |dumpGCAndCCLogsToFile|, but sends the logs to the given log
+        /// sink object instead of accessing the filesystem directly, and
+        /// dumps the current process only.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DumpGCAndCCLogsToSink([MarshalAs(UnmanagedType.U1)] bool aDumpAllTraces, [MarshalAs(UnmanagedType.Interface)] nsICycleCollectorLogSink aSink);
 	}
 }

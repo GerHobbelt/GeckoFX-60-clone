@@ -23,7 +23,7 @@ namespace Gecko.Certificates
 
 		public IEnumerator<Certificate> GetEnumerator()
 		{
-			return new GeckoEnumerator<Certificate, nsIX509Cert3>( _list.Instance.GetEnumerator(), Certificate.Create );
+			return new GeckoEnumerator<Certificate, nsIX509Cert>( _list.Instance.GetEnumerator(), Certificate.Create );
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

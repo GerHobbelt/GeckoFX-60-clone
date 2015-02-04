@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2938307a-9d70-4b63-8afc-0197e82318ad")]
+	[Guid("4d6b3bad-f53c-4585-82f6-62982e27ede8")]
 	public interface nsIDOMCSSRule
 	{
 		
@@ -58,6 +58,9 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMCSSRule GetParentRuleAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetCSSRule();
 	}
 	
 	/// <summary>nsIDOMCSSRuleConsts </summary>
@@ -103,6 +106,9 @@ namespace Gecko
 		
 		// 
 		public const ushort NAMESPACE_RULE = 10;
+		
+		// 
+		public const ushort COUNTER_STYLE_RULE = 11;
 		
 		// 
 		public const ushort SUPPORTS_RULE = 12;

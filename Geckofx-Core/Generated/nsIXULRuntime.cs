@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e080b1f6-8452-4bde-9368-c795808b86d1")]
+	[Guid("e652d3b8-c77c-4601-a84d-b0716d2b32c0")]
 	public interface nsIXULRuntime
 	{
 		
@@ -114,6 +114,14 @@ namespace Gecko
 		bool GetBrowserTabsRemoteAttribute();
 		
 		/// <summary>
+        /// If true, browser tabs may be opened by default in a different process
+        /// from the main browser UI.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetBrowserTabsRemoteAutostartAttribute();
+		
+		/// <summary>
         /// Signal the apprunner to invalidate caches on the next restart.
         /// This will cause components to be autoregistered and all
         /// fastload data to be re-created.
@@ -190,5 +198,8 @@ namespace Gecko
 		
 		// 
 		public const ulong PROCESS_TYPE_IPDLUNITTEST = 3;
+		
+		// 
+		public const ulong PROCESS_TYPE_GMPLUGIN = 4;
 	}
 }

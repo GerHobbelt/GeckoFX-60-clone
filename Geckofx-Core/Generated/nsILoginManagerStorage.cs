@@ -35,27 +35,35 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("fe0a4e80-d36f-43cc-a37b-4e1906e77257")]
+	[Guid("5df81a93-25e6-4b45-a696-089479e15c7d")]
 	public interface nsILoginManagerStorage
 	{
 		
 		/// <summary>
-        /// Initialize the component. Not invoked automatically.
+        /// Initialize the component.
+        ///
+        /// At present, other methods of this interface may be called before the
+        /// returned promise is resolved or rejected.
+        ///
+        /// @return {Promise}
+        /// @resolves When initialization is complete.
+        /// @rejects JavaScript exception.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init();
+		Gecko.JsVal Initialize();
 		
 		/// <summary>
-        /// Initialize the component, but override the default filename
-        /// locations. This is primarily used to the unit tests and profile
-        /// migration.
+        /// Ensures that all data has been written to disk and all files are closed.
         ///
-        /// @param aFile
-        /// If non-null, file to use for login storage.
+        /// At present, this method is called by regression tests only.  Finalization
+        /// on shutdown is done by observers within the component.
         ///
+        /// @return {Promise}
+        /// @resolves When finalization is complete.
+        /// @rejects JavaScript exception.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitWithFile([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
+		Gecko.JsVal Terminate();
 		
 		/// <summary>
         /// Store a new login in the storage module.
@@ -131,24 +139,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetAllLogins(ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref nsILoginInfo[] logins);
-		
-		/// <summary>
-        /// Fetch all logins in the login manager. An array is always returned;
-        /// if there are no logins the array is empty. This does not decrypt logins
-        /// before returning the array
-        ///
-        /// @param count
-        /// The number of elements in the array. JS callers can simply use
-        /// the array's .length property and omit this param.
-        /// @param logins
-        /// An array of nsILoginInfo objects.
-        ///
-        /// NOTE: This can be called from JS as:
-        /// var logins = pwmgr.getAllEncryptedLogins();
-        /// (|logins| is an array).
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAllEncryptedLogins(ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref nsILoginInfo[] logins);
 		
 		/// <summary>
         /// Search for logins in the login manager. An array is always returned;

@@ -30,7 +30,7 @@ namespace Gecko
     ///NOTE: this interface is completely undesigned, not stable and likely to change </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1194ba76-aeb5-48df-abfd-844740ce3696")]
+	[Guid("27212e99-ed25-449b-b79f-32ecb88d251e")]
 	public interface nsIGfxInfo
 	{
 		
@@ -79,6 +79,12 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetAdapterDeviceID2Attribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAdapterDeviceID2);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAdapterSubsysIDAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAdapterSubsysID);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAdapterSubsysID2Attribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAdapterSubsysID2);
 		
 		/// <summary>
         /// The amount of RAM in MB in the display adapter.
@@ -187,9 +193,12 @@ namespace Gecko
 		public const long FEATURE_WEBRTC_HW_ACCELERATION = 10;
 		
 		// <summary>
-        //We don't explicitly block or discourage the feature. Which means we'll try getting it from the
-        // hardware, and see what happens. </summary>
-		public const long FEATURE_NO_INFO = 1;
+        //Whether Direct3D 11 is supported for layers. </summary>
+		public const long FEATURE_DIRECT3D_11_LAYERS = 11;
+		
+		// <summary>
+        //The driver is save to the best of our knowledge </summary>
+		public const long FEATURE_STATUS_OK = 1;
 		
 		// <summary>
         //We don't know the status of the feature yet. The analysis probably hasn't finished yet. </summary>

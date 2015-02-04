@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6286dd8c-c1a1-11e3-941d-180373d97f24")]
+	[Guid("f8ed8364-ced9-4c6e-86ba-48af53c393e6")]
 	public interface nsIX509Cert
 	{
 		
@@ -95,18 +95,18 @@ namespace Gecko
 		void GetOrganizationalUnitAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aOrganizationalUnit);
 		
 		/// <summary>
-        /// The fingerprint of the certificate's public key,
+        /// The fingerprint of the certificate's DER encoding,
+        /// calculated using the SHA-256 algorithm.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetSha256FingerprintAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSha256Fingerprint);
+		
+		/// <summary>
+        /// The fingerprint of the certificate's DER encoding,
         /// calculated using the SHA1 algorithm.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetSha1FingerprintAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSha1Fingerprint);
-		
-		/// <summary>
-        /// The fingerprint of the certificate's public key,
-        /// calculated using the MD5 algorithm.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetMd5FingerprintAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMd5Fingerprint);
 		
 		/// <summary>
         /// A human readable name identifying the hardware or
@@ -169,9 +169,22 @@ namespace Gecko
 		/// <summary>
         /// A human readable identifier to label this certificate.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetWindowTitleAttribute();
+		void GetWindowTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aWindowTitle);
+		
+		/// <summary>
+        /// Type of this certificate
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetCertTypeAttribute();
+		
+		/// <summary>
+        /// True if the certificate is self-signed. CA issued
+        /// certificates are always self-signed.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsSelfSignedAttribute();
 		
 		/// <summary>
         /// Obtain a list of certificates that contains this certificate
@@ -196,6 +209,15 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetUsagesArray([MarshalAs(UnmanagedType.U1)] bool localOnly, ref uint verified, ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref System.IntPtr[] usages);
+		
+		/// <summary>
+        /// Async version of nsIX509Cert::getUsagesArray()
+        ///
+        /// Will not block, will request results asynchronously,
+        /// availability of results will be notified on the main thread.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RequestUsagesArrayAsync([MarshalAs(UnmanagedType.Interface)] nsICertVerificationListener cvl);
 		
 		/// <summary>
         /// Obtain a single comma separated human readable string describing
@@ -244,6 +266,43 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetSha256SubjectPublicKeyInfoDigestAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSha256SubjectPublicKeyInfoDigest);
+		
+		/// <summary>
+        /// Obtain the certificate wrapped in a PKCS#7 SignedData structure,
+        /// with or without the certificate chain
+        ///
+        /// @param chainMode Whether to include the chain (with or without the root),
+        ///                       see CMS_CHAIN_MODE constants.
+        /// @param length The number of bytes of the PKCS#7 data.
+        /// @param data The bytes representing the PKCS#7 wrapped certificate.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ExportAsCMS(uint chainMode, ref uint length, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref byte[] data);
+		
+		/// <summary>
+        /// Retrieves the NSS certificate object wrapped by this interface
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetCert();
+		
+		/// <summary>
+        /// Human readable names identifying all hardware or
+        /// software tokens the certificate is stored on.
+        ///
+        /// @param length On success, the number of entries in the returned array.
+        /// @return On success, an array containing the names of all tokens
+        /// the certificate is stored on (may be empty).
+        /// On failure the function throws/returns an error.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAllTokenNames(ref uint length, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref System.IntPtr[] tokenNames);
+		
+		/// <summary>
+        /// Either delete the certificate from all cert databases,
+        /// or mark it as untrusted.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MarkForPermDeletion();
 	}
 	
 	/// <summary>nsIX509CertConsts </summary>
@@ -266,6 +325,9 @@ namespace Gecko
 		
 		// 
 		public const ulong SERVER_CERT = 1<<3;
+		
+		// 
+		public const ulong ANY_CERT = 0xffff;
 		
 		// <summary>
         // Constants for certificate verification results.
@@ -338,5 +400,63 @@ namespace Gecko
 		
 		// 
 		public const ulong CERT_USAGE_AnyCA = 11;
+		
+		// <summary>
+        // Constants for specifying the chain mode when exporting a certificate
+        // </summary>
+		public const ulong CMS_CHAIN_MODE_CertOnly = 1;
+		
+		// 
+		public const ulong CMS_CHAIN_MODE_CertChain = 2;
+		
+		// 
+		public const ulong CMS_CHAIN_MODE_CertChainWithRoot = 3;
+	}
+	
+	/// <summary>nsICertVerificationResult </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("2fd0a785-9f2d-4327-8871-8c3e0783891d")]
+	public interface nsICertVerificationResult
+	{
+		
+		/// <summary>
+        /// This interface reflects a container of
+        /// verification results. Call will not block.
+        ///
+        /// Obtain an array of human readable strings describing
+        /// the certificate's certified usages.
+        ///
+        /// Mirrors the results produced by
+        /// nsIX509Cert::getUsagesArray()
+        ///
+        /// As of today, this function is a one-shot object,
+        /// only the first call will succeed.
+        /// This allows an optimization in the implementation,
+        /// ownership of result data will be transfered to caller.
+        ///
+        /// @param cert The certificate that was verified.
+        /// @param verified The certificate verification result,
+        /// see constants in nsIX509Cert.
+        /// @param count The number of human readable usages returned.
+        /// @param usages The array of human readable usages.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetUsagesArrayResult(ref uint verified, ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref System.IntPtr[] usages);
+	}
+	
+	/// <summary>nsICertVerificationListener </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("6684bce9-50db-48e1-81b7-98102bf81357")]
+	public interface nsICertVerificationListener
+	{
+		
+		/// <summary>
+        /// Notify that results are ready, that have been requested
+        /// using nsIX509Cert::requestUsagesArrayAsync()
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Notify([MarshalAs(UnmanagedType.Interface)] nsIX509Cert verifiedCert, [MarshalAs(UnmanagedType.Interface)] nsICertVerificationResult result);
 	}
 }

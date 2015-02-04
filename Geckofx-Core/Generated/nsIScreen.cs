@@ -34,9 +34,16 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("D6F13AF4-8ACA-4A10-8687-3F99C3692AC0")]
+	[Guid("826e80c8-d70f-42e2-8aa9-82c05f2a370a")]
 	public interface nsIScreen
 	{
+		
+		/// <summary>
+        /// A unique identifier for this device, useful for requerying
+        /// for it via nsIScreenManager.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetIdAttribute();
 		
 		/// <summary>
         /// These report screen dimensions in (screen-specific) device pixels

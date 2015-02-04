@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9c709b50-bd1a-476d-b313-d64db874f80a")]
+	[Guid("078f159c-28ee-4653-9cfe-633132152f47")]
 	public interface imgIRequest : nsIRequest
 	{
 		
@@ -167,6 +167,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetImageStatusAttribute();
+		
+		/// <summary>
+        /// Actual error code that generated a STATUS_ERROR imageStatus
+        /// (see xpcom/base/ErrorList.h)
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetImageErrorCodeAttribute();
 		
 		/// <summary>
         /// The URI the image load was started with.  Note that this might not be the

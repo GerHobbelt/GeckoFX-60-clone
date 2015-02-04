@@ -53,7 +53,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a99a6a06-f90d-4659-8fce-c2f87feb1167")]
+	[Guid("dfb5a307-7ecf-41dd-aee2-f1d623459c44")]
 	public interface nsIFile
 	{
 		
@@ -419,12 +419,12 @@ namespace Gecko
 		bool Equals([MarshalAs(UnmanagedType.Interface)] nsIFile inFile);
 		
 		/// <summary>
-        /// Will determine if inFile is a descendant of this file
-        /// If |recur| is true, look in subdirectories too
+        /// Will determine if inFile is a descendant of this file.
+        /// This routine looks in subdirectories too.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool Contains([MarshalAs(UnmanagedType.Interface)] nsIFile inFile, [MarshalAs(UnmanagedType.U1)] bool recur);
+		bool Contains([MarshalAs(UnmanagedType.Interface)] nsIFile inFile);
 		
 		/// <summary>
         /// Parent will be null when this is at the top of the volume.

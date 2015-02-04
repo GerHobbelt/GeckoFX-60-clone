@@ -242,7 +242,17 @@ namespace GeckofxUnitTests
 				throw new NotImplementedException();
 			}
 
-			public bool GetWantAfterProcessingAttribute()
+		    public nsICycleCollectorLogSink GetLogSinkAttribute()
+		    {
+		        throw new NotImplementedException();
+		    }
+
+		    public void SetLogSinkAttribute(nsICycleCollectorLogSink aLogSink)
+		    {
+		        throw new NotImplementedException();
+		    }
+
+		    public bool GetWantAfterProcessingAttribute()
 			{
 				throw new NotImplementedException();
 			}

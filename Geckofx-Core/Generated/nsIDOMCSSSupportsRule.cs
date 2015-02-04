@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5f409a4d-92f9-4a62-8e8a-cc1c02c32918")]
+	[Guid("0b9e63a1-1bd7-4caf-850e-148b762b14d2")]
 	public interface nsIDOMCSSSupportsRule : nsIDOMCSSConditionRule
 	{
 		
@@ -54,6 +54,9 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDOMCSSRule GetParentRuleAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new System.IntPtr GetCSSRule();
 		
 		/// <summary>
         /// Interface for at-rules that have child rules in the CSS OM.

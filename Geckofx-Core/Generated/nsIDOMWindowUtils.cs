@@ -32,10 +32,15 @@ namespace Gecko
     /// elevated privileges; the method implementations should contain the
     /// necessary security checks.  Access this interface by calling
     /// getInterface on a DOMWindow.
+    ///
+    /// WARNING: Do not use 'out jsval' parameters in this file.
+    /// SpecialPowers, which is used to access nsIDOMWindowUtils
+    /// in plain mochitests, does not know how to handle them.
+    /// (Use 'jsval' return values instead.)
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("d4ed34fc-9c07-4cef-b9e1-623794558db3")]
+	[Guid("11911980-607c-4efd-aacc-de3b9005c058")]
 	public interface nsIDOMWindowUtils
 	{
 		
@@ -192,17 +197,6 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDisplayPortBaseForElement(int aX, int aY, int aWidth, int aHeight, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
-		
-		/// <summary>
-        /// When a display port is set, this allows a sub-section of that
-        /// display port to be marked as 'critical'. In this scenario, the
-        /// area outside of this rectangle may be rendered at a lower
-        /// detail (for example, by reducing its resolution), or not rendered
-        /// at all under some circumstances.
-        /// This call will have no effect if a display port has not been set.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCriticalDisplayPortForElement(float aXPx, float aYPx, float aWidthPx, float aHeightPx, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
 		
 		/// <summary>
         /// Get/set the resolution at which rescalable web content is drawn.
@@ -374,8 +368,8 @@ namespace Gecko
 					int aPointerId, 
 					int aWidth, 
 					int aHeight, 
-					int tiltX, 
-					int tiltY, 
+					int aTiltX, 
+					int aTiltY, 
 					[MarshalAs(UnmanagedType.U1)] bool aIsPrimary, 
 					[MarshalAs(UnmanagedType.U1)] bool aIsSynthesized, 
 					int argc);
@@ -417,6 +411,30 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SendMouseEventToWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aType, float aX, float aY, int aButton, int aClickCount, int aModifiers, [MarshalAs(UnmanagedType.U1)] bool aIgnoreRootScrollFrame, float aPressure, ushort aInputSourceArg, [MarshalAs(UnmanagedType.U1)] bool aIsSynthesized, int argc);
+		
+		/// <summary>
+        ///The same as sendPointerEvent but ensures that the event
+        /// is dispatched to this DOM window or one of its children.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SendPointerEventToWindow(
+					[MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aType, 
+					float aX, 
+					float aY, 
+					int aButton, 
+					int aClickCount, 
+					int aModifiers, 
+					[MarshalAs(UnmanagedType.U1)] bool aIgnoreRootScrollFrame, 
+					float aPressure, 
+					ushort aInputSourceArg, 
+					int aPointerId, 
+					int aWidth, 
+					int aHeight, 
+					int aTiltX, 
+					int aTiltY, 
+					[MarshalAs(UnmanagedType.U1)] bool aIsPrimary, 
+					[MarshalAs(UnmanagedType.U1)] bool aIsSynthesized, 
+					int argc);
 		
 		/// <summary>
         ///The same as sendTouchEvent but ensures that the event is dispatched to
@@ -1101,10 +1119,10 @@ namespace Gecko
 		void SetAsyncScrollOffset([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, int aX, int aY);
 		
 		/// <summary>
-        /// Method for testing nsStyleAnimation::ComputeDistance.
+        /// Method for testing StyleAnimationValue::ComputeDistance.
         ///
         /// Returns the distance between the two values as reported by
-        /// nsStyleAnimation::ComputeDistance for the given element and
+        /// StyleAnimationValue::ComputeDistance for the given element and
         /// property.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -1164,24 +1182,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool CheckAndClearPaintedState([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
-		
-		/// <summary>
-        /// Internal file constructor intended for testing of File objects.
-        /// Example of constructor usage:
-        /// getFile("myfile.txt", [b1, "foo"], { type: "text/plain" })
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMFile GetFile([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, ref Gecko.JsVal aBlobParts, ref Gecko.JsVal aParameters, System.IntPtr jsContext, int argc);
-		
-		/// <summary>
-        /// Internal blob constructor intended for testing of Blob objects.
-        /// Example of constructor usage:
-        /// getBlob([b1, "foo"], { type: "text/plain" })
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMBlob GetBlob(ref Gecko.JsVal aBlobParts, ref Gecko.JsVal aParameters, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
         /// Get internal id of the stored blob, file or file handle.
@@ -1313,6 +1313,16 @@ namespace Gecko
 		void LoadSheet([MarshalAs(UnmanagedType.Interface)] nsIURI sheetURI, uint type);
 		
 		/// <summary>
+        /// Adds a style sheet to the list of additional style sheets of the document.
+        ///
+        /// Style sheets can be preloaded with nsIStyleSheetService.preloadSheet.
+        ///
+        /// Sheets added via this API take effect immediately on the document.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AddSheet([MarshalAs(UnmanagedType.Interface)] nsIDOMStyleSheet sheet, uint type);
+		
+		/// <summary>
         /// Remove the document style sheet at |sheetURI| from the list of additional
         /// style sheets of the document.  The removal takes effect immediately.
         /// </summary>
@@ -1405,12 +1415,25 @@ namespace Gecko
 		void GetOMTAStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
-        /// Returns the value of a given property.  If the property is animated off
-        /// the main thread, this function will fetch the correct value from the
-        /// compositor.
+        /// If aHandlingInput is true, this informs the event state manager that
+        /// we're handling user input. Otherwise, this is a no-op (as by default
+        /// we're not handling user input).
+        /// Remember to call destruct() on the return value!
+        /// See also nsIDOMWindowUtils::isHandlingUserInput.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIJSRAIIHelper SetHandlingUserInput([MarshalAs(UnmanagedType.U1)] bool aHandlingInput);
+		
+		/// <summary>
+        /// Get the content- and compositor-side APZ test data instances.
+        /// The return values are of type APZTestData (see APZTestData.webidl).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetOMTAOrComputedStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		Gecko.JsVal GetContentAPZTestData(System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetCompositorAPZTestData(System.IntPtr jsContext);
 		
 		/// <summary>
         /// With this it's possible to mute all the MediaElements in this window.
@@ -1442,6 +1465,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAudioVolumeAttribute(float aAudioVolume);
+		
+		/// <summary>
+        /// This method doesn't do anything useful.  It was solely added for the
+        /// purpose of the test for bug 503926.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void XpconnectArgument([MarshalAs(UnmanagedType.Interface)] nsIDOMWindowUtils aThis);
+		
+		/// <summary>
+        /// Helper for JS components that need to send permission requests with
+        /// e10s support properly.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AskPermission([MarshalAs(UnmanagedType.Interface)] nsIContentPermissionRequest aRequest);
 	}
 	
 	/// <summary>nsIDOMWindowUtilsConsts </summary>
@@ -1514,6 +1551,11 @@ namespace Gecko
         // scroll.
         // @param aOptions           Set following flags.
         // </summary>
+		public const ulong WHEEL_EVENT_CAUSED_BY_NO_LINE_OR_PAGE_DELTA_DEVICE = 0x0001;
+		
+		// <summary>
+        // @deprecated Use WHEEL_EVENT_CAUSED_BY_NO_LINE_OR_PAGE_DELTA_DEVICE.
+        // </summary>
 		public const ulong WHEEL_EVENT_CAUSED_BY_PIXEL_ONLY_DEVICE = 0x0001;
 		
 		// 
@@ -1546,6 +1588,11 @@ namespace Gecko
         // If this is set, preventDefault() the event before dispatch.
         // </summary>
 		public const ulong KEY_FLAG_PREVENT_DEFAULT = 0x0001;
+		
+		// <summary>
+        // on the key event. Otherwise it is true.
+        // </summary>
+		public const ulong KEY_FLAG_NOT_SYNTHESIZED_FOR_TESTS = 0x0002;
 		
 		// <summary>
         // Otherwise, it will be computed from aKeyCode.
@@ -1804,5 +1851,23 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsTranslationRootAtIndex(uint index);
+	}
+	
+	/// <summary>
+    /// JS doesn't do RAII very well. We can use this interface to make remembering
+    /// to destruct an object in a finally clause easier.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("52e5a996-d0a9-4efc-a6fa-24489c532b19")]
+	public interface nsIJSRAIIHelper
+	{
+		
+		/// <summary>
+        /// JS doesn't do RAII very well. We can use this interface to make remembering
+        /// to destruct an object in a finally clause easier.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Destruct();
 	}
 }

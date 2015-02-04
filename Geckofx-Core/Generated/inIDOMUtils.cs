@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("ceae6c68-f5d4-4597-a3d9-ca5646c25f1a")]
+	[Guid("1f5b7f08-fa80-49e9-b881-888f081240da")]
 	public interface inIDOMUtils
 	{
 		
@@ -47,10 +47,10 @@ namespace Gecko
 		nsISupportsArray GetCSSStyleRules([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPseudo);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetRuleLine([MarshalAs(UnmanagedType.Interface)] nsIDOMCSSStyleRule aRule);
+		uint GetRuleLine([MarshalAs(UnmanagedType.Interface)] nsIDOMCSSRule aRule);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetRuleColumn([MarshalAs(UnmanagedType.Interface)] nsIDOMCSSStyleRule aRule);
+		uint GetRuleColumn([MarshalAs(UnmanagedType.Interface)] nsIDOMCSSRule aRule);
 		
 		/// <summary>
         /// should consider using [ChromeOnly] APIs on that.
@@ -72,7 +72,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool SelectorMatchesElement([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.Interface)] nsIDOMCSSStyleRule aRule, uint aSelectorIndex);
+		bool SelectorMatchesElement([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.Interface)] nsIDOMCSSStyleRule aRule, uint aSelectorIndex, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPseudo);
 		
 		/// <summary>
         /// Returns true if the string names a property that is inherited by default.
@@ -98,6 +98,43 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RgbToColorName(System.IntPtr aR, System.IntPtr aG, System.IntPtr aB, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// formats e.g. CMYK.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal ColorToRGBA([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aColorString, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Check whether a given color is a valid CSS color.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsValidCSSColor([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aColorString);
+		
+		/// <summary>
+        /// aPropertyValue: A property value e.g. "red" or "red !important"
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool CssPropertyIsValid([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPropertyName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPropertyValue);
+		
+		/// <summary>
+        /// Throws on unsupported property names.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetSubpropertiesForCSSProperty([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, ref uint aLength, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref System.IntPtr[] aValues);
+		
+		/// <summary>
+        /// property names.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool CssPropertyIsShorthand([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty);
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool CssPropertySupportsType([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, uint type);
 		
 		/// <summary>
         /// DOM Node utilities
@@ -162,6 +199,15 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ParseStyleSheet([MarshalAs(UnmanagedType.Interface)] nsIDOMCSSStyleSheet aSheet, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aInput);
+		
+		/// <summary>
+        /// Scroll an element completely into view, if possible.
+        /// This is similar to ensureElementIsVisible but for all ancestors.
+        ///
+        /// @param DOMElement aElement
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ScrollElementIntoView([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement);
 	}
 	
 	/// <summary>inIDOMUtilsConsts </summary>
@@ -175,5 +221,40 @@ namespace Gecko
 		
 		// 
 		public const ulong INCLUDE_ALIASES = (1<<1);
+		
+		// <summary>
+        // parsing functions instead of table-driven parsing.
+        // </summary>
+		public const ulong TYPE_LENGTH = 0;
+		
+		// 
+		public const ulong TYPE_PERCENTAGE = 1;
+		
+		// 
+		public const ulong TYPE_COLOR = 2;
+		
+		// 
+		public const ulong TYPE_URL = 3;
+		
+		// 
+		public const ulong TYPE_ANGLE = 4;
+		
+		// 
+		public const ulong TYPE_FREQUENCY = 5;
+		
+		// 
+		public const ulong TYPE_TIME = 6;
+		
+		// 
+		public const ulong TYPE_GRADIENT = 7;
+		
+		// 
+		public const ulong TYPE_TIMING_FUNCTION = 8;
+		
+		// 
+		public const ulong TYPE_IMAGE_RECT = 9;
+		
+		// 
+		public const ulong TYPE_NUMBER = 10;
 	}
 }

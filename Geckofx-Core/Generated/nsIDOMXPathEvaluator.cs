@@ -31,17 +31,13 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("75506f8a-b504-11d5-a7f2-ca108ab8b6fc")]
+	[Guid("89a0fe71-c1d9-46bd-b76b-47f51fd935ff")]
 	public interface nsIDOMXPathEvaluator
 	{
 		
 		/// <summary>
         /// Corresponds to http://www.w3.org/TR/2002/WD-DOM-Level-3-XPath-20020208
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMXPathExpression CreateExpression([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase expression, [MarshalAs(UnmanagedType.Interface)] nsIDOMXPathNSResolver resolver);
-		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMXPathNSResolver CreateNSResolver([MarshalAs(UnmanagedType.Interface)] nsIDOMNode nodeResolver);

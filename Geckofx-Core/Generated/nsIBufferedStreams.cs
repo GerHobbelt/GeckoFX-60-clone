@@ -96,7 +96,8 @@ namespace Gecko
         /// @return number of bytes written (may be less than aCount)
         ///
         /// @throws NS_BASE_STREAM_WOULD_BLOCK if writing to the output stream would
-        /// block the calling thread (non-blocking mode only)
+        /// block the calling thread (non-blocking mode only). This failure
+        /// means no bytes were transferred.
         /// @throws <other-error> on failure
         ///
         /// NOTE: This method is defined by this interface in order to allow the
@@ -122,7 +123,8 @@ namespace Gecko
         /// @return number of bytes written (may be less than aCount)
         ///
         /// @throws NS_BASE_STREAM_WOULD_BLOCK if writing to the output stream would
-        /// block the calling thread (non-blocking mode only)
+        /// block the calling thread (non-blocking mode only). This failure
+        /// means no bytes were transferred.
         /// @throws NS_ERROR_NOT_IMPLEMENTED if the stream has no underlying buffer
         /// @throws <other-error> on failure
         ///

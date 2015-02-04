@@ -41,8 +41,8 @@ namespace Gecko
 		/// <summary>
         /// Called to retarget delivery of OnDataAvailable to another thread. Should
         /// only be called before AsyncOpen for nsIWebsocketChannels, or during
-        /// OnStartRequest for nsIHttpChannels.
-        /// Note: For nsIHttpChannels, OnStartRequest and OnStopRequest will still be
+        /// OnStartRequest for nsIChannels.
+        /// Note: For nsIChannels, OnStartRequest and OnStopRequest will still be
         /// delivered on the main thread.
         ///
         /// @param aNewTarget New event target, e.g. thread or threadpool.

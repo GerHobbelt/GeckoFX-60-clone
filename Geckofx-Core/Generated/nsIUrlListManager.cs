@@ -45,34 +45,31 @@ namespace Gecko
 	/// <summary>nsIUrlListManager </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("62484bb5-bf7e-4988-9055-8803b16b48a1")]
+	[Guid("5d5ed98f-72cd-46b6-a9fe-76418adfdfeb")]
 	public interface nsIUrlListManager
 	{
 		
 		/// <summary>
-        /// Set the URL we check for updates.
+        /// Get the gethash url for this table
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetUpdateUrl([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase url);
+		void GetGethashUrl([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
-        /// Set the URL that we will query for complete hashes after a partial
-        /// hash match.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetGethashUrl([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase url);
-		
-		/// <summary>
-        /// Add a table to the list of tables we are managing.  The name is a
+        /// Add a table to the list of tables we are managing. The name is a
         /// string of the format provider_name-semantic_type-table_type.  For
-        /// example, goog-white-enchash or goog-black-url.
+        /// @param tableName A string of the format
+        /// provider_name-semantic_type-table_type.  For example,
+        /// goog-white-enchash or goog-black-url.
+        /// @param updateUrl The URL from which to fetch updates.
+        /// @param gethashUrl The URL from which to fetch hash completions.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool RegisterTable([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName);
+		bool RegisterTable([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase updateUrl, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase gethashUrl);
 		
 		/// <summary>
-        /// Turn on update checking for a table.  I.e., during the next server
+        /// Turn on update checking for a table. I.e., during the next server
         /// check, download updates for this table.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -85,15 +82,17 @@ namespace Gecko
 		void DisableUpdate([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName);
 		
 		/// <summary>
+        /// Toggle update checking, if necessary.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MaybeToggleUpdateChecking();
+		
+		/// <summary>
         /// Lookup a key.  Should not raise exceptions.  Calls the callback
         /// function with a comma-separated list of tables to which the key
         /// belongs.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SafeLookup([MarshalAs(UnmanagedType.Interface)] nsIPrincipal key, [MarshalAs(UnmanagedType.Interface)] nsIUrlListManagerCallback cb);
-		
-		/// <summary>Member CheckForUpdates </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CheckForUpdates();
 	}
 }

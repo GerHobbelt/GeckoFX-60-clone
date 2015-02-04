@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("CCF9E98A-E442-4061-9F74-94539DD9FE9E")]
+	[Guid("a68a40b9-f7df-47ff-a874-2af3df7eb888")]
 	public interface nsIXULWindow
 	{
 		
@@ -154,11 +154,13 @@ namespace Gecko
 		/// <summary>
         /// Create a new window.
         /// @param aChromeFlags see nsIWebBrowserChrome
+        /// @param aOpeningTab the TabParent that requested this new window be opened.
+        /// Can be left null.
         /// @return the newly minted window
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIXULWindow CreateNewWindow(int aChromeFlags);
+		nsIXULWindow CreateNewWindow(int aChromeFlags, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

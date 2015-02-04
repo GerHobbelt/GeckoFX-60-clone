@@ -30,7 +30,7 @@ namespace Gecko
     ///this is NOT intended to be scriptable </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1affa260-8965-4612-869a-78af4ccfb287")]
+	[Guid("3f1ae084-607e-45b2-8f1e-8d450b0f9c65")]
 	public interface nsIInterfaceInfo
 	{
 		
@@ -75,7 +75,7 @@ namespace Gecko
 		System.IntPtr GetMethodInfoForName([MarshalAs(UnmanagedType.LPStr)] string methodName, ref ushort index);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetConstant(ushort index);
+		void GetConstant(ushort index, ref Gecko.MutableJSVal constant, [MarshalAs(UnmanagedType.LPStr)] ref string name);
 		
 		/// <summary>
         /// Get the interface information or iid associated with a param of some

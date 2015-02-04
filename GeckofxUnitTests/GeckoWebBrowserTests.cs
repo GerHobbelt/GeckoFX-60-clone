@@ -175,7 +175,9 @@ namespace GeckofxUnitTests
 		{
 			List<JavascriptErrorEventArgs> errorEventArgs = new List<JavascriptErrorEventArgs>();
 
+#if PORT
 			browser.JavascriptError += (object sender, JavascriptErrorEventArgs e) => errorEventArgs.Add(e);
+#endif
 
 			browser.Navigate("javascript:someRandomFunctionNameThatDoesNotExist(\"2\");");
 

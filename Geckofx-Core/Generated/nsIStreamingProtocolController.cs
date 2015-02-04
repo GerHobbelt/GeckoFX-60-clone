@@ -213,7 +213,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a9bdd4b0-8559-11e2-9e96-0800200c9a66")]
+	[Guid("4ce040f0-c50d-461f-94e2-af5a77fe13a5")]
 	public interface nsIStreamingProtocolController
 	{
 		
@@ -281,6 +281,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Stop();
+		
+		/// <summary>
+        /// Notify the streaming controller that the playback has ended.
+        /// The controller might have to perform certain internal state transition.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PlaybackEnded();
 		
 		/// <summary>
         /// Total number of audio/video tracks.

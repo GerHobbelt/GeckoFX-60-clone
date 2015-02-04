@@ -38,7 +38,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a256f26a-c603-459e-b5a4-53b4877f2cd8")]
+	[Guid("6bd5642c-1b90-4499-ba4b-199f27efaba5")]
 	public interface nsIGZFileWriter
 	{
 		
@@ -51,6 +51,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init([MarshalAs(UnmanagedType.Interface)] nsIFile file);
+		
+		/// <summary>
+        /// Alternate version of init() for use when the file is already opened;
+        /// e.g., with a FileDescriptor passed over IPC.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void InitANSIFileDesc(System.IntPtr file);
 		
 		/// <summary>
         /// Write the given string to the file.

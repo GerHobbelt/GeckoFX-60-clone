@@ -49,7 +49,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b733194f-6751-4876-a444-bca4ba3f2fcb")]
+	[Guid("7630dd2f-b705-4373-9eba-e7f8110a99dc")]
 	public interface nsIHttpChannelInternal
 	{
 		
@@ -286,5 +286,15 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIURI GetApiRedirectToURIAttribute();
+		
+		/// <summary>
+        /// Add a new nsIPrincipal to the redirect chain. This is the only way to
+        /// write to nsIRedirectHistory.redirects.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AddRedirect([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetLastModifiedTimeAttribute();
 	}
 }

@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("868662a4-681c-4b89-9f02-6fe5b7ace265")]
+	[Guid("6f040bf0-6852-11e3-949a-0800200c9a66")]
 	public interface nsITCPSocketParent
 	{
 		
@@ -58,6 +58,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SendUpdateBufferedAmount(uint bufferedAmount, uint trackingNumber);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetHostAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aHost);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ushort GetPortAttribute();
 	}
 	
 	/// <summary>

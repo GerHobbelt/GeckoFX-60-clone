@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0c81b265-34b8-472d-be98-099b2512e3ec")]
+	[Guid("37ec75d3-97ad-4da8-afaa-eabe5b4afd73")]
 	public interface nsITransfer : nsIWebProgressListener2
 	{
 		
@@ -263,5 +263,15 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSignatureInfo([MarshalAs(UnmanagedType.Interface)] nsIArray aSignatureInfo);
+		
+		/// <summary>
+        /// Used to notify the transfer object of the redirects associated with the
+        /// channel that terminated in the downloaded file.  Must be called on the
+        /// main thread, only after the download has finished successfully.
+        /// @param aRedirects The nsIArray of nsIPrincipal of redirected URIs
+        /// associated with the downloaded file.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRedirects([MarshalAs(UnmanagedType.Interface)] nsIArray aRedirects);
 	}
 }

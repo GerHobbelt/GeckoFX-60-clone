@@ -42,7 +42,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2a8a7237-c1e2-4de7-b669-2002af29e42d")]
+	[Guid("3423767b-9f4e-430e-9859-67a83ffb689d")]
 	public interface nsIChannel : nsIRequest
 	{
 		
@@ -498,6 +498,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetContentDispositionHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentDispositionHeader);
+		
+		/// <summary>
+        /// The nsILoadInfo for this load.  This is immutable for the
+        /// lifetime of the load and should be passed through across
+        /// redirects and the like.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsILoadInfo GetLoadInfoAttribute();
+		
+		/// <summary>
+        /// The nsILoadInfo for this load.  This is immutable for the
+        /// lifetime of the load and should be passed through across
+        /// redirects and the like.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetLoadInfoAttribute([MarshalAs(UnmanagedType.Interface)] nsILoadInfo aLoadInfo);
 	}
 	
 	/// <summary>nsIChannelConsts </summary>

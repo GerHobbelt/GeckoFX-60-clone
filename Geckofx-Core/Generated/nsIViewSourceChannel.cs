@@ -490,6 +490,23 @@ namespace Gecko
 		new void GetContentDispositionHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentDispositionHeader);
 		
 		/// <summary>
+        /// The nsILoadInfo for this load.  This is immutable for the
+        /// lifetime of the load and should be passed through across
+        /// redirects and the like.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsILoadInfo GetLoadInfoAttribute();
+		
+		/// <summary>
+        /// The nsILoadInfo for this load.  This is immutable for the
+        /// lifetime of the load and should be passed through across
+        /// redirects and the like.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetLoadInfoAttribute([MarshalAs(UnmanagedType.Interface)] nsILoadInfo aLoadInfo);
+		
+		/// <summary>
         /// The actual (MIME) content type of the data.
         ///
         /// nsIViewSourceChannel returns a content type of

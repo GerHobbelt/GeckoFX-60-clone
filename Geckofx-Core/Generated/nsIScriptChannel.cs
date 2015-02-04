@@ -110,12 +110,6 @@ namespace Gecko
 		public const ulong NO_EXECUTION = 0;
 		
 		// <summary>
-        // Execute in a sandbox, no matter how the various principals involved are
-        // related to each other.
-        // </summary>
-		public const ulong EXECUTE_IN_SANDBOX = 1;
-		
-		// <summary>
         // Execute against the target environment if the principals allow it.
         // </summary>
 		public const ulong EXECUTE_NORMAL = 2;

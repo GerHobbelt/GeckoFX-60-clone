@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3058bf1e-5116-41cf-826b-e6981308d414")]
+	[Guid("972dc51d-df01-4b1e-b7f3-76dbcc603b1e")]
 	public interface nsICacheEntry
 	{
 		
@@ -172,6 +172,17 @@ namespace Gecko
 		void SetMetaDataElement([MarshalAs(UnmanagedType.LPStr)] string key, [MarshalAs(UnmanagedType.LPStr)] string value);
 		
 		/// <summary>
+        /// Obtain the list of metadata keys this entry keeps.
+        ///
+        /// NOTE: The callback is invoked under the CacheFile's lock.  It means
+        /// there should not be made any calls to the entry from the visitor and
+        /// if the values need to be processed somehow, it's better to cache them
+        /// and process outside the callback.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void VisitMetaData([MarshalAs(UnmanagedType.Interface)] nsICacheEntryMetaDataVisitor visitor);
+		
+		/// <summary>
         /// Claims that all metadata on this entry are up-to-date and this entry
         /// now can be delivered to other waiting consumers.
         ///
@@ -267,5 +278,22 @@ namespace Gecko
         // Placeholder for the initial value of expiration time.
         // </summary>
 		public const ulong NO_EXPIRATION_TIME = 0xFFFFFFFF;
+	}
+	
+	/// <summary>
+    /// Argument for nsICacheEntry.visitMetaData, provides access to all metadata
+    /// keys and values stored on the entry.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("fea3e276-6ba5-4ceb-a581-807d1f43f6d0")]
+	public interface nsICacheEntryMetaDataVisitor
+	{
+		
+		/// <summary>
+        /// Called over each key / value pair.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnMetaDataElement([MarshalAs(UnmanagedType.LPStr)] string key, [MarshalAs(UnmanagedType.LPStr)] string value);
 	}
 }

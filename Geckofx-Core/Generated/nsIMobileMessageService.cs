@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("17fce9e4-af56-11e3-83d9-b71055e95493")]
+	[Guid("afb83948-003a-11e4-899b-bb8a8d45e7f0")]
 	public interface nsIMobileMessageService
 	{
 		
@@ -71,5 +71,9 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMMozMobileMessageThread CreateThread(ulong id, ref Gecko.JsVal participants, ulong timestamp, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase lastMessageSubject, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase body, ulong unreadCount, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aLastMessageType, System.IntPtr jsContext);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDeletedMessageInfo CreateDeletedMessageInfo([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] int[] messageIds, uint msgCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] System.UInt32[] long threadIds, uint threadCount);
 	}
 }

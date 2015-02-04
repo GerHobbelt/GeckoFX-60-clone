@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3bc4793f-e6be-44d6-b839-d6b9e85e5346")]
+	[Guid("13b75be1-f950-497b-81e4-a0214a14e5ae")]
 	public interface nsIStackFrame
 	{
 		
@@ -62,6 +62,12 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIStackFrame GetCallerAttribute();
+		
+		/// <summary>
+        /// Only works on JS-language stack frames.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetFormattedStackAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFormattedStack);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ToString([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
