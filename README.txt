@@ -2,6 +2,14 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v33.0-0.6 ==
+
+1. Fix: Issue 20 https://bitbucket.org/geckofx/geckofx-33.0/issue/20/unit-tests
+2. Fix: Issue 39 https://bitbucket.org/geckofx/geckofx-33.0/issue/39/geckonode-selectfirst-not-working-in-33
+3. Update NSS-errors API (issue 5)
+4. Fix a reentrant bug with LoadHtml(string content, string url) / LoadContent seen on Linux.
+5. Add html5 input event support.
+
 == v33.0-0.5 ==
 
 1. Linux only tag.
