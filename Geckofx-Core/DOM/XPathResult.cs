@@ -22,7 +22,7 @@ namespace Gecko.DOM
 		{
             using (var context = new AutoJSContext())
             {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)xpathResult);
+                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)xpathResult.Instance);
                 return (XPathResultType)SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "resultType").ToInteger();
             }			
 		}
@@ -31,7 +31,7 @@ namespace Gecko.DOM
 		{
             using (var context = new AutoJSContext())
             {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)xpathResult);
+                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)xpathResult.Instance);
                 return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "numberValue").ToDouble();
             }
 		}
@@ -40,7 +40,7 @@ namespace Gecko.DOM
 		{
             using (var context = new AutoJSContext())
             {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)xpathResult);
+                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)xpathResult.Instance);
                 return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "stringValue").ToString();
             }
 		}
@@ -49,7 +49,7 @@ namespace Gecko.DOM
 		{            
 		    using (var context = new AutoJSContext())
 		    {
-		        var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) xpathResult);		        
+		        var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) xpathResult.Instance);		        
 		        return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "booleanValue").ToBoolean();
 		    }
 		}
@@ -58,7 +58,7 @@ namespace Gecko.DOM
 		{
 		    using (var context = new AutoJSContext())
 		    {
-		        var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) xpathResult);
+		        var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) xpathResult.Instance);
                 return (SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "singleNodeValue").ToComObject(context.ContextPointer) as nsIDOMNode).Wrap(GeckoNode.Create);
 		    }
 		}
