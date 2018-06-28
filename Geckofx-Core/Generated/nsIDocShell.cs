@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("63adb599-6dc9-4746-972e-c22e9018020b")]
+	[Guid("049234fe-da10-478b-bc5d-bc6f9a1ba63d")]
 	public interface nsIDocShell : nsIDocShellTreeItem
 	{
 		
@@ -405,11 +405,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetChromeEventHandlerAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget aChromeEventHandler);
-		
-		/// <summary>
+
+        /// <summary>
         /// Whether to allow plugin execution
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        string GetCustomUserAgentAttribute();
+
+        /// <summary>
+        /// Whether to allow plugin execution
+        /// </summary>
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        void SetCustomUserAgentAttribute(string str);
+
+        /// <summary>
+        /// Whether to allow plugin execution
+        /// </summary>
+        [return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetAllowPluginsAttribute();
 		
@@ -545,8 +557,25 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAllowContentRetargetingOnChildrenAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowContentRetargetingOnChildren);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
+
+        /// <summary>
+        /// True if new child docshells should allow content retargeting.
+        /// Setting allowContentRetargeting also overwrites this value.
+        /// </summary>
+        [return: MarshalAs(UnmanagedType.U1)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        bool GetinheritPrivateBrowsingIdAttribute();
+
+        /// <summary>
+        /// True if new child docshells should allow content retargeting.
+        /// Setting allowContentRetargeting also overwrites this value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        void SetinheritPrivateBrowsingIdAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowContentRetargetingOnChildren);
+
+
+
+        [return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISimpleEnumerator GetDocShellEnumerator(int aItemType, int aDirection);
 		
@@ -721,14 +750,29 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSecurityUIAttribute([MarshalAs(UnmanagedType.Interface)] nsISecureBrowserUI aSecurityUI);
-		
-		/// <summary>
+
+        /// <summary>
+        /// The SecureBrowserUI object for this docshell.  This is set by XUL
+        /// <browser> or nsWebBrowser for their root docshell.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        nsISupports GetloadURIDelegateAttribute();
+
+        /// <summary>
+        /// The SecureBrowserUI object for this docshell.  This is set by XUL
+        /// <browser> or nsWebBrowser for their root docshell.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        void SetloadURIDelegateAttribute([MarshalAs(UnmanagedType.Interface)] nsISupports aSecurityUI);
+
+        /// <summary>
         /// Cancel the XPCOM timers for each meta-refresh URI in this docshell,
         /// and this docshell's children, recursively. The meta-refresh timers can be
         /// restarted using resumeRefreshURIs().  If the timers are already suspended,
         /// this has no effect.
         /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SuspendRefreshURIs();
 		
 		/// <summary>
@@ -836,16 +880,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMStorage GetSessionStorageForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase documentURI, [MarshalAs(UnmanagedType.U1)] bool create);
 		
-		/// <summary>
-        /// @deprecated, use nsIDocShell.QueryInterface(nsIDOMStorageManager) instead.
-        ///
-        /// Add a WebApps session storage object to the docshell.
-        ///
-        /// @param principal the principal the storage object is associated with
-        /// @param storage the storage object to add
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddSessionStorage([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.Interface)] nsIDOMStorage storage);
 		
 		/// <summary>
         /// Gets the channel for the currently loaded document, if any.
@@ -967,13 +1001,16 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsOffScreenBrowserAttribute([MarshalAs(UnmanagedType.U1)] bool aIsOffScreenBrowser);
-		
-		/// <summary>
+
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        void SetIsPrinting(bool b);
+
+        /// <summary>
         /// If the current content viewer isn't initialized for print preview,
         /// it is replaced with one which is and to which an about:blank document
         /// is loaded.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
+        [return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIWebBrowserPrint GetPrintPreviewAttribute();
 		
@@ -1002,24 +1039,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsActiveAttribute([MarshalAs(UnmanagedType.U1)] bool aIsActive);
-		
-		/// <summary>
-        /// Sets whether a docshell is active, as above, but ensuring it does
-        /// not discard its layers
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsActiveAndForeground([MarshalAs(UnmanagedType.U1)] bool aIsActive);
-		
-		/// <summary>
-        /// Puts the docshell in prerendering mode. noscript because we want only
-        /// native code to be able to put a docshell in prerendering.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsPrerendered([MarshalAs(UnmanagedType.U1)] bool prerendered);
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsPrerenderedAttribute();
 		
 		/// <summary>
         /// The ID of the docshell in the session history.

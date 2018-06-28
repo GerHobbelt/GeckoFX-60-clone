@@ -83,6 +83,9 @@ namespace Gecko
             [MarshalAs(UnmanagedType.Interface)] out nsIServiceManager serviceManager,
             [MarshalAs(UnmanagedType.IUnknown)] object binDirectory, nsIDirectoryServiceProvider appFileLocationProvider);
 
+        [DllImport("xul", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int NS_ProfileInit();
+
         /// <summary>
         /// Shutdown XPCOM. You must call this method after you are finished
         /// using xpcom.
@@ -332,7 +335,10 @@ namespace Gecko
             String oldCurrent = Environment.CurrentDirectory;
             Environment.CurrentDirectory = folder;
 
+            NS_ProfileInit();
+
             nsIServiceManager serviceManager;
+
             //int res = NS_InitXPCOM2(out serviceManagerPtr, mreAppDir, new DirectoryServiceProvider());
 
 

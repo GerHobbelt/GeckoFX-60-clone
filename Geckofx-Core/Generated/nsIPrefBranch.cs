@@ -77,9 +77,13 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetBoolPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
-		
-		/// <summary>
+		bool GetBoolPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, bool def);
+
+        [return: MarshalAs(UnmanagedType.U1)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        bool GetBoolPrefXPCom([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
+
+        /// <summary>
         /// Called to set the state of an individual boolean preference.
         ///
         /// @param aPrefName The boolean preference to set the state of.
@@ -90,7 +94,7 @@ namespace Gecko
         ///
         /// @see getBoolPref
         /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetBoolPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.U1)] bool aValue);
 		
 		/// <summary>

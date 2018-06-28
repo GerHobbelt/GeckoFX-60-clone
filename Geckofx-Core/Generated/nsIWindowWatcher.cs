@@ -46,7 +46,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("67bc1691-fbaf-484a-a15b-c96212b45034")]
+	[Guid("641fe945-6902-4b3f-87c2-0daef32499b3")]
 	public interface nsIWindowWatcher
 	{
 		

@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9DA319F3-EEE6-4504-81A5-6A19CF6215BF")]
+	[Guid("ca635529-a977-4552-9b8a-66187e54d882")]
 	public interface nsIBaseWindow
 	{
 		
@@ -97,12 +97,19 @@ namespace Gecko
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetPosition(int x, int y);
-		
-		/// <summary>
+
+        /// <summary>
+        ///Sets the current x and y coordinates of the control.  This is relative to
+        ///	the parent window.
+        ///	 </summary>
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        void setPositionDesktopPix(int x, int y);
+
+        /// <summary>
         ///Gets the current x and y coordinates of the control.  This is relatie to the
         ///	parent window.
         ///	 </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetPosition(ref int x, ref int y);
 		
 		/// <summary>

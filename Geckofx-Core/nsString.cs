@@ -903,8 +903,8 @@ namespace Gecko
             {
                 if (IsDisposed)
                     return;
-
-                NS_StringContainerFinish(this.Container);
+                // TODO: add entry point to xul
+                //NS_StringContainerFinish(this.Container);
                 Xpcom.Free(this.Container);
                 base.Dispose(disposing);
             }

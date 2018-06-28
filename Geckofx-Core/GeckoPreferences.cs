@@ -203,7 +203,7 @@ namespace Gecko
                     case PREF_INT:
                         return _branch.Instance.GetIntPref(prefName);
                     case PREF_BOOL:
-                        return _branch.Instance.GetBoolPref(prefName);
+                        return _branch.Instance.GetBoolPrefXPCom(prefName);
                 }
                 throw new ArgumentException("prefName");
             }
@@ -315,7 +315,7 @@ namespace Gecko
                     value = null;
                     return true;
                 case PREF_BOOL:
-                    value = _branch.Instance.GetBoolPref(prefName);
+                    value = _branch.Instance.GetBoolPrefXPCom(prefName);
                     return true;
                 default:
                     value = null;

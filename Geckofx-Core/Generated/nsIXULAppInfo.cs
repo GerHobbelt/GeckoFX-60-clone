@@ -32,15 +32,27 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1518e7d2-022a-4dae-b02e-bbe7ffcf2145")]
+	[Guid("ddea4f31-3c5e-4769-ac68-21ab4b3d7845")]
 	public interface nsIXULAppInfo
 	{
-		
-		/// <summary>
+        /// <summary>
+        /// The version of the XULRunner platform.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        void GetPlatformVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPlatformVersion);
+
+        /// <summary>
+        /// The build ID/date of gecko and the XULRunner platform.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        //void GetPlatformBuildIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPlatformBuildID);
+        void GetPlatformBuildIDAttribute(IntPtr aPlatformBuildID);
+
+        /// <summary>
         /// @see nsXREAppData.vendor
         /// @returns an empty string if nsXREAppData.vendor is not set.
         /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetVendorAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aVendor);
 		
 		/// <summary>
@@ -73,18 +85,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetAppBuildIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aAppBuildID);
-		
-		/// <summary>
-        /// The version of the XULRunner platform.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPlatformVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPlatformVersion);
-		
-		/// <summary>
-        /// The build ID/date of gecko and the XULRunner platform.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPlatformBuildIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPlatformBuildID);
 		
 		/// <summary>
         /// @see nsXREAppData.UAName

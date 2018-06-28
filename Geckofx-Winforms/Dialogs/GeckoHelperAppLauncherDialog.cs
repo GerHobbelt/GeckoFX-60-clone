@@ -45,7 +45,7 @@ namespace Gecko
 
         public void Navigate(string Url)
         {
-            WebNavigation.LoadURI(Url, 0, null, null, null);
+            WebNavigation.LoadURI(Url, 0, null, null, null, null);
         }
 
         /// <summary>

@@ -156,8 +156,11 @@ namespace Gecko
 
                     Guid nsIWebProgressListenerGUID = typeof (nsIWebProgressListener).GUID;
                     Guid nsIWebProgressListener2GUID = typeof (nsIWebProgressListener2).GUID;
+                    // AddEventListener Doesn't yet work
+#if false
                     WebBrowser.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListenerGUID);
                     WebBrowser.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListener2GUID);
+#endif
 
                     if (UseHttpActivityObserver)
                     {
@@ -167,6 +170,8 @@ namespace Gecko
 
                     // force inital window initialization. (Events now get added after document navigation.
                     {
+                        // AddEventListener doesn't yet work...
+#if false
                         var domWindow = WebBrowser.GetContentDOMWindowAttribute();
                         EventTarget = ((nsIDOMEventTarget) domWindow).AsComPtr();
                         using (var eventType = new nsAString("somedummyevent"))
@@ -174,14 +179,21 @@ namespace Gecko
                             EventTarget.Instance.AddEventListener(eventType, this, true, true, 2);
                             EventTarget.Instance.RemoveEventListener(eventType, this, true);
                         }
+#endif
                     }
 
                     // history
                     {
                         var sessionHistory = WebNav.GetSessionHistoryAttribute();
+#if WILL_PROLLY_WORK_AFTER_REGENERATING_INTERFACES
                         if (sessionHistory != null) sessionHistory.AddSHistoryListener(this);
+#endif
+
                     }
+// not working yet
+#if false
                     WindowMediator.RegisterWindow(this);
+#endif
                 }
 
 #if !GTK

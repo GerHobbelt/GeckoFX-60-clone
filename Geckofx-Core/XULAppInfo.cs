@@ -25,8 +25,11 @@ namespace Gecko
 
         public static void Init()
         {
+            // This doesn't work yet - crashes C++ -> C# calling  info->GetPlatformBuildID(buildID);
+#if false
             XULAppInfo.Init();
             Register();
+#endif
         }
     }
 
@@ -56,7 +59,7 @@ namespace Gecko
 
         public void GetVersionAttribute(nsACStringBase aVersion)
         {
-            aVersion.SetData("45");
+            aVersion.SetData("60");
         }
 
         public void GetAppBuildIDAttribute(nsACStringBase aAppBuildID)
@@ -66,12 +69,13 @@ namespace Gecko
 
         public void GetPlatformVersionAttribute(nsACStringBase aPlatformVersion)
         {
-            aPlatformVersion.SetData("45");
+            aPlatformVersion.SetData("60");
         }
 
-        public void GetPlatformBuildIDAttribute(nsACStringBase aPlatformBuildID)
+        //public void GetPlatformBuildIDAttribute(nsACStringBase aPlatformBuildID)
+        public void GetPlatformBuildIDAttribute(IntPtr ptr)
         {
-            aPlatformBuildID.SetData("0");
+            //aPlatformBuildID.SetData("0");
         }
 
         public void GetUANameAttribute(nsACStringBase aUAName)

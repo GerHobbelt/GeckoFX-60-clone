@@ -15,7 +15,8 @@ namespace Gecko
             using (var appShallSvc = Xpcom.GetService2<nsIAppShellService>(Contracts.AppShellService))
             {
                 webNav = appShallSvc.Instance.CreateWindowlessBrowser(true).AsComPtr();
-                webNav.Instance.LoadURI("chrome://global/content/alerts/alert.xul", 0, null, null, null);
+                // TODO: this doesn't work yet..
+                //webNav.Instance.LoadURI("chrome://global/content/alerts/alert.xul", 0, null, null, null);
             }
         }
 

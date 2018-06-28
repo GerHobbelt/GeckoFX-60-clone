@@ -69,8 +69,9 @@ namespace Gecko
         nsISHistoryListener,
         nsITooltipListener,
         nsIObserver,
-        nsIHttpActivityObserver,
-        nsISupportsWeakReference
+        nsIHttpActivityObserver
+        // Disabling this for FF 60.
+        //nsISupportsWeakReference
         //nsIWindowProvider,
     {
         #region Fields
@@ -374,7 +375,7 @@ namespace Gecko
                 {
                     WebNav.LoadURI(
                         url, (uint) loadFlags, referrerUri, postData != null ? postData._inputStream : null,
-                        headers != null ? headers._inputStream : null);
+                        headers != null ? headers._inputStream : null, null);
                 }
                 catch (COMException ce)
                 {
