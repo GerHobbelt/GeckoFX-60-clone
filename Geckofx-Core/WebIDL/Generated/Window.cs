@@ -47,19 +47,19 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMLocation Location
+        public /* nsIDOMLocation */ nsISupports Location
         {
             get
             {
-                return this.GetProperty<nsIDOMLocation>("location");
+                return this.GetProperty</* nsIDOMLocation */ nsISupports>("location");
             }
         }
         
-        public nsIDOMHistory History
+        public /* nsIDOMHistory */ nsISupports History
         {
             get
             {
-                return this.GetProperty<nsIDOMHistory>("history");
+                return this.GetProperty</* nsIDOMHistory */ nsISupports>("history");
             }
         }
         
@@ -191,11 +191,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMNavigator Navigator
+        public /* nsIDOMNavigator */ nsISupports Navigator
         {
             get
             {
-                return this.GetProperty<nsIDOMNavigator>("navigator");
+                return this.GetProperty</* nsIDOMNavigator */ nsISupports>("navigator");
             }
         }
         
@@ -327,14 +327,14 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISelection>("getSelection");
         }
         
-        public nsIDOMCSSStyleDeclaration GetComputedStyle(nsIDOMElement elt)
+        public /* nsIDOMCSSStyleDeclaration */ nsISupports GetComputedStyle(nsIDOMElement elt)
         {
-            return this.CallMethod<nsIDOMCSSStyleDeclaration>("getComputedStyle", elt);
+            return this.CallMethod</* nsIDOMCSSStyleDeclaration */ nsISupports>("getComputedStyle", elt);
         }
         
-        public nsIDOMCSSStyleDeclaration GetComputedStyle(nsIDOMElement elt, string pseudoElt)
+        public /* nsIDOMCSSStyleDeclaration */ nsISupports GetComputedStyle(nsIDOMElement elt, string pseudoElt)
         {
-            return this.CallMethod<nsIDOMCSSStyleDeclaration>("getComputedStyle", elt, pseudoElt);
+            return this.CallMethod</* nsIDOMCSSStyleDeclaration */ nsISupports>("getComputedStyle", elt, pseudoElt);
         }
         
         public nsISupports Screen
@@ -669,14 +669,14 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMCSSStyleDeclaration GetDefaultComputedStyle(nsIDOMElement elt)
+        public /* nsIDOMCSSStyleDeclaration */ nsISupports GetDefaultComputedStyle(nsIDOMElement elt)
         {
-            return this.CallMethod<nsIDOMCSSStyleDeclaration>("getDefaultComputedStyle", elt);
+            return this.CallMethod</* nsIDOMCSSStyleDeclaration */ nsISupports>("getDefaultComputedStyle", elt);
         }
         
-        public nsIDOMCSSStyleDeclaration GetDefaultComputedStyle(nsIDOMElement elt, string pseudoElt)
+        public /* nsIDOMCSSStyleDeclaration */ nsISupports GetDefaultComputedStyle(nsIDOMElement elt, string pseudoElt)
         {
-            return this.CallMethod<nsIDOMCSSStyleDeclaration>("getDefaultComputedStyle", elt, pseudoElt);
+            return this.CallMethod</* nsIDOMCSSStyleDeclaration */ nsISupports>("getDefaultComputedStyle", elt, pseudoElt);
         }
         
         public void ScrollByLines(int numLines)

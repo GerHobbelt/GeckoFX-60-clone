@@ -64,14 +64,12 @@ namespace Gecko
         ///                    the parent, if any (and if the concept applies
         ///                    to the underlying OS).
         ///      @param chromeFlags Chrome features from nsIWebBrowserChrome
-        ///      @param contextFlags Flags about the context of the window being created.
-        ///      @param uri The URL for which this window is intended. It can be null
-        ///                 or zero-length. The implementation of this interface
-        ///                 may use the URL to help determine what sort of window
-        ///                 to open or whether to cancel window creation. It will not
-        ///                 load the URL.
         ///      @param aOpeningTab The TabParent that is trying to open this new chrome
         ///                         window. Can be nullptr.
+        ///      @param aOpener The window which is trying to open this new chrome window.
+        ///                     Can be nullptr
+        ///      @param aNextTabParentId The integer ID of the next tab parent actor to use.
+        ///                              0 means there is no next tab parent ID to use.
         ///      @param cancel Return |true| to reject window creation. If true the
         ///                    implementation has determined the window should not
         ///                    be created at all. The caller should not default
@@ -80,7 +78,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIWebBrowserChrome CreateChromeWindow2([MarshalAs(UnmanagedType.Interface)] nsIWebBrowserChrome parent, uint chromeFlags, uint contextFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab, [MarshalAs(UnmanagedType.U1)] ref bool cancel);
+		nsIWebBrowserChrome CreateChromeWindow2([MarshalAs(UnmanagedType.Interface)] nsIWebBrowserChrome parent, uint chromeFlags, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab, mozIDOMWindowProxy aOpener, ulong aNextTabParentId, [MarshalAs(UnmanagedType.U1)] ref bool cancel);
 		
 		/// <summary>
         /// B2G multi-screen support. When open another top-level window on b2g,
@@ -91,15 +89,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetScreenId(uint aScreenId);
-	}
-	
-	/// <summary>nsIWindowCreator2Consts </summary>
-	public class nsIWindowCreator2Consts
-	{
-		
-		// <summary>
-        // Likely that the window is an advertising popup.
-        // </summary>
-		public const ulong PARENT_IS_LOADING_OR_RUNNING_TIMEOUT = 0x00000001;
 	}
 }

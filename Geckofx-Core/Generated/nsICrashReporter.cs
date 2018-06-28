@@ -97,6 +97,34 @@ namespace Gecko
 		void SetMinidumpPathAttribute([MarshalAs(UnmanagedType.Interface)] nsIFile aMinidumpPath);
 		
 		/// <summary>
+        /// Get the minidump file corresponding to the specified ID.
+        ///
+        /// @param id
+        /// ID of the crash. Likely a UUID.
+        ///
+        /// @return The minidump file associated with the ID.
+        ///
+        /// @throw NS_ERROR_FILE_NOT_FOUND if the minidump could not be found
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIFile GetMinidumpForID([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase id);
+		
+		/// <summary>
+        /// Get the extra file corresponding to the specified ID.
+        ///
+        /// @param id
+        /// ID of the crash. Likely a UUID.
+        ///
+        /// @return The extra file associated with the ID.
+        ///
+        /// @throw NS_ERROR_FILE_NOT_FOUND if the extra file could not be found
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIFile GetExtraFileForID([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase id);
+		
+		/// <summary>
         /// Add some extra data to be submitted with a crash report.
         ///
         /// @param key
@@ -188,5 +216,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SaveMemoryReport();
+		
+		/// <summary>
+        /// Set the telemetry session ID which is recorded in crash metadata. This is
+        /// saved in the crash manager and telemetry but is not submitted as a
+        /// crash-stats annotation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTelemetrySessionId([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase id);
 	}
 }

@@ -52,7 +52,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a15cd7ef-f7a0-43d2-be86-8bf488dc760b")]
+	[Guid("4dcb3851-eba2-4e42-b236-82d2596fca22")]
 	public interface nsIPermissionManager
 	{
 		
@@ -83,6 +83,17 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Add([MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.LPStr)] string type, uint permission, uint expireType, long expireTime);
+		
+		/// <summary>
+        /// Get all custom permissions for a given URI. This will return
+        /// an enumerator of all permissions which are not set to default
+        /// and which belong to the matching prinicpal of the given URI.
+        ///
+        /// @param uri  the URI to get all permissions for
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISimpleEnumerator GetAllForURI([MarshalAs(UnmanagedType.Interface)] nsIURI uri);
 		
 		/// <summary>
         /// Add permission information for a given principal.
@@ -138,6 +149,8 @@ namespace Gecko
 		
 		/// <summary>
         /// Test whether a website has permission to perform the given action.
+        /// This function will perform a pref lookup to permissions.default.<type>
+        /// if the specific permission type is part of the whitelist for that functionality.
         /// @param uri     the uri to be tested
         /// @param type    a case-sensitive ASCII string, identifying the consumer
         /// @param return  see add(), param permission. returns UNKNOWN_ACTION when
@@ -149,6 +162,8 @@ namespace Gecko
 		/// <summary>
         /// Test whether the principal has the permission to perform a given action.
         /// System principals will always have permissions granted.
+        /// This function will perform a pref lookup to permissions.default.<type>
+        /// if the specific permission type is part of the whitelist for that functionality.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint TestPermissionFromPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStr)] string type);
@@ -157,13 +172,17 @@ namespace Gecko
         /// Test whether the principal associated with the window's document has the
         /// permission to perform a given action.  System principals will always
         /// have permissions granted.
+        /// This function will perform a pref lookup to permissions.default.<type>
+        /// if the specific permission type is part of the whitelist for that functionality.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint TestPermissionFromWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, [MarshalAs(UnmanagedType.LPStr)] string type);
+		uint TestPermissionFromWindow(mozIDOMWindow window, [MarshalAs(UnmanagedType.LPStr)] string type);
 		
 		/// <summary>
         /// Test whether a website has permission to perform the given action.
         /// This requires an exact hostname match, subdomains are not a match.
+        /// This function will perform a pref lookup to permissions.default.<type>
+        /// if the specific permission type is part of the whitelist for that functionality.
         /// @param uri     the uri to be tested
         /// @param type    a case-sensitive ASCII string, identifying the consumer
         /// @param return  see add(), param permission. returns UNKNOWN_ACTION when
@@ -175,6 +194,8 @@ namespace Gecko
 		/// <summary>
         /// See testExactPermission() above.
         /// System principals will always have permissions granted.
+        /// This function will perform a pref lookup to permissions.default.<type>
+        /// if the specific permission type is part of the whitelist for that functionality.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint TestExactPermissionFromPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStr)] string type);
@@ -183,6 +204,8 @@ namespace Gecko
         /// Test whether a website has permission to perform the given action
         /// ignoring active sessions.
         /// System principals will always have permissions granted.
+        /// This function will perform a pref lookup to permissions.default.<type>
+        /// if the specific permission type is part of the whitelist for that functionality.
         ///
         /// @param principal the principal
         /// @param type      a case-sensitive ASCII string, identifying the consumer
@@ -191,6 +214,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint TestExactPermanentPermission([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStr)] string type);
+		
+		/// <summary>
+        /// Get the permission object associated with the given URI and action.
+        /// @param uri The URI
+        /// @param type      A case-sensitive ASCII string identifying the consumer
+        /// @param exactHost If true, only the specific host will be matched,
+        /// @see testExactPermission. If false, subdomains will
+        /// also be searched, @see testPermission.
+        /// @returns The matching permission object, or null if no matching object
+        /// was found. No matching object is equivalent to UNKNOWN_ACTION.
+        /// @note Clients in general should prefer the test* methods unless they
+        /// need to know the specific stored details.
+        /// @note This method will always return null for the system principal.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPermission GetPermissionObjectForURI([MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.LPStr)] string type, [MarshalAs(UnmanagedType.U1)] bool exactHost);
 		
 		/// <summary>
         /// Get the permission object associated with the given principal and action.
@@ -208,19 +248,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPermission GetPermissionObject([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStr)] string type, [MarshalAs(UnmanagedType.U1)] bool exactHost);
-		
-		/// <summary>
-        /// Increment or decrement our "refcount" of an app id.
-        ///
-        /// We use this refcount to determine an app's lifetime.  When an app's
-        /// refcount goes to 0, we clear the permissions given to the app which are
-        /// set to expire at the end of its session.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddrefAppId(uint appId);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReleaseAppId(uint appId);
 		
 		/// <summary>
         /// Allows enumeration of all stored permissions
@@ -255,11 +282,78 @@ namespace Gecko
 		void UpdateExpireTime([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStr)] string type, [MarshalAs(UnmanagedType.U1)] bool exactHost, ulong sessionExpireTime, ulong persistentExpireTime);
 		
 		/// <summary>
-        /// Remove all current permission settings and get permission settings from
-        /// chrome process.
+        /// The content process doesn't have access to every permission. Instead, when
+        /// LOAD_DOCUMENT_URI channels for http://, https://, and ftp:// URIs are
+        /// opened, the permissions for those channels are sent down to the content
+        /// process before the OnStartRequest message. Permissions for principals with
+        /// other schemes are sent down at process startup.
+        ///
+        /// Permissions are keyed and grouped by "Permission Key"s.
+        /// `nsPermissionManager::GetKeyForPrincipal` provides the mechanism for
+        /// determining the permission key for a given principal.
+        ///
+        /// This method may only be called in the parent process. It fills the nsTArray
+        /// argument with the IPC::Permission objects which have a matching permission
+        /// key.
+        ///
+        /// @param permissionKey  The key to use to find the permissions of interest.
+        /// @param perms  An array which will be filled with the permissions which
+        /// match the given permission key.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RefreshPermission();
+		void GetPermissionsWithKey([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase permissionKey, [MarshalAs(UnmanagedType.Interface)] ref nsISupports perms);
+		
+		/// <summary>
+        /// See `nsIPermissionManager::GetPermissionsWithKey` for more info on
+        /// Permission keys.
+        ///
+        /// `SetPermissionsWithKey` may only be called in the Child process, and
+        /// initializes the permission manager with the permissions for a given
+        /// Permission key. marking permissions with that key as available.
+        ///
+        /// @param permissionKey  The key for the permissions which have been sent over.
+        /// @param perms  An array with the permissions which match the given key.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetPermissionsWithKey([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase permissionKey, [MarshalAs(UnmanagedType.Interface)] nsISupports perms);
+		
+		/// <summary>
+        /// Broadcasts permissions for the given principal to all content processes.
+        ///
+        /// DO NOT USE THIS METHOD if you can avoid it. It was added in bug XXX to
+        /// handle the current temporary implementation of ServiceWorker debugging. It
+        /// will be removed when service worker debugging is fixed.
+        ///
+        /// @param aPrincipal The principal to broadcast permissions for.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BroadcastPermissionsForPrincipalToAllContentProcesses([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+		
+		/// <summary>
+        /// Add a callback which should be run when all permissions are available for
+        /// the given nsIPrincipal. This method invokes the callback runnable
+        /// synchronously when the permissions are already available. Otherwise the
+        /// callback will be run asynchronously in SystemGroup when all permissions
+        /// are available in the future.
+        ///
+        /// NOTE: This method will not request the permissions be sent by the parent
+        /// process. This should only be used to wait for permissions which may not
+        /// have arrived yet in order to ensure they are present.
+        ///
+        /// @param aPrincipal The principal to wait for permissions to be available for.
+        /// @param aRunnable  The runnable to run when permissions are available for the
+        /// given principal.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void WhenPermissionsAvailable([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIRunnable aRunnable);
+		
+		/// <summary>
+        /// True if any "preload" permissions are present. This is used to avoid making
+        /// potentially expensive permissions checks in nsContentBlocker.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetHasPreloadPermissionsAttribute();
 	}
 	
 	/// <summary>nsIPermissionManagerConsts </summary>
@@ -289,6 +383,9 @@ namespace Gecko
         // (never expire), expire at the end of the session, or expire at a specified
         // time. Permissions that expire at the end of a session may also have a
         // specified expiration time.
+        //
+        // EXPIRE_POLICY is a special expiration status. It is set when the permission
+        // is set by reading an enterprise policy. These permissions cannot be overridden.
         // </summary>
 		public const long EXPIRE_NEVER = 0;
 		
@@ -297,5 +394,8 @@ namespace Gecko
 		
 		// 
 		public const long EXPIRE_TIME = 2;
+		
+		// 
+		public const long EXPIRE_POLICY = 3;
 	}
 }

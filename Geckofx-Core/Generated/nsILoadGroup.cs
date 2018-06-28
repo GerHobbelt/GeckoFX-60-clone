@@ -249,7 +249,7 @@ namespace Gecko
         /// and per-tab connection grouping.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetSchedulingContextIDAttribute();
+		ulong GetRequestContextIDAttribute();
 		
 		/// <summary>
         /// The set of load flags that will be added to all new requests added to
@@ -278,5 +278,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDefaultLoadFlagsAttribute(uint aDefaultLoadFlags);
+		
+		/// <summary>
+        /// The cached user agent override created by UserAgentOverrides.jsm. Used
+        /// for all sub-resource requests in the loadgroup.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetUserAgentOverrideCacheAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUserAgentOverrideCache);
+		
+		/// <summary>
+        /// The cached user agent override created by UserAgentOverrides.jsm. Used
+        /// for all sub-resource requests in the loadgroup.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetUserAgentOverrideCacheAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUserAgentOverrideCache);
 	}
 }

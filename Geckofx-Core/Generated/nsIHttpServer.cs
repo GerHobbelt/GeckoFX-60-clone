@@ -612,6 +612,13 @@ namespace Gecko
 		void SetHeader([MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value, [MarshalAs(UnmanagedType.U1)] bool merge);
 		
 		/// <summary>
+        /// This is used for testing our header handling, so header will be sent out
+        /// without transformation. There can be multiple headers.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetHeaderNoCheck([MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
+		
+		/// <summary>
         /// A stream to which data appearing in the body of this response (or in the
         /// totality of the response if seizePower() is called) should be written.
         /// After this response has been designated as being processed asynchronously,

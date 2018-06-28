@@ -51,8 +51,7 @@ namespace Gecko
 		void GetNotBeforeLocalTimeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNotBeforeLocalTime);
 		
 		/// <summary>
-        /// The day portion of "notBefore"
-        /// formatted as a time string
+        /// The day portion of "notBefore" formatted as a time string
         /// according to the environment locale,
         /// according to the environment time zone.
         /// </summary>
@@ -83,8 +82,7 @@ namespace Gecko
 		void GetNotAfterLocalTimeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNotAfterLocalTime);
 		
 		/// <summary>
-        /// The day portion of "notAfter"
-        /// formatted as a time string
+        /// The day portion of "notAfter" formatted as a time string
         /// according to the environment locale,
         /// according to the environment time zone.
         /// </summary>

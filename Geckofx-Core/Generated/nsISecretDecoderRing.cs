@@ -27,8 +27,9 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// Buffer type - for storing 8-bit octet values.
-    /// </summary>
+    ///This Source Code Form is subject to the terms of the Mozilla Public
+    /// License, v. 2.0. If a copy of the MPL was not distributed with this
+    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("0EC80360-075C-11d4-9FD4-00C04F1B83D8")]
@@ -36,35 +37,44 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Encrypt a buffer - callable only from C++.
+        /// Encrypt to Base64 output.
+        /// Note that the input must basically be a byte array (i.e. the code points
+        /// must be within the range [0, 255]). Hence, using this method directly to
+        /// encrypt passwords (or any text, really) won't work as expected.
+        /// Instead, use something like nsIScriptableUnicodeConverter to first convert
+        /// the desired password or text to UTF-8, then encrypt that. Remember to
+        /// convert back when calling decryptString().
         ///
-        /// @return The length of the data in the output buffer.
+        /// @param text The text to encrypt.
+        /// @return The encrypted text, encoded as Base64.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int Encrypt(System.IntPtr data, int dataLen, ref System.IntPtr result);
+		void EncryptString([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase text, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
-        /// Decrypt a buffer - callable only from C++.
+        /// Run encryptString on multiple strings, asynchronously. This will allow you
+        /// to not jank the browser if you need to encrypt a large number of strings
+        /// all at once. This method accepts an array of wstrings which it will convert
+        /// to UTF-8 internally before encrypting.
         ///
-        /// @return The length of the data in the output buffer.
+        /// @param plaintextsCount the number of strings to encrypt.
+        /// @param plaintexts the strings to encrypt.
+        /// @return A promise for the list of encrypted strings, encoded as Base64.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int Decrypt(System.IntPtr data, int dataLen, ref System.IntPtr result);
+		nsISupports AsyncEncryptStrings(uint plaintextsCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] System.IntPtr[] plaintexts, System.IntPtr jsContext);
 		
 		/// <summary>
-        /// Encrypt nul-terminated string to BASE64 output.
+        /// Decrypt Base64 input.
+        /// See the encryptString() documentation - this method has basically the same
+        /// limitations.
+        ///
+        /// @param encryptedBase64Text Encrypted input text, encoded as Base64.
+        /// @return The decoded text.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string EncryptString([MarshalAs(UnmanagedType.LPStr)] string text);
-		
-		/// <summary>
-        /// Decrypt BASE64 input to nul-terminated string output.  There is
-        /// no check for embedded nul values in the decrypted output.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string DecryptString([MarshalAs(UnmanagedType.LPStr)] string crypt);
+		void DecryptString([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase encryptedBase64Text, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
         /// Prompt the user to change the password on the SDR key.
@@ -84,25 +94,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void LogoutAndTeardown();
-	}
-	
-	/// <summary>
-    /// Configuration interface for the Secret Decoder Ring
-    /// - this interface allows setting the window that will be
-    /// used as parent for dialog windows (such as password prompts)
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("01D8C0F0-0CCC-11d4-9FDD-000064657374")]
-	public interface nsISecretDecoderRingConfig
-	{
-		
-		/// <summary>
-        /// Configuration interface for the Secret Decoder Ring
-        /// - this interface allows setting the window that will be
-        /// used as parent for dialog windows (such as password prompts)
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetWindow([MarshalAs(UnmanagedType.Interface)] nsISupports w);
 	}
 }

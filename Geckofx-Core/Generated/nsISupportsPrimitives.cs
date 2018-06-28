@@ -96,10 +96,9 @@ namespace Gecko
 		// 
 		public const ushort TYPE_DOUBLE = 15;
 		
-		// 
-		public const ushort TYPE_VOID = 16;
-		
-		// 
+		// <summary>
+        // 16 was for TYPE_VOID
+        // </summary>
 		public const ushort TYPE_INTERFACE_POINTER = 17;
 	}
 	
@@ -536,35 +535,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDataAttribute(double aData);
-		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string ToString();
-	}
-	
-	/// <summary>
-    /// Scriptable storage for generic pointers
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("464484f0-568d-11d3-baf8-00805f8a5dd7")]
-	public interface nsISupportsVoid : nsISupportsPrimitive
-	{
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new ushort GetTypeAttribute();
-		
-		/// <summary>
-        /// Scriptable storage for generic pointers
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetDataAttribute();
-		
-		/// <summary>
-        /// Scriptable storage for generic pointers
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDataAttribute(System.IntPtr aData);
 		
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

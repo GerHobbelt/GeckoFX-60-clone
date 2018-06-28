@@ -54,6 +54,12 @@ namespace Gecko
 	[Guid("978ff520-d26c-11d2-9842-006008962422")]
 	public interface nsIXPCComponents_Classes
 	{
+		
+		/// <summary>
+        /// Make it so that |cid| gets mapped to |idString|.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Initialize([MarshalAs(UnmanagedType.Interface)] nsIJSCID cid, [MarshalAs(UnmanagedType.LPStr)] string idString);
 	}
 	
 	/// <summary>
@@ -157,10 +163,26 @@ namespace Gecko
 	}
 	
 	/// <summary>
+    /// Interface for callback to be passed to Cu.blockThreadedExecution.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("c3b85a5c-c328-47d4-aaaf-384c4ff9d77d")]
+	public interface nsIBlockThreadedExecutionCallback
+	{
+		
+		/// <summary>
+        /// Interface for callback to be passed to Cu.blockThreadedExecution.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Callback();
+	}
+	
+	/// <summary>
     /// interface of Components.utils </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3ce3a6f8-2b59-439c-a57e-74e7b122fb3c")]
+	[Guid("86003fe3-ee9a-4620-91dc-eef8b1e58815")]
 	public interface nsIXPCComponents_Utils
 	{
 		
@@ -174,9 +196,12 @@ namespace Gecko
         /// It must be called with one param, usually an object which was caught by
         /// an exception handler.  If it is not a JS error object, the parameter
         /// is converted to a string and reported as a new error.
+        ///
+        /// If called with two parameters, and the first parameter is not an
+        /// object, the second parameter is used as the stack for the error report.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReportError(ref Gecko.JsVal error, System.IntPtr jsContext);
+		void ReportError(ref Gecko.JsVal error, ref Gecko.JsVal stack, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -264,11 +289,9 @@ namespace Gecko
         /// pointing to the same file will not cause the module to be re-evaluated,
         /// but the symbols in EXPORTED_SYMBOLS will be exported into the
         /// specified target object and the global object returned as above.
-        ///
-        /// (This comment is duplicated from xpcIJSModuleLoader.)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal Import([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI, ref Gecko.JsVal targetObj, System.IntPtr jsContext, int argc);
+		Gecko.JsVal ImportHACK([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aResourceURI, ref Gecko.JsVal targetObj, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
         /// Returns true if the js file located at 'registryLocation' location has
@@ -501,6 +524,16 @@ namespace Gecko
 		void GetCrossProcessWrapperTag(ref Gecko.JsVal obj, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
+        /// If CPOWs are disabled for browser code via the
+        /// dom.ipc.cpows.forbid-unsafe-from-browser preferences, then only
+        /// add-ons can use CPOWs. This function allows a non-addon scope
+        /// to opt into CPOWs. It's necessary for the implementation of
+        /// RemoteAddonsParent.jsm.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PermitCPOWsInScope(ref Gecko.JsVal obj);
+		
+		/// <summary>
         /// To be called from JS only. This is for Gecko internal use only, and may
         /// disappear at any moment.
         ///
@@ -603,6 +636,16 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIonAttribute([MarshalAs(UnmanagedType.U1)] bool aIon, System.IntPtr jsContext);
 		
+		/// <summary>
+        /// restrictions can be eased.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsInAutomationAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CrashIfNotInAutomation();
+		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetGCZeal(int zeal, System.IntPtr jsContext);
 		
@@ -691,7 +734,7 @@ namespace Gecko
         /// watchdog-related event occured.
         ///
         /// Valid categories:
-        /// "RuntimeStateChange"      - Runtime switching between active and inactive states
+        /// "ContextStateChange"      - Context switching between active and inactive states
         /// "WatchdogWakeup"          - Watchdog waking up from sleeping
         /// "WatchdogHibernateStart"  - Watchdog begins hibernating
         /// "WatchdogHibernateStop"   - Watchdog stops hibernating
@@ -754,13 +797,7 @@ namespace Gecko
 		void GetCompartmentLocation(ref Gecko.JsVal obj, System.IntPtr jsContext, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAddonInterposition([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase addonId, [MarshalAs(UnmanagedType.Interface)] nsIAddonInterposition interposition, System.IntPtr jsContext);
-		
-		/// <summary>
-        /// Enables call interpositions from addon scopes to any functions in the scope of |target|.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAddonCallInterposition(ref Gecko.JsVal target, System.IntPtr jsContext);
+		void AllowCPOWsInAddon([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase addonId, [MarshalAs(UnmanagedType.U1)] bool allow, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Return a fractional number of milliseconds from process
@@ -768,13 +805,49 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		double Now();
+		
+		/// <summary>
+        /// Reads the given file and returns its contents. If called during early
+        /// startup, the file will be pre-read on a background thread during profile
+        /// startup so its contents will be available the next time they're read.
+        ///
+        /// The file must be a text file encoded in UTF-8. Otherwise the result is
+        /// undefined.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReadUTF8File([MarshalAs(UnmanagedType.Interface)] nsIFile file, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
+		
+		/// <summary>
+        /// Reads the given local file URL and returns its contents. This has the
+        /// same semantics of readUTF8File.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReadUTF8URI([MarshalAs(UnmanagedType.Interface)] nsIURI url, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
+		
+		/// <summary>
+        /// If the main thread is using any kind of fancy cooperative
+        /// scheduling (e.g., Quantum DOM scheduling),
+        /// blockThreadedExecution disables it temporarily. The
+        /// aBlockedCallback is called when it has been completely disabled
+        /// and events are back to running sequentially on a single main
+        /// thread. Calling unblockThreadedExecution will re-enable thread
+        /// scheduling of the main thread. Multiple calls to
+        /// blockThreadedExecution will require the same number of calls to
+        /// unblockThreadedExecution in order to resume cooperative
+        /// scheduling.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BlockThreadedExecution([MarshalAs(UnmanagedType.Interface)] nsIBlockThreadedExecutionCallback aBlockedCallback);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void UnblockThreadedExecution();
 	}
 	
 	/// <summary>
     /// Interface for the 'Components' object.
     ///
     /// The first interface contains things that are available to non-chrome XBL code
-    /// that runs in a scope with an nsExpandedPrincipal. The second interface
+    /// that runs in a scope with an ExpandedPrincipal. The second interface
     /// includes members that are only exposed to chrome. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -786,7 +859,7 @@ namespace Gecko
         /// Interface for the 'Components' object.
         ///
         /// The first interface contains things that are available to non-chrome XBL code
-        /// that runs in a scope with an nsExpandedPrincipal. The second interface
+        /// that runs in a scope with an ExpandedPrincipal. The second interface
         /// includes members that are only exposed to chrome. </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -815,7 +888,7 @@ namespace Gecko
         /// Interface for the 'Components' object.
         ///
         /// The first interface contains things that are available to non-chrome XBL code
-        /// that runs in a scope with an nsExpandedPrincipal. The second interface
+        /// that runs in a scope with an ExpandedPrincipal. The second interface
         /// includes members that are only exposed to chrome. </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -849,8 +922,9 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetClassesByIDAttribute();
 		
-		/// <summary>Member GetStackAttribute </summary>
-		/// <returns>A nsIStackFrame</returns>
+		/// <summary>
+        /// Will return null if there is no JS stack right now.
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIStackFrame GetStackAttribute();
@@ -882,12 +956,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetConstructorAttribute();
 		
-		/// <summary>Member GetLastResultAttribute </summary>
-		/// <param name='jsContext'> </param>
-		/// <returns>A Gecko.JsVal</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetLastResultAttribute(System.IntPtr jsContext);
-		
 		/// <summary>
         /// be returned without throwing an exception.
         /// </summary>
@@ -899,10 +967,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetReturnCodeAttribute(Gecko.JsVal aReturnCode, System.IntPtr jsContext);
-		
-		/// <summary>
-        ///@deprecated Use Components.utils.reportError instead. </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReportError(ref Gecko.JsVal error, System.IntPtr jsContext);
 	}
 }

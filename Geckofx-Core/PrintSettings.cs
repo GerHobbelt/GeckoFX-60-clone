@@ -753,6 +753,116 @@ namespace Gecko
             throw new NotImplementedException();
         }
 
+        public void GetTitleAttribute(nsAStringBase aTitle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetTitleAttribute(nsAStringBase aTitle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetDocURLAttribute(nsAStringBase aDocURL)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetDocURLAttribute(nsAStringBase aDocURL)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetHeaderStrLeftAttribute(nsAStringBase aHeaderStrLeft)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetHeaderStrLeftAttribute(nsAStringBase aHeaderStrLeft)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetHeaderStrCenterAttribute(nsAStringBase aHeaderStrCenter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetHeaderStrCenterAttribute(nsAStringBase aHeaderStrCenter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetHeaderStrRightAttribute(nsAStringBase aHeaderStrRight)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetHeaderStrRightAttribute(nsAStringBase aHeaderStrRight)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetFooterStrLeftAttribute(nsAStringBase aFooterStrLeft)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetFooterStrLeftAttribute(nsAStringBase aFooterStrLeft)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetFooterStrCenterAttribute(nsAStringBase aFooterStrCenter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetFooterStrCenterAttribute(nsAStringBase aFooterStrCenter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetFooterStrRightAttribute(nsAStringBase aFooterStrRight)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetFooterStrRightAttribute(nsAStringBase aFooterStrRight)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetPaperNameAttribute(nsAStringBase aPaperName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPaperNameAttribute(nsAStringBase aPaperName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetPrinterNameAttribute(nsAStringBase aPrinterName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetPrinterNameAttribute(nsAStringBase aPrinterName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetToFileNameAttribute(nsAStringBase aToFileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetToFileNameAttribute(nsAStringBase aToFileName)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

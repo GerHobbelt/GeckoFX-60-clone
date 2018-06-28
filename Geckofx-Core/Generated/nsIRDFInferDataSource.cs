@@ -43,9 +43,8 @@ namespace Gecko
         ///The "URI" of the data source. This used by the RDF service's
         /// |GetDataSource()| method to cache datasources.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new string GetURIAttribute();
+		new void GetURIAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aURI);
 		
 		/// <summary>
         ///Find an RDF resource that points to a given node over the
@@ -170,13 +169,13 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool IsCommandEnabled([MarshalAs(UnmanagedType.Interface)] nsISupportsArray aSources, [MarshalAs(UnmanagedType.Interface)] nsIRDFResource aCommand, [MarshalAs(UnmanagedType.Interface)] nsISupportsArray aArguments);
+		new bool IsCommandEnabled([MarshalAs(UnmanagedType.Interface)] nsISupports aSources, [MarshalAs(UnmanagedType.Interface)] nsIRDFResource aCommand, [MarshalAs(UnmanagedType.Interface)] nsISupports aArguments);
 		
 		/// <summary>
         /// Perform the specified command on set of sources.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void DoCommand([MarshalAs(UnmanagedType.Interface)] nsISupportsArray aSources, [MarshalAs(UnmanagedType.Interface)] nsIRDFResource aCommand, [MarshalAs(UnmanagedType.Interface)] nsISupportsArray aArguments);
+		new void DoCommand([MarshalAs(UnmanagedType.Interface)] nsISupports aSources, [MarshalAs(UnmanagedType.Interface)] nsIRDFResource aCommand, [MarshalAs(UnmanagedType.Interface)] nsISupports aArguments);
 		
 		/// <summary>
         /// Returns the set of all commands defined for a given source.

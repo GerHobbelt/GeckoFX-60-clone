@@ -98,6 +98,15 @@ namespace Gecko
 		void RestartInSafeMode(uint aQuitMode);
 		
 		/// <summary>
+        /// Run a new instance of this app with a specified profile
+        /// @param aProfile
+        /// The profile we want to use.
+        /// @see nsIAppStartup::quit
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CreateInstanceWithProfile([MarshalAs(UnmanagedType.Interface)] nsIToolkitProfile aProfile);
+		
+		/// <summary>
         /// If the last startup crashed then increment a counter.
         /// Set a flag so on next startup we can detect whether TrackStartupCrashEnd
         /// was called (and therefore the application crashed).
@@ -208,18 +217,6 @@ namespace Gecko
         // restarted with the same profile and an empty command line.
         // </summary>
 		public const long eRestart = 0x10;
-		
-		// <summary>
-        // When restarting attempt to start in the i386 architecture. Only supported
-        // on OSX.
-        // </summary>
-		public const long eRestarti386 = 0x20;
-		
-		// <summary>
-        // When restarting attempt to start in the x86_64 architecture. Only
-        // supported on OSX.
-        // </summary>
-		public const long eRestartx86_64 = 0x40;
 		
 		// <summary>
         // Restart the application after quitting.  The application will be

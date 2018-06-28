@@ -46,9 +46,11 @@ namespace Gecko
         ///
         /// @param aURI
         /// The URI to register as an open page.
+        /// @param aUserContextId
+        /// The Container Id of the tab.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RegisterOpenPage([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		void RegisterOpenPage([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aUserContextId);
 		
 		/// <summary>
         /// Mark a page as no longer being open (either by closing the window or tab,
@@ -60,9 +62,20 @@ namespace Gecko
         ///
         /// @param aURI
         /// The URI to unregister as an open page.
+        /// @param aUserContextId
+        /// The Container Id of the tab.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnregisterOpenPage([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		void UnregisterOpenPage([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aUserContextId);
+		
+		/// <summary>
+        /// Populate list of Preloaded Sites from JSON.
+        ///
+        /// @param sites
+        /// Array of [url,title] to populate from.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PopulatePreloadedSiteStorage(ref Gecko.JsVal sites);
 	}
 	
 	/// <summary>mozIPlacesAutoCompleteConsts </summary>

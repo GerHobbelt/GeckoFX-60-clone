@@ -44,20 +44,18 @@ namespace Gecko
         /// This Source Code Form is subject to the terms of the Mozilla Public
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetNameAttribute();
+		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetLibNameAttribute();
+		void GetLibNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aLibName);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPKCS11Slot FindSlotByName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string name);
+		nsIPKCS11Slot FindSlotByName([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase name);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIEnumerator ListSlots();
+		nsISimpleEnumerator ListSlots();
 	}
 }

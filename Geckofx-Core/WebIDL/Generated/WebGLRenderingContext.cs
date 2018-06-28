@@ -11,11 +11,11 @@ namespace Gecko.WebIDL
         {
         }
         
-        public WebIDLUnion<nsIDOMHTMLCanvasElement,nsISupports> Canvas
+        public WebIDLUnion</* nsIDOMHTMLCanvasElement */ nsISupports,nsISupports> Canvas
         {
             get
             {
-                return this.GetProperty<WebIDLUnion<nsIDOMHTMLCanvasElement,nsISupports>>("canvas");
+                return this.GetProperty<WebIDLUnion</* nsIDOMHTMLCanvasElement */ nsISupports,nsISupports>>("canvas");
             }
         }
         
@@ -565,15 +565,7 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("texImage2D", target, level, internalformat, format, type, pixels);
         }
         
-        public void TexImage2D(UInt32 target, Int32 level, UInt32 internalformat, UInt32 format, UInt32 type, nsIDOMHTMLImageElement image)
-        {
-            this.CallVoidMethod("texImage2D", target, level, internalformat, format, type, image);
-        }
-        
-        public void TexImage2D(UInt32 target, Int32 level, UInt32 internalformat, UInt32 format, UInt32 type, nsIDOMHTMLCanvasElement canvas)
-        {
-            this.CallVoidMethod("texImage2D", target, level, internalformat, format, type, canvas);
-        }
+
         
         public void TexParameterf(UInt32 target, UInt32 pname, Single param)
         {
@@ -594,16 +586,9 @@ namespace Gecko.WebIDL
         {
             this.CallVoidMethod("texSubImage2D", target, level, xoffset, yoffset, format, type, pixels);
         }
+       
         
-        public void TexSubImage2D(UInt32 target, Int32 level, Int32 xoffset, Int32 yoffset, UInt32 format, UInt32 type, nsIDOMHTMLImageElement image)
-        {
-            this.CallVoidMethod("texSubImage2D", target, level, xoffset, yoffset, format, type, image);
-        }
-        
-        public void TexSubImage2D(UInt32 target, Int32 level, Int32 xoffset, Int32 yoffset, UInt32 format, UInt32 type, nsIDOMHTMLCanvasElement canvas)
-        {
-            this.CallVoidMethod("texSubImage2D", target, level, xoffset, yoffset, format, type, canvas);
-        }
+
         
         public void Uniform1f(nsISupports location, Single x)
         {

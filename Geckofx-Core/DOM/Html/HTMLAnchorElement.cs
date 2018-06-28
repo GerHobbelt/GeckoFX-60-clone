@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoAnchorElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLAnchorElement DOMHTMLElement;
+        private /* nsIDOMHTMLAnchorElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoAnchorElement(nsIDOMHTMLAnchorElement element) : base(element)
+        internal GeckoAnchorElement(/* nsIDOMHTMLAnchorElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoAnchorElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoAnchorElement(object element) : base(element as /* nsIDOMHTMLElement */nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLAnchorElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLAnchorElement */ nsISupports;
         }
 
         public string Charset

@@ -58,6 +58,28 @@ namespace Gecko
 		void QueryReputation([MarshalAs(UnmanagedType.Interface)] nsIApplicationReputationQuery aQuery, [MarshalAs(UnmanagedType.Interface)] nsIApplicationReputationCallback aCallback);
 	}
 	
+	/// <summary>nsIApplicationReputationServiceConsts </summary>
+	public class nsIApplicationReputationServiceConsts
+	{
+		
+		// <summary>
+        // Indicates the reason for the application reputation block.
+        // </summary>
+		public const ulong VERDICT_SAFE = 0;
+		
+		// 
+		public const ulong VERDICT_DANGEROUS = 1;
+		
+		// 
+		public const ulong VERDICT_UNCOMMON = 2;
+		
+		// 
+		public const ulong VERDICT_POTENTIALLY_UNWANTED = 3;
+		
+		// 
+		public const ulong VERDICT_DANGEROUS_HOST = 4;
+	}
+	
 	/// <summary>
     /// A single-use, write-once interface for recording the metadata of the
     /// downloaded file. nsIApplicationReputationService.Start() may only be called
@@ -90,7 +112,7 @@ namespace Gecko
         /// query won't produce any useful information.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSuggestedFileNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSuggestedFileName);
+		void GetSuggestedFileNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSuggestedFileName);
 		
 		/// <summary>
         /// The size of the downloaded file in bytes.
@@ -140,8 +162,13 @@ namespace Gecko
         /// reachable.
         /// @param aShouldBlock
         /// Whether or not the download should be blocked.
+        /// @param aVerdict
+        /// Indicates the result of the lookup that determines whether the
+        /// download should be blocked, according to the "VERDICT_" constants.
+        /// This may be set to a value different than "VERDICT_SAFE" even if
+        /// aShouldBlock is false, so you should always check aShouldBlock.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnComplete([MarshalAs(UnmanagedType.U1)] bool aShouldBlock, int aStatus);
+		void OnComplete([MarshalAs(UnmanagedType.U1)] bool aShouldBlock, int aStatus, uint aVerdict);
 	}
 }

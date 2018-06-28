@@ -54,22 +54,14 @@ namespace Gecko
 	public interface nsIBrowserElementAPI
 	{
 		
+		/// <summary>
+        /// Notify frame scripts that support the API to destroy.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DestroyFrameScripts();
+		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetFrameLoader(System.IntPtr frameLoader);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetVisible([MarshalAs(UnmanagedType.U1)] bool visible);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest GetVisible();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetActive([MarshalAs(UnmanagedType.U1)] bool active);
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetActive();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SendMouseEvent([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase type, uint x, uint y, uint button, uint clickCount, uint mifiers);
@@ -126,58 +118,10 @@ namespace Gecko
 		void ClearMatch();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Mute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Unmute();
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest GetMuted();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetVolume(float volume);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest GetVolume();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AddNextPaintListener([MarshalAs(UnmanagedType.Interface)] nsIBrowserElementNextPaintListener listener);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RemoveNextPaintListener([MarshalAs(UnmanagedType.Interface)] nsIBrowserElementNextPaintListener listener);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest SetInputMethodActive([MarshalAs(UnmanagedType.U1)] bool isActive);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest GetAudioChannelVolume(uint audioChannel);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest SetAudioChannelVolume(uint audioChannel, float volume);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest GetAudioChannelMuted(uint audioChannel);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest SetAudioChannelMuted(uint audioChannel, [MarshalAs(UnmanagedType.U1)] bool muted);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest IsAudioChannelActive(uint audioChannel);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest NotifyChannel([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase @event, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase manifest, uint audioChannel);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetNFCFocus([MarshalAs(UnmanagedType.U1)] bool isFocus);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -190,20 +134,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMDOMRequest GetWebManifest();
-		
-		/// <summary>
-        /// Returns a JSON string representing Microdata objects on the page.
-        /// Format is described at:
-        /// https://html.spec.whatwg.org/multipage/microdata.html#json
-        ///
-        /// Also contains hCard and hCalendar objects after converting them
-        /// to equivalent Microdata objects described at:
-        /// https://html.spec.whatwg.org/multipage/microdata.html#vcard
-        /// https://html.spec.whatwg.org/multipage/microdata.html#vevent
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDOMRequest GetStructuredData();
 	}
 	
 	/// <summary>nsIBrowserElementAPIConsts </summary>

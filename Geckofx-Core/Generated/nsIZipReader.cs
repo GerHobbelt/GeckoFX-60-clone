@@ -248,23 +248,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIInputStream GetInputStreamWithSpec([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aJarSpec, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase zipEntry);
-		
-		/// <summary>
-        /// Returns an object describing the entity which signed
-        /// an entry. parseManifest must be called first. If aEntryName is an
-        /// entry in the jar, getInputStream must be called after parseManifest.
-        /// If aEntryName is an external file which has meta-information
-        /// stored in the jar, verifyExternalFile (not yet implemented) must
-        /// be called before getPrincipal.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert GetSigningCert([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aEntryName);
-		
-		/// <summary>Member GetManifestEntriesCountAttribute </summary>
-		/// <returns>A System.UInt32</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetManifestEntriesCountAttribute();
 	}
 	
 	/// <summary>
@@ -300,6 +283,18 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIZipReader GetZip([MarshalAs(UnmanagedType.Interface)] nsIFile zipFile);
+		
+		/// <summary>
+        /// Like getZip(), returns a (possibly shared) nsIZipReader for an nsIFile,
+        /// but if a zip reader for the given file is not in the cache, returns
+        /// error NS_ERROR_CACHE_KEY_NOT_FOUND rather than creating a new reader.
+        ///
+        /// @note If someone called close() on the shared nsIZipReader, this method
+        /// will return the closed zip reader.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIZipReader GetZipIfCached([MarshalAs(UnmanagedType.Interface)] nsIFile zipFile);
 		
 		/// <summary>
         /// returns true if this zipreader already has this file cached

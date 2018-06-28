@@ -44,7 +44,7 @@ namespace Gecko
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("af059da0-c85b-40ec-af07-ae4bfdc192cc")]
-	public interface nsIMutableArray : nsIArray
+	public interface nsIMutableArray : nsIArrayExtensions
 	{
 		
 		/// <summary>
@@ -105,19 +105,39 @@ namespace Gecko
 		new nsISimpleEnumerator Enumerate();
 		
 		/// <summary>
+        /// Count()
+        ///
+        /// Retrieves the length of the array. This is an alias for the
+        /// |nsIArray.length| attribute.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new uint Count();
+		
+		/// <summary>
+        /// GetElementAt()
+        ///
+        /// Retrieve a specific element of the array. null is a valid result for
+        /// this method.
+        ///
+        /// Note: If the index is out of bounds null will be returned.
+        /// This differs from the behavior of nsIArray.queryElementAt() which
+        /// will throw if an invalid index is specified.
+        ///
+        /// @param index position of element
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsISupports GetElementAt(uint index);
+		
+		/// <summary>
         /// appendElement()
         ///
         /// Append an element at the end of the array.
         ///
         /// @param element The element to append.
-        /// @param weak    Whether or not to store the element using a weak
-        /// reference.
-        /// @throws NS_ERROR_FAILURE when a weak reference is requested,
-        /// but the element does not support
-        /// nsIWeakReference.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AppendElement([MarshalAs(UnmanagedType.Interface)] nsISupports element, [MarshalAs(UnmanagedType.U1)] bool weak);
+		void AppendElement([MarshalAs(UnmanagedType.Interface)] nsISupports element);
 		
 		/// <summary>
         /// removeElementAt()
@@ -149,13 +169,9 @@ namespace Gecko
         /// of the array, the new element is appended.
         /// An index lower than 0 or higher than the current
         /// length of the array is invalid and will be ignored.
-        ///
-        /// @throws NS_ERROR_FAILURE when a weak reference is requested,
-        /// but the element does not support
-        /// nsIWeakReference.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InsertElementAt([MarshalAs(UnmanagedType.Interface)] nsISupports element, uint index, [MarshalAs(UnmanagedType.U1)] bool weak);
+		void InsertElementAt([MarshalAs(UnmanagedType.Interface)] nsISupports element, uint index);
 		
 		/// <summary>
         /// replaceElementAt()
@@ -172,16 +188,9 @@ namespace Gecko
         /// of the array, empty elements are appended followed
         /// by the new element at the specified position.
         /// An index lower than 0 is invalid and will be ignored.
-        ///
-        /// @param weak    Whether or not to store the new element using a weak
-        /// reference.
-        ///
-        /// @throws NS_ERROR_FAILURE when a weak reference is requested,
-        /// but the element does not support
-        /// nsIWeakReference.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReplaceElementAt([MarshalAs(UnmanagedType.Interface)] nsISupports element, uint index, [MarshalAs(UnmanagedType.U1)] bool weak);
+		void ReplaceElementAt([MarshalAs(UnmanagedType.Interface)] nsISupports element, uint index);
 		
 		/// <summary>
         /// clear()

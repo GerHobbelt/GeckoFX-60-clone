@@ -37,6 +37,49 @@ namespace Gecko
 	{
 		
 		/// <summary>
+        /// Initializes storage directory. This can be used in tests to verify
+        /// upgrade methods.
+        ///
+        /// If the dom.quotaManager.testing preference is not true the call will be
+        /// a no-op.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIQuotaRequest Init();
+		
+		/// <summary>
+        /// Initializes storages for the given principal. This can be used in tests to
+        /// verify origin initialization.
+        ///
+        /// If the dom.quotaManager.testing preference is not true the call will be
+        /// a no-op.
+        ///
+        /// @param aPrincipal
+        /// A principal for the origin whose storages are to be initialized.
+        /// @param aPersistenceType
+        /// A string that tells what persistence type of storages will be
+        /// initialized.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIQuotaRequest InitStoragesForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPersistenceType);
+		
+		/// <summary>
+        /// Schedules an asynchronous callback that will inspect all origins and
+        /// return the total amount of disk space being used by storages for each
+        /// origin separately.
+        ///
+        /// @param aCallback
+        /// The callback that will be called when the usage is available.
+        /// @param aGetAll
+        /// An optional boolean to indicate inspection of all origins,
+        /// including internal ones.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIQuotaUsageRequest GetUsage([MarshalAs(UnmanagedType.Interface)] nsIQuotaUsageCallback aCallback, [MarshalAs(UnmanagedType.U1)] bool aGetAll);
+		
+		/// <summary>
         /// Schedules an asynchronous callback that will return the total amount of
         /// disk space being used by storages for the given origin.
         ///
@@ -44,10 +87,15 @@ namespace Gecko
         /// A principal for the origin whose usage is being queried.
         /// @param aCallback
         /// The callback that will be called when the usage is available.
+        /// @param aGetGroupUsage
+        /// An optional flag to indicate whether getting group usage and limit
+        /// or origin usage and file usage. The default value is false.
+        /// Note:  Origin usage here represents total usage of an origin. However,
+        /// group usage here represents only non-persistent usage of a group.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIQuotaUsageRequest GetUsageForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIQuotaUsageCallback aCallback);
+		nsIQuotaUsageRequest GetUsageForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIQuotaUsageCallback aCallback, [MarshalAs(UnmanagedType.U1)] bool aGetGroupUsage);
 		
 		/// <summary>
         /// Removes all storages. The files may not be deleted immediately depending
@@ -62,15 +110,21 @@ namespace Gecko
 		nsIQuotaRequest Clear();
 		
 		/// <summary>
-        /// Removes all storages stored for the given URI. The files may not be
+        /// Removes all storages stored for the given principal. The files may not be
         /// deleted immediately depending on prohibitive concurrent operations.
         ///
         /// @param aPrincipal
         /// A principal for the origin whose storages are to be cleared.
+        /// @param aPersistenceType
+        /// An optional string that tells what persistence type of storages
+        /// will be cleared.
+        /// @param aClearAll
+        /// An optional boolean to indicate clearing all storages under the
+        /// given origin.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIQuotaRequest ClearStoragesForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPersistenceType);
+		nsIQuotaRequest ClearStoragesForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPersistenceType, [MarshalAs(UnmanagedType.U1)] bool aClearAll);
 		
 		/// <summary>
         /// Resets quota and storage management. This can be used to force
@@ -84,5 +138,25 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIQuotaRequest Reset();
+		
+		/// <summary>
+        /// Check if given origin is persisted.
+        ///
+        /// @param aPrincipal
+        /// A principal for the origin which we want to check.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIQuotaRequest Persisted([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+		
+		/// <summary>
+        /// Persist given origin.
+        ///
+        /// @param aPrincipal
+        /// A principal for the origin which we want to persist.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIQuotaRequest Persist([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
 	}
 }

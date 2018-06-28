@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b81c33a6-1ce8-4695-856b-02b7f15cc114")]
+	[Guid("1947899b-f369-48fa-89da-f7c37bb1e6bc")]
 	public interface nsIToolkitProfileService
 	{
 		
@@ -145,36 +145,8 @@ namespace Gecko
 		nsIToolkitProfile CreateProfile([MarshalAs(UnmanagedType.Interface)] nsIFile aRootDir, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
 		
 		/// <summary>
-        /// Create the default profile for an application.
-        ///
-        /// The profile will be typically in
-        /// {Application Data}/.profilename/{salt}.default or
-        /// {Application Data}/.appname/{salt}.default
-        /// or if aVendorName is provided
-        /// {Application Data}/.vendor/appname/{salt}.default
-        ///
-        /// @note Either aProfileName or aAppName must be non-empty
-        ///
-        /// The contents of aProfileDefaultsDir will be copied to the
-        /// new profile directory.
-        ///
-        /// @param  aProfileName
-        /// The name of the profile
-        /// @param  aAppName
-        /// The name of the application
-        /// @param  aVendorName
-        /// The name of the vendor
-        /// @param  aProfileDefaultsDir
-        /// The location where the profile defaults are.
-        /// @return The created profile.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIToolkitProfile CreateDefaultProfileForApp([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aProfileName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aAppName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aVendorName, [MarshalAs(UnmanagedType.Interface)] nsIFile aProfileDefaultsDir);
-		
-		/// <summary>
         /// Returns the number of profiles.
-        /// @return 0, 1, or 2. More than 2 profiles will always return 2.
+        /// @return the number of profiles.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetProfileCountAttribute();

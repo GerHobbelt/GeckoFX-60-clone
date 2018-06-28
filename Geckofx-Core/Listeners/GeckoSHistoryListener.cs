@@ -69,5 +69,20 @@ namespace Gecko.Listeners
         {
             throw new NotImplementedException();
         }
+
+        public void OnHistoryNewEntry(nsIURI aNewURI, int aOldIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnLengthChanged(int aCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnIndexChanged(int aIndex)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

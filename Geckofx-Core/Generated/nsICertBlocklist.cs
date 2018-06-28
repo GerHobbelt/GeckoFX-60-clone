@@ -40,7 +40,7 @@ namespace Gecko
         /// issuer name (base-64 encoded DER) and serial number (base-64 encoded DER).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RevokeCertByIssuerAndSerial([MarshalAs(UnmanagedType.LPStr)] string issuer, [MarshalAs(UnmanagedType.LPStr)] string serialNumber);
+		void RevokeCertByIssuerAndSerial([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase issuer, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase serialNumber);
 		
 		/// <summary>
         /// Add details of a revoked certificate :
@@ -48,7 +48,7 @@ namespace Gecko
         /// sha-256 hash of the public key).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RevokeCertBySubjectAndPubKey([MarshalAs(UnmanagedType.LPStr)] string subject, [MarshalAs(UnmanagedType.LPStr)] string pubKeyHash);
+		void RevokeCertBySubjectAndPubKey([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase subject, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase pubKeyHash);
 		
 		/// <summary>
         /// Persist (fresh) blocklist entries to the profile (if a profile directory is
@@ -59,7 +59,7 @@ namespace Gecko
 		
 		/// <summary>
         /// Check if a certificate is blocked.
-        /// isser - issuer name, DER encoded
+        /// issuer - issuer name, DER encoded
         /// serial - serial number, DER encoded
         /// subject - subject name, DER encoded
         /// pubkey - public key, DER encoded

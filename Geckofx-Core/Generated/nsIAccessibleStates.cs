@@ -262,5 +262,10 @@ namespace Gecko
         // If COLLAPSED or EXPANDED
         // </summary>
 		public const ulong EXT_STATE_PINNED = 0x00010000;
+		
+		// <summary>
+        // Indicates object is pinned.
+        // </summary>
+		public const ulong EXT_STATE_CURRENT = 0x00020000;
 	}
 }

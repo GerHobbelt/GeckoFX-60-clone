@@ -56,7 +56,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool NameEquals([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string name);
+		new bool NameEquals([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name);
 		
 		/// <summary>
         ///The type this item is.
@@ -82,10 +82,9 @@ namespace Gecko
 		
 		/// <summary>
         ///This getter returns the same thing parent does however if the parent
-        ///	is of a different itemType, or if the parent is an <iframe mozbrowser>
-        ///	or <iframe mozapp>, it will instead return nullptr.  This call is a
-        ///	convience function for those wishing to not cross the boundaries at
-        ///	which item types change.
+        ///	is of a different itemType, or if the parent is an <iframe mozbrowser>.
+        ///	It will instead return nullptr.  This call is a convience function for
+        ///	Ithose wishing to not cross the boundaries at which item types change.
         ///	 </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -119,8 +118,8 @@ namespace Gecko
         ///			ii.) Do not ask a child if it is of a different item type.
         ///	3.)  If there is a parent of the same item type ask parent to perform the check
         ///		a.) Do not ask parent if it is the aRequestor
-        ///	4.)  If there is a tree owner ask the tree owner to perform the check
-        ///		a.)  Do not ask the tree owner if it is the aRequestor
+        ///	4.)  If there is a tab group ask the tab group to perform the check
+        ///		a.)  Do not ask the tab group if aSkipTabGroup
         ///		b.)  This should only be done if there is no parent of the same type.
         ///	Return the child DocShellTreeItem with the specified name.
         ///	name - This is the name of the item that is trying to be found.
@@ -133,10 +132,11 @@ namespace Gecko
         ///		asked it to search.  Children also use this to test against the treeOwner;
         ///	aOriginalRequestor - The original treeitem that made the request, if any.
         ///		This is used to ensure that we don't run into cross-site issues.
+        ///	aSkipTabGroup - Whether the tab group should be checked.
         ///	 </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDocShellTreeItem FindItemWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string name, [MarshalAs(UnmanagedType.Interface)] nsISupports aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
+		new nsIDocShellTreeItem FindItemWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor, [MarshalAs(UnmanagedType.U1)] bool aSkipTabGroup);
 		
 		/// <summary>
         ///The owner of the DocShell Tree.  This interface will be called upon when
@@ -212,17 +212,17 @@ namespace Gecko
         ///	 </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDocShellTreeItem FindChildWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aName, [MarshalAs(UnmanagedType.U1)] bool aRecurse, [MarshalAs(UnmanagedType.U1)] bool aSameType, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
+		new nsIDocShellTreeItem FindChildWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, [MarshalAs(UnmanagedType.U1)] bool aRecurse, [MarshalAs(UnmanagedType.U1)] bool aSameType, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new System.IntPtr GetDocument();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new System.IntPtr GetWindow();
+		new /* nsPIDOMWindowOuter */ nsISupports GetWindow();
 		
 		/// <summary>
         /// Loads a given URI.  This will give priority to loading the requested URI
-        /// in the object implementing	this interface.  If it can't be loaded here
+        /// in the object implementing this interface.  If it can't be loaded here
         /// however, the URL dispatcher will go through its normal process of content
         /// loading.
         ///
@@ -269,35 +269,58 @@ namespace Gecko
         /// that its parameter list is broken out instead of being packaged inside
         /// of an nsIDocShellLoadInfo object...
         ///
-        /// @param aURI            - The URI to load.
-        /// @param aOriginalURI    - The URI to set as the originalURI on the channel
+        /// @param aURI                 - The URI to load.
+        /// @param aOriginalURI         - The URI to set as the originalURI on the channel
         /// that does the load. If null, aURI will be set as
         /// the originalURI.
-        /// @param aLoadReplace    - If set LOAD_REPLACE flag will be set on the
+        /// @param aResultPrincipalURI  - The URI to be set to loadInfo.resultPrincipalURI
+        /// When Nothing, there will be no change
+        /// When Some, the principal URI will overwrite even
+        /// with a null value.
+        /// @param aLoadReplace         - If set LOAD_REPLACE flag will be set on the
         /// channel. aOriginalURI is null, this argument is
         /// ignored.
-        /// @param aReferrer       - Referring URI
-        /// @param aReferrerPolicy - Referrer policy
-        /// @param aOwner          - Owner (security principal)
-        /// @param aInheritOwner   - Flag indicating whether the owner of the current
-        /// document should be inherited if aOwner is null.
-        /// @param aStopActiveDoc  - Flag indicating whether loading the current
+        /// @param aReferrer            - Referring URI
+        /// @param aReferrerPolicy      - Referrer policy
+        /// @param aTriggeringPrincipal - A non-null principal that initiated that load.
+        /// Please note that this is the principal that is
+        /// used for security checks. If the argument aURI
+        /// is provided by the web, then please do not pass
+        /// a SystemPrincipal as the triggeringPrincipal.
+        /// @param aPrincipalToInherit  - Principal to be inherited for that load. If this
+        /// argument is null then principalToInherit is
+        /// computed as follows:
+        /// a) If INTERNAL_LOAD_FLAGS_INHERIT_PRINCIPAL, and
+        /// aLoadType is not LOAD_NORMAL_EXTERNAL, and the
+        /// URI would normally inherit a principal, then
+        /// principalToInherit is set to the current
+        /// document's principal, or parent document if
+        /// there is not a current document.
+        /// b) If principalToInherit is still null (e.g. if
+        /// some of the conditions of (a) were not satisfied),
+        /// then no inheritance of any sort will happen: the
+        /// load will just get a principal based on the URI
+        /// being loaded.
+        /// @param aFlags               - Any of the load flags defined within above.
+        /// @param aStopActiveDoc       - Flag indicating whether loading the current
         /// document should be stopped.
-        /// @param aWindowTarget   - Window target for the load.
-        /// @param aTypeHint       - A hint as to the content-type of the resulting
+        /// @param aWindowTarget        - Window target for the load.
+        /// @param aTypeHint            - A hint as to the content-type of the resulting
         /// data.  May be null or empty if no hint.
-        /// @param aFileName       - Non-null when the link should be downloaded as
-        ///                              the given filename.
-        /// @param aPostDataStream - Post data stream (if POSTing)
-        /// @param aHeadersStream  - Stream containing "extra" request headers...
-        /// @param aLoadFlags      - Flags to modify load behaviour. Flags are defined
+        /// @param aFileName            - Non-null when the link should be downloaded as
+        ///                                   the given filename.
+        /// @param aPostDataStream      - Post data stream (if POSTing)
+        /// @param aPostDataStreamLength - Post data stream length. Use -1 if the length
+        ///                                    of the stream is unknown.
+        /// @param aHeadersStream       - Stream containing "extra" request headers...
+        /// @param aLoadFlags           - Flags to modify load behaviour. Flags are defined
         /// in nsIWebNavigation.
-        /// @param aSHEntry        - Active Session History entry (if loading from SH)
-        /// @param aSrcdoc           When INTERNAL_LOAD_FLAGS_IS_SRCDOC is set, the
+        /// @param aSHEntry             - Active Session History entry (if loading from SH)
+        /// @param aSrcdoc                When INTERNAL_LOAD_FLAGS_IS_SRCDOC is set, the
         /// contents of this parameter will be loaded instead
         /// of aURI.
-        /// @param aSourceDocShell - The source browsing context for the navigation.
-        /// @param aBaseURI        - The base URI to be used for the load.  Set in
+        /// @param aSourceDocShell      - The source browsing context for the navigation.
+        /// @param aBaseURI             - The base URI to be used for the load.  Set in
         /// srcdoc loads as it cannot otherwise be inferred
         /// in certain situations such as view-source.
         /// </summary>
@@ -305,19 +328,22 @@ namespace Gecko
 		void InternalLoad(
 					[MarshalAs(UnmanagedType.Interface)] nsIURI aURI, 
 					[MarshalAs(UnmanagedType.Interface)] nsIURI aOriginalURI, 
+					/* MaybeURI */ nsISupports aResultPrincipalURI, 
 					[MarshalAs(UnmanagedType.U1)] bool aLoadReplace, 
 					[MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, 
 					uint aReferrerPolicy, 
-					[MarshalAs(UnmanagedType.Interface)] nsISupports aOwner, 
+					[MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal, 
+					[MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipalToInherit, 
 					uint aFlags, 
-					[MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aWindowTarget, 
+					[MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aWindowTarget, 
 					[MarshalAs(UnmanagedType.LPStr)] string aTypeHint, 
 					[MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFileName, 
 					[MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostDataStream, 
+					long aPostDataStreamLength, 
 					[MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeadersStream, 
 					uint aLoadFlags, 
 					[MarshalAs(UnmanagedType.Interface)] nsISHEntry aSHEntry, 
-					[MarshalAs(UnmanagedType.U1)] bool firstParty, 
+					[MarshalAs(UnmanagedType.U1)] bool aFirstParty, 
 					[MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSrcdoc, 
 					[MarshalAs(UnmanagedType.Interface)] nsIDocShell aSourceDocShell, 
 					[MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI, 
@@ -356,10 +382,11 @@ namespace Gecko
 		/// <summary>
         /// Notify the associated content viewer and all child docshells that they are
         /// about to be hidden.  If |isUnload| is true, then the document is being
-        /// unloaded as well.
+        /// unloaded and all dynamic subframe history entries are removed as well.
         ///
-        /// @param isUnload if true, fire the unload event in addition to the pagehide
-        /// event.
+        /// @param isUnload
+        /// True to fire the unload event in addition to the pagehide event,
+        /// and remove all dynamic subframe history entries.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void FirePageHideNotification([MarshalAs(UnmanagedType.U1)] bool isUnload);
@@ -405,23 +432,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetChromeEventHandlerAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget aChromeEventHandler);
-
-        /// <summary>
+		
+		/// <summary>
+        /// This allows chrome to set a custom User agent on a specific docshell
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetCustomUserAgentAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCustomUserAgent);
+		
+		/// <summary>
+        /// This allows chrome to set a custom User agent on a specific docshell
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetCustomUserAgentAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCustomUserAgent);
+		
+		/// <summary>
         /// Whether to allow plugin execution
         /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        string GetCustomUserAgentAttribute();
-
-        /// <summary>
-        /// Whether to allow plugin execution
-        /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetCustomUserAgentAttribute(string str);
-
-        /// <summary>
-        /// Whether to allow plugin execution
-        /// </summary>
-        [return: MarshalAs(UnmanagedType.U1)]
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetAllowPluginsAttribute();
 		
@@ -557,25 +584,29 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAllowContentRetargetingOnChildrenAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowContentRetargetingOnChildren);
-
-        /// <summary>
-        /// True if new child docshells should allow content retargeting.
-        /// Setting allowContentRetargeting also overwrites this value.
+		
+		/// <summary>
+        /// True if this docShell should inherit the private browsing ID from
+        /// its parent when reparented.
+        ///
+        /// NOTE: This should *not* be set false in new code, or for docShells
+        /// inserted anywhere other than as children of panels.
         /// </summary>
-        [return: MarshalAs(UnmanagedType.U1)]
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        bool GetinheritPrivateBrowsingIdAttribute();
-
-        /// <summary>
-        /// True if new child docshells should allow content retargeting.
-        /// Setting allowContentRetargeting also overwrites this value.
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetInheritPrivateBrowsingIdAttribute();
+		
+		/// <summary>
+        /// True if this docShell should inherit the private browsing ID from
+        /// its parent when reparented.
+        ///
+        /// NOTE: This should *not* be set false in new code, or for docShells
+        /// inserted anywhere other than as children of panels.
         /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetinheritPrivateBrowsingIdAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowContentRetargetingOnChildren);
-
-
-
-        [return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetInheritPrivateBrowsingIdAttribute([MarshalAs(UnmanagedType.U1)] bool aInheritPrivateBrowsingId);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISimpleEnumerator GetDocShellEnumerator(int aItemType, int aDirection);
 		
@@ -626,7 +657,7 @@ namespace Gecko
 		
 		/// <summary>
         /// The size, in CSS pixels, of the horizontal margins for the <body> of an
-        /// HTML document in this docshel; used to implement the marginwidth attribute
+        /// HTML document in this docshell; used to implement the marginwidth attribute
         /// on HTML <frame>/<iframe> elements.  A value smaller than zero indicates
         /// that the attribute was not set.
         /// </summary>
@@ -635,7 +666,7 @@ namespace Gecko
 		
 		/// <summary>
         /// The size, in CSS pixels, of the horizontal margins for the <body> of an
-        /// HTML document in this docshel; used to implement the marginwidth attribute
+        /// HTML document in this docshell; used to implement the marginwidth attribute
         /// on HTML <frame>/<iframe> elements.  A value smaller than zero indicates
         /// that the attribute was not set.
         /// </summary>
@@ -644,7 +675,7 @@ namespace Gecko
 		
 		/// <summary>
         /// The size, in CSS pixels, of the vertical margins for the <body> of an HTML
-        /// document in this docshel; used to implement the marginheight attribute on
+        /// document in this docshell; used to implement the marginheight attribute on
         /// HTML <frame>/<iframe> elements.  A value smaller than zero indicates that
         /// the attribute was not set.
         /// </summary>
@@ -653,7 +684,7 @@ namespace Gecko
 		
 		/// <summary>
         /// The size, in CSS pixels, of the vertical margins for the <body> of an HTML
-        /// document in this docshel; used to implement the marginheight attribute on
+        /// document in this docshell; used to implement the marginheight attribute on
         /// HTML <frame>/<iframe> elements.  A value smaller than zero indicates that
         /// the attribute was not set.
         /// </summary>
@@ -750,29 +781,31 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSecurityUIAttribute([MarshalAs(UnmanagedType.Interface)] nsISecureBrowserUI aSecurityUI);
-
-        /// <summary>
-        /// The SecureBrowserUI object for this docshell.  This is set by XUL
-        /// <browser> or nsWebBrowser for their root docshell.
+		
+		/// <summary>
+        /// Object used to delegate URI loading to an upper context.
+        /// Currently only set for GeckoView to allow handling of load requests
+        /// at the application level.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        nsISupports GetloadURIDelegateAttribute();
-
-        /// <summary>
-        /// The SecureBrowserUI object for this docshell.  This is set by XUL
-        /// <browser> or nsWebBrowser for their root docshell.
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsILoadURIDelegate GetLoadURIDelegateAttribute();
+		
+		/// <summary>
+        /// Object used to delegate URI loading to an upper context.
+        /// Currently only set for GeckoView to allow handling of load requests
+        /// at the application level.
         /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetloadURIDelegateAttribute([MarshalAs(UnmanagedType.Interface)] nsISupports aSecurityUI);
-
-        /// <summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetLoadURIDelegateAttribute([MarshalAs(UnmanagedType.Interface)] nsILoadURIDelegate aLoadURIDelegate);
+		
+		/// <summary>
         /// Cancel the XPCOM timers for each meta-refresh URI in this docshell,
         /// and this docshell's children, recursively. The meta-refresh timers can be
         /// restarted using resumeRefreshURIs().  If the timers are already suspended,
         /// this has no effect.
         /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SuspendRefreshURIs();
 		
 		/// <summary>
@@ -866,22 +899,6 @@ namespace Gecko
 		void HistoryPurged(int numEntries);
 		
 		/// <summary>
-        /// @deprecated, use nsIDocShell.QueryInterface(nsIDOMStorageManager) instead.
-        ///
-        /// Retrieves the WebApps session storage object for the supplied principal.
-        ///
-        /// @param principal returns a storage for this principal
-        /// @param documentURI new storage will be created with reference to this
-        /// document.documentURI that will appear in storage event
-        /// @param create If true and a session storage object doesn't
-        /// already exist, a new one will be created.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMStorage GetSessionStorageForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase documentURI, [MarshalAs(UnmanagedType.U1)] bool create);
-		
-		
-		/// <summary>
         /// Gets the channel for the currently loaded document, if any.
         /// For a new document load, this will be the channel of the previous document
         /// until after OnLocationChange fires.
@@ -891,10 +908,18 @@ namespace Gecko
 		nsIChannel GetCurrentDocumentChannelAttribute();
 		
 		/// <summary>
-        /// Set the offset of this child in its container.
+        /// The original offset of this child in its container. This property is -1 for
+        /// dynamically added docShells.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetChildOffset(uint offset);
+		int GetChildOffsetAttribute();
+		
+		/// <summary>
+        /// The original offset of this child in its container. This property is -1 for
+        /// dynamically added docShells.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetChildOffsetAttribute(int aChildOffset);
 		
 		/// <summary>
         /// Find out whether the docshell is currently in the middle of a page
@@ -1001,16 +1026,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsOffScreenBrowserAttribute([MarshalAs(UnmanagedType.U1)] bool aIsOffScreenBrowser);
-
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void SetIsPrinting(bool b);
-
-        /// <summary>
+		
+		/// <summary>
+        /// Allows nsDocumentViewer to tell the top-level same-type docshell that
+        /// one of the documents under it is printing.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetIsPrinting([MarshalAs(UnmanagedType.U1)] bool aIsPrinting);
+		
+		/// <summary>
         /// If the current content viewer isn't initialized for print preview,
         /// it is replaced with one which is and to which an about:blank document
         /// is loaded.
         /// </summary>
-        [return: MarshalAs(UnmanagedType.Interface)]
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIWebBrowserPrint GetPrintPreviewAttribute();
 		
@@ -1044,7 +1073,13 @@ namespace Gecko
         /// The ID of the docshell in the session history.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ulong GetHistoryIDAttribute();
+		System.IntPtr GetHistoryIDAttribute();
+		
+		/// <summary>
+        /// Helper method for accessing this value from C++
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr HistoryID();
 		
 		/// <summary>
         /// Sets whether a docshell is an app tab. An app tab docshell may behave
@@ -1069,6 +1104,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void CreateAboutBlankContentViewer([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+		
+		/// <summary>
+        /// Like createAboutBlankContentViewer, but don't check for permit unload.
+        /// Only used by special session history operation.
+        /// @param aPrincipal the principal to use for the new document.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ForceCreateAboutBlankContentViewer([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
 		
 		/// <summary>
         /// Upon getting, returns the canonical encoding label of the document
@@ -1112,10 +1155,10 @@ namespace Gecko
         /// In a child docshell, this is the charset of the parent docshell
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetParentCharset([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase parentCharset, int parentCharsetSource, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal parentCharsetPrincipal);
+		void SetParentCharset(nsISupports parentCharset, int parentCharsetSource, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal parentCharsetPrincipal);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetParentCharset([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase parentCharset, ref int parentCharsetSource, [MarshalAs(UnmanagedType.Interface)] ref nsIPrincipal parentCharsetPrincipal);
+		void GetParentCharset(ref nsISupports parentCharset, ref int parentCharsetSource, [MarshalAs(UnmanagedType.Interface)] ref nsIPrincipal parentCharsetPrincipal);
 		
 		/// <summary>
         /// Whether the docShell records profile timeline markers at the moment
@@ -1198,133 +1241,87 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void NotifyScrollObservers();
 		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetFrameTypeAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetFrameTypeAttribute(uint aFrameType);
+		
 		/// <summary>
         /// Returns true if this docshell corresponds to an <iframe mozbrowser>.
-        /// (<iframe mozapp mozbrowser> is not considered a browser.)
+        /// <xul:browser> returns false here.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsBrowserElementAttribute();
+		bool GetIsMozBrowserAttribute();
 		
 		/// <summary>
-        /// Returns true iff the docshell corresponds to an <iframe mozapp>.
+        /// Returns true if this docshell corresponds to an isolated <iframe
+        /// mozbrowser>.
+        ///
+        /// <xul:browser> is not considered to be a mozbrowser element.
+        /// <iframe mozbrowser noisolation> does not count as isolated since
+        /// isolation is disabled.  Isolation can only be disabled if the
+        /// containing document is chrome.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsAppAttribute();
+		bool GetIsIsolatedMozBrowserElementAttribute();
 		
 		/// <summary>
-        /// Returns isBrowserElement || isApp.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsBrowserOrAppAttribute();
-		
-		/// <summary>
-        /// Returns true if this docshell corresponds to an <iframe mozbrowser> or if
-        /// the docshell is contained in an <iframe mozbrowser>.  (<iframe mozapp
-        /// mozbrowser> does not count as a browser.)
+        /// Returns true if this docshell corresponds to an isolated <iframe
+        /// mozbrowser> or if the docshell is contained in an isolated <iframe
+        /// mozbrowser>.
+        ///
+        /// <xul:browser> is not considered to be a mozbrowser element. <iframe
+        /// mozbrowser noisolation> does not count as isolated since isolation is
+        /// disabled.  Isolation can only be disabled if the containing document is
+        /// chrome.
         ///
         /// Our notion here of "contained in" means: Walk up the docshell hierarchy in
-        /// this process until we hit an <iframe mozapp> or <iframe mozbrowser> (or
-        /// until the hierarchy ends).  Return true iff the docshell we stopped on has
-        /// isBrowserElement == true.
+        /// this process until we hit an <iframe mozbrowser> (or until the hierarchy
+        /// ends).  Return true iff the docshell we stopped on has
+        /// isIsolatedMozBrowserElement == true.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsInBrowserElementAttribute();
+		bool GetIsInIsolatedMozBrowserElementAttribute();
 		
 		/// <summary>
-        /// Returns true if this docshell corresponds to an <iframe mozbrowser> or
-        /// <iframe mozapp>, or if this docshell is contained in an <iframe mozbrowser>
-        /// or <iframe mozapp>.
+        /// Returns true if this docshell corresponds to an <iframe mozbrowser>, or
+        /// if this docshell is contained in an <iframe mozbrowser>. <xul:browser>
+        /// returns false here.
         ///
         /// To compute this value, we walk up the docshell hierarchy.  If we encounter
-        /// a docshell with isBrowserElement or isApp before we hit the end of the
-        /// hierarchy, we return true.  Otherwise, we return false.
+        /// a docshell with isMozBrowser before we hit the end of the hierarchy,
+        /// we return true.  Otherwise, we return false.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsInBrowserOrAppAttribute();
+		bool GetIsInMozBrowserAttribute();
 		
 		/// <summary>
-        /// Indicate that this docshell corresponds to an app with the given app id.
-        ///
-        /// You may pass NO_APP_ID or UNKNOWN_APP_ID for containingAppId.  If you
-        /// pass NO_APP_ID, then this docshell will return NO_APP_ID for appId.  If
-        /// you pass UNKNOWN_APP_ID, then this docshell will search its hiearchy for
-        /// an app frame and use that frame's appId.
-        ///
-        /// You can call this method more than once, but there's no guarantee that
-        /// other components will update their view of the world if you change a
-        /// docshell's app id, so tread lightly.
-        ///
-        /// If you call this method after calling setIsBrowserInsideApp, this
-        /// docshell will forget the fact that it was a browser.
+        /// Returns true if this docshell is the top level content docshell.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsApp(uint ownAppId);
-		
-		/// <summary>
-        /// Indicate that this docshell corresponds to a browser inside an app with
-        /// the given ID.  As with setIsApp, you may pass NO_APP_ID or
-        /// UNKNOWN_APP_ID.
-        ///
-        /// As with setIsApp, you may call this more than once, but it's kind of a
-        /// hack, so be careful.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsBrowserInsideApp(uint containingAppId);
-		
-		/// <summary>
-        /// Indicate that this docshell corresponds to a signed package with
-        /// the given packageId.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsSignedPackage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase packageId);
-		
-		/// <summary>
-        /// Returns the id of the app associated with this docshell.  If this docshell
-        /// is an <iframe mozbrowser> inside an <iframe mozapp>, we return the app's
-        /// appId.
-        ///
-        /// We compute this value by walking up the docshell hierarchy until we find a
-        /// docshell on which setIsApp(x) or setIsBrowserInsideApp(x) was called
-        /// (ignoring those docshells where x == UNKNOWN_APP_ID).  We return the app
-        /// id x.
-        ///
-        /// If we don't find a docshell with an associated app id in our hierarchy, we
-        /// return NO_APP_ID.  We never return UNKNOWN_APP_ID.
-        ///
-        /// Notice that a docshell may have an associated app even if it returns true
-        /// for isBrowserElement!
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetAppIdAttribute();
-		
-		/// <summary>
-        /// Return the manifest URL of the app associated with this docshell.
-        ///
-        /// If there is no associated app in our hierarchy, we return empty string.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAppManifestURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAppManifestURL);
+		bool GetIsTopLevelContentDocShellAttribute();
 		
 		/// <summary>
         /// Like nsIDocShellTreeItem::GetSameTypeParent, except this ignores <iframe
-        /// mozbrowser> and <iframe mozapp> boundaries.
+        /// mozbrowser> boundaries.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDocShell GetSameTypeParentIgnoreBrowserAndAppBoundaries();
+		nsIDocShell GetSameTypeParentIgnoreBrowserBoundaries();
 		
 		/// <summary>
         /// Like nsIDocShellTreeItem::GetSameTypeRootTreeItem, except this ignores
-        /// <iframe mozbrowser> and <iframe mozapp> boundaries.
+        /// <iframe mozbrowser> boundaries.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDocShell GetSameTypeRootTreeItemIgnoreBrowserAndAppBoundaries();
+		nsIDocShell GetSameTypeRootTreeItemIgnoreBrowserBoundaries();
 		
 		/// <summary>
         /// True iff asynchronous panning and zooming is enabled for this
@@ -1582,6 +1579,9 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DoCommand([MarshalAs(UnmanagedType.LPStr)] string command);
 		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DoCommandWithParams([MarshalAs(UnmanagedType.LPStr)] string command, [MarshalAs(UnmanagedType.Interface)] nsICommandParams aParams);
+		
 		/// <summary>
         /// Invisible DocShell are dummy construct to simulate DOM windows
         /// without any actual visual representation. They have to be marked
@@ -1603,7 +1603,7 @@ namespace Gecko
         /// If deviceSizeIsPageSize is set to true, device-width/height media queries
         /// will be calculated from the page size, not the device size.
         ///
-        /// Used by the Responsive Design View and B2G Simulator.
+        /// Used by the Responsive Design Mode and B2G Simulator.
         ///
         /// Default is False.
         /// Default value can be overriden with
@@ -1617,7 +1617,7 @@ namespace Gecko
         /// If deviceSizeIsPageSize is set to true, device-width/height media queries
         /// will be calculated from the page size, not the device size.
         ///
-        /// Used by the Responsive Design View and B2G Simulator.
+        /// Used by the Responsive Design Mode and B2G Simulator.
         ///
         /// Default is False.
         /// Default value can be overriden with
@@ -1645,7 +1645,7 @@ namespace Gecko
         /// is collecting information.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyJSRunToCompletionStart([MarshalAs(UnmanagedType.LPStr)] string aReason, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string functionName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string fileName, uint lineNumber, ref Gecko.JsVal asyncStack, ref Gecko.JsVal asyncCause);
+		void NotifyJSRunToCompletionStart([MarshalAs(UnmanagedType.LPStr)] string aReason, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string functionName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string fileName, uint lineNumber, ref Gecko.JsVal asyncStack, [MarshalAs(UnmanagedType.LPStr)] string asyncCause);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void NotifyJSRunToCompletionStop();
@@ -1657,18 +1657,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetHasLoadedNonBlankURIAttribute();
-		
-		/// <summary>
-        /// Holds the id of the payment request associated with this docshell if any.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPaymentRequestIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPaymentRequestId);
-		
-		/// <summary>
-        /// Holds the id of the payment request associated with this docshell if any.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPaymentRequestIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPaymentRequestId);
 		
 		/// <summary>
         /// Allow usage of -moz-window-dragging:drag for content docshells.
@@ -1686,6 +1674,139 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetWindowDraggingAllowedAttribute([MarshalAs(UnmanagedType.U1)] bool aWindowDraggingAllowed);
+		
+		/// <summary>
+        /// Sets/gets the current scroll restoration mode.
+        /// @see https://html.spec.whatwg.org/#dom-history-scroll-restoration
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCurrentScrollRestorationIsManualAttribute();
+		
+		/// <summary>
+        /// Sets/gets the current scroll restoration mode.
+        /// @see https://html.spec.whatwg.org/#dom-history-scroll-restoration
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetCurrentScrollRestorationIsManualAttribute([MarshalAs(UnmanagedType.U1)] bool aCurrentScrollRestorationIsManual);
+		
+		/// <summary>
+        /// Setter and getter for the origin attributes living on this docshell.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetOriginAttributes(System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOriginAttributes(ref Gecko.JsVal aAttrs, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// The editing session for this docshell.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIEditingSession GetEditingSessionAttribute();
+		
+		/// <summary>
+        /// The tab child for this docshell.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsITabChild GetTabChildAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		/* TabChildRef */ nsISupports GetTabChild();
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsICommandManager GetCommandManager();
+		
+		/// <summary>
+        /// This allows chrome to override the default choice of whether touch events
+        /// are available on a specific docshell. Possible values are listed below.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetTouchEventsOverrideAttribute();
+		
+		/// <summary>
+        /// This allows chrome to override the default choice of whether touch events
+        /// are available on a specific docshell. Possible values are listed below.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTouchEventsOverrideAttribute(uint aTouchEventsOverride);
+		
+		/// <summary>
+        /// This value is `true` if its corresponding unit of related browsing contexts
+        /// (TabGroup) contains only 1 toplevel window, and that window is the outer
+        /// window corresponding to this docshell.
+        ///
+        /// The value is `false` otherwise. This is the case if the docshell is an
+        /// iframe, has window.opener set, or another window with window.opener
+        /// referring to this window exists.
+        ///
+        /// If this value is `false`, it would be web content visible for a load
+        /// occuring in this docshell to be performed within a different docshell.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsOnlyToplevelInTabGroupAttribute();
+		
+		/// <summary>
+        /// Returns `true` if this docshell was created due to a Large-Allocation
+        /// header, and has not seen the initiating load yet.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAwaitingLargeAllocAttribute();
+		
+		/// <summary>
+        /// Attribute that determines whether tracking protection is enabled.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetUseTrackingProtectionAttribute();
+		
+		/// <summary>
+        /// Attribute that determines whether tracking protection is enabled.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetUseTrackingProtectionAttribute([MarshalAs(UnmanagedType.U1)] bool aUseTrackingProtection);
+		
+		/// <summary>
+        /// Fire a dummy location change event asynchronously.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DispatchLocationChangeEvent();
+		
+		/// <summary>
+        /// Take ownership of the ClientSource representing an initial about:blank
+        /// document that was never needed.  As an optimization we avoid creating
+        /// this document if no code calls GetDocument(), but we still need a
+        /// ClientSource object to represent the about:blank window.  This may return
+        /// nullptr; for example if the docshell has created a real window and document
+        /// already.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		/* UniqueClientSource */ nsISupports TakeInitialClientSource();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetColorMatrix([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] float[] aMatrix, uint aMatrixLen);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetColorMatrix(ref uint aMatrixLen, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref float[] aMatrix);
+		
+		/// <summary>
+        /// Display mode for this docshell. Defaults to DISPLAY_MODE_BROWSER.
+        /// Media queries only look at the value in the top-most docshell.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetDisplayModeAttribute();
+		
+		/// <summary>
+        /// Display mode for this docshell. Defaults to DISPLAY_MODE_BROWSER.
+        /// Media queries only look at the value in the top-most docshell.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDisplayModeAttribute(uint aDisplayMode);
 	}
 	
 	/// <summary>nsIDocShellConsts </summary>
@@ -1696,7 +1817,7 @@ namespace Gecko
 		public const long INTERNAL_LOAD_FLAGS_NONE = 0x0;
 		
 		// 
-		public const long INTERNAL_LOAD_FLAGS_INHERIT_OWNER = 0x1;
+		public const long INTERNAL_LOAD_FLAGS_INHERIT_PRINCIPAL = 0x1;
 		
 		// 
 		public const long INTERNAL_LOAD_FLAGS_DONT_SEND_REFERRER = 0x2;
@@ -1720,8 +1841,18 @@ namespace Gecko
         // </summary>
 		public const long INTERNAL_LOAD_FLAGS_IS_SRCDOC = 0x40;
 		
+		// <summary>
+        // Whether this is the load of a frame's original src attribute
+        // </summary>
+		public const long INTERNAL_LOAD_FLAGS_ORIGINAL_FRAME_SRC = 0x80;
+		
 		// 
 		public const long INTERNAL_LOAD_FLAGS_NO_OPENER = 0x100;
+		
+		// <summary>
+        // Whether a top-level data URI navigation is allowed for that load
+        // </summary>
+		public const long INTERNAL_LOAD_FLAGS_FORCE_ALLOW_DATA_URI = 0x200;
 		
 		// <summary>
         // Get an enumerator over this docShell and its children.
@@ -1780,5 +1911,43 @@ namespace Gecko
         // Load from history
         // </summary>
 		public const ulong LOAD_CMD_PUSHSTATE = 0x8;
+		
+		// <summary>
+        // The type of iframe that this docshell lives.
+        // </summary>
+		public const ulong FRAME_TYPE_REGULAR = 0;
+		
+		// 
+		public const ulong FRAME_TYPE_BROWSER = 1;
+		
+		// <summary>
+        // Override platform/pref default behaviour and force-disable touch events.
+        // </summary>
+		public const ulong TOUCHEVENTS_OVERRIDE_DISABLED = 0;
+		
+		// <summary>
+        // Override platform/pref default behaviour and force-enable touch events.
+        // </summary>
+		public const ulong TOUCHEVENTS_OVERRIDE_ENABLED = 1;
+		
+		// <summary>
+        // Don't override the platform/pref default behaviour for touch events.
+        // </summary>
+		public const ulong TOUCHEVENTS_OVERRIDE_NONE = 2;
+		
+		// <summary>
+        // Allowed CSS display modes. This needs to be kept in
+        // sync with similar values in nsStyleConsts.h
+        // </summary>
+		public const ulong DISPLAY_MODE_BROWSER = 0;
+		
+		// 
+		public const ulong DISPLAY_MODE_MINIMAL_UI = 1;
+		
+		// 
+		public const ulong DISPLAY_MODE_STANDALONE = 2;
+		
+		// 
+		public const ulong DISPLAY_MODE_FULLSCREEN = 3;
 	}
 }

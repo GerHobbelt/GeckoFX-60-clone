@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoFrameElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLFrameElement DOMHTMLElement;
+        private /* nsIDOMHTMLFrameElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoFrameElement(nsIDOMHTMLFrameElement element) : base(element)
+        internal GeckoFrameElement(/* nsIDOMHTMLFrameElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoFrameElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoFrameElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLFrameElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLFrameElement */ nsISupports;
         }
 
         public string FrameBorder

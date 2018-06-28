@@ -50,6 +50,10 @@ namespace Gecko
         /// The proxy port for this connection.
         /// @param aFlags
         /// Control flags that govern this connection (see below.)
+        /// @param aTlsFlags
+        /// An opaque flags for non-standard behavior of the TLS system.
+        /// It is unlikely this will need to be set outside of telemetry
+        /// studies relating to the TLS implementation.
         /// @param aFileDesc
         /// The resulting PRFileDesc.
         /// @param aSecurityInfo
@@ -57,7 +61,7 @@ namespace Gecko
         /// object typically implements nsITransportSecurityInfo.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NewSocket(int aFamily, [MarshalAs(UnmanagedType.LPStr)] string aHost, int aPort, [MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy, uint aFlags, ref System.IntPtr aFileDesc, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aSecurityInfo);
+		void NewSocket(int aFamily, [MarshalAs(UnmanagedType.LPStr)] string aHost, int aPort, [MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy, System.IntPtr aOriginAttributes, uint aFlags, uint aTlsFlags, ref System.IntPtr aFileDesc, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aSecurityInfo);
 		
 		/// <summary>
         /// addToSocket
@@ -70,7 +74,7 @@ namespace Gecko
         /// which is an in-param instead.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddToSocket(int aFamily, [MarshalAs(UnmanagedType.LPStr)] string aHost, int aPort, [MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy, uint aFlags, System.IntPtr aFileDesc, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aSecurityInfo);
+		void AddToSocket(int aFamily, [MarshalAs(UnmanagedType.LPStr)] string aHost, int aPort, [MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy, System.IntPtr aOriginAttributes, uint aFlags, uint aTlsFlags, System.IntPtr aFileDesc, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aSecurityInfo);
 	}
 	
 	/// <summary>nsISocketProviderConsts </summary>
@@ -111,5 +115,12 @@ namespace Gecko
         // a TLS socket without authentication.
         // </summary>
 		public const ulong MITM_OK = 1<<3;
+		
+		// <summary>
+        // If set, do not use newer protocol features that might have interop problems
+        // on the Internet. Intended only for use with critical infra like the updater.
+        // default is false.
+        // </summary>
+		public const ulong BE_CONSERVATIVE = 1<<4;
 	}
 }

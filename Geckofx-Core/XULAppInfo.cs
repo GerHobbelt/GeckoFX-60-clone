@@ -187,5 +187,55 @@ namespace Gecko
         {
             return backXulRuntime.GetIsOfficialAttribute();
         }
+
+        void nsIPlatformInfo.GetPlatformBuildIDAttribute(nsACStringBase aPlatformBuildID)
+        {
+            throw new NotImplementedException();
+        }
+
+        void nsIXULAppInfo.GetPlatformBuildIDAttribute(nsACStringBase aPlatformBuildID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ulong GetUniqueProcessIDAttribute()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetRemoteTypeAttribute(nsAStringBase aRemoteType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public uint GetMaxWebProcessCountAttribute()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetAccessibleHandlerUsedAttribute()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetAccessibilityInstantiatorAttribute(nsAStringBase aAccessibilityInstantiator)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetShouldBlockIncompatJawsAttribute()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetIsReleaseOrBetaAttribute()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GetWindowsDLLBlocklistStatusAttribute()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

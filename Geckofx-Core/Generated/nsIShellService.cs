@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("53f4bc4a-5b86-4643-8e67-4907ecbab34c")]
+	[Guid("2d1a95e4-5bd8-4eeb-b0a8-c1455fd2a357")]
 	public interface nsIShellService
 	{
 		
@@ -66,36 +66,6 @@ namespace Gecko
 		void SetDefaultBrowser([MarshalAs(UnmanagedType.U1)] bool aClaimAllTypes, [MarshalAs(UnmanagedType.U1)] bool aForAllUsers);
 		
 		/// <summary>
-        /// Used to determine whether or not to show a "Set Default Browser"
-        /// query dialog. This attribute is true if the application is starting
-        /// up and "browser.shell.checkDefaultBrowser" is true, otherwise it
-        /// is false.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetShouldCheckDefaultBrowserAttribute();
-		
-		/// <summary>
-        /// Used to determine whether or not to show a "Set Default Browser"
-        /// query dialog. This attribute is true if the application is starting
-        /// up and "browser.shell.checkDefaultBrowser" is true, otherwise it
-        /// is false.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetShouldCheckDefaultBrowserAttribute([MarshalAs(UnmanagedType.U1)] bool aShouldCheckDefaultBrowser);
-		
-		/// <summary>
-        /// Used to determine whether or not to offer "Set as desktop background"
-        /// functionality. Even if shell service is available it is not
-        /// guaranteed that it is able to set the background for every desktop
-        /// which is especially true for Linux with its many different desktop
-        /// environments.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetCanSetDesktopBackgroundAttribute();
-		
-		/// <summary>
         /// Sets the desktop background image using either the HTML <IMG>
         /// element supplied or the background image of the element supplied.
         ///
@@ -103,9 +73,11 @@ namespace Gecko
         /// a background image from which to source the
         /// background image.
         /// @param aPosition     How to place the image on the desktop
+        /// @param aImageName    The image name. Equivalent to the leaf name of the
+        /// location.href.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDesktopBackground([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, int aPosition);
+		void SetDesktopBackground([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, int aPosition, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aImageName);
 		
 		/// <summary>
         /// Opens the application specified. If more than one application of the

@@ -37,17 +37,19 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("594feb13-6164-4054-b5a1-ad62e10ea15d")]
-	public interface nsIThread : nsIEventTarget
+	[Guid("5801d193-29d1-4964-a6b7-70eb697ddf2b")]
+	public interface nsIThread : nsISerialEventTarget
 	{
 		
 		/// <summary>
-        /// Check to see if this event target is associated with the current thread.
-        ///
-        /// @returns
-        /// A boolean value that if "true" indicates that events dispatched to this
-        /// event target will run on the current thread (i.e., the thread calling
-        /// this method).
+        /// for XPConnect purposes.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool IsOnCurrentThreadInfallible();
+		
+		/// <summary>
+        /// Fallible version of IsOnCurrentThread.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -59,9 +61,7 @@ namespace Gecko
         ///
         /// @param event
         /// The alreadyAddRefed<> event to dispatch.
-        /// NOTE that the event will be leaked if it fails to dispatch. Also note
-        /// that if "flags" includes DISPATCH_SYNC, it may return error from Run()
-        /// after a successful dispatch. In that case, the event is not leaked.
+        /// NOTE that the event will be leaked if it fails to dispatch.
         /// @param flags
         /// The flags modifying event dispatch.  The flags are described in detail
         /// below.
@@ -95,11 +95,50 @@ namespace Gecko
 		new void Dispatch([MarshalAs(UnmanagedType.Interface)] nsIRunnable @event, uint flags);
 		
 		/// <summary>
+        /// Dispatch an event to this event target, but do not run it before delay
+        /// milliseconds have passed.  This function may be called from any thread.
+        ///
+        /// @param event
+        /// The alreadyAddrefed<> event to dispatch.
+        /// @param delay
+        /// The delay (in ms) before running the event.  If event does not rise to
+        /// the top of the event queue before the delay has passed, it will be set
+        /// aside to execute once the delay has passed.  Otherwise, it will be
+        /// executed immediately.
+        ///
+        /// @throws NS_ERROR_INVALID_ARG
+        /// Indicates that event is null.
+        /// @throws NS_ERROR_UNEXPECTED
+        /// Indicates that the thread is shutting down and has finished processing
+        /// events, so this event would never run and has not been dispatched, or
+        /// that delay is zero.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void DelayedDispatch(System.IntPtr @event, uint delay);
+		
+		/// <summary>
         /// @returns
         /// The NSPR thread object corresponding to this nsIThread.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetPRThreadAttribute();
+		
+		/// <summary>
+        /// @returns
+        /// Whether or not this thread may call into JS. Used in the profiler
+        /// to avoid some unnecessary locking.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCanInvokeJSAttribute();
+		
+		/// <summary>
+        /// @returns
+        /// Whether or not this thread may call into JS. Used in the profiler
+        /// to avoid some unnecessary locking.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetCanInvokeJSAttribute([MarshalAs(UnmanagedType.U1)] bool aCanInvokeJS);
 		
 		/// <summary>
         /// Shutdown the thread.  This method prevents further dispatch of events to
@@ -185,5 +224,46 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AsyncShutdown();
+		
+		/// <summary>
+        /// Dispatch an event to the thread's idle queue.  This function may be called
+        /// from any thread, and it may be called re-entrantly.
+        ///
+        /// @param event
+        /// The alreadyAddRefed<> event to dispatch.
+        /// NOTE that the event will be leaked if it fails to dispatch.
+        ///
+        /// @throws NS_ERROR_INVALID_ARG
+        /// Indicates that event is null.
+        /// @throws NS_ERROR_UNEXPECTED
+        /// Indicates that the thread is shutting down and has finished processing
+        /// events, so this event would never run and has not been dispatched.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void IdleDispatch(System.IntPtr @event);
+		
+		/// <summary>
+        /// Use this attribute to dispatch runnables to the thread. Eventually, the
+        /// eventTarget attribute will be the only way to dispatch events to a
+        /// thread--nsIThread will no longer inherit from nsIEventTarget.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIEventTarget GetEventTargetAttribute();
+		
+		/// <summary>
+        /// A fast C++ getter for the eventTarget.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports EventTarget();
+		
+		/// <summary>
+        /// A fast C++ getter for the eventTarget. It asserts that the thread's event
+        /// target is an nsISerialEventTarget and then returns it.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports SerialEventTarget();
 	}
 }

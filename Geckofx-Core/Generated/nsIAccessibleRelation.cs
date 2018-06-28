@@ -173,8 +173,39 @@ namespace Gecko
 		public const ulong RELATION_CONTAINING_TAB_PANE = 0x12;
 		
 		// <summary>
+        // The target object is the containing window object.
+        // </summary>
+		public const ulong RELATION_CONTAINING_WINDOW = 0x13;
+		
+		// <summary>
         // The target object is the containing application object.
         // </summary>
 		public const ulong RELATION_CONTAINING_APPLICATION = 0x14;
+		
+		// <summary>
+        // The target object provides the detailed, extended description for this
+        // object. It provides more detailed information than would normally be
+        // provided using the DESCRIBED_BY relation. A common use for this relation is
+        // in digital publishing where an extended description needs to be conveyed in
+        // a book that requires structural markup or the embedding of other technology
+        // to provide illustrative content.
+        // </summary>
+		public const ulong RELATION_DETAILS = 0x15;
+		
+		// <summary>
+        // This object provides the detailed, extended description for the target
+        // object. See DETAILS relation.
+        // </summary>
+		public const ulong RELATION_DETAILS_FOR = 0x16;
+		
+		// <summary>
+        // The target object is the error message for this object.
+        // </summary>
+		public const ulong RELATION_ERRORMSG = 0x17;
+		
+		// <summary>
+        // This object is the error message for the target object.
+        // </summary>
+		public const ulong RELATION_ERRORMSG_FOR = 0x18;
 	}
 }

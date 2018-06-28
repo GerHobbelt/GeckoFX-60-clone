@@ -37,7 +37,7 @@ namespace Gecko
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("caad4f1f-d047-46ac-ae9d-dc598e4fb91b")]
-	public interface nsIContentPolicy : nsIContentPolicyBase
+	public interface nsIContentPolicy
 	{
 		
 		/// <summary>
@@ -52,8 +52,11 @@ namespace Gecko
         /// not be null
         ///
         /// @param aRequestOrigin    OPTIONAL. the location of the resource that
-        /// initiated this load request; can be null if
-        /// inapplicable
+        /// that is loading the request. This will generally
+        /// be the URI of the loading principal for the
+        /// resulting request (as determined by its
+        /// LoadInfo), but may vary depending on the
+        /// caller. Can be null if inapplicable.
         ///
         /// @param aContext          OPTIONAL. the nsIDOMNode or nsIDOMWindow that
         /// initiated the request, or something that can QI
@@ -73,8 +76,12 @@ namespace Gecko
         /// @param aRequestPrincipal an OPTIONAL argument, defines the principal that
         /// caused the load. This is optional only for
         /// non-gecko code: all gecko code should set this
-        /// argument.  For navigation events, this is
-        /// the principal of the page that caused this load.
+        /// argument. This should generally be the same as
+        /// the triggering principal for the resulting
+        /// request (as determined by its LoadInfo), but may
+        /// vary depending on the caller. Sometimes it will
+        /// be the loading principal or final channel
+        /// principal instead.
         ///
         /// @return ACCEPT or REJECT_*
         ///
@@ -135,5 +142,369 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		short ShouldProcess(System.IntPtr aContentType, [MarshalAs(UnmanagedType.Interface)] nsIURI aContentLocation, [MarshalAs(UnmanagedType.Interface)] nsIURI aRequestOrigin, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType, [MarshalAs(UnmanagedType.Interface)] nsISupports aExtra, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aRequestPrincipal);
+	}
+	
+	/// <summary>nsIContentPolicyConsts </summary>
+	public class nsIContentPolicyConsts
+	{
+		
+		// <summary>
+        // Indicates a unset or bogus policy type.
+        // </summary>
+		public const long TYPE_INVALID = 0;
+		
+		// <summary>
+        // Gecko/Firefox developers: Avoid using TYPE_OTHER. Especially for
+        // requests that are coming from webpages. Or requests in general which
+        // you expect that security checks will be done on.
+        // Always use a more specific type if one is available. And do not hesitate
+        // to add more types as appropriate.
+        // But if you are fairly sure that no one would care about your more specific
+        // type, then it's ok to use TYPE_OTHER.
+        //
+        // Extension developers: Whenever it is reasonable, use one of the existing
+        // content types. If none of the existing content types are right for
+        // something you are doing, file a bug in the Core/DOM component that
+        // includes a patch that adds your new content type to the end of the list of
+        // TYPE_* constants here. But, don't start using your new content type until
+        // your patch has been accepted, because it will be uncertain what exact
+        // value and name your new content type will have; in that interim period,
+        // use TYPE_OTHER. In your patch, document your new content type in the style
+        // of the existing ones. In the bug you file, provide a more detailed
+        // description of the new type of content you want Gecko to support, so that
+        // the existing implementations of nsIContentPolicy can be properly modified
+        // to deal with that new type of content.
+        //
+        // Implementations of nsIContentPolicy should treat this the same way they
+        // treat unknown types, because existing users of TYPE_OTHER may be converted
+        // to use new content types.
+        //
+        // Note that the TYPE_INTERNAL_* constants are never passed to content
+        // policy implementations.  They are mapped to other TYPE_* constants, and
+        // are only intended for internal usage inside Gecko.
+        // </summary>
+		public const long TYPE_OTHER = 1;
+		
+		// <summary>
+        // Indicates an executable script (such as JavaScript).
+        // </summary>
+		public const long TYPE_SCRIPT = 2;
+		
+		// <summary>
+        // Indicates an image (e.g., IMG elements).
+        // </summary>
+		public const long TYPE_IMAGE = 3;
+		
+		// <summary>
+        // Indicates a stylesheet (e.g., STYLE elements).
+        // </summary>
+		public const long TYPE_STYLESHEET = 4;
+		
+		// <summary>
+        // Indicates a generic object (plugin-handled content typically falls under
+        // this category).
+        // </summary>
+		public const long TYPE_OBJECT = 5;
+		
+		// <summary>
+        // Indicates a document at the top-level (i.e., in a browser).
+        // </summary>
+		public const long TYPE_DOCUMENT = 6;
+		
+		// <summary>
+        // Indicates a document contained within another document (e.g., IFRAMEs,
+        // FRAMES, and OBJECTs).
+        // </summary>
+		public const long TYPE_SUBDOCUMENT = 7;
+		
+		// <summary>
+        // Indicates a timed refresh.
+        //
+        // shouldLoad will never get this, because it does not represent content
+        // to be loaded (the actual load triggered by the refresh will go through
+        // shouldLoad as expected).
+        //
+        // shouldProcess will get this for, e.g., META Refresh elements and HTTP
+        // Refresh headers.
+        // </summary>
+		public const long TYPE_REFRESH = 8;
+		
+		// <summary>
+        // Indicates an XBL binding request, triggered either by -moz-binding CSS
+        // property.
+        // </summary>
+		public const long TYPE_XBL = 9;
+		
+		// <summary>
+        // Indicates a ping triggered by a click on <A PING="..."> element.
+        // </summary>
+		public const long TYPE_PING = 10;
+		
+		// <summary>
+        // Indicates an XMLHttpRequest. Also used for document.load and for EventSource.
+        // </summary>
+		public const long TYPE_XMLHTTPREQUEST = 11;
+		
+		// 
+		public const long TYPE_DATAREQUEST = 11;
+		
+		// <summary>
+        // Indicates a request by a plugin.
+        // </summary>
+		public const long TYPE_OBJECT_SUBREQUEST = 12;
+		
+		// <summary>
+        // Indicates a DTD loaded by an XML document.
+        // </summary>
+		public const long TYPE_DTD = 13;
+		
+		// <summary>
+        // Indicates a font loaded via @font-face rule.
+        // </summary>
+		public const long TYPE_FONT = 14;
+		
+		// <summary>
+        // Indicates a video or audio load.
+        // </summary>
+		public const long TYPE_MEDIA = 15;
+		
+		// <summary>
+        // Indicates a WebSocket load.
+        // </summary>
+		public const long TYPE_WEBSOCKET = 16;
+		
+		// <summary>
+        // Indicates a Content Security Policy report.
+        // </summary>
+		public const long TYPE_CSP_REPORT = 17;
+		
+		// <summary>
+        // Indicates a style sheet transformation.
+        // </summary>
+		public const long TYPE_XSLT = 18;
+		
+		// <summary>
+        // Indicates a beacon post.
+        // </summary>
+		public const long TYPE_BEACON = 19;
+		
+		// <summary>
+        // Indicates a load initiated by the fetch() function from the Fetch
+        // specification.
+        // </summary>
+		public const long TYPE_FETCH = 20;
+		
+		// <summary>
+        // Indicates a <img srcset> or <picture> request.
+        // </summary>
+		public const long TYPE_IMAGESET = 21;
+		
+		// <summary>
+        // Indicates a web manifest.
+        // </summary>
+		public const long TYPE_WEB_MANIFEST = 22;
+		
+		// <summary>
+        // Indicates an save-as link download from the front-end code.
+        // </summary>
+		public const long TYPE_SAVEAS_DOWNLOAD = 43;
+		
+		// <summary>
+        // Indicates an internal constant for scripts loaded through script
+        // elements.
+        //
+        // This will be mapped to TYPE_SCRIPT before being passed to content policy
+        // implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_SCRIPT = 23;
+		
+		// <summary>
+        // Indicates an internal constant for scripts loaded through a dedicated
+        // worker.
+        //
+        // This will be mapped to TYPE_SCRIPT before being passed to content policy
+        // implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_WORKER = 24;
+		
+		// <summary>
+        // Indicates an internal constant for scripts loaded through a shared
+        // worker.
+        //
+        // This will be mapped to TYPE_SCRIPT before being passed to content policy
+        // implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_SHARED_WORKER = 25;
+		
+		// <summary>
+        // Indicates an internal constant for content loaded from embed elements.
+        //
+        // This will be mapped to TYPE_OBJECT.
+        // </summary>
+		public const long TYPE_INTERNAL_EMBED = 26;
+		
+		// <summary>
+        // Indicates an internal constant for content loaded from object elements.
+        //
+        // This will be mapped to TYPE_OBJECT.
+        // </summary>
+		public const long TYPE_INTERNAL_OBJECT = 27;
+		
+		// <summary>
+        // Indicates an internal constant for content loaded from frame elements.
+        //
+        // This will be mapped to TYPE_SUBDOCUMENT.
+        // </summary>
+		public const long TYPE_INTERNAL_FRAME = 28;
+		
+		// <summary>
+        // Indicates an internal constant for content loaded from iframe elements.
+        //
+        // This will be mapped to TYPE_SUBDOCUMENT.
+        // </summary>
+		public const long TYPE_INTERNAL_IFRAME = 29;
+		
+		// <summary>
+        // Indicates an internal constant for content loaded from audio elements.
+        //
+        // This will be mapped to TYPE_MEDIA.
+        // </summary>
+		public const long TYPE_INTERNAL_AUDIO = 30;
+		
+		// <summary>
+        // Indicates an internal constant for content loaded from video elements.
+        //
+        // This will be mapped to TYPE_MEDIA.
+        // </summary>
+		public const long TYPE_INTERNAL_VIDEO = 31;
+		
+		// <summary>
+        // Indicates an internal constant for content loaded from track elements.
+        //
+        // This will be mapped to TYPE_MEDIA.
+        // </summary>
+		public const long TYPE_INTERNAL_TRACK = 32;
+		
+		// <summary>
+        // Indicates an internal constant for an XMLHttpRequest.
+        //
+        // This will be mapped to TYPE_XMLHTTPREQUEST.
+        // </summary>
+		public const long TYPE_INTERNAL_XMLHTTPREQUEST = 33;
+		
+		// <summary>
+        // Indicates an internal constant for EventSource.
+        //
+        // This will be mapped to TYPE_DATAREQUEST.
+        // </summary>
+		public const long TYPE_INTERNAL_EVENTSOURCE = 34;
+		
+		// <summary>
+        // Indicates an internal constant for scripts loaded through a service
+        // worker.
+        //
+        // This will be mapped to TYPE_SCRIPT before being passed to content policy
+        // implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_SERVICE_WORKER = 35;
+		
+		// <summary>
+        // Indicates an internal constant for *preloaded* scripts
+        // loaded through script elements.
+        //
+        // This will be mapped to TYPE_SCRIPT before being passed
+        // to content policy implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_SCRIPT_PRELOAD = 36;
+		
+		// <summary>
+        // Indicates an internal constant for normal images.
+        //
+        // This will be mapped to TYPE_IMAGE before being passed
+        // to content policy implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_IMAGE = 37;
+		
+		// <summary>
+        // Indicates an internal constant for *preloaded* images.
+        //
+        // This will be mapped to TYPE_IMAGE before being passed
+        // to content policy implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_IMAGE_PRELOAD = 38;
+		
+		// <summary>
+        // Indicates an internal constant for normal stylesheets.
+        //
+        // This will be mapped to TYPE_STYLESHEET before being passed
+        // to content policy implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_STYLESHEET = 39;
+		
+		// <summary>
+        // Indicates an internal constant for *preloaded* stylesheets.
+        //
+        // This will be mapped to TYPE_STYLESHEET before being passed
+        // to content policy implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_STYLESHEET_PRELOAD = 40;
+		
+		// <summary>
+        // Indicates an internal constant for favicon.
+        //
+        // This will be mapped to TYPE_IMAGE before being passed
+        // to content policy implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_IMAGE_FAVICON = 41;
+		
+		// <summary>
+        // Indicates an importScripts() inside a worker script.
+        //
+        // This will be mapped to TYPE_SCRIPT before being passed to content policy
+        // implementations.
+        // </summary>
+		public const long TYPE_INTERNAL_WORKER_IMPORT_SCRIPTS = 42;
+		
+		// <summary>
+        // Returned from shouldLoad or shouldProcess if the load or process request
+        // is rejected based on details of the request.
+        // </summary>
+		public const short REJECT_REQUEST = -1;
+		
+		// <summary>
+        // Returned from shouldLoad or shouldProcess if the load/process is rejected
+        // based solely on its type (of the above flags).
+        //
+        // NOTE that it is not meant to stop future requests for this type--only the
+        // current request.
+        // </summary>
+		public const short REJECT_TYPE = -2;
+		
+		// <summary>
+        // Returned from shouldLoad or shouldProcess if the load/process is rejected
+        // based on the server it is hosted on or requested from (aContentLocation or
+        // aRequestOrigin), e.g., if you block an IMAGE because it is served from
+        // goatse.cx (even if you don't necessarily block other types from that
+        // server/domain).
+        //
+        // NOTE that it is not meant to stop future requests for this server--only the
+        // current request.
+        // </summary>
+		public const short REJECT_SERVER = -3;
+		
+		// <summary>
+        // Returned from shouldLoad or shouldProcess if the load/process is rejected
+        // based on some other criteria. Mozilla callers will handle this like
+        // REJECT_REQUEST; third-party implementors may, for example, use this to
+        // direct their own callers to consult the extra parameter for additional
+        // details.
+        // </summary>
+		public const short REJECT_OTHER = -4;
+		
+		// <summary>
+        // Returned from shouldLoad or shouldProcess if the load or process request
+        // is not rejected.
+        // </summary>
+		public const short ACCEPT = 1;
 	}
 }

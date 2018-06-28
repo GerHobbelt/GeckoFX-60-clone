@@ -45,7 +45,7 @@ namespace Gecko
 		void NotifyTransportClosed(int reason);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyData([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase data);
+		void NotifyData([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase data, [MarshalAs(UnmanagedType.U1)] bool isBinary);
 	}
 	
 	/// <summary>
@@ -53,48 +53,34 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5d23ea5f-a7e5-4cf0-8fa5-6b0abd106bf2")]
+	[Guid("670b7e1b-65be-42b6-a596-be571907fa18")]
 	public interface nsIPresentationSessionTransport
 	{
 		
 		/// <summary>
-        /// App-to-App transport channel for the presentation session.
+        /// Should be set once the underlying session transport is built
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPresentationSessionTransportCallback GetCallbackAttribute();
 		
 		/// <summary>
-        /// App-to-App transport channel for the presentation session.
+        /// Should be set once the underlying session transport is built
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetCallbackAttribute([MarshalAs(UnmanagedType.Interface)] nsIPresentationSessionTransportCallback aCallback);
 		
+		/// <summary>
+        /// valid for TCP session transport
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsINetAddr GetSelfAddressAttribute();
 		
 		/// <summary>
-        /// Initialize the transport channel with an existent socket transport. (This
-        /// is primarily used at the sender side.)
-        /// @param transport The socket transport.
-        /// @param callback The callback for followup notifications.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitWithSocketTransport([MarshalAs(UnmanagedType.Interface)] nsISocketTransport transport, [MarshalAs(UnmanagedType.Interface)] nsIPresentationSessionTransportCallback callback);
-		
-		/// <summary>
-        /// Initialize the transport channel with the channel description. (This is
-        /// primarily used at the receiver side.)
-        /// @param description The channel description.
-        /// @param callback The callback for followup notifications.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitWithChannelDescription([MarshalAs(UnmanagedType.Interface)] nsIPresentationChannelDescription description, [MarshalAs(UnmanagedType.Interface)] nsIPresentationSessionTransportCallback callback);
-		
-		/// <summary>
         /// Enable the notification for incoming data. |notifyData| of
         /// |nsIPresentationSessionTransportCallback| can start getting invoked.
+        /// Should set callback before |enableDataNotification| is called.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EnableDataNotification();
@@ -104,7 +90,21 @@ namespace Gecko
         /// @param data The message to send.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Send([MarshalAs(UnmanagedType.Interface)] nsIInputStream data);
+		void Send([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase data);
+		
+		/// <summary>
+        /// Send the binary message to the remote endpoint.
+        /// @param data: the message being sent out.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SendBinaryMsg([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase data);
+		
+		/// <summary>
+        /// Send the blob to the remote endpoint.
+        /// @param blob: The input blob to be sent.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SendBlob([MarshalAs(UnmanagedType.Interface)] nsIDOMBlob blob);
 		
 		/// <summary>
         /// Close this session transport.

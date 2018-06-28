@@ -41,4 +41,31 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Run();
 	}
+	
+	/// <summary>nsIRunnablePriority </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("e75aa42a-80a9-11e6-afb5-e89d87348e2c")]
+	public interface nsIRunnablePriority
+	{
+		
+		/// <summary>Member GetPriorityAttribute </summary>
+		/// <returns>A System.UInt32</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetPriorityAttribute();
+	}
+	
+	/// <summary>nsIRunnablePriorityConsts </summary>
+	public class nsIRunnablePriorityConsts
+	{
+		
+		// 
+		public const ushort PRIORITY_NORMAL = 0;
+		
+		// 
+		public const ushort PRIORITY_INPUT = 1;
+		
+		// 
+		public const ushort PRIORITY_HIGH = 2;
+	}
 }

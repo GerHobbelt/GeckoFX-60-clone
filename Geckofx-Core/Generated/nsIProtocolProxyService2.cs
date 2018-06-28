@@ -51,6 +51,8 @@ namespace Gecko
         /// not correspond to a RESOLVE_ flag are reserved for future use.
         /// @param aCallback
         /// The object to be notified when the result is available.
+        /// @param aMainThreadTarget
+        /// A labelled event target for dispatching runnables to main thread.
         ///
         /// @return An object that can be used to cancel the asychronous operation.
         /// If canceled, the cancelation status (aReason) will be forwarded
@@ -72,7 +74,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsICancelable AsyncResolve([MarshalAs(UnmanagedType.Interface)] nsISupports aChannelOrURI, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIProtocolProxyCallback aCallback);
+		new nsICancelable AsyncResolve([MarshalAs(UnmanagedType.Interface)] nsISupports aChannelOrURI, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIProtocolProxyCallback aCallback, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aMainThreadTarget);
 		
 		/// <summary>
         /// This method may be called to construct a nsIProxyInfo instance from
@@ -257,6 +259,6 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsICancelable AsyncResolve2([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIProtocolProxyCallback aCallback);
+		nsICancelable AsyncResolve2([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIProtocolProxyCallback aCallback, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aMainThreadTarget);
 	}
 }

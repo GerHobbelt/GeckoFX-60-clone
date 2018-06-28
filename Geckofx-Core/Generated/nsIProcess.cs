@@ -102,6 +102,38 @@ namespace Gecko
 		void RunwAsync([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] System.IntPtr[] args, uint count, [MarshalAs(UnmanagedType.Interface)] nsIObserver observer, [MarshalAs(UnmanagedType.U1)] bool holdWeak);
 		
 		/// <summary>
+        /// When set to true the process will not open a new window when started and
+        /// will run hidden from the user. This currently affects only the Windows
+        /// platform.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetStartHiddenAttribute();
+		
+		/// <summary>
+        /// When set to true the process will not open a new window when started and
+        /// will run hidden from the user. This currently affects only the Windows
+        /// platform.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetStartHiddenAttribute([MarshalAs(UnmanagedType.U1)] bool aStartHidden);
+		
+		/// <summary>
+        /// When set to true the process will be launched directly without using the
+        /// shell. This currently affects only the Windows platform.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetNoShellAttribute();
+		
+		/// <summary>
+        /// When set to true the process will be launched directly without using the
+        /// shell. This currently affects only the Windows platform.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetNoShellAttribute([MarshalAs(UnmanagedType.U1)] bool aNoShell);
+		
+		/// <summary>
         /// The process identifier of the currently running process. This will only
         /// be available after the process has started and may not be available on
         /// some platforms.

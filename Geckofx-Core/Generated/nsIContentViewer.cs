@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("91b6c1f3-fc5f-43a9-88f4-9286bd19387f")]
+	[Guid("2da17016-7851-4a45-a7a8-00b360e01595")]
 	public interface nsIContentViewer
 	{
 		
@@ -56,13 +56,22 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void LoadComplete(int aStatus);
 		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetLoadCompletedAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsStoppedAttribute();
+		
 		/// <summary>
         /// Checks if the document wants to prevent unloading by firing beforeunload on
-        /// the document, and if it does, prompts the user. The result is returned.
+        /// the document, and if it does, takes action directed by aPermitUnloadFlags.
+        /// The result is returned.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool PermitUnload();
+		bool PermitUnload(uint aPermitUnloadFlags);
 		
 		/// <summary>
         /// Exposes whether we're blocked in a call to permitUnload.
@@ -72,13 +81,13 @@ namespace Gecko
 		bool GetInPermitUnloadAttribute();
 		
 		/// <summary>
-        /// As above, but this passes around the aShouldPrompt argument to keep
+        /// As above, but this passes around the aPermitUnloadFlags argument to keep
         /// track of whether the user has responded to a prompt.
         /// Used internally by the scriptable version to ensure we only prompt once.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool PermitUnloadInternal([MarshalAs(UnmanagedType.U1)] ref bool aShouldPrompt);
+		bool PermitUnloadInternal(ref uint aPermitUnloadFlags);
 		
 		/// <summary>
         /// Exposes whether we're in the process of firing the beforeunload event.
@@ -121,12 +130,13 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Stop();
 		
+		/// <summary>
+        /// Returns the same thing as getDocument(), but for use from script
+        /// only.  C++ consumers should use getDocument().
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMDocument GetDOMDocumentAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDOMDocumentAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument aDOMDocument);
+		nsISupports GetDOMDocumentAttribute();
 		
 		/// <summary>
         /// Returns DOMDocument as nsIDocument and without addrefing.
@@ -134,11 +144,20 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetDocument();
 		
+		/// <summary>
+        /// Allows setting the document.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDocument(System.IntPtr aDocument);
+		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetBounds(System.IntPtr aBounds);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetBounds(System.IntPtr aBounds);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBoundsWithFlags(System.IntPtr aBounds, uint aFlags);
 		
 		/// <summary>
         /// The previous content viewer, which has been |close|d but not
@@ -285,6 +304,11 @@ namespace Gecko
 		void SetTextZoomAttribute(float aTextZoom);
 		
 		/// <summary>
+        ///The actual text zoom in effect, as modified by the system font scale. </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		float GetEffectiveTextZoomAttribute();
+		
+		/// <summary>
         ///The amount by which to scale all lengths. Default is 1.0. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		float GetFullZoomAttribute();
@@ -293,6 +317,35 @@ namespace Gecko
         ///The amount by which to scale all lengths. Default is 1.0. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetFullZoomAttribute(float aFullZoom);
+		
+		/// <summary>
+        /// The actual full zoom in effect, as modified by the device context.
+        /// For a requested full zoom, the device context may choose a slightly
+        /// different effectiveFullZoom to accomodate integer rounding of app units
+        /// per dev pixel. This property returns the actual zoom amount in use,
+        /// though it may not be good user experience to report that a requested zoom
+        /// of 90% is actually 89.1%, for example. This value is provided primarily to
+        /// support media queries of dppx values, because those queries are matched
+        /// against the actual native device pixel ratio and the actual full zoom.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		float GetDeviceFullZoomAttribute();
+		
+		/// <summary>
+        /// The value used to override devicePixelRatio and media queries dppx.
+        /// Default is 0.0, that means no overriding is done (only a positive value
+        /// is applied).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		float GetOverrideDPPXAttribute();
+		
+		/// <summary>
+        /// The value used to override devicePixelRatio and media queries dppx.
+        /// Default is 0.0, that means no overriding is done (only a positive value
+        /// is applied).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOverrideDPPXAttribute(float aOverrideDPPX);
 		
 		/// <summary>
         ///Disable entire author style level (including HTML presentation hints) </summary>
@@ -350,6 +403,16 @@ namespace Gecko
 		void GetContentSize(ref int width, ref int height);
 		
 		/// <summary>
+        /// Returns the preferred width and height of the content, constrained to the
+        /// given maximum values. If either maxWidth or maxHeight is less than zero,
+        /// that dimension is not constrained.
+        ///
+        /// All input and output values are in device pixels, rather than CSS pixels.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetContentSizeConstrained(int maxWidth, int maxHeight, ref int width, ref int height);
+		
+		/// <summary>
         ///The minimum font size </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetMinFontSizeAttribute();
@@ -367,6 +430,20 @@ namespace Gecko
 		void AppendSubtree(System.IntPtr array);
 		
 		/// <summary>
+        /// Instruct the refresh driver to discontinue painting until further
+        /// notice.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PausePainting();
+		
+		/// <summary>
+        /// Instruct the refresh driver to resume painting after a previous call to
+        /// pausePainting().
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ResumePainting();
+		
+		/// <summary>
         /// Render the document as if being viewed on a device with the specified
         /// media type. This will cause a reflow.
         ///
@@ -380,5 +457,45 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void StopEmulatingMedium();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISupports GetHintCharset();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetHintCharset(nsISupports aEncoding);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports GetForceCharset();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetForceCharset(nsISupports aEncoding);
+	}
+	
+	/// <summary>nsIContentViewerConsts </summary>
+	public class nsIContentViewerConsts
+	{
+		
+		// <summary>
+        // aPermitUnloadFlags are passed to PermitUnload to indicate what action to take
+        // if a beforeunload handler wants to prompt the user.  It is also used by
+        // permitUnloadInternal to ensure we only prompt once.
+        //
+        // ePrompt: Prompt and return the user's choice (default).
+        // eDontPromptAndDontUnload: Don't prompt and return false (unload not permitted)
+        // if the document (or its children) asks us to prompt.
+        // eDontPromptAndUnload: Don't prompt and return true (unload permitted) no matter what.
+        // </summary>
+		public const ulong ePrompt = 0;
+		
+		// 
+		public const ulong eDontPromptAndDontUnload = 1;
+		
+		// 
+		public const ulong eDontPromptAndUnload = 2;
+		
+		// <summary>
+        // The 'aFlags' argument to setBoundsWithFlags is a set of these bits.
+        // </summary>
+		public const ulong eDelayResize = 1;
 	}
 }

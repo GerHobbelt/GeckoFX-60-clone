@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("7615408c-1fb3-4128-8dd5-a3e2f3fa8842")]
+	[Guid("8e49f7b0-1f98-4939-bf91-e9c39cd56434")]
 	public interface nsITabParent
 	{
 		
@@ -41,9 +41,6 @@ namespace Gecko
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InjectTouchEvent([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aType, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] uint[] aIdentifiers, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] int[] aXs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] int[] aYs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] uint[] aRxs, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] uint[] aRys, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] float[] aRotationAngles, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=8)] float[] aForces, uint count, int aModifiers);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetChildProcessOffset(ref int aCssX, ref int aCssY);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
@@ -51,29 +48,58 @@ namespace Gecko
 		bool GetUseAsyncPanZoomAttribute();
 		
 		/// <summary>
-        /// Manages the docshell active state of the remote browser.
+        /// Manages the docshell active state of the remote browser. Setting the
+        /// docShell to be active will also cause it to render layers and upload
+        /// them to the compositor. Setting the docShell as not active will clear
+        /// those layers.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetDocShellIsActiveAttribute();
 		
 		/// <summary>
-        /// Manages the docshell active state of the remote browser.
+        /// Manages the docshell active state of the remote browser. Setting the
+        /// docShell to be active will also cause it to render layers and upload
+        /// them to the compositor. Setting the docShell as not active will clear
+        /// those layers.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDocShellIsActiveAttribute([MarshalAs(UnmanagedType.U1)] bool aDocShellIsActive);
 		
 		/// <summary>
-        /// As an optimisation, setting the docshell's active state to
-        /// inactive also triggers a layer invalidation to free up some
-        /// potentially unhelpful memory usage. This attribute should be
-        /// used where callers would like to set the docshell's state
-        /// without losing any layer data.
-        ///
-        /// Otherwise, this does the same as setting the attribute above.
+        /// When set to true, this tells the child to paint and upload layers to
+        /// the compositor. When set to false, previous layers are cleared from
+        /// the compositor, but only if preserveLayers is also set to false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetRenderLayersAttribute();
+		
+		/// <summary>
+        /// When set to true, this tells the child to paint and upload layers to
+        /// the compositor. When set to false, previous layers are cleared from
+        /// the compositor, but only if preserveLayers is also set to false.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDocShellIsActiveAndForeground([MarshalAs(UnmanagedType.U1)] bool aIsActive);
+		void SetRenderLayersAttribute([MarshalAs(UnmanagedType.U1)] bool aRenderLayers);
+		
+		/// <summary>
+        /// True if layers are being rendered and the compositor has reported
+        /// receiving them.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetHasLayersAttribute();
+		
+		/// <summary>
+        /// As an optimisation, setting the docshell's active state to
+        /// inactive also triggers a layer invalidation to free up some
+        /// potentially unhelpful memory usage. Calling preserveLayers
+        /// will cause the layers to be preserved even for inactive
+        /// docshells.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PreserveLayers([MarshalAs(UnmanagedType.U1)] bool aPreserveLayers);
 		
 		/// <summary>
         /// During interactions where painting performance
@@ -88,6 +114,12 @@ namespace Gecko
 		ulong GetTabIdAttribute();
 		
 		/// <summary>
+        /// The OS level process Id of the related child process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetOsPidAttribute();
+		
+		/// <summary>
         /// Navigate by key. If aForDocumentNavigation is true, navigate by document.
         /// If aForDocumentNavigation is false, navigate by element.
         ///
@@ -100,5 +132,50 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetHasContentOpenerAttribute();
+		
+		/// <summary>
+        /// True if we've previously received layers for this tab when switching to
+        /// it.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetHasPresentedAttribute();
+		
+		/// <summary>
+        /// Ensures that the content process which has this tab parent has all of the
+        /// permissions required to load a document with the given principal.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void TransmitPermissionsForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+		
+		/// <summary>
+        /// True if any of the frames loaded in the TabChild have registered
+        /// an onbeforeunload event handler.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetHasBeforeUnloadAttribute();
+		
+		/// <summary>
+        /// Notify APZ to start autoscrolling.
+        /// (aAnchorX, aAnchorY) are the coordinates of the autoscroll anchor,
+        /// in CSS coordinates relative to the screen. aScrollId and
+        /// aPresShellId identify the scroll frame that content chose to scroll.
+        /// Returns whether we were successfully able to notify APZ.
+        /// If this function returns true, APZ (which may live in another process)
+        /// may still reject the autoscroll, but it's then APZ's reponsibility
+        /// to notify content via an "autoscroll-rejected-by-apz" message.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool StartApzAutoscroll(float aAnchorX, float aAnchorY, System.IntPtr aScrollId, uint aPresShellId);
+		
+		/// <summary>
+        /// Notify APZ to stop autoscrolling.
+        /// aScrollId and aPresShellId identify the scroll frame that is being
+        /// autoscrolled.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void StopApzAutoscroll(System.IntPtr aScrollId, uint aPresShellId);
 	}
 }

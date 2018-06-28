@@ -171,5 +171,11 @@ namespace Gecko
         // @see also RFC 2616, Section 10.4.2
         // </summary>
 		public const long PREVIOUS_FAILED = 16;
+		
+		// <summary>
+        // A cross-origin sub-resource requests an authentication.
+        // The message presented to users must reflect that.
+        // </summary>
+		public const long CROSS_ORIGIN_SUB_RESOURCE = 32;
 	}
 }

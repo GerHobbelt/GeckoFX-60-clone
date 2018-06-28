@@ -49,6 +49,7 @@ namespace Gecko
         /// @param aTipText The text to display in the tooltip, typically obtained
         /// from the TITLE attribute of the node (or containing parent)
         /// over which the pointer has been positioned.
+        /// @param aTipDir  The direction (ltr or rtl) in which to display the text
         ///
         /// @note
         /// Coordinates are specified in pixels, relative to the top-left
@@ -57,7 +58,7 @@ namespace Gecko
         /// @return <code>NS_OK</code> if the tooltip was displayed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnShowTooltip(int aXCoords, int aYCoords, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aTipText);
+		void OnShowTooltip(int aXCoords, int aYCoords, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aTipText, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aTipDir);
 		
 		/// <summary>
         /// Called when the tooltip should be hidden, either because the pointer

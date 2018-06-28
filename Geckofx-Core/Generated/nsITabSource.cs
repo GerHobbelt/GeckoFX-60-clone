@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b3a7a402-2760-4583-b4a3-af095fe00c84")]
+	[Guid("0feba7f2-800d-4fe5-b28d-e3f17a7a7322")]
 	public interface nsITabSource
 	{
 		
@@ -40,14 +40,13 @@ namespace Gecko
         ///This Source Code Form is subject to the terms of the Mozilla Public
         /// License, v. 2.0. If a copy of the MPL was not distributed with this file,
         /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetTabToStream();
+		mozIDOMWindowProxy GetTabToStream();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyStreamStart([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		void NotifyStreamStart(mozIDOMWindowProxy window);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyStreamStop([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		void NotifyStreamStop(mozIDOMWindowProxy window);
 	}
 }

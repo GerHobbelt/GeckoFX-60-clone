@@ -89,7 +89,7 @@ namespace Gecko
         /// application to execute and group together several independent transactions
         /// so they can be undone with a single call to undoTransaction().
         /// @param aData An arbitrary nsISupports object that is associated with the
-        /// batch. Can be retrieved from nsITransactionList.
+        /// batch. Can be retrieved from the undo or redo stacks.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void BeginBatch([MarshalAs(UnmanagedType.Interface)] nsISupports aData);
@@ -181,24 +181,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsITransaction PeekRedoStack();
-		
-		/// <summary>
-        /// Returns the list of transactions on the undo stack. Note that the
-        /// transaction at the top of the undo stack will actually be at the
-        /// index 'n-1' in the list, where 'n' is the number of items in the list.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsITransactionList GetUndoList();
-		
-		/// <summary>
-        /// Returns the list of transactions on the redo stack. Note that the
-        /// transaction at the top of the redo stack will actually be at the
-        /// index 'n-1' in the list, where 'n' is the number of items in the list.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsITransactionList GetRedoList();
 		
 		/// <summary>
         /// Adds a listener to the transaction manager's notification list. Listeners

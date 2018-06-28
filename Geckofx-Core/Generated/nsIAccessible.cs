@@ -105,6 +105,12 @@ namespace Gecko
 		nsIDOMNode GetDOMNodeAttribute();
 		
 		/// <summary>
+        /// For remote accessibles the id of the related DOM node.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aId);
+		
+		/// <summary>
         /// The document accessible that this access node resides in.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]

@@ -37,8 +37,8 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// This method is called to open the responding app/page when a presentation
-        /// request comes in at receiver side.
+        /// This method is called to open the responding app/page when
+        /// a presentation request comes in at receiver side.
         ///
         /// @param url       The url of the request.
         /// @param sessionId The session ID of the request.
@@ -47,6 +47,6 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports SendRequest([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId);
+		nsISupports SendRequest([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, [MarshalAs(UnmanagedType.Interface)] nsIPresentationDevice device);
 	}
 }

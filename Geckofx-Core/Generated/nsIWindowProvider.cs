@@ -36,7 +36,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f607bd66-08e5-4d2e-ad83-9f9f3ca17658")]
+	[Guid("e97a3830-15ef-499b-8372-c22d128091c1")]
 	public interface nsIWindowProvider
 	{
 		
@@ -84,6 +84,8 @@ namespace Gecko
         /// the feature string to the window it returns in any way it sees fit.
         /// See the nsIWindowWatcher interface for details on feature strings.
         ///
+        /// @param aLoadInfo Specify setup information of the load in the new window
+        ///
         /// @param aWindowIsNew [out] Whether the window being returned was just
         /// created by the window provider implementation.  This can be used by
         /// callers to keep track of which windows were opened by the user as
@@ -102,8 +104,7 @@ namespace Gecko
         /// @see nsIWindowWatcher for more information on aFeatures.
         /// @see nsIWebBrowserChrome for more information on aChromeFlags.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow ProvideWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent, uint aChromeFlags, [MarshalAs(UnmanagedType.U1)] bool aCalledFromJS, [MarshalAs(UnmanagedType.U1)] bool aPositionSpecified, [MarshalAs(UnmanagedType.U1)] bool aSizeSpecified, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aFeatures, [MarshalAs(UnmanagedType.U1)] ref bool aWindowIsNew);
+		mozIDOMWindowProxy ProvideWindow(mozIDOMWindowProxy aParent, uint aChromeFlags, [MarshalAs(UnmanagedType.U1)] bool aCalledFromJS, [MarshalAs(UnmanagedType.U1)] bool aPositionSpecified, [MarshalAs(UnmanagedType.U1)] bool aSizeSpecified, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aFeatures, [MarshalAs(UnmanagedType.U1)] bool aForceNoOpener, [MarshalAs(UnmanagedType.Interface)] nsIDocShellLoadInfo aLoadInfo, [MarshalAs(UnmanagedType.U1)] ref bool aWindowIsNew);
 	}
 }

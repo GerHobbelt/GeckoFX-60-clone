@@ -62,9 +62,8 @@ namespace Gecko
         ///
         /// @see nsISpellChecker::GetNextMisspelledWord
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetNextMisspelledWord();
+		void GetNextMisspelledWord([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// Used to get suggestions for the last word that was checked and found to
@@ -75,9 +74,8 @@ namespace Gecko
         ///
         /// @see nsISpellChecker::GetSuggestedWord
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetSuggestedWord();
+		void GetSuggestedWord([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// Check a given word. In spite of the name, this function checks the word
@@ -89,7 +87,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool CheckCurrentWord([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string suggestedWord);
+		bool CheckCurrentWord([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase suggestedWord);
 		
 		/// <summary>
         /// Use when modally checking the document to replace a word.
@@ -97,13 +95,13 @@ namespace Gecko
         /// @see nsISpellChecker::CheckCurrentWord
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReplaceWord([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string misspelledWord, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string replaceWord, [MarshalAs(UnmanagedType.U1)] bool allOccurrences);
+		void ReplaceWord([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase misspelledWord, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase replaceWord, [MarshalAs(UnmanagedType.U1)] bool allOccurrences);
 		
 		/// <summary>
         /// @see nsISpellChecker::IgnoreAll
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void IgnoreWordAllOccurrences([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string word);
+		void IgnoreWordAllOccurrences([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase word);
 		
 		/// <summary>
         /// Fills an internal list of words added to the personal dictionary. These
@@ -120,9 +118,8 @@ namespace Gecko
         /// words added to the personal dictionary. Will return the empty string when
         /// there are no more words.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetPersonalDictionaryWord();
+		void GetPersonalDictionaryWord([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// Adds a word to the current personal dictionary.
@@ -130,7 +127,7 @@ namespace Gecko
         /// @see nsISpellChecker::AddWordToDictionary
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddWordToDictionary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string word);
+		void AddWordToDictionary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase word);
 		
 		/// <summary>
         /// Removes a word from the current personal dictionary.
@@ -138,7 +135,7 @@ namespace Gecko
         /// @see nsISpellChecker::RemoveWordFromPersonalDictionary
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveWordFromDictionary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string word);
+		void RemoveWordFromDictionary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase word);
 		
 		/// <summary>
         /// Retrieves a list of the currently available dictionaries. The strings will
@@ -193,7 +190,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool CheckCurrentWordNoSuggest([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string suggestedWord);
+		bool CheckCurrentWordNoSuggest([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase suggestedWord);
 		
 		/// <summary>
         /// Update the dictionary in use to be sure it corresponds to what the editor

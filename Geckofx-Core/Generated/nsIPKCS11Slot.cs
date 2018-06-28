@@ -44,25 +44,29 @@ namespace Gecko
         /// This Source Code Form is subject to the terms of the Mozilla Public
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetNameAttribute();
+		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetDescAttribute();
+		void GetDescAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDesc);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
+		/// <summary>
+        /// Manufacturer ID of the slot.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetManIDAttribute();
+		void GetManIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aManID);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
+		/// <summary>
+        /// Hardware version of the slot.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetHWVersionAttribute();
+		void GetHWVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHWVersion);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
+		/// <summary>
+        /// Firmware version of the slot.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetFWVersionAttribute();
+		void GetFWVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aFWVersion);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetStatusAttribute();
@@ -78,9 +82,8 @@ namespace Gecko
 		
 		/// <summary>
         ///more fun with workarounds - we're referring to everything by token name </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTokenNameAttribute();
+		void GetTokenNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTokenName);
 	}
 	
 	/// <summary>nsIPKCS11SlotConsts </summary>

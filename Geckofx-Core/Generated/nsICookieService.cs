@@ -27,6 +27,22 @@ namespace Gecko
 	
 	
 	/// <summary>
+    /// @see nsICookieService::runInTransaction
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("0fc41ffb-f1b7-42d9-9a42-8dc420c158c1")]
+	public interface nsICookieTransactionCallback
+	{
+		
+		/// <summary>
+        /// @see nsICookieService::runInTransaction
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Callback();
+	}
+	
+	/// <summary>
     /// nsICookieService
     ///
     /// Provides methods for setting and getting cookies in the context of a
@@ -66,8 +82,6 @@ namespace Gecko
     /// Note that the array could contain a single cookie.
     /// "cleared"
     /// the entire cookie list was cleared. the subject is null.
-    /// "reload"
-    /// the entire cookie list should be reloaded.  the subject is null.
     ///
     /// topic  : "cookie-rejected"
     /// broadcast whenever a cookie was rejected from being set as a
@@ -201,6 +215,21 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetCookieStringFromHttp([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aFirstURI, [MarshalAs(UnmanagedType.Interface)] nsIPrompt aPrompt, [MarshalAs(UnmanagedType.LPStr)] string aCookie, [MarshalAs(UnmanagedType.LPStr)] string aServerTime, [MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel);
+		
+		/// <summary>
+        /// Batch SQLite operations into one transaction. By default each call to
+        /// CookieService that affects the underlying SQLite database (add, remove,
+        /// setCookieString etc.) runs in a separate transaction.  If you do this many
+        /// times in a row, it's faster and suggested to wrap them all in a single
+        /// transaction by setting all the operations into the callback parameter.
+        /// Example: test scripts that need to construct a large cookie database.
+        /// @param aCallback
+        /// nsICookieTransactionCallback interface to call
+        /// @throws NS_ERROR_FAILURE if aCallback() fails.
+        /// @throws NS_ERROR_NOT_AVAILABLE if the connection is not established.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RunInTransaction([MarshalAs(UnmanagedType.Interface)] nsICookieTransactionCallback aCallback);
 	}
 	
 	/// <summary>nsICookieServiceConsts </summary>

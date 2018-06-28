@@ -170,14 +170,6 @@ namespace Gecko
         /// then it will be QI'd to nsIAsyncInputStream.  if the QI succeeds
         /// then the stream will be read directly.  otherwise, it will be read
         /// on a background thread using the stream transport service.
-        /// @param aStreamPos
-        /// specifies the stream offset from which to start reading.  the
-        /// offset value is absolute.  pass -1 to specify the current offset.
-        /// NOTE: this parameter is ignored if the underlying stream does not
-        /// implement nsISeekableStream.
-        /// @param aStreamLen
-        /// specifies how much data to read from the stream.  pass -1 to read
-        /// all data available in the stream.
         /// @param aSegmentSize
         /// if the stream transport service is used, then this parameter
         /// specifies the segment size for the stream transport's buffer.
@@ -188,9 +180,11 @@ namespace Gecko
         /// pass 0 to specify the default value.
         /// @param aCloseWhenDone
         /// if true, the input stream will be closed after it has been read.
+        /// @param aMainThreadTarget
+        /// a labeled main therad event target.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, long aStreamPos, long aStreamLen, uint aSegmentSize, uint aSegmentCount, [MarshalAs(UnmanagedType.U1)] bool aCloseWhenDone);
+		void Init([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, uint aSegmentSize, uint aSegmentCount, [MarshalAs(UnmanagedType.U1)] bool aCloseWhenDone, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aMainThreadTarget);
 		
 		/// <summary>
         /// asyncRead causes the input stream to be read in chunks and delivered

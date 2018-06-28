@@ -28,24 +28,30 @@ namespace Gecko
 	
 	/// <summary>
     /// This represents a X.509 certificate.
+    ///
+    /// NOTE: Service workers persist x.509 certs in object form on disk.  If you
+    /// change this uuid you probably need a hack in nsBinaryInputStream to
+    /// read the old uuid.  If you change the format of the object
+    /// serialization then more complex changes will be needed.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f8ed8364-ced9-4c6e-86ba-48af53c393e6")]
+	[Guid("bdc3979a-5422-4cd5-8589-696b6e96ea83")]
 	public interface nsIX509Cert
 	{
-		
-		/// <summary>
-        /// A nickname for the certificate.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetNicknameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNickname);
 		
 		/// <summary>
         /// The primary email address of the certificate, if present.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetEmailAddressAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aEmailAddress);
+		
+		/// <summary>
+        /// Did this certificate ship with the platform as a built-in root?
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsBuiltInRootAttribute();
 		
 		/// <summary>
         /// Obtain a list of all email addresses
@@ -162,15 +168,14 @@ namespace Gecko
 		/// <summary>
         /// A unique identifier of this certificate within the local storage.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetDbKeyAttribute();
+		void GetDbKeyAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aDbKey);
 		
 		/// <summary>
         /// A human readable identifier to label this certificate.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetWindowTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aWindowTitle);
+		void GetDisplayNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDisplayName);
 		
 		/// <summary>
         /// Type of this certificate
@@ -198,38 +203,12 @@ namespace Gecko
 		nsIArray GetChain();
 		
 		/// <summary>
-        /// Obtain an array of human readable strings describing
-        /// the certificate's certified usages.
-        ///
-        /// @param localOnly Do not hit the network, even if revocation information
-        /// downloading is currently activated.
-        /// @param verified The certificate verification result, see constants.
-        /// @param count The number of human readable usages returned.
-        /// @param usages The array of human readable usages.
+        /// A comma separated list of localized strings representing the contents of
+        /// the certificate's key usage extension, if present. The empty string if the
+        /// certificate doesn't have the key usage extension, or has an empty extension.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetUsagesArray([MarshalAs(UnmanagedType.U1)] bool localOnly, ref uint verified, ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref System.IntPtr[] usages);
-		
-		/// <summary>
-        /// Async version of nsIX509Cert::getUsagesArray()
-        ///
-        /// Will not block, will request results asynchronously,
-        /// availability of results will be notified on the main thread.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RequestUsagesArrayAsync([MarshalAs(UnmanagedType.Interface)] nsICertVerificationListener cvl);
-		
-		/// <summary>
-        /// Obtain a single comma separated human readable string describing
-        /// the certificate's certified usages.
-        ///
-        /// @param localOnly Do not hit the network, even if revocation information
-        /// downloading is currently activated.
-        /// @param verified The certificate verification result, see constants.
-        /// @param purposes The string listing the usages.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetUsagesString([MarshalAs(UnmanagedType.U1)] bool localOnly, ref uint verified, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase usages);
+		void GetKeyUsagesAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKeyUsages);
 		
 		/// <summary>
         /// This is the attribute which describes the ASN1 layout
@@ -286,18 +265,6 @@ namespace Gecko
 		System.IntPtr GetCert();
 		
 		/// <summary>
-        /// Human readable names identifying all hardware or
-        /// software tokens the certificate is stored on.
-        ///
-        /// @param length On success, the number of entries in the returned array.
-        /// @return On success, an array containing the names of all tokens
-        /// the certificate is stored on (may be empty).
-        /// On failure the function throws/returns an error.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAllTokenNames(ref uint length, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref System.IntPtr[] tokenNames);
-		
-		/// <summary>
         /// Either delete the certificate from all cert databases,
         /// or mark it as untrusted.
         /// </summary>
@@ -330,78 +297,6 @@ namespace Gecko
 		public const ulong ANY_CERT = 0xffff;
 		
 		// <summary>
-        // Constants for certificate verification results.
-        // </summary>
-		public const ulong VERIFIED_OK = 0;
-		
-		// 
-		public const ulong NOT_VERIFIED_UNKNOWN = 1<<0;
-		
-		// 
-		public const ulong CERT_REVOKED = 1<<1;
-		
-		// 
-		public const ulong CERT_EXPIRED = 1<<2;
-		
-		// 
-		public const ulong CERT_NOT_TRUSTED = 1<<3;
-		
-		// 
-		public const ulong ISSUER_NOT_TRUSTED = 1<<4;
-		
-		// 
-		public const ulong ISSUER_UNKNOWN = 1<<5;
-		
-		// 
-		public const ulong INVALID_CA = 1<<6;
-		
-		// 
-		public const ulong USAGE_NOT_ALLOWED = 1<<7;
-		
-		// 
-		public const ulong SIGNATURE_ALGORITHM_DISABLED = 1<<8;
-		
-		// <summary>
-        // Constants that describe the certified usages of a certificate.
-        //
-        // Deprecated and unused
-        // </summary>
-		public const ulong CERT_USAGE_SSLClient = 0;
-		
-		// 
-		public const ulong CERT_USAGE_SSLServer = 1;
-		
-		// 
-		public const ulong CERT_USAGE_SSLServerWithStepUp = 2;
-		
-		// 
-		public const ulong CERT_USAGE_SSLCA = 3;
-		
-		// 
-		public const ulong CERT_USAGE_EmailSigner = 4;
-		
-		// 
-		public const ulong CERT_USAGE_EmailRecipient = 5;
-		
-		// 
-		public const ulong CERT_USAGE_ObjectSigner = 6;
-		
-		// 
-		public const ulong CERT_USAGE_UserCertImport = 7;
-		
-		// 
-		public const ulong CERT_USAGE_VerifyCA = 8;
-		
-		// 
-		public const ulong CERT_USAGE_ProtectedObjectSigner = 9;
-		
-		// 
-		public const ulong CERT_USAGE_StatusResponder = 10;
-		
-		// 
-		public const ulong CERT_USAGE_AnyCA = 11;
-		
-		// <summary>
         // Constants for specifying the chain mode when exporting a certificate
         // </summary>
 		public const ulong CMS_CHAIN_MODE_CertOnly = 1;
@@ -411,52 +306,5 @@ namespace Gecko
 		
 		// 
 		public const ulong CMS_CHAIN_MODE_CertChainWithRoot = 3;
-	}
-	
-	/// <summary>nsICertVerificationResult </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2fd0a785-9f2d-4327-8871-8c3e0783891d")]
-	public interface nsICertVerificationResult
-	{
-		
-		/// <summary>
-        /// This interface reflects a container of
-        /// verification results. Call will not block.
-        ///
-        /// Obtain an array of human readable strings describing
-        /// the certificate's certified usages.
-        ///
-        /// Mirrors the results produced by
-        /// nsIX509Cert::getUsagesArray()
-        ///
-        /// As of today, this function is a one-shot object,
-        /// only the first call will succeed.
-        /// This allows an optimization in the implementation,
-        /// ownership of result data will be transfered to caller.
-        ///
-        /// @param cert The certificate that was verified.
-        /// @param verified The certificate verification result,
-        /// see constants in nsIX509Cert.
-        /// @param count The number of human readable usages returned.
-        /// @param usages The array of human readable usages.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetUsagesArrayResult(ref uint verified, ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref System.IntPtr[] usages);
-	}
-	
-	/// <summary>nsICertVerificationListener </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6684bce9-50db-48e1-81b7-98102bf81357")]
-	public interface nsICertVerificationListener
-	{
-		
-		/// <summary>
-        /// Notify that results are ready, that have been requested
-        /// using nsIX509Cert::requestUsagesArrayAsync()
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Notify([MarshalAs(UnmanagedType.Interface)] nsIX509Cert verifiedCert, [MarshalAs(UnmanagedType.Interface)] nsICertVerificationResult result);
 	}
 }

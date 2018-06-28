@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("594fd36d-5b1b-412f-a74e-ab72099a5bb2")]
+	[Guid("05f4fb88-e568-4d35-b394-ce0aa3eea6fc")]
 	public interface nsIPrintProgress : nsIWebProgressListener
 	{
 		
@@ -158,7 +158,7 @@ namespace Gecko
         ///     you can specify parameters through an xpcom object
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OpenProgressDialog([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow parent, [MarshalAs(UnmanagedType.LPStr)] string dialogURL, [MarshalAs(UnmanagedType.Interface)] nsISupports parameters, [MarshalAs(UnmanagedType.Interface)] nsIObserver openDialogObserver, [MarshalAs(UnmanagedType.U1)] ref bool notifyOnOpen);
+		void OpenProgressDialog(mozIDOMWindowProxy parent, [MarshalAs(UnmanagedType.LPStr)] string dialogURL, [MarshalAs(UnmanagedType.Interface)] nsISupports parameters, [MarshalAs(UnmanagedType.Interface)] nsIObserver openDialogObserver, [MarshalAs(UnmanagedType.U1)] ref bool notifyOnOpen);
 		
 		/// <summary>
         ///Close the progress dialog </summary>

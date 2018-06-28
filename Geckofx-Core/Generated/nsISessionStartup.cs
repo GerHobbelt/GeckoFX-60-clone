@@ -68,18 +68,15 @@ namespace Gecko
 		bool IsAutomaticRestoreEnabled();
 		
 		/// <summary>
-        /// Returns whether we will restore a session that ends up replacing the
-        /// homepage. The browser uses this to not start loading the homepage if
-        /// we're going to stop its load anyway shortly after.
-        ///
-        /// This is meant to be an optimization for the average case that loading the
-        /// session file finishes before we may want to start loading the default
-        /// homepage. Should this be called before the session file has been read it
-        /// will just return false.
+        /// Returns a boolean or a promise that resolves to a boolean, indicating
+        /// whether we will restore a session that ends up replacing the homepage.
+        /// True guarantees that we'll restore a session; false means that we
+        /// /probably/ won't do so.
+        /// The browser uses this to avoid unnecessarily loading the homepage when
+        /// restoring a session.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetWillOverrideHomepageAttribute();
+		Gecko.JsVal GetWillOverrideHomepageAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetSessionTypeAttribute();

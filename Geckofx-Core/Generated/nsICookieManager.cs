@@ -27,6 +27,24 @@ namespace Gecko
 	
 	
 	/// <summary>
+    ///This Source Code Form is subject to the terms of the Mozilla Public
+    /// License, v. 2.0. If a copy of the MPL was not distributed with this
+    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("20709db8-8dad-4e45-b33e-6e7c761dfc5d")]
+	public interface nsIPrivateModeCallback
+	{
+		
+		/// <summary>
+        ///This Source Code Form is subject to the terms of the Mozilla Public
+        /// License, v. 2.0. If a copy of the MPL was not distributed with this
+        /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Callback();
+	}
+	
+	/// <summary>
     /// An optional interface for accessing or removing the cookies
     /// that are in the cookie list
     /// </summary>
@@ -45,10 +63,22 @@ namespace Gecko
 		/// <summary>
         /// Called to enumerate through each cookie in the cookie list.
         /// The objects enumerated over are of type nsICookie
+        /// This enumerator should only be used for non-private browsing cookies.
+        /// To retrieve an enumerator for private browsing cookies, use
+        /// getCookiesWithOriginAttributes.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISimpleEnumerator GetEnumeratorAttribute();
+		
+		/// <summary>
+        /// Called to enumerate through each session cookie in the cookie list.
+        /// The objects enumerated over are of type nsICookie
+        /// This enumerator should only be used for non-private browsing cookies.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISimpleEnumerator GetSessionEnumeratorAttribute();
 		
 		/// <summary>
         /// Called to remove an individual cookie from the cookie list, specified
@@ -57,15 +87,158 @@ namespace Gecko
         /// directly from the desired nsICookie object.
         ///
         /// @param aHost The host or domain for which the cookie was set. @see
-        /// nsICookieManager2::add for a description of acceptable host
+        /// nsICookieManager::add for a description of acceptable host
         /// strings. If the target cookie is a domain cookie, a leading
         /// dot must be present.
         /// @param aName The name specified in the cookie
         /// @param aPath The path for which the cookie was set
-        /// @param aBlocked Indicates if cookies from this host should be permanently blocked
+        /// @param aOriginAttributes The originAttributes of this cookie. This
+        /// attribute is optional to avoid breaking add-ons.
+        /// In 1 or 2 releases it will be mandatory: bug 1260399.
+        /// @param aBlocked Indicates if cookies from this host should be permanently
+        /// blocked.
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Remove([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aPath, [MarshalAs(UnmanagedType.U1)] bool aBlocked);
+		void Remove([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aPath, [MarshalAs(UnmanagedType.U1)] bool aBlocked, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int RemoveNative([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aPath, [MarshalAs(UnmanagedType.U1)] bool aBlocked, /* OriginAttributesPtr */ nsISupports aOriginAttributes);
+		
+		/// <summary>
+        /// Add a cookie. nsICookieService is the normal way to do this. This
+        /// method is something of a backdoor.
+        ///
+        /// @param aHost
+        /// the host or domain for which the cookie is set. presence of a
+        /// leading dot indicates a domain cookie; otherwise, the cookie
+        /// is treated as a non-domain cookie (see RFC2109). The host string
+        /// will be normalized to ASCII or ACE; any trailing dot will be
+        /// stripped. To be a domain cookie, the host must have at least two
+        /// subdomain parts (e.g. '.foo.com', not '.com'), otherwise an
+        /// exception will be thrown. An empty string is acceptable
+        /// (e.g. file:// URI's).
+        /// @param aPath
+        /// path within the domain for which the cookie is valid
+        /// @param aName
+        /// cookie name
+        /// @param aValue
+        /// cookie data
+        /// @param aIsSecure
+        /// true if the cookie should only be sent over a secure connection.
+        /// @param aIsHttpOnly
+        /// true if the cookie should only be sent to, and can only be
+        /// modified by, an http connection.
+        /// @param aIsSession
+        /// true if the cookie should exist for the current session only.
+        /// see aExpiry.
+        /// @param aExpiry
+        /// expiration date, in seconds since midnight (00:00:00), January 1,
+        /// 1970 UTC. note that expiry time will also be honored for session cookies;
+        /// in this way, the more restrictive of the two will take effect.
+        /// @param aOriginAttributes
+        /// the originAttributes of this cookie. This attribute is optional to
+        /// avoid breaking add-ons.
+        /// @param aSameSite
+        /// the SameSite attribute. This attribute is optional to avoid breaking
+        /// addons
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Add([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aPath, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aValue, [MarshalAs(UnmanagedType.U1)] bool aIsSecure, [MarshalAs(UnmanagedType.U1)] bool aIsHttpOnly, [MarshalAs(UnmanagedType.U1)] bool aIsSession, long aExpiry, ref Gecko.JsVal aOriginAttributes, int aSameSite, System.IntPtr jsContext, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int AddNative([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aPath, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aValue, [MarshalAs(UnmanagedType.U1)] bool aIsSecure, [MarshalAs(UnmanagedType.U1)] bool aIsHttpOnly, [MarshalAs(UnmanagedType.U1)] bool aIsSession, long aExpiry, /* OriginAttributesPtr */ nsISupports aOriginAttributes, int aSameSite);
+		
+		/// <summary>
+        /// Find whether a given cookie already exists.
+        ///
+        /// @param aCookie
+        /// the cookie to look for
+        /// @param aOriginAttributes
+        /// nsICookie2 contains an originAttributes but if nsICookie2 is
+        /// implemented in JS, we can't retrieve its originAttributes because
+        /// the getter is marked [implicit_jscontext]. This optional parameter
+        /// is a workaround.
+        ///
+        /// @return true if a cookie was found which matches the host, path, and name
+        /// fields of aCookie
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool CookieExists([MarshalAs(UnmanagedType.Interface)] nsICookie2 aCookie, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int CookieExistsNative([MarshalAs(UnmanagedType.Interface)] nsICookie2 aCookie, /* OriginAttributesPtr */ nsISupports aOriginAttributes, [MarshalAs(UnmanagedType.U1)] ref bool aExists);
+		
+		/// <summary>
+        /// Count how many cookies exist within the base domain of 'aHost'.
+        /// Thus, for a host "weather.yahoo.com", the base domain would be "yahoo.com",
+        /// and any host or domain cookies for "yahoo.com" and its subdomains would be
+        /// counted.
+        ///
+        /// @param aHost
+        /// the host string to search for, e.g. "google.com". this should consist
+        /// of only the host portion of a URI. see @add for a description of
+        /// acceptable host strings.
+        ///
+        /// @return the number of cookies found.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint CountCookiesFromHost([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost);
+		
+		/// <summary>
+        /// Returns an enumerator of cookies that exist within the base domain of
+        /// 'aHost'. Thus, for a host "weather.yahoo.com", the base domain would be
+        /// "yahoo.com", and any host or domain cookies for "yahoo.com" and its
+        /// subdomains would be returned.
+        ///
+        /// @param aHost
+        /// the host string to search for, e.g. "google.com". this should consist
+        /// of only the host portion of a URI. see @add for a description of
+        /// acceptable host strings.
+        /// @param aOriginAttributes The originAttributes of cookies that would be
+        /// retrived. This attribute is optional to avoid
+        /// breaking add-ons.
+        ///
+        /// @return an nsISimpleEnumerator of nsICookie2 objects.
+        ///
+        /// @see countCookiesFromHost
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISimpleEnumerator GetCookiesFromHost([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// Import an old-style cookie file. Imported cookies will be added to the
+        /// existing database. If the database contains any cookies the same as those
+        /// being imported (i.e. domain, name, and path match), they will be replaced.
+        ///
+        /// @param aCookieFile the file to import, usually cookies.txt
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ImportCookies([MarshalAs(UnmanagedType.Interface)] nsIFile aCookieFile);
+		
+		/// <summary>
+        /// Returns an enumerator of all cookies whose origin attributes matches aPattern
+        ///
+        /// @param aPattern origin attribute pattern in JSON format
+        ///
+        /// @param aHost
+        /// the host string to search for, e.g. "google.com". this should consist
+        /// of only the host portion of a URI. see @add for a description of
+        /// acceptable host strings. This attribute is optional. It will search
+        /// all hosts if this attribute is not given.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISimpleEnumerator GetCookiesWithOriginAttributes([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPattern, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost);
+		
+		/// <summary>
+        /// Remove all the cookies whose origin attributes matches aPattern
+        ///
+        /// @param aPattern origin attribute pattern in JSON format
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveCookiesWithOriginAttributes([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPattern, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHost);
 	}
 }

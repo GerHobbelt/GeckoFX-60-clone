@@ -52,28 +52,25 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// An object containing a snapshot from all of the currently registered histograms.
-        /// { name1: {data1}, name2:{data2}...}
-        /// where data is consists of the following properties:
-        /// min - Minimal bucket size
-        /// max - Maximum bucket size
-        /// histogram_type - HISTOGRAM_EXPONENTIAL, HISTOGRAM_LINEAR, HISTOGRAM_BOOLEAN
-        /// or HISTOGRAM_COUNT
+        /// Serializes the histograms from the given dataset to a JSON-style object.
+        /// The returned structure looks like:
+        /// { process1: {name1: {histogramData1}, name2:{histogramData2}...}}
+        ///
+        /// Where histogramDataN has the following properties:
+        /// min - minimum bucket size
+        /// max - maximum bucket size
+        /// histogram_type - HISTOGRAM_EXPONENTIAL, HISTOGRAM_LINEAR, HISTOGRAM_BOOLEAN,
+        /// HISTOGRAM_FLAG, HISTOGRAM_COUNT, or HISTOGRAM_CATEGORICAL
         /// counts - array representing contents of the buckets in the histogram
-        /// ranges -  an array with calculated bucket sizes
+        /// ranges - array with calculated bucket sizes
         /// sum - sum of the bucket contents
-        /// static - true for histograms defined in TelemetryHistograms.h, false for ones defined with newHistogram
+        ///
+        /// @param aDataset DATASET_RELEASE_CHANNEL_OPTOUT or DATASET_RELEASE_CHANNEL_OPTIN.
+        /// @param aSubsession Whether to return the internally-duplicated subsession histograms
+        /// @param aClear Whether to clear out the subsession histograms after snapshotting (only works if aSubsession is true)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetHistogramSnapshotsAttribute(System.IntPtr jsContext);
-		
-		/// <summary>
-        /// Get a snapshot of the internally duplicated subsession histograms.
-        /// @param clear Whether to clear out the subsession histograms after snapshotting.
-        /// @return An object as histogramSnapshots, except this contains the internally duplicated histograms for subsession telemetry.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal SnapshotSubsessionHistograms([MarshalAs(UnmanagedType.U1)] bool clear, System.IntPtr jsContext);
+		Gecko.JsVal SnapshotHistograms(uint aDataset, [MarshalAs(UnmanagedType.U1)] bool aSubsession, [MarshalAs(UnmanagedType.U1)] bool aClear, System.IntPtr jsContext);
 		
 		/// <summary>
         /// The amount of time, in milliseconds, that the last session took
@@ -144,21 +141,70 @@ namespace Gecko
 		Gecko.JsVal GetChromeHangsAttribute(System.IntPtr jsContext);
 		
 		/// <summary>
-        /// An array of thread hang stats,
-        /// [<thread>, <thread>, ...]
-        /// <thread> represents a single thread,
-        /// {"name": "<name>",
-        /// "activity": <time>,
-        /// "hangs": [<hang>, <hang>, ...]}
-        /// <time> represents a histogram of time intervals in milliseconds,
-        /// with the same format as histogramSnapshots
-        /// <hang> represents a particular hang,
-        /// {"stack": <stack>, "nativeStack": <stack>, "histogram": <time>}
-        /// <stack> represents the hang's stack,
-        /// ["<frame_0>", "<frame_1>", ...]
+        /// Record the current thread's call stack on demand. Note that, the stack is
+        /// only captured at the first call. All subsequent calls result in incrementing
+        /// the capture counter without doing actual stack unwinding.
+        ///
+        /// @param aKey - A user defined key associated with the captured stack.
+        ///
+        /// NOTE: Unwinding call stacks is an expensive operation performance-wise.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetThreadHangStatsAttribute(System.IntPtr jsContext);
+		void CaptureStack([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase name);
+		
+		/// <summary>
+        /// Returns a snapshot of captured stacks. The data has the following structure:
+        ///
+        /// {
+        /// "memoryMap": [
+        /// ["wgdi32.pdb", "08A541B5942242BDB4AEABD8C87E4CFF2"],
+        /// ["igd10iumd32.pdb", "D36DEBF2E78149B5BE1856B772F1C3991"],
+        /// ... other entries in the format ["module name", "breakpad identifier"] ...
+        /// ],
+        /// "stacks": [
+        /// [
+        /// [
+        /// 0, // the module index or -1 for invalid module indices
+        /// 190649 // the offset of this program counter in its module or an absolute pc
+        /// ],
+        /// [1, 2540075],
+        /// ... other frames ...
+        /// ],
+        /// ... other stacks ...
+        /// ],
+        /// "captures": [["string-key", stack-index, count], ... ]
+        /// }
+        ///
+        /// @param clear Whether to clear out the subsession histograms after taking a snapshot.
+        ///
+        /// @return A snapshot of captured stacks.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal SnapshotCapturedStacks([MarshalAs(UnmanagedType.U1)] bool clear, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Asynchronously get an array of the modules loaded in the process.
+        ///
+        /// The data has the following structure:
+        ///
+        /// [
+        /// {
+        /// "name": <string>, // Name of the module file (e.g. xul.dll)
+        /// "version": <string>, // Version of the module
+        /// "debugName": <string>, // ID of the debug information file
+        /// "debugID": <string>, // Name of the debug information file
+        /// "certSubject": <string>, // Name of the organization that signed the binary (Optional, only defined when present)
+        /// },
+        /// ...
+        /// ]
+        ///
+        /// @return A promise that resolves to an array of modules or rejects with
+        ///             NS_ERROR_FAILURE on failure.
+        /// @throws NS_ERROR_NOT_IMPLEMENTED if the Gecko profiler is not enabled.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISupports GetLoadedModules(System.IntPtr jsContext);
 		
 		/// <summary>
         /// An object with two fields: memoryMap and stacks.
@@ -173,92 +219,43 @@ namespace Gecko
 		Gecko.JsVal GetLateWritesAttribute(System.IntPtr jsContext);
 		
 		/// <summary>
-        /// Returns an array whose values are the names of histograms defined
-        /// in Histograms.json.
+        /// Create and return a histogram registered in TelemetryHistograms.h.
         ///
-        /// @param dataset - DATASET_RELEASE_CHANNEL_OPTOUT or DATASET_RELEASE_CHANNEL_OPTIN
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RegisteredHistograms(uint dataset, ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref string[] histograms);
-		
-		/// <summary>
-        /// Create and return a histogram.  Parameters:
-        ///
-        /// @param name Unique histogram name
-        /// @param expiration Expiration version
-        /// @param type - HISTOGRAM_EXPONENTIAL, HISTOGRAM_LINEAR or HISTOGRAM_BOOLEAN
-        /// @param min - Minimal bucket size
-        /// @param max - Maximum bucket size
-        /// @param bucket_count - number of buckets in the histogram.
+        /// @param id - unique identifier from TelemetryHistograms.h
         /// The returned object has the following functions:
         /// add(int) - Adds an int value to the appropriate bucket
         /// snapshot() - Returns a snapshot of the histogram with the same data fields as in histogramSnapshots()
-        /// clear() - Zeros out the histogram's buckets and sum
-        /// dataset() - identifies what dataset this is in: DATASET_RELEASE_CHANNEL_OPTOUT or ...OPTIN
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal NewHistogram([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase name, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase expiration, uint histogram_type, uint min, uint max, uint bucket_count, System.IntPtr jsContext, int argc);
-		
-		/// <summary>
-        /// Create a histogram using the current state of an existing histogram.  The
-        /// existing histogram must be registered in TelemetryHistograms.h.
-        ///
-        /// @param name Unique histogram name
-        /// @param existing_name Existing histogram name
-        /// The returned object has the same functions as a histogram returned from newHistogram.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal HistogramFrom([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase name, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase existing_name, System.IntPtr jsContext);
-		
-		/// <summary>
-        /// Same as newHistogram above, but for histograms registered in TelemetryHistograms.h.
-        ///
-        /// @param id - unique identifier from TelemetryHistograms.h
+        /// clear() - Zeros out the histogram's buckets and sum. This is intended to be only used in tests.
+        /// dataset() - identifies what dataset this is in: DATASET_RELEASE_CHANNEL_OPTOUT or ...OPTIN.
+        /// This is intended to be only used in tests.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetHistogramById([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase id, System.IntPtr jsContext);
 		
 		/// <summary>
-        /// An object containing a snapshot from all of the currently registered keyed histograms.
-        /// { name1: {histogramData1}, name2:{histogramData2}...}
-        /// where the histogramData is as described in histogramSnapshots.
+        /// Serializes the keyed histograms from the given dataset to a JSON-style object.
+        /// The returned structure looks like:
+        /// { process1: {name1: {histogramData1}, name2:{histogramData2}...}}
+        ///
+        /// @param aDataset DATASET_RELEASE_CHANNEL_OPTOUT or DATASET_RELEASE_CHANNEL_OPTIN.
+        /// @param aSubsession Whether to return the internally-duplicated subsession keyed histograms
+        /// @param aClear Whether to clear out the subsession keyed histograms after snapshotting (only works if aSubsession is true)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetKeyedHistogramSnapshotsAttribute(System.IntPtr jsContext);
+		Gecko.JsVal SnapshotKeyedHistograms(uint aDataset, [MarshalAs(UnmanagedType.U1)] bool aSubsession, [MarshalAs(UnmanagedType.U1)] bool aClear, System.IntPtr jsContext);
 		
 		/// <summary>
-        /// Create and return a keyed histogram.  Parameters:
+        /// Create and return a histogram registered in TelemetryHistograms.h.
         ///
-        /// @param name Unique histogram name
-        /// @param expiration Expiration version
-        /// @param type - HISTOGRAM_EXPONENTIAL, HISTOGRAM_LINEAR, HISTOGRAM_BOOLEAN, HISTOGRAM_FLAG or HISTOGRAM_COUNT
-        /// @param min - Minimal bucket size
-        /// @param max - Maximum bucket size
-        /// @param bucket_count - number of buckets in the histogram.
+        /// @param id - unique identifier from TelemetryHistograms.h
         /// The returned object has the following functions:
         /// add(string key, [optional] int) - Add an int value to the histogram for that key. If no histogram for that key exists yet, it is created.
         /// snapshot([optional] string key) - If key is provided, returns a snapshot for the histogram with that key or null. If key is not provided, returns the snapshots of all the registered keys in the form {key1: snapshot1, key2: snapshot2, ...}.
         /// keys() - Returns an array with the string keys of the currently registered histograms
         /// clear() - Clears the registered histograms from this.
-        /// dataset() - identifies what dataset this is in: DATASET_RELEASE_CHANNEL_OPTOUT or ...OPTIN
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal NewKeyedHistogram([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase name, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase expiration, uint histogram_type, uint min, uint max, uint bucket_count, System.IntPtr jsContext, int argc);
-		
-		/// <summary>
-        /// Returns an array whose values are the names of histograms defined
-        /// in Histograms.json.
-        ///
-        /// @param dataset - DATASET_RELEASE_CHANNEL_OPTOUT or ...OPTIN
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RegisteredKeyedHistograms(uint dataset, ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref string[] histograms);
-		
-		/// <summary>
-        /// Same as newKeyedHistogram above, but for histograms registered in TelemetryHistograms.h.
-        ///
-        /// @param id - unique identifier from TelemetryHistograms.h
-        /// The returned object has the same functions as a histogram returned from newKeyedHistogram.
+        /// This is intended to be only used in tests.
+        /// dataset() - identifies what dataset this is in: DATASET_RELEASE_CHANNEL_OPTOUT or ...OPTIN.
+        /// This is intended to be only used in tests.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetKeyedHistogramById([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase id, System.IntPtr jsContext);
@@ -310,50 +307,45 @@ namespace Gecko
 		void SetCanRecordExtendedAttribute([MarshalAs(UnmanagedType.U1)] bool aCanRecordExtended);
 		
 		/// <summary>
+        /// A flag indicating whether Telemetry is recording release data, which is a
+        /// smallish subset of our usage data that we're prepared to handle from our
+        /// largish release population.
+        ///
+        /// This is true most of the time.
+        ///
+        /// This does not indicate whether Telemetry will send any data. That is
+        /// governed by user preference and other mechanisms.
+        ///
+        /// You may use this to determine if it's okay to record your data.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCanRecordReleaseDataAttribute();
+		
+		/// <summary>
+        /// A flag indicating whether Telemetry is recording prerelease data, which is
+        /// a largish amount of usage data that we're prepared to handle from our
+        /// smallish pre-release population.
+        ///
+        /// This is true on pre-release branches of Firefox.
+        ///
+        /// This does not indicate whether Telemetry will send any data. That is
+        /// governed by user preference and other mechanisms.
+        ///
+        /// You may use this to determine if it's okay to record your data.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCanRecordPrereleaseDataAttribute();
+		
+		/// <summary>
         /// A flag indicating whether Telemetry can submit official results (for base or extended
-        /// data). This is true on official builds with built in support for Mozilla Telemetry
-        /// reporting.
+        /// data). This is true on official, non-debug builds with built in support for Mozilla
+        /// Telemetry reporting.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsOfficialTelemetryAttribute();
-		
-		/// <summary>
-        /// Register a histogram for an addon.  Throws an error if the
-        /// histogram name has been registered previously.
-        ///
-        /// @param addon_id - Unique ID of the addon
-        /// @param name - Unique histogram name
-        /// @param histogram_type - HISTOGRAM_EXPONENTIAL, HISTOGRAM_LINEAR,
-        /// HISTOGRAM_BOOLEAN or HISTOGRAM_COUNT
-        /// @param min - Minimal bucket size
-        /// @param max - Maximum bucket size
-        /// @param bucket_count - number of buckets in the histogram
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RegisterAddonHistogram([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase addon_id, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase name, uint histogram_type, uint min, uint max, uint bucket_count, int argc);
-		
-		/// <summary>
-        /// Return a histogram previously registered via
-        /// registerAddonHistogram.  Throws an error if the id/name combo has
-        /// not been registered via registerAddonHistogram.
-        ///
-        /// @param addon_id - Unique ID of the addon
-        /// @param name - Registered histogram name
-        ///
-        /// The returned object has the same functions as a histogram returned
-        /// from newHistogram.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetAddonHistogram([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase addon_id, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase name, System.IntPtr jsContext);
-		
-		/// <summary>
-        /// Delete all histograms associated with the given addon id.
-        ///
-        /// @param addon_id - Unique ID of the addon
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnregisterAddonHistograms([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase addon_id);
 		
 		/// <summary>
         /// Enable/disable recording for this histogram at runtime.
@@ -365,18 +357,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetHistogramRecordingEnabled([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase id, [MarshalAs(UnmanagedType.U1)] bool enabled);
-		
-		/// <summary>
-        /// An object containing a snapshot from all of the currently
-        /// registered addon histograms.
-        /// { addon-id1 : data1, ... }
-        ///
-        /// where data is an object whose properties are the names of the
-        /// addon's histograms and whose corresponding values are as in
-        /// histogramSnapshots.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetAddonHistogramSnapshotsAttribute(System.IntPtr jsContext);
 		
 		/// <summary>
         /// Read data from the previous run. After the callback is called, the last
@@ -399,12 +379,229 @@ namespace Gecko
 		Gecko.JsVal GetFileIOReportsAttribute(System.IntPtr jsContext);
 		
 		/// <summary>
-        /// Return the number of seconds since process start using monotonic
+        /// Return the number of milliseconds since process start using monotonic
         /// timestamps (unaffected by system clock changes).
         /// @throws NS_ERROR_NOT_AVAILABLE if TimeStamp doesn't have the data.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		double MsSinceProcessStart();
+		
+		/// <summary>
+        /// Time since the system wide epoch. This is not a monotonic timer but
+        /// can be used across process boundaries.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double MsSystemNow();
+		
+		/// <summary>
+        /// Adds the value to the given scalar.
+        ///
+        /// @param aName The scalar name.
+        /// @param aValue The numeric value to add to the scalar. Only unsigned integers supported.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ScalarAdd([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, ref Gecko.JsVal aValue, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Sets the scalar to the given value.
+        ///
+        /// @param aName The scalar name.
+        /// @param aValue The value to set the scalar to. If the type of aValue doesn't match the
+        /// type of the scalar, the function will fail. For scalar string types, the this
+        /// is truncated to 50 characters.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ScalarSet([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, ref Gecko.JsVal aValue, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Sets the scalar to the maximum of the current and the passed value.
+        ///
+        /// @param aName The scalar name.
+        /// @param aValue The numeric value to set the scalar to. Only unsigned integers supported.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ScalarSetMaximum([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, ref Gecko.JsVal aValue, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Serializes the scalars from the given dataset to a JSON-style object and resets them.
+        /// The returned structure looks like:
+        /// {"process": {"category1.probe":1,"category1.other_probe":false,...}, ... }.
+        ///
+        /// @param aDataset DATASET_RELEASE_CHANNEL_OPTOUT or DATASET_RELEASE_CHANNEL_OPTIN.
+        /// @param [aClear=false] Whether to clear out the scalars after snapshotting.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal SnapshotScalars(uint aDataset, [MarshalAs(UnmanagedType.U1)] bool aClear, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// Adds the value to the given keyed scalar.
+        ///
+        /// @param aName The scalar name.
+        /// @param aKey The key name.
+        /// @param aValue The numeric value to add to the scalar. Only unsigned integers supported.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void KeyedScalarAdd([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, ref Gecko.JsVal aValue, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Sets the keyed scalar to the given value.
+        ///
+        /// @param aName The scalar name.
+        /// @param aKey The key name.
+        /// @param aValue The value to set the scalar to. If the type of aValue doesn't match the
+        /// type of the scalar, the function will fail.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void KeyedScalarSet([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, ref Gecko.JsVal aValue, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Sets the keyed scalar to the maximum of the current and the passed value.
+        ///
+        /// @param aName The scalar name.
+        /// @param aKey The key name.
+        /// @param aValue The numeric value to set the scalar to. Only unsigned integers supported.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void KeyedScalarSetMaximum([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aKey, ref Gecko.JsVal aValue, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Serializes the keyed scalars from the given dataset to a JSON-style object and
+        /// resets them.
+        /// The returned structure looks like:
+        /// { "process": { "category1.probe": { "key_1": 2, "key_2": 1, ... }, ... }, ... }
+        ///
+        /// @param aDataset DATASET_RELEASE_CHANNEL_OPTOUT or DATASET_RELEASE_CHANNEL_OPTIN.
+        /// @param [aClear=false] Whether to clear out the scalars after snapshotting.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal SnapshotKeyedScalars(uint aDataset, [MarshalAs(UnmanagedType.U1)] bool aClear, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// Resets all the stored scalars. This is intended to be only used in tests.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ClearScalars();
+		
+		/// <summary>
+        /// Immediately sends any Telemetry batched on this process to the parent
+        /// process. This is intended only to be used on process shutdown.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void FlushBatchedChildTelemetry();
+		
+		/// <summary>
+        /// Record an event in Telemetry.
+        ///
+        /// @param aCategory The category name.
+        /// @param aMethod The method name.
+        /// @param aMethod The object name.
+        /// @param aValue An optional string value to record.
+        /// @param aExtra An optional object of the form (string -> string).
+        /// It should only contain registered extra keys.
+        ///
+        /// @throws NS_ERROR_INVALID_ARG When trying to record an unknown event.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RecordEvent([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCategory, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMethod, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aObject, ref Gecko.JsVal aValue, ref Gecko.JsVal extra, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// Enable recording of events in a category.
+        /// Events default to recording disabled. This allows to toggle recording for all events
+        /// in the specified category.
+        ///
+        /// @param aCategory The category name.
+        /// @param aEnabled Whether recording is enabled for events in that category.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetEventRecordingEnabled([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCategory, [MarshalAs(UnmanagedType.U1)] bool aEnabled);
+		
+		/// <summary>
+        /// Serializes the recorded events to a JSON-appropriate array and optionally resets them.
+        /// The returned structure looks like this:
+        /// [
+        /// // [timestamp, category, method, object, stringValue, extraValues]
+        /// [43245, "category1", "method1", "object1", "string value", null],
+        /// [43258, "category1", "method2", "object1", null, {"key1": "string value"}],
+        /// ...
+        /// ]
+        ///
+        /// @param aDataset DATASET_RELEASE_CHANNEL_OPTOUT or DATASET_RELEASE_CHANNEL_OPTIN.
+        /// @param [aClear=false] Whether to clear out the scalars after snapshotting.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal SnapshotEvents(uint aDataset, [MarshalAs(UnmanagedType.U1)] bool aClear, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// Register new events to record them from addons. This allows registering multiple
+        /// events for a category. They will be valid only for the current Firefox session.
+        /// Note that events shipping in Firefox should be registered in Events.yaml.
+        ///
+        /// @param aCategory The unique category the events are registered in.
+        /// @param aEventData An object that contains registration data for 1-N events of the form:
+        /// {
+        /// "categoryName": {
+        /// "methods": ["test1"],
+        /// "objects": ["object1"],
+        /// "record_on_release": false,
+        /// "extra_keys": ["key1", "key2"], // optional
+        /// "expired": false // optional, defaults to false.
+        /// },
+        /// ...
+        /// }
+        /// @param aEventData.<name>.methods List of methods for this event entry.
+        /// @param aEventData.<name>.objects List of objects for this event entry.
+        /// @param aEventData.<name>.extra_keys Optional, list of allowed extra keys for this event entry.
+        /// @param aEventData.<name>.record_on_release Optional, whether to record this data on release.
+        /// Defaults to false.
+        /// @param aEventData.<name>.expired Optional, whether this event entry is expired. This allows
+        /// recording it without error, but it will be discarded. Defaults to false.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RegisterEvents([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCategory, ref Gecko.JsVal aEventData, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Parent process only. Register new scalars to record them from addons. This
+        /// allows registering multiple scalars for a category. They will be valid only for
+        /// the current Firefox session.
+        /// Note that scalars shipping in Firefox should be registered in Scalars.yaml.
+        ///
+        /// @param aCategoryName The unique category the scalars are registered in.
+        /// @param aScalarData An object that contains registration data for multiple scalars in the form:
+        /// {
+        /// "sample_scalar": {
+        /// "kind": Ci.nsITelemetry.SCALAR_TYPE_COUNT,
+        /// "keyed": true, //optional, defaults to false
+        /// "record_on_release: true, // optional, defaults to false
+        /// "expired": false // optional, defaults to false.
+        /// },
+        /// ...
+        /// }
+        /// @param aScalarData.<name>.kind One of the scalar types defined in this file (SCALAR_TYPE_*)
+        /// @param aScalarData.<name>.keyed Optional, whether this is a keyed scalar or not. Defaults to false.
+        /// @param aScalarData.<name>.record_on_release Optional, whether to record this data on release.
+        /// Defaults to false.
+        /// @param aScalarData.<name>.expired Optional, whether this scalar entry is expired. This allows
+        /// recording it without error, but it will be discarded. Defaults to false.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RegisterScalars([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCategoryName, ref Gecko.JsVal aScalarData, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Parent process only. Register dynamic builtin scalars. The parameters
+        /// have the same meaning as the usual |registerScalars| function.
+        ///
+        /// This function is only meant to be used to support the "artifact build"/
+        /// "built faster" developers by allowing to add new scalars without rebuilding
+        /// the C++ components including the headers files.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RegisterBuiltinScalars([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCategoryName, ref Gecko.JsVal aScalarData, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Resets all the stored events. This is intended to be only used in tests.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ClearEvents();
 	}
 	
 	/// <summary>nsITelemetryConsts </summary>
@@ -418,6 +615,7 @@ namespace Gecko
         // HISTOGRAM_BOOLEAN - For storing 0/1 values
         // HISTOGRAM_FLAG - For storing a single value; its count is always == 1.
         // HISTOGRAM_COUNT - For storing counter values without bucketing.
+        // HISTOGRAM_CATEGORICAL - For storing enumerated values by label.
         // </summary>
 		public const ulong HISTOGRAM_EXPONENTIAL = 0;
 		
@@ -432,6 +630,23 @@ namespace Gecko
 		
 		// 
 		public const ulong HISTOGRAM_COUNT = 4;
+		
+		// 
+		public const ulong HISTOGRAM_CATEGORICAL = 5;
+		
+		// <summary>
+        // Scalar types:
+        // SCALAR_TYPE_COUNT - for storing a numeric value
+        // SCALAR_TYPE_STRING - for storing a string value
+        // SCALAR_TYPE_BOOLEAN - for storing a boolean value
+        // </summary>
+		public const ulong SCALAR_TYPE_COUNT = 0;
+		
+		// 
+		public const ulong SCALAR_TYPE_STRING = 1;
+		
+		// 
+		public const ulong SCALAR_TYPE_BOOLEAN = 2;
 		
 		// <summary>
         // Dataset types:

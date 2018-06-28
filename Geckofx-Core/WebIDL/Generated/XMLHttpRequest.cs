@@ -209,16 +209,11 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("send", data);
         }
         
-        public void Send(nsIDOMFormData data)
+        public void Send(/* nsIDOMFormData */ nsISupports data)
         {
             this.CallVoidMethod("send", data);
         }
-        
-        public void Send(nsISupports data)
-        {
-            this.CallVoidMethod("send", data);
-        }
-        
+
         public void Abort()
         {
             this.CallVoidMethod("abort");

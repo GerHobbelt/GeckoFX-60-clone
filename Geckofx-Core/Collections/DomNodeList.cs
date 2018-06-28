@@ -62,10 +62,10 @@ namespace Gecko.Collections
         where TWrapper : GeckoNode
         where TGeckoNode : class, nsIDOMNode
     {
-        private nsIDOMHTMLCollection _collection;
+        private /*nsIDOMHTMLCollection*/nsISupports _collection;
         private Func<TGeckoNode, TWrapper> _translator;
 
-        public DomHtmlCollection(nsIDOMHTMLCollection collection, Func<TGeckoNode, TWrapper> translator)
+        public DomHtmlCollection(/*nsIDOMHTMLCollection*/nsISupports collection, Func<TGeckoNode, TWrapper> translator)
         {
             _collection = collection;
             _translator = translator;

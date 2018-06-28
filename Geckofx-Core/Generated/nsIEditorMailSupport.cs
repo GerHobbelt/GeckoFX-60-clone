@@ -111,6 +111,6 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray GetEmbeddedObjects();
+		nsIArray GetEmbeddedObjects();
 	}
 }

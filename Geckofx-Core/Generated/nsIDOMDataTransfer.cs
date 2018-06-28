@@ -146,31 +146,6 @@ namespace Gecko
 		nsIDOMFileList GetFilesAttribute();
 		
 		/// <summary>
-        /// Holds a list of the format types of the data that is stored for the first
-        /// item, in the same order the data was added. An empty list will be
-        /// returned if no data was added.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports GetTypesAttribute();
-		
-		/// <summary>
-        /// Remove the data associated with a given format. If format is empty or not
-        /// specified, the data associated with all formats is removed. If data for
-        /// the specified format does not exist, or the data transfer contains no
-        /// data, this method will have no effect.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ClearData([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase format);
-		
-		/// <summary>
-        /// Retrieves the data for a given format, or an empty string if data for
-        /// that format does not exist or the data transfer contains no data.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetData([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase format, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
-		
-		/// <summary>
         /// Set the image to be used for dragging if a custom one is desired. Most of
         /// the time, this would not be set, as a default image is created from the
         /// node that was dragged.
@@ -238,32 +213,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetMozCursorAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMozCursor);
-		
-		/// <summary>
-        /// Holds a list of the format types of the data that is stored for an item
-        /// at the specified index. If the index is not in the range from 0 to
-        /// itemCount - 1, an empty string list is returned.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports MozTypesAt(uint index);
-		
-		/// <summary>
-        /// Remove the data associated with the given format for an item at the
-        /// specified index. The index is in the range from zero to itemCount - 1.
-        ///
-        /// If the last format for the item is removed, the entire item is removed,
-        /// reducing the itemCount by one.
-        ///
-        /// If format is empty, then the data associated with all formats is removed.
-        /// If the format is not found, then this method has no effect.
-        ///
-        /// @param format the format to remove
-        /// @throws NS_ERROR_DOM_INDEX_SIZE_ERR if index is greater or equal than itemCount
-        /// @throws NO_MODIFICATION_ALLOWED_ERR if the item cannot be modified
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MozClearDataAt([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase format, uint index);
 		
 		/// <summary>
         /// Will be true when the user has cancelled the drag (typically by pressing

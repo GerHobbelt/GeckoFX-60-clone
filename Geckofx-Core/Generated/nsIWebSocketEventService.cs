@@ -182,5 +182,12 @@ namespace Gecko
 		/// <param name='aListener'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RemoveListener(ulong aInnerWindowID, [MarshalAs(UnmanagedType.Interface)] nsIWebSocketEventListener aListener);
+		
+		/// <summary>Member HasListenerFor </summary>
+		/// <param name='aInnerWindowID'> </param>
+		/// <returns>A System.Boolean</returns>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool HasListenerFor(ulong aInnerWindowID);
 	}
 }

@@ -30,7 +30,7 @@ namespace Gecko
     ///nsTypeAheadFind </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f4411c5b-761b-498c-8050-dcfc8311f69e")]
+	[Guid("ae501e28-c57f-4692-ac74-410e1bed98b7")]
 	public interface nsITypeAheadFind
 	{
 		
@@ -78,10 +78,16 @@ namespace Gecko
 		void CollapseSelection();
 		
 		/// <summary>
-        ///Check if a range is visible </summary>
+        ///Check if a range is visible using heuristics </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsRangeVisible([MarshalAs(UnmanagedType.Interface)] nsIDOMRange aRange, [MarshalAs(UnmanagedType.U1)] bool aMustBeInViewPort);
+		
+		/// <summary>
+        ///Check if a range is actually rendered (out of viewport always false) </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsRangeRendered([MarshalAs(UnmanagedType.Interface)] nsIDOMRange aRange);
 		
 		/// <summary>
         ///Attributes </summary>
@@ -104,6 +110,19 @@ namespace Gecko
 		/// <summary>
         /// Searches are case sensitive
         /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetEntireWordAttribute();
+		
+		/// <summary>
+        /// Searches are case sensitive
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetEntireWordAttribute([MarshalAs(UnmanagedType.U1)] bool aEntireWord);
+		
+		/// <summary>
+        /// Search for whole words only
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMElement GetFoundLinkAttribute();
@@ -118,9 +137,8 @@ namespace Gecko
 		/// <summary>
         /// Most recent elem found, if editable
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetCurrentWindowAttribute();
+		mozIDOMWindow GetCurrentWindowAttribute();
 	}
 	
 	/// <summary>nsITypeAheadFindConsts </summary>

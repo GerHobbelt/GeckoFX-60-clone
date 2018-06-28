@@ -90,7 +90,7 @@ namespace Gecko
 		
 		/// <summary>
         /// Test whether a URI would be affected by this permission.
-        /// This performs a matches with a NO_APP_ID identifier.
+        /// NOTE: This performs matches with default origin attribute values.
         ///
         /// @param uri        the uri to test
         /// @param exactHost  If true, only the specific host will be matched,

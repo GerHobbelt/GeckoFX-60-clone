@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("da0c7824-147c-11e5-917c-60a44c717042")]
+	[Guid("05a9f33f-dcfd-4e7b-b825-138ba784c1f5")]
 	public interface nsIAccessibleRole
 	{
 	}
@@ -133,7 +133,7 @@ namespace Gecko
 		
 		// <summary>
         // Represents a document window. A document window is always contained within
-        // an application window. It is used for role="document".
+        // an application window. For role="document", see NON_NATIVE_DOCUMENT.
         // </summary>
 		public const ulong ROLE_DOCUMENT = 15;
 		
@@ -328,9 +328,9 @@ namespace Gecko
 		public const ulong ROLE_RADIOBUTTON = 45;
 		
 		// <summary>
-        // Represents a combo box; an edit control with an associated list box that
-        // provides a set of predefined choices. It is used for html:select,
-        // xul:menulist, role="combobox".
+        // Represents a combo box; a popup button with an associated list box that
+        // provides a set of predefined choices. It is used for html:select with a
+        // size of 1 and xul:menulist. See also ROLE_EDITCOMBOBOX.
         // </summary>
 		public const ulong ROLE_COMBOBOX = 46;
 		
@@ -367,7 +367,7 @@ namespace Gecko
 		// <summary>
         // Represents a spin box, which is a control that allows the user to increment
         // or decrement the value displayed in a separate "buddy" control associated
-        // with the spin box. It is used for xul:spinbuttons.
+        // with the spin box. It is used for input[type=number] spin buttons.
         // </summary>
 		public const ulong ROLE_SPINBUTTON = 52;
 		
@@ -666,13 +666,12 @@ namespace Gecko
 		public const ulong ROLE_CAPTION = 103;
 		
 		// <summary>
-        // A visual frame or container which contains a view of document content.
-        // Document frames may occur within another Document instance, in which case
-        // the second document may be said to be embedded in the containing instance.
-        // HTML frames are often ROLE_DOCUMENT_FRAME. Either this object, or a
-        // singleton descendant, should implement the Document interface.
+        // An element containing content that assistive technology users may want to
+        // browse in a reading mode, rather than a focus/interactive/application mode.
+        // This role is used for role="document". For the container which holds the
+        // content of a web page, see ROLE_DOCUMENT.
         // </summary>
-		public const ulong ROLE_DOCUMENT_FRAME = 104;
+		public const ulong ROLE_NON_NATIVE_DOCUMENT = 104;
 		
 		// <summary>
         // Heading.
@@ -994,5 +993,55 @@ namespace Gecko
         // TEXT_CONTAINER role.
         // </summary>
 		public const ulong ROLE_TEXT = 166;
+		
+		// <summary>
+        // A text container exposing brief amount of information. See related
+        // DETAILS role.
+        // </summary>
+		public const ulong ROLE_DETAILS = 167;
+		
+		// <summary>
+        // A text container exposing brief amount of information. See related
+        // SUMMARY role.
+        // </summary>
+		public const ulong ROLE_SUMMARY = 168;
+		
+		// <summary>
+        // An ARIA landmark. See related NAVIGATION role.
+        // </summary>
+		public const ulong ROLE_LANDMARK = 169;
+		
+		// <summary>
+        // A specific type of ARIA landmark. The ability to distinguish navigation
+        // landmarks from other types of landmarks is needed because macOS has a
+        // specific AXSubrole and AXRoleDescription for navigation landmarks.
+        // </summary>
+		public const ulong ROLE_NAVIGATION = 170;
+		
+		// <summary>
+        // An object that contains the text of a footnote.
+        // </summary>
+		public const ulong ROLE_FOOTNOTE = 171;
+		
+		// <summary>
+        // A complete or self-contained composition in a document, page, application,
+        // or site and that is, in principle, independently distributable or reusable,
+        // e.g. in syndication.
+        // </summary>
+		public const ulong ROLE_ARTICLE = 172;
+		
+		// <summary>
+        // A perceivable section containing content that is relevant to a specific,
+        // author-specified purpose and sufficiently important that users will likely
+        // want to be able to navigate to the section easily and to have it listed in
+        // a summary of the page.
+        // </summary>
+		public const ulong ROLE_REGION = 173;
+		
+		// <summary>
+        // Represents a control with a text input and a popup with a set of predefined
+        // choices. It is used for ARIA's combobox role. See also ROLE_COMBOBOX.
+        // </summary>
+		public const ulong ROLE_EDITCOMBOBOX = 174;
 	}
 }

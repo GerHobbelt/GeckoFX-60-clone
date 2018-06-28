@@ -56,48 +56,6 @@ namespace Gecko
 		new void Finalize();
 		
 		/// <summary>
-        /// Bind the given value at the given numeric index.
-        ///
-        /// @param aParamIndex
-        /// 0-based index, 0 corresponding to the first numbered argument or
-        /// "?1".
-        /// @param aValue
-        /// Argument value.
-        /// @param aValueSize
-        /// Length of aValue in bytes.
-        /// @{
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindUTF8StringParameter(uint aParamIndex, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindStringParameter(uint aParamIndex, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindDoubleParameter(uint aParamIndex, double aValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindInt32Parameter(uint aParamIndex, int aValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindInt64Parameter(uint aParamIndex, long aValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindNullParameter(uint aParamIndex);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindBlobParameter(uint aParamIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindStringAsBlobParameter(uint aParamIndex, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindUTF8StringAsBlobParameter(uint aParamIndex, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aValue);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BindAdoptedBlobParameter(uint aParamIndex, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aValue, uint aValueSize);
-		
-		/// <summary>
         /// Binds the array of parameters to the statement.  When executeAsync is
         /// called, all the parameters in aParameters are bound and then executed.
         ///
@@ -214,17 +172,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetColumnIndex([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
-		
-		/// <summary>
-        /// Obtains the declared column type of a prepared statement.
-        ///
-        /// @param aParamIndex
-        /// The zero-based index of the column who's declared type we are
-        /// interested in.
-        /// @return the declared index type.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetColumnDecltype(uint aParamIndex, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
 		
 		/// <summary>
         /// Reset parameters/statement execution

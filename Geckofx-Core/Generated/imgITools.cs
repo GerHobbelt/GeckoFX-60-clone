@@ -39,39 +39,53 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// decodeImage
-        /// Caller provides an input stream and mimetype. We read from the stream
-        /// and decompress it (according to the specified mime type) and return
-        /// the resulting imgIContainer.
+        /// decodeImageFromBuffer
+        /// Caller provides an buffer, a buffer size and a mimetype. We read from
+        /// the stream and decompress it (according to the specified mime type) and
+        /// return the resulting imgIContainer.
         ///
-        /// @param aStream
-        /// An input stream for an encoded image file.
+        /// @param aBuffer
+        /// Data in memory.
+        /// @param aSize
+        /// Buffer size.
         /// @param aMimeType
         /// Type of image in the stream.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		imgIContainer DecodeImage([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType);
+		imgIContainer DecodeImageFromBuffer([MarshalAs(UnmanagedType.LPStr)] string aBuffer, uint aSize, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType);
 		
 		/// <summary>
-        /// decodeImageData
-        /// Caller provides an input stream and mimetype. We read from the stream
-        /// and decompress it (according to the specified mime type) and return
-        /// the resulting imgIContainer.
+        /// decodeImageFromArrayBuffer
+        /// Caller provides an ArrayBuffer and a mimetype. We read from
+        /// the stream and decompress it (according to the specified mime type) and
+        /// return the resulting imgIContainer.
         ///
-        /// This method is deprecated and will be removed at some time in the future;
-        /// new code should use |decodeImage|.
+        /// @param aArrayBuffer
+        /// An ArrayBuffer.
+        /// @param aMimeType
+        /// Type of image in the stream.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		imgIContainer DecodeImageFromArrayBuffer(ref Gecko.JsVal aArrayBuffer, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// decodeImageAsync
+        /// See decodeImage. The main difference between this method and decodeImage
+        /// is that here the operation is done async on a thread from the decode
+        /// pool. When the operation is completed, the callback is executed with the
+        /// result.
         ///
         /// @param aStream
         /// An input stream for an encoded image file.
         /// @param aMimeType
         /// Type of image in the stream.
-        /// @param aContainer
-        /// An imgIContainer holding the decoded image will be returned via
-        /// this parameter. It is an error to provide any initial value but
-        /// |null|.
+        /// @param aCallback
+        /// The callback is executed when the imgContainer is fully created.
+        /// @param aEventTarget
+        /// This eventTarget is used to execute aCallback
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DecodeImageData([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType, ref imgIContainer aContainer);
+		void DecodeImageAsync([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMimeType, imgIContainerCallback aCallback, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aEventTarget);
 		
 		/// <summary>
         /// encodeImage
@@ -165,5 +179,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		imgINotificationObserver CreateScriptedObserver(imgIScriptedNotificationObserver aObserver);
+	}
+	
+	/// <summary>
+    /// This is a companion interface for nsIAsyncInputStream::asyncWait.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("f195772c-a4c0-47ae-80ca-211e001c67be")]
+	public interface imgIContainerCallback
+	{
+		
+		/// <summary>
+        ///If the operation fails, aStatus will contain the error value </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnImageReady(imgIContainer aImage, int aStatus);
 	}
 }

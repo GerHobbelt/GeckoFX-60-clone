@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoMenuElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLMenuElement DOMHTMLElement;
+        private /* nsIDOMHTMLMenuElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoMenuElement(nsIDOMHTMLMenuElement element) : base(element)
+        internal GeckoMenuElement(/* nsIDOMHTMLMenuElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoMenuElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoMenuElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLMenuElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLMenuElement */ nsISupports;
         }
 
         public bool Compact

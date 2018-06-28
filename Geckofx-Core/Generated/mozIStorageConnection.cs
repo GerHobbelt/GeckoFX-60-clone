@@ -54,13 +54,34 @@ namespace Gecko
         /// - value: |null|
         ///
         /// @throws NS_ERROR_NOT_SAME_THREAD
-        /// If is called on a thread other than the one that opened it.
+        /// If called on a thread other than the one that opened it.  The
+        /// callback will not be dispatched.
+        /// @throws NS_ERROR_NOT_INITIALIZED
+        /// If called on a connection that has already been closed or was
+        /// never properly opened.  The callback will still be dispatched
+        /// to the main thread despite the returned error.
+        /// @note If this call should fail, the callback won't be invoked.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void AsyncClose(mozIStorageCompletionCallback aCallback);
 		
 		/// <summary>
+        /// Forcibly closes a database connection synchronously.
+        /// This should only be used when it's required to close and replace the
+        /// database synchronously to return control to the consumer, for example in
+        /// case of a detected corruption on database opening.
+        /// Since this spins the events loop, it should be used only in very particular
+        /// and rare situations, or it may cause unexpected consequences (crashes).
+        ///
+        /// @throws NS_ERROR_NOT_SAME_THREAD
+        /// If called on a thread other than the one that opened it.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SpinningSynchronousClose();
+		
+		/// <summary>
         /// Clone a database and make the clone read only if needed.
+        /// SQL Functions and attached on-disk databases are applied to the new clone.
         ///
         /// @param aReadOnly
         /// If true, the returned database should be put into read-only mode.
@@ -79,6 +100,8 @@ namespace Gecko
         ///
         /// @note If your connection is already read-only, you will get a read-only
         /// clone.
+        /// @note The resulting connection will NOT implement mozIStorageConnection,
+        /// it will only implement mozIStorageAsyncConnection.
         /// @note Due to a bug in SQLite, if you use the shared cache
         /// (see mozIStorageService), you end up with the same privileges as the
         /// first connection opened regardless of what is specified in aReadOnly.
@@ -92,6 +115,11 @@ namespace Gecko
         /// - journal_size_limit
         /// - synchronous
         /// - wal_autocheckpoint
+        /// All SQL functions are copied over to read-only and writeable clones.
+        /// Additionally, all temporary tables, triggers, and views, as well as
+        /// any indexes on temporary tables, are copied over to writeable clones.
+        /// For temporary tables, only the schemas are copied, not their
+        /// contents.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void AsyncClone([MarshalAs(UnmanagedType.U1)] bool aReadOnly, mozIStorageCompletionCallback aCallback);
@@ -103,6 +131,17 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIFile GetDatabaseFileAttribute();
+		
+		/// <summary>
+        /// Causes any pending database operation to abort and return at the first
+        /// opportunity.
+        /// This can only be used on read-only connections that don't implement
+        /// the mozIStorageConnection interface.
+        /// @note operations that are nearly complete may still be able to complete.
+        /// @throws if used on an unsupported connection type, or a closed connection.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void Interrupt();
 		
 		/// <summary>
         /// Create an asynchronous statement for the given SQL. An
@@ -241,6 +280,7 @@ namespace Gecko
 		
 		/// <summary>
         /// Clones a database connection and makes the clone read only if needed.
+        /// SQL Functions and attached on-disk databases are applied to the new clone.
         ///
         /// @param aReadOnly
         /// If true, the returned database should be put into read-only mode.
@@ -264,6 +304,11 @@ namespace Gecko
         /// - journal_size_limit
         /// - synchronous
         /// - wal_autocheckpoint
+        /// All SQL functions are copied over to read-only and writeable clones.
+        /// Additionally, all temporary tables, triggers, and views, as well as
+        /// any indexes on temporary tables, are copied over to writeable clones.
+        /// For temporary tables, only the schemas are copied, not their
+        /// contents.
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -449,6 +494,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EnableModule([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aModuleName);
+		
+		/// <summary>
+        /// Get quota objects.
+        ///
+        /// @param[out] aDatabase/* QuotaObject */ nsISupports
+        /// The /* QuotaObject */ nsISupports associated with the database file.
+        /// @param[out] aJournal/* QuotaObject */ nsISupports
+        /// The /* QuotaObject */ nsISupports associated with the journal file.
+        ///
+        /// @throws NS_ERROR_NOT_INITIALIZED.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetQuotaObject(ref /* QuotaObject */ nsISupports aDatabaseQuotaObject, ref /* QuotaObject */ nsISupports aJournalQuotaObject);
 	}
 	
 	/// <summary>mozIStorageConnectionConsts </summary>

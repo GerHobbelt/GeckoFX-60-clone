@@ -91,6 +91,15 @@ namespace Gecko
 		bool Exists([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aIdExtension);
 		
 		/// <summary>
+        /// Synchronously check on existance of alternative data and size of the
+        /// content. When the index data are not up to date or index is still building,
+        /// NS_ERROR_NOT_AVAILABLE is thrown. The same error may throw any storage
+        /// implementation that cannot determine entry state without blocking the caller.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetCacheIndexEntryAttrs([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aIdExtension, [MarshalAs(UnmanagedType.U1)] ref bool aHasAltData, ref uint aSizeInKB);
+		
+		/// <summary>
         /// Asynchronously removes an entry belonging to the URI from the cache.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -152,5 +161,11 @@ namespace Gecko
         // Don't automatically update any 'last used' metadata of the entry.
         // </summary>
 		public const long OPEN_SECRETLY = 1<<5;
+		
+		// <summary>
+        // Entry is being opened as part of a service worker interception.  Do not
+        // allow the cache to be disabled in this case.
+        // </summary>
+		public const long OPEN_INTERCEPTED = 1<<6;
 	}
 }

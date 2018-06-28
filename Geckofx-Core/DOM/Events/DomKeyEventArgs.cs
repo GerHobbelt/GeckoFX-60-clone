@@ -46,15 +46,15 @@ namespace Gecko
     public class DomKeyEventArgs
         : DomUIEventArgs
     {
-        private nsIDOMKeyEvent _Event;
+        private /* nsIDOMKeyEvent */nsISupports _Event;
 
-        protected DomKeyEventArgs(nsIDOMKeyEvent ev)
+        protected DomKeyEventArgs(/* nsIDOMKeyEvent */nsISupports ev)
             : base(ev)
         {
             _Event = ev;
         }
 
-        public static DomKeyEventArgs Create(nsIDOMKeyEvent ev)
+        public static DomKeyEventArgs Create(/* nsIDOMKeyEvent */nsISupports ev)
         {
             return new DomKeyEventArgs(ev);
         }

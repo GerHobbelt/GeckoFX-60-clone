@@ -54,5 +54,15 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RetargetDeliveryTo([MarshalAs(UnmanagedType.Interface)] nsIEventTarget aNewTarget);
+		
+		/// <summary>
+        /// Returns the event target where OnDataAvailable events will be dispatched.
+        ///
+        /// This is only valid after OnStartRequest has been called. Any time before
+        /// that point, the value may be changed by `retargetDeliveryTo` calls.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIEventTarget GetDeliveryTargetAttribute();
 	}
 }

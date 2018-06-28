@@ -8,14 +8,14 @@ namespace Gecko.DOM.Svg
 {
     public class DomSvgLength
     {
-        private ComPtr<nsIDOMSVGLength> _domSvgLength;
+        private ComPtr</* nsIDOMSVGLength */ nsISupports> _domSvgLength;
 
-        private DomSvgLength(nsIDOMSVGLength domSvgLength)
+        private DomSvgLength(/* nsIDOMSVGLength */ nsISupports domSvgLength)
         {
-            _domSvgLength = new ComPtr<nsIDOMSVGLength>(domSvgLength);
+            _domSvgLength = new ComPtr</* nsIDOMSVGLength */ nsISupports>(domSvgLength);
         }
 
-        public static DomSvgLength Create(nsIDOMSVGLength domSvgLength)
+        public static DomSvgLength Create(/* nsIDOMSVGLength */ nsISupports domSvgLength)
         {
             return new DomSvgLength(domSvgLength);
         }
@@ -62,6 +62,7 @@ namespace Gecko.DOM.Svg
 
     public enum SvgLengthType
     {
+#if PORTff60
         Unknown = (ushort) nsIDOMSVGLengthConsts.SVG_LENGTHTYPE_UNKNOWN,
         Number = (ushort) nsIDOMSVGLengthConsts.SVG_LENGTHTYPE_NUMBER,
         Percentage = (ushort) nsIDOMSVGLengthConsts.SVG_LENGTHTYPE_PERCENTAGE,
@@ -73,5 +74,6 @@ namespace Gecko.DOM.Svg
         In = (ushort) nsIDOMSVGLengthConsts.SVG_LENGTHTYPE_IN,
         Pt = (ushort) nsIDOMSVGLengthConsts.SVG_LENGTHTYPE_PT,
         Pc = (ushort) nsIDOMSVGLengthConsts.SVG_LENGTHTYPE_PC,
+#endif
     }
 }

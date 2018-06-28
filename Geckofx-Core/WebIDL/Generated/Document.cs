@@ -211,11 +211,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("createAttributeNS", @namespace, name);
         }
         
-        public nsIDOMLocation Location
+        public /* nsIDOMLocation */ nsISupports Location
         {
             get
             {
-                return this.GetProperty<nsIDOMLocation>("location");
+                return this.GetProperty</* nsIDOMLocation */ nsISupports>("location");
             }
         }
         

@@ -49,7 +49,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("332d5f9c-991c-45e3-922f-99e6fe0deb60")]
+	[Guid("4e28263d-1e03-46f4-aa5c-9512f91957f9")]
 	public interface nsIHttpChannelInternal
 	{
 		
@@ -296,16 +296,56 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAllowAltSvcAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowAltSvc);
 		
+		/// <summary>
+        /// If true, do not use newer protocol features that might have interop problems
+        /// on the Internet. Intended only for use with critical infra like the updater.
+        /// default is false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		long GetLastModifiedTimeAttribute();
+		bool GetBeConservativeAttribute();
 		
 		/// <summary>
-        /// Force a channel that has not been AsyncOpen'ed to skip any check for possible
-        /// interception and proceed immediately to open a previously-synthesized cache
-        /// entry using the provided ID.
+        /// If true, do not use newer protocol features that might have interop problems
+        /// on the Internet. Intended only for use with critical infra like the updater.
+        /// default is false.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ForceIntercepted(ulong aInterceptionID);
+		void SetBeConservativeAttribute([MarshalAs(UnmanagedType.U1)] bool aBeConservative);
+		
+		/// <summary>
+        /// True if channel is used by the internal trusted recursive resolver
+        /// This flag places data for the request in a cache segment specific to TRR
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetTrrAttribute();
+		
+		/// <summary>
+        /// True if channel is used by the internal trusted recursive resolver
+        /// This flag places data for the request in a cache segment specific to TRR
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTrrAttribute([MarshalAs(UnmanagedType.U1)] bool aTrr);
+		
+		/// <summary>
+        /// An opaque flags for non-standard behavior of the TLS system.
+        /// It is unlikely this will need to be set outside of telemetry studies
+        /// relating to the TLS implementation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetTlsFlagsAttribute();
+		
+		/// <summary>
+        /// An opaque flags for non-standard behavior of the TLS system.
+        /// It is unlikely this will need to be set outside of telemetry studies
+        /// relating to the TLS implementation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTlsFlagsAttribute(uint aTlsFlags);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetLastModifiedTimeAttribute();
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -357,11 +397,35 @@ namespace Gecko
 		void SetRedirectModeAttribute(uint aRedirectMode);
 		
 		/// <summary>
+        /// Set to indicate Request.cache mode, which simulates the fetch API
+        /// semantics, and is also used for exposing this value to the Web page
+        /// during service worker interception.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetFetchCacheModeAttribute();
+		
+		/// <summary>
+        /// Set to indicate Request.cache mode, which simulates the fetch API
+        /// semantics, and is also used for exposing this value to the Web page
+        /// during service worker interception.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetFetchCacheModeAttribute(uint aFetchCacheMode);
+		
+		/// <summary>
         /// The URI of the top-level window that's associated with this channel.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIURI GetTopWindowURIAttribute();
+		
+		/// <summary>
+        /// Set top-level window URI to this channel only when the topWindowURI
+        /// is null and there is no window associated to this channel.
+        /// Note that the current usage of this method is only for xpcshell test.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTopWindowURIIfUnknown([MarshalAs(UnmanagedType.Interface)] nsIURI topWindowURI);
 		
 		/// <summary>
         /// The network interface id that's associated with this channel.
@@ -389,6 +453,62 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetCorsPreflightParameters(System.IntPtr unsafeHeaders);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAltDataForChild([MarshalAs(UnmanagedType.U1)] bool aIsForChild);
+		
+		/// <summary>
+        /// When set to true, the channel will not pop any authentication prompts up
+        /// to the user.  When provided or cached credentials lead to an
+        /// authentication failure, that failure will be propagated to the channel
+        /// listener.  Must be called before opening the channel, otherwise throws.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetBlockAuthPromptAttribute();
+		
+		/// <summary>
+        /// When set to true, the channel will not pop any authentication prompts up
+        /// to the user.  When provided or cached credentials lead to an
+        /// authentication failure, that failure will be propagated to the channel
+        /// listener.  Must be called before opening the channel, otherwise throws.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBlockAuthPromptAttribute([MarshalAs(UnmanagedType.U1)] bool aBlockAuthPrompt);
+		
+		/// <summary>
+        /// Set to indicate Request.integrity.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetIntegrityMetadataAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIntegrityMetadata);
+		
+		/// <summary>
+        /// Set to indicate Request.integrity.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetIntegrityMetadataAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIntegrityMetadata);
+		
+		/// <summary>
+        /// The connection info's hash key. We use it to test connection separation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetConnectionInfoHashKeyAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aConnectionInfoHashKey);
+		
+		/// <summary>
+        /// If this channel was created as the result of a redirect, then this
+        /// value will reflect the redirect flags passed to the
+        /// SetupReplacementChannel() method.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetLastRedirectFlagsAttribute();
+		
+		/// <summary>
+        /// If this channel was created as the result of a redirect, then this
+        /// value will reflect the redirect flags passed to the
+        /// SetupReplacementChannel() method.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetLastRedirectFlagsAttribute(uint aLastRedirectFlags);
 	}
 	
 	/// <summary>nsIHttpChannelInternalConsts </summary>
@@ -411,6 +531,9 @@ namespace Gecko
 		public const ulong CORS_MODE_CORS = 2;
 		
 		// 
+		public const ulong CORS_MODE_NAVIGATE = 3;
+		
+		// 
 		public const ulong REDIRECT_MODE_FOLLOW = 0;
 		
 		// 
@@ -418,5 +541,23 @@ namespace Gecko
 		
 		// 
 		public const ulong REDIRECT_MODE_MANUAL = 2;
+		
+		// 
+		public const ulong FETCH_CACHE_MODE_DEFAULT = 0;
+		
+		// 
+		public const ulong FETCH_CACHE_MODE_NO_STORE = 1;
+		
+		// 
+		public const ulong FETCH_CACHE_MODE_RELOAD = 2;
+		
+		// 
+		public const ulong FETCH_CACHE_MODE_NO_CACHE = 3;
+		
+		// 
+		public const ulong FETCH_CACHE_MODE_FORCE_CACHE = 4;
+		
+		// 
+		public const ulong FETCH_CACHE_MODE_ONLY_IF_CACHED = 5;
 	}
 }

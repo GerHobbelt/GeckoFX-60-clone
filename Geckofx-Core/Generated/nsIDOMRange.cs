@@ -49,14 +49,14 @@ namespace Gecko
 		nsIDOMNode GetStartContainerAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetStartOffsetAttribute();
+		uint GetStartOffsetAttribute();
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMNode GetEndContainerAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetEndOffsetAttribute();
+		uint GetEndOffsetAttribute();
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -67,10 +67,10 @@ namespace Gecko
 		nsIDOMNode GetCommonAncestorContainerAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetStart([MarshalAs(UnmanagedType.Interface)] nsIDOMNode refNode, int offset);
+		void SetStart([MarshalAs(UnmanagedType.Interface)] nsIDOMNode refNode, uint offset);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetEnd([MarshalAs(UnmanagedType.Interface)] nsIDOMNode refNode, int offset);
+		void SetEnd([MarshalAs(UnmanagedType.Interface)] nsIDOMNode refNode, uint offset);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetStartBefore([MarshalAs(UnmanagedType.Interface)] nsIDOMNode refNode);
@@ -135,13 +135,13 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsPointInRange([MarshalAs(UnmanagedType.Interface)] nsIDOMNode parent, int offset);
+		bool IsPointInRange([MarshalAs(UnmanagedType.Interface)] nsIDOMNode parent, uint offset);
 		
 		/// <summary>
         /// Sort of a strcmp for ranges.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		short ComparePoint([MarshalAs(UnmanagedType.Interface)] nsIDOMNode parent, int offset);
+		short ComparePoint([MarshalAs(UnmanagedType.Interface)] nsIDOMNode parent, uint offset);
 		
 		/// <summary>
         /// Returns whether the range intersects node.

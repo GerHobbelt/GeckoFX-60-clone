@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoMapElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLMapElement DOMHTMLElement;
+        private /* nsIDOMHTMLMapElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoMapElement(nsIDOMHTMLMapElement element) : base(element)
+        internal GeckoMapElement(/* nsIDOMHTMLMapElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoMapElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoMapElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLMapElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLMapElement */ nsISupports;
         }
 
         public GeckoHtmlElementCollection Areas

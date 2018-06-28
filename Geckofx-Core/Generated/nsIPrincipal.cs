@@ -30,7 +30,7 @@ namespace Gecko
     ///Defines the abstract interface for a principal. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("188fc4a2-3157-4956-a7a2-d674991770da")]
+	[Guid("f75f502d-79fd-48be-a079-e5a7b8f80c8b")]
 	public interface nsIPrincipal : nsISerializable
 	{
 		
@@ -133,6 +133,14 @@ namespace Gecko
 		bool SubsumesConsideringDomain([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
 		
 		/// <summary>
+        /// Same as the subsumesConsideringDomain(), but ignores the first party
+        /// domain in its OriginAttributes.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool SubsumesConsideringDomainIgnoringFPD([MarshalAs(UnmanagedType.Interface)] nsIPrincipal other);
+		
+		/// <summary>
         /// Checks whether this principal is allowed to load the network resource
         /// located at the given URI under the same-origin policy. This means that
         /// codebase principals are only allowed to load resources from the same
@@ -163,41 +171,32 @@ namespace Gecko
 		
 		/// <summary>
         /// A Content Security Policy associated with this principal.
-        ///
-        /// Please note that if a csp was already set on the
-        /// principal, then it should not be destroyed! Instead, the
-        /// current csp should be quried and extended by
-        /// calling AppendPolicy() on it.
+        /// Use this function to query the associated CSP with this principal.
+        /// Please *only* use this function to *set* a CSP when you know exactly what you are doing.
+        /// Most likely you want to call ensureCSP instead of setCSP.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetCspAttribute();
 		
 		/// <summary>
         /// A Content Security Policy associated with this principal.
-        ///
-        /// Please note that if a csp was already set on the
-        /// principal, then it should not be destroyed! Instead, the
-        /// current csp should be quried and extended by
-        /// calling AppendPolicy() on it.
+        /// Use this function to query the associated CSP with this principal.
+        /// Please *only* use this function to *set* a CSP when you know exactly what you are doing.
+        /// Most likely you want to call ensureCSP instead of setCSP.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetCspAttribute(System.IntPtr aCsp);
 		
 		/// <summary>
-        /// A speculative Content Security Policy associated with this
-        /// principal. Set during speculative loading (preloading) and
-        /// used *only* for preloads.
+        /// Use this function to query a CSP associated with this principal.
+        /// If no CSP is associated with this principal then one is created
+        /// internally and setRequestContext is called on the CSP using aDocument.
         ///
-        /// If you want to query the CSP associated with that principal,
-        /// then this is *not* what you want. Instead query 'csp'.
-        ///
-        /// Please note that if a preloadCSP was already set on the
-        /// principal, then it should not be destroyed! Instead, the
-        /// current preloadCSP should be quried and extended by
-        /// calling AppendPolicy() on it.
+        /// Please note if aDocument is null, then setRequestContext on the
+        /// CSP object is called using the current principal.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetPreloadCspAttribute();
+		System.IntPtr EnsureCSP([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument aDocument);
 		
 		/// <summary>
         /// A speculative Content Security Policy associated with this
@@ -206,14 +205,21 @@ namespace Gecko
         ///
         /// If you want to query the CSP associated with that principal,
         /// then this is *not* what you want. Instead query 'csp'.
-        ///
-        /// Please note that if a preloadCSP was already set on the
-        /// principal, then it should not be destroyed! Instead, the
-        /// current preloadCSP should be quried and extended by
-        /// calling AppendPolicy() on it.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPreloadCspAttribute(System.IntPtr aPreloadCsp);
+		System.IntPtr GetPreloadCspAttribute();
+		
+		/// <summary>
+        /// Use this function to query a speculative CSP associated with this
+        /// principal. If no speculative CSP is associated with this principal
+        /// then one is created internally and setRequestContext is called on
+        /// the CSP using aDocument.
+        ///
+        /// Please note if aDocument is null, then setRequestContext on the
+        /// speculative CSP object is called using the current principal.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr EnsurePreloadCSP([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument aDocument);
 		
 		/// <summary>
         /// The CSP of the principal in JSON notation.
@@ -222,22 +228,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetCspJSONAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCspJSON);
-		
-		/// <summary>
-        /// Returns the jar prefix of the principal.
-        /// The jar prefix is a string that can be used to isolate data or
-        /// permissions between different principals while taking into account
-        /// parameters like the app id or the fact that the principal is embedded in
-        /// a mozbrowser.
-        /// Some principals will return an empty string.
-        /// Some principals will assert if you try to access the jarPrefix.
-        ///
-        /// The jarPrefix is intended to be an opaque identifier. It is currently
-        /// "human-readable" but no callers should assume it will stay as is and
-        /// it might be crypto-hashed at some point.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetJarPrefixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aJarPrefix);
 		
 		/// <summary>
         /// A dictionary of the non-default origin attributes associated with this
@@ -256,10 +246,13 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOriginAttributesAttribute(System.IntPtr jsContext);
 		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports OriginAttributesRef();
+		
 		/// <summary>
         /// A canonical representation of the origin for this principal. This
         /// consists of a base string (which, for codebase principals, is of the
-        /// format scheme://host:port), concatenated with |originAttributes| (see
+        /// format scheme://host:port), concatenated with |OriginAttributes| (see
         /// below).
         ///
         /// We maintain the invariant that principalA.equals(principalB) if and only
@@ -284,9 +277,6 @@ namespace Gecko
         /// The value of .originSuffix is automatically serialized into .origin, so any
         /// consumers using that are automatically origin-attribute-aware. Consumers with
         /// special requirements must inspect and compare .originSuffix manually.
-        ///
-        /// originsuffix are intended to be a replacement for jarPrefix, which will
-        /// eventually be removed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetOriginSuffixAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aOriginSuffix);
@@ -298,29 +288,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetBaseDomainAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aBaseDomain);
-		
-		/// <summary>
-        /// Gets the principal's app status, which indicates whether the principal
-        /// corresponds to "app code", and if it does, how privileged that code is.
-        /// This method returns one of the APP_STATUS constants above.
-        ///
-        /// Note that a principal may have
-        ///
-        /// appId != nsIScriptSecurityManager::NO_APP_ID &&
-        /// appId != nsIScriptSecurityManager::UNKNOWN_APP_ID
-        ///
-        /// and still have appStatus == APP_STATUS_NOT_INSTALLED.  That's because
-        /// appId identifies the app that contains this principal, but a window
-        /// might be contained in an app and not be running code that the app has
-        /// vouched for.  For example, the window might be inside an <iframe
-        /// mozbrowser>, or the window's origin might not match the app's origin.
-        ///
-        /// If you're doing a check to determine "does this principal correspond to
-        /// app code?", you must check appStatus; checking appId != NO_APP_ID is not
-        /// sufficient.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ushort GetAppStatusAttribute();
 		
 		/// <summary>
         /// Gets the id of the app this principal is inside.  If this principal is
@@ -337,12 +304,19 @@ namespace Gecko
         /// inside an app frame; in this case, the content inside the iframe should
         /// not have any of the app's permissions, even if the iframe is at the same
         /// origin as the app.
-        ///
-        /// If you're doing a security check based on appId, you must check
-        /// appStatus as well.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetAppIdAttribute();
+		
+		/// <summary>
+        /// Gets the ID of the add-on this principal belongs to.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAddonIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISupports GetAddonPolicyAttribute();
 		
 		/// <summary>
         /// Gets the id of the user context this principal is inside.  If this
@@ -353,21 +327,23 @@ namespace Gecko
 		uint GetUserContextIdAttribute();
 		
 		/// <summary>
-        /// Returns true iff the principal is inside a browser element.  (<iframe
-        /// mozbrowser mozapp> does not count as a browser element.)
+        /// Gets the id of the private browsing state of the context containing
+        /// this principal. If the principal has a private browsing value of 0, it
+        /// is not in private browsing.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsInBrowserElementAttribute();
+		uint GetPrivateBrowsingIdAttribute();
 		
 		/// <summary>
-        /// Returns true if this principal has an unknown appId. This shouldn't
-        /// generally be used. We only expose it due to not providing the correct
-        /// appId everywhere where we construct principals.
+        /// Returns true iff the principal is inside an isolated mozbrowser element.
+        /// <xul:browser> is not considered to be a mozbrowser element.
+        /// <iframe mozbrowser noisolation> does not count as isolated since
+        /// isolation is disabled.  Isolation can only be disabled if the
+        /// containing document is chrome.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetUnknownAppIdAttribute();
+		bool GetIsInIsolatedMozBrowserElementAttribute();
 		
 		/// <summary>
         /// Returns true iff this is a null principal (corresponding to an
@@ -397,43 +373,15 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsSystemPrincipalAttribute();
-		
-		/// <summary>
-        /// Returns true if this principal's origin is recognized as being on the
-        /// whitelist of sites that can use the CSS Unprefixing Service.
-        ///
-        /// (This interface provides a trivial implementation, just returning false;
-        /// subclasses can implement something more complex as-needed.)
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsOnCSSUnprefixingWhitelist();
-	}
-	
-	/// <summary>nsIPrincipalConsts </summary>
-	public class nsIPrincipalConsts
-	{
-		
-		// 
-		public const short APP_STATUS_NOT_INSTALLED = 0;
-		
-		// 
-		public const short APP_STATUS_INSTALLED = 1;
-		
-		// 
-		public const short APP_STATUS_PRIVILEGED = 2;
-		
-		// 
-		public const short APP_STATUS_CERTIFIED = 3;
 	}
 	
 	/// <summary>
-    /// If nsSystemPrincipal is too risky to use, but we want a principal to access
-    /// more than one origin, nsExpandedPrincipals letting us define an array of
-    /// principals it subsumes. So script with an nsExpandedPrincipals will gain
+    /// If SystemPrincipal is too risky to use, but we want a principal to access
+    /// more than one origin, ExpandedPrincipals letting us define an array of
+    /// principals it subsumes. So script with an ExpandedPrincipals will gain
     /// same origin access when at least one of its principals it contains gained
-    /// sameorigin acccess. An nsExpandedPrincipal will be subsumed by the system
-    /// principal, and by another nsExpandedPrincipal that has all its principals.
+    /// sameorigin acccess. An ExpandedPrincipal will be subsumed by the system
+    /// principal, and by another ExpandedPrincipal that has all its principals.
     /// It is added for jetpack content-scripts to let them interact with the
     /// content and a well defined set of other domains, without the risk of
     /// leaking out a system principal to the content. See: Bug 734891
@@ -446,10 +394,16 @@ namespace Gecko
 		
 		/// <summary>
         /// An array of principals that the expanded principal subsumes.
+        ///
+        /// When an expanded principal is used as a triggering principal for a
+        /// request that inherits a security context, one of its constitutent
+        /// principals is inherited rather than the expanded principal itself. The
+        /// last principal in the whitelist is the default principal to inherit.
+        ///
         /// Note: this list is not reference counted, it is shared, so
         /// should not be changed and should only be used ephemerally.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetWhiteListAttribute();
+		System.IntPtr WhiteList();
 	}
 }

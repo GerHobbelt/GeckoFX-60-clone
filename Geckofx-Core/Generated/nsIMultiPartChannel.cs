@@ -58,18 +58,5 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsLastPartAttribute();
-		
-		/// <summary>
-        /// ASCII-encoding content prior to the first resource. Only valid for
-        /// content-type=application/package.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPreambleAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPreamble);
-		
-		/// <summary>
-        /// The original http response header in each part.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetOriginalResponseHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aOriginalResponseHeader);
 	}
 }

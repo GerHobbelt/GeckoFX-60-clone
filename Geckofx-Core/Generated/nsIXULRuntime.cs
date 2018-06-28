@@ -106,6 +106,19 @@ namespace Gecko
 		uint GetProcessIDAttribute();
 		
 		/// <summary>
+        /// A globally unique and non-recycled ID of the caller's process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetUniqueProcessIDAttribute();
+		
+		/// <summary>
+        /// The type of remote content process we're running in.
+        /// null if we're in the parent/chrome process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetRemoteTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRemoteType);
+		
+		/// <summary>
         /// If true, browser tabs may be opened by default in a different process
         /// from the main browser UI.
         /// </summary>
@@ -114,11 +127,42 @@ namespace Gecko
 		bool GetBrowserTabsRemoteAutostartAttribute();
 		
 		/// <summary>
+        /// Returns the number of content processes to use for normal web pages. If
+        /// this value is > 1, then e10s-multi should be considered to be "on".
+        ///
+        /// NB: If browserTabsRemoteAutostart is false, then this value has no
+        /// meaning and e10s should be considered to be "off"!
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetMaxWebProcessCountAttribute();
+		
+		/// <summary>
         /// If true, the accessibility service is running.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetAccessibilityEnabledAttribute();
+		
+		/// <summary>
+        /// If true, the AccessibleHandler dll is used.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAccessibleHandlerUsedAttribute();
+		
+		/// <summary>
+        /// Executable of Windows service that activated accessibility.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAccessibilityInstantiatorAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAccessibilityInstantiator);
+		
+		/// <summary>
+        /// Temporary, do not use. Indicates if an incompat version of JAWS
+        /// screen reader software is loaded in our process space.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetShouldBlockIncompatJawsAttribute();
 		
 		/// <summary>
         /// Indicates whether the current Firefox build is 64-bit.
@@ -154,18 +198,11 @@ namespace Gecko
 		long GetReplacedLockTimeAttribute();
 		
 		/// <summary>
-        /// Local ID of the minidump generated when the process crashed
-        /// on the previous run. Can be passed directly to CrashSubmit.submit.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetLastRunCrashIDAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aLastRunCrashID);
-		
-		/// <summary>
-        /// True if this is a RELEASE_BUILD.
+        /// True if this is RELEASE_OR_BETA.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsReleaseBuildAttribute();
+		bool GetIsReleaseOrBetaAttribute();
 		
 		/// <summary>
         /// True if this build uses official branding (MOZ_OFFICIAL_BRANDING).
@@ -187,11 +224,12 @@ namespace Gecko
 		void GetDistributionIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDistributionID);
 		
 		/// <summary>
-        /// True if this is an official build (MOZILLA_OFFICIAL).
+        /// True if Windows DLL blocklist initialized correctly. This is
+        /// primarily for automated testing purposes.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsOfficialAttribute();
+		bool GetWindowsDLLBlocklistStatusAttribute();
 	}
 	
 	/// <summary>nsIXULRuntimeConsts </summary>
@@ -214,5 +252,17 @@ namespace Gecko
 		
 		// 
 		public const ulong PROCESS_TYPE_GMPLUGIN = 4;
+		
+		// 
+		public const ulong PROCESS_TYPE_GPU = 5;
+		
+		// 
+		public const ulong PROCESS_TYPE_PDFIUM = 6;
+		
+		// <summary>
+        // The current e10s-multi experiment number. Set dom.ipc.multiOptOut to (at
+        // least) this to disable it until the next experiment.
+        // </summary>
+		public const long E10S_MULTI_EXPERIMENT = 1;
 	}
 }

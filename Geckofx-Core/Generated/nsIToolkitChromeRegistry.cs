@@ -75,14 +75,14 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void ReloadChrome();
 		
-		/// <summary>Member GetSelectedLocale </summary>
-		/// <param name='packageName'> </param>
-		/// <param name='retval'> </param>
+		/// <summary>
+        /// passed to ECMA402 Intl API methods without throwing a RangeError.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetSelectedLocale([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase packageName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		new void GetSelectedLocale([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase packageName, [MarshalAs(UnmanagedType.U1)] bool asBCP47, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
-        /// Get the direction of the locale via the intl.uidirection.<locale> pref
+        /// (or may be overridden by intl.uidirection pref)
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

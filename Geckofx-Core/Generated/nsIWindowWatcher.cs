@@ -63,7 +63,7 @@ namespace Gecko
         ///             aUrl in it (if aUrl is not null) and return it.
         ///      @param aFeatures window features from JS window.open. can be null.
         ///      @param aArguments extra argument(s) to the new window, to be attached
-        ///             as the |arguments| property. An nsISupportsArray will be
+        ///             as the |arguments| property. An nsIArray will be
         ///             unwound into multiple arguments (but not recursively!).
         ///             can be null.
         ///      @return the new window
@@ -76,9 +76,8 @@ namespace Gecko
         ///      @note This method may dispatch a "toplevel-window-ready" notification
         ///            via nsIObserverService if the window did not already exist.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow OpenWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent, [MarshalAs(UnmanagedType.LPStr)] string aUrl, [MarshalAs(UnmanagedType.LPStr)] string aName, [MarshalAs(UnmanagedType.LPStr)] string aFeatures, [MarshalAs(UnmanagedType.Interface)] nsISupports aArguments);
+		mozIDOMWindowProxy OpenWindow(mozIDOMWindowProxy aParent, [MarshalAs(UnmanagedType.LPStr)] string aUrl, [MarshalAs(UnmanagedType.LPStr)] string aName, [MarshalAs(UnmanagedType.LPStr)] string aFeatures, [MarshalAs(UnmanagedType.Interface)] nsISupports aArguments);
 		
 		/// <summary>
         ///Clients of this service can register themselves to be notified
@@ -124,7 +123,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrompt GetNewPrompter([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent);
+		nsIPrompt GetNewPrompter(mozIDOMWindowProxy aParent);
 		
 		/// <summary>
         ///Return a newly created nsIAuthPrompt implementation.
@@ -133,7 +132,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIAuthPrompt GetNewAuthPrompter([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent);
+		nsIAuthPrompt GetNewAuthPrompter(mozIDOMWindowProxy aParent);
 		
 		/// <summary>
         ///Set the window creator callback. It must be filled in by the app.
@@ -162,7 +161,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIWebBrowserChrome GetChromeForWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		nsIWebBrowserChrome GetChromeForWindow(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         ///Retrieve an existing window (or frame).
@@ -174,21 +173,8 @@ namespace Gecko
         ///      frame with the given window name. Make sure you understand the
         ///      security implications of this before using this method!
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetWindowByName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aTargetName, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aCurrentWindow);
-		
-		/// <summary>
-        ///The Watcher serves as a global storage facility for the current active
-        ///      (frontmost non-floating-palette-type) window, storing and returning
-        ///      it on demand. Users must keep this attribute current, including after
-        ///      the topmost window is closed. This attribute obviously can return null
-        ///      if no windows are open, but should otherwise always return a valid
-        ///      window.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetActiveWindowAttribute();
+		mozIDOMWindowProxy GetWindowByName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTargetName, mozIDOMWindowProxy aCurrentWindow);
 		
 		/// <summary>
         ///The Watcher serves as a global storage facility for the current active
@@ -199,6 +185,17 @@ namespace Gecko
         ///      window.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetActiveWindowAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aActiveWindow);
+		mozIDOMWindowProxy GetActiveWindowAttribute();
+		
+		/// <summary>
+        ///The Watcher serves as a global storage facility for the current active
+        ///      (frontmost non-floating-palette-type) window, storing and returning
+        ///      it on demand. Users must keep this attribute current, including after
+        ///      the topmost window is closed. This attribute obviously can return null
+        ///      if no windows are open, but should otherwise always return a valid
+        ///      window.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetActiveWindowAttribute(mozIDOMWindowProxy aActiveWindow);
 	}
 }

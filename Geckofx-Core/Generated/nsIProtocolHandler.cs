@@ -292,5 +292,25 @@ namespace Gecko
         // headers.
         // </summary>
 		public const ulong URI_FETCHABLE_BY_ANYONE = (1<<19);
+		
+		// <summary>
+        // If this flag is set, then the origin for this protocol is the full URI
+        // spec, not just the scheme + host + port.
+        //
+        // Note: this is not supported in Firefox.  It is currently only available
+        // in Thunderbird and SeaMonkey.
+        // </summary>
+		public const ulong ORIGIN_IS_FULL_SPEC = (1<<20);
+		
+		// <summary>
+        // If this flag is set, the URI does not always allow content using the same
+        // protocol to link to it.
+        // </summary>
+		public const ulong URI_SCHEME_NOT_SELF_LINKABLE = (1<<21);
+		
+		// <summary>
+        // The URIs for this protocol can be loaded by extensions.
+        // </summary>
+		public const ulong URI_LOADABLE_BY_EXTENSIONS = (1<<22);
 	}
 }

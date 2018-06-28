@@ -29,6 +29,9 @@ namespace Gecko
 	/// <summary>
     /// This service read/writes a stream on a background thread.
     ///
+    /// Note: instead of using this interface, probably you want to use
+    /// NS_MakeAsyncNonBlockingInputStream.
+    ///
     /// Use this service to transform any blocking stream (e.g., file stream)
     /// into a fully asynchronous stream that can be read/written without
     /// blocking the main thread.
@@ -45,13 +48,6 @@ namespace Gecko
         /// @param aStream
         /// The input stream that will be read on a background thread.
         /// This stream must implement "blocking" stream semantics.
-        /// @param aStartOffset
-        /// The input stream will be read starting from this offset.  Pass
-        /// -1 to read from the current stream offset.  NOTE: this parameter
-        /// is ignored if the stream does not support nsISeekableStream.
-        /// @param aReadLimit
-        /// This parameter limits the number of bytes that will be read from
-        /// the input stream.  Pass -1 to read everything.
         /// @param aCloseWhenDone
         /// Specify this flag to have the input stream closed once its
         /// contents have been completely read.
@@ -60,29 +56,23 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsITransport CreateInputTransport([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, long aStartOffset, long aReadLimit, [MarshalAs(UnmanagedType.U1)] bool aCloseWhenDone);
+		nsITransport CreateInputTransport([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, [MarshalAs(UnmanagedType.U1)] bool aCloseWhenDone);
 		
-		/// <summary>
-        /// CreateOutputTransport
-        ///
-        /// @param aStream
-        /// The output stream that will be written to on a background thread.
-        /// This stream must implement "blocking" stream semantics.
-        /// @param aStartOffset
-        /// The output stream will be written starting at this offset.  Pass
-        /// -1 to write to the current stream offset.  NOTE: this parameter
-        /// is ignored if the stream does not support nsISeekableStream.
-        /// @param aWriteLimit
-        /// This parameter limits the number of bytes that will be written to
-        /// the output stream.  Pass -1 for unlimited writing.
-        /// @param aCloseWhenDone
-        /// Specify this flag to have the output stream closed once its
-        /// contents have been completely written.
-        ///
-        /// @return nsITransport instance.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsITransport CreateOutputTransport([MarshalAs(UnmanagedType.Interface)] nsIOutputStream aStream, long aStartOffset, long aWriteLimit, [MarshalAs(UnmanagedType.U1)] bool aCloseWhenDone);
+		void InputAvailable([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, [MarshalAs(UnmanagedType.Interface)] nsIInputAvailableCallback aCallback);
+	}
+	
+	/// <summary>nsIInputAvailableCallback </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("ff2da731-44d0-4dd9-8236-c99387fec721")]
+	public interface nsIInputAvailableCallback
+	{
+		
+		/// <summary>Member OnInputAvailableComplete </summary>
+		/// <param name='available'> </param>
+		/// <param name='available_return_code'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnInputAvailableComplete(ulong available, int available_return_code);
 	}
 }

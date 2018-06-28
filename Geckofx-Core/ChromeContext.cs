@@ -122,21 +122,25 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
                 data.Instance.SetAsISupports((nsISupports) window);
                 using (var key = new nsAString("window"))
                 {
+#if PORTFF60
                     object comObj = command.Instance.SetUserData(key, data.Instance);
                     Xpcom.FreeComObject(ref comObj);
                     command.Instance.DoCommand();
                     comObj = command.Instance.SetUserData(key, null);
                     Xpcom.FreeComObject(ref comObj);
+#endif
                 }
             }
             string base64Image = null;
             using (var key = new nsAString("drawResult"))
             {
+                #if PORTFF60
                 using (var drawResult = command.Instance.SetUserData(key, null).AsComPtr())
                 {
                     if (drawResult != null)
                         base64Image = drawResult.Instance.GetAsWString();
                 }
+                #endif
             }
 
             if (base64Image == null)
@@ -158,8 +162,10 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
                 data.Instance.SetAsUint32(value);
                 using (var key = new nsAString(name))
                 {
+#if PORTFF60
                     object comObj = command.Instance.SetUserData(key, data.Instance);
                     Xpcom.FreeComObject(ref comObj);
+#endif
                 }
             }
         }
@@ -174,8 +180,10 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
                 data.Instance.SetAsISupports(value);
                 using (var key = new nsAString(name))
                 {
+#if PORTFF60
                     object comObj = command.Instance.SetUserData(key, data.Instance);
                     Xpcom.FreeComObject(ref comObj);
+#endif
                 }
             }
         }
@@ -187,8 +195,10 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
 
             using (var key = new nsAString(name))
             {
+#if PORTFF60
                 object comObj = command.Instance.SetUserData(key, null);
                 Xpcom.FreeComObject(ref comObj);
+#endif
             }
         }
     }

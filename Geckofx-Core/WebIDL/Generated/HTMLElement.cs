@@ -231,11 +231,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMCSSStyleDeclaration Style
+        public /* nsIDOMCSSStyleDeclaration */ nsISupports Style
         {
             get
             {
-                return this.GetProperty<nsIDOMCSSStyleDeclaration>("style");
+                return this.GetProperty</* nsIDOMCSSStyleDeclaration */ nsISupports>("style");
             }
         }
         

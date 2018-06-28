@@ -41,6 +41,13 @@ namespace Gecko
 	{
 		
 		/// <summary>
+        /// The input element the form fill controller is currently bound to.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMHTMLInputElement GetFocusedInputAttribute();
+		
+		/// <summary>
         /// Start controlling form fill behavior for the given browser
         ///
         /// @param docShell - The docShell to attach to
@@ -66,5 +73,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void MarkAsLoginManagerField([MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLInputElement aInput);
+		
+		/// <summary>
+        /// Mark the specified <input> element as being managed by a form autofill component.
+        /// Autocomplete requests will be handed off to the autofill component.
+        ///
+        /// @param aInput - The HTML <input> element to mark
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MarkAsAutofillField([MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLInputElement aInput);
+		
+		/// <summary>
+        /// Open the autocomplete popup, if possible.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ShowPopup();
 	}
 }

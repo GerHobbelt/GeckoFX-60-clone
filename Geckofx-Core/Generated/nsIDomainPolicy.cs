@@ -79,7 +79,7 @@ namespace Gecko
 		void CloneDomainPolicy(System.IntPtr aClone);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ApplyClone(System.IntPtr aClone);
+		void ApplyClone(/* DomainPolicyCloneConstPtr */ nsISupports aClone);
 	}
 	
 	/// <summary>nsIDomainSet </summary>

@@ -56,7 +56,7 @@ namespace Gecko
 		
 		/// <summary>
         /// Function will fail if aXPCOMErrorCode is not an NSS error code.
-        /// @param aXPCOMErrorCode An error code obtain using getXPCOMFromNSSError
+        /// @param aXPCOMErrorCode An error code obtained using getXPCOMFromNSSError
         /// return A localized human readable error explanation.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -64,8 +64,9 @@ namespace Gecko
 		
 		/// <summary>
         /// Function will fail if aXPCOMErrorCode is not an NSS error code.
-        /// @param aXPCOMErrorCode An error code obtain using getXPCOMFromNSSError
-        /// return the
+        /// @param aXPCOMErrorCode An error code obtained using getXPCOMFromNSSError
+        /// return the error class of the code, either ERROR_CLASS_BAD_CERT
+        /// or ERROR_CLASS_SSL_PROTOCOL
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetErrorClass(int aXPCOMErrorCode);

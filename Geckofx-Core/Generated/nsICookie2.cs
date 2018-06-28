@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("05c420e5-03d0-4c7b-a605-df7ebe5ca326")]
+	[Guid("be205dae-4f4c-11e6-80ba-ea5cd310c1a8")]
 	public interface nsICookie2 : nsICookie
 	{
 		
@@ -92,6 +92,12 @@ namespace Gecko
 		new System.IntPtr GetPolicyAttribute();
 		
 		/// <summary>
+        /// The origin attributes for this cookie
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new Gecko.JsVal GetOriginAttributesAttribute(System.IntPtr jsContext);
+		
+		/// <summary>
         /// the host (possibly fully qualified) of the cookie,
         /// without a leading dot to represent if it is a
         /// domain cookie.
@@ -142,5 +148,36 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		long GetLastAccessedAttribute();
+		
+		/// <summary>
+        /// the sameSite attribute; this controls the cookie behavior for cross-site
+        /// requests as per
+        /// https://tools.ietf.org/html/draft-west-first-party-cookies-07
+        ///
+        /// This should be one of:
+        /// - SAMESITE_UNSET - the SameSite attribute is not present
+        /// - SAMESITE_LAX - the SameSite attribute is present, but not strict
+        /// - SAMESITE_STRICT - the SameSite attribute is present and strict
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetSameSiteAttribute();
+	}
+	
+	/// <summary>nsICookie2Consts </summary>
+	public class nsICookie2Consts
+	{
+		
+		// <summary>
+        // Main cookie object interface for use by consumers:
+        // extends nsICookie, a frozen interface for external
+        // access of cookie objects
+        // </summary>
+		public const long SAMESITE_UNSET = 0;
+		
+		// 
+		public const long SAMESITE_LAX = 1;
+		
+		// 
+		public const long SAMESITE_STRICT = 2;
 	}
 }

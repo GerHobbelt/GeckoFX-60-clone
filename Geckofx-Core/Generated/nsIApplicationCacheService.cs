@@ -32,22 +32,19 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("03b41c3d-0816-4134-8b2e-4f5afbdb1f06")]
+	[Guid("b8b6546c-6cec-4bda-82df-08e006a97b56")]
 	public interface nsIApplicationCacheService
 	{
 		
 		/// <summary>
         /// Create group string identifying cache group according the manifest
-        /// URL and the given load context.
+        /// URL and the given principal.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void BuildGroupID([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURL, [MarshalAs(UnmanagedType.Interface)] nsILoadContextInfo aLoadContextInfo, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		void BuildGroupIDForInfo([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURL, [MarshalAs(UnmanagedType.Interface)] nsILoadContextInfo aLoadContextInfo, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
-		/// <summary>
-        /// Same as buildGroupID method, just doesn't require load context.
-        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void BuildGroupIDForApp([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURL, uint aAppID, [MarshalAs(UnmanagedType.U1)] bool aInBrowser, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		void BuildGroupIDForSuffix([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURL, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aOriginSuffix, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
         /// Create a new, empty application cache for the given cache
@@ -94,19 +91,17 @@ namespace Gecko
 		void DeactivateGroup([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase group);
 		
 		/// <summary>
-        /// Deletes some or all of an application's cache entries.
-        ///
-        /// @param appId
-        /// The mozIApplication.localId of the application.
-        ///
-        /// @param discardOnlyBrowserEntries
-        /// If true, only entries marked as 'inBrowserElement' are deleted
-        /// (this is used by browser applications to delete user browsing
-        /// data/history.).  If false, *all* entries for the given appId are
-        /// deleted (this is used for application uninstallation).
+        /// Evict offline cache entries, either all of them or those belonging
+        /// to the given origin.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DiscardByAppId(int appID, [MarshalAs(UnmanagedType.U1)] bool discardOnlyBrowserEntries);
+		void Evict([MarshalAs(UnmanagedType.Interface)] nsILoadContextInfo aLoadContextInfo);
+		
+		/// <summary>
+        /// Delete caches whom origin attributes matches the given pattern.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void EvictMatchingOriginAttributes([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPattern);
 		
 		/// <summary>
         /// Try to find the best application cache to serve a resource.

@@ -53,13 +53,5 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIContentViewer CreateInstanceForDocument([MarshalAs(UnmanagedType.Interface)] nsISupports aContainer, System.IntPtr aDocument, [MarshalAs(UnmanagedType.LPStr)] string aCommand);
-		
-		/// <summary>
-        /// Create a blank document using the given loadgroup and given
-        /// principal.  aPrincipal is allowed to be null, in which case the
-        /// new document will get the about:blank codebase principal.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr CreateBlankDocument([MarshalAs(UnmanagedType.Interface)] nsILoadGroup aLoadGroup, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
 	}
 }

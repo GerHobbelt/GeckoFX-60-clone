@@ -43,7 +43,7 @@ namespace Gecko
         /// Register the redirect target channel and obtain a unique ID for that
         /// channel.
         ///
-        /// Primarily used in HttpChannelParentListener::AsyncOnChannelRedirect to get
+        /// Primarily used in /* HttpChannelParent */ nsISupportsListener::AsyncOnChannelRedirect to get
         /// a channel id sent to the HttpChannelChild being redirected.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -80,7 +80,7 @@ namespace Gecko
         /// channel, all notification from the redirect target channel will be
         /// forwarded to this stream listener.
         ///
-        /// Primarilly used in HttpChannelParentListener::OnRedirectResult callback
+        /// Primarilly used in /* HttpChannelParent */ nsISupportsListener::OnRedirectResult callback
         /// to grab the created parent side of the channel and forward notifications
         /// to it.
         /// </summary>
@@ -94,7 +94,7 @@ namespace Gecko
         /// self.  This releases both the real and parent channel registered under
         /// the id.
         ///
-        /// Primarilly used in HttpChannelParentListener::OnRedirectResult callback.
+        /// Primarilly used in /* HttpChannelParent */ nsISupportsListener::OnRedirectResult callback.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DeregisterChannels(uint id);

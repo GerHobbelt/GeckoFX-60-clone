@@ -5,14 +5,14 @@ namespace Gecko
     /// </summary>
     public class GeckoAttribute : GeckoNode
     {
-        internal GeckoAttribute(nsIDOMAttr attr) : base(attr)
+        internal GeckoAttribute(/*nsIDOMAttr*/ nsISupports attr) : base(attr)
         {
             this.DomAttr = attr;
         }
 
-        internal nsIDOMAttr DomAttr;
+        internal /*nsIDOMAttr*/ nsISupports DomAttr;
 
-        internal static GeckoAttribute CreateAttributeWrapper(nsIDOMAttr attr)
+        internal static GeckoAttribute CreateAttributeWrapper(/*nsIDOMAttr*/ nsISupports attr)
         {
             return (attr == null) ? null : new GeckoAttribute(attr);
         }
@@ -30,7 +30,7 @@ namespace Gecko
         /// </summary>
         public GeckoNode OwnerDocument
         {
-            get { return GeckoNode.Create((nsIDOMHTMLElement) DomAttr.GetOwnerDocumentAttribute()); }
+            get { return GeckoNode.Create((/* nsIDOMHTMLElement */nsISupports) DomAttr.GetOwnerDocumentAttribute()); }
         }
 
         /// <summary>

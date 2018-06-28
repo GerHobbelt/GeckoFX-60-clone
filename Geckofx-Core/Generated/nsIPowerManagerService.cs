@@ -31,28 +31,13 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a232e826-07bd-11e2-8a8f-236186ff1a14")]
+	[Guid("ba7ca4c1-9d92-4425-a83b-85dd7fa953f7")]
 	public interface nsIPowerManagerService
 	{
 		
 		/// <summary>
-        /// This API will power off the machine.
+        /// For use with non-content code.
         /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void PowerOff();
-		
-		/// <summary>
-        /// This API will completely shut down and boot the machine.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Reboot();
-		
-		/// <summary>
-        /// This API will restart the Gecko processes without powering off the machine.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Restart();
-		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AddWakeLockListener([MarshalAs(UnmanagedType.Interface)] nsIDOMMozWakeLockListener aListener);
 		
@@ -69,6 +54,6 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports NewWakeLock([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTopic, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		nsISupports NewWakeLock([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTopic, mozIDOMWindow aWindow);
 	}
 }

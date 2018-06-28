@@ -98,7 +98,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray FlavorsTransferableCanExport();
+		nsIArray FlavorsTransferableCanExport();
 		
 		/// <summary>
         /// Given a flavor retrieve the data.
@@ -119,7 +119,7 @@ namespace Gecko
         /// @param  aDataLen the length of the data
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAnyTransferData([MarshalAs(UnmanagedType.LPStr)] ref string aFlavor, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aData, ref uint aDataLen);
+		void GetAnyTransferData([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFlavor, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aData, ref uint aDataLen);
 		
 		/// <summary>
         /// Returns true if the data is large.
@@ -137,7 +137,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray FlavorsTransferableCanImport();
+		nsIArray FlavorsTransferableCanImport();
 		
 		/// <summary>
         /// Sets the data in the transferable with the specified flavor. The transferable
@@ -198,21 +198,33 @@ namespace Gecko
 		void SetIsPrivateDataAttribute([MarshalAs(UnmanagedType.U1)] bool aIsPrivateData);
 		
 		/// <summary>
-        /// The source dom node this transferable was created from.
-        /// Note, currently only in use on Windows for network principal
-        /// information in drag operations.
+        /// The principal of the source dom node this transferable was
+        /// created from and the contentPolicyType for the transferable.
+        /// Note, currently only used on Windows for network principal and
+        /// contentPolicyType information in clipboard and drag operations.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMNode GetRequestingNodeAttribute();
+		nsIPrincipal GetRequestingPrincipalAttribute();
 		
 		/// <summary>
-        /// The source dom node this transferable was created from.
-        /// Note, currently only in use on Windows for network principal
-        /// information in drag operations.
+        /// The principal of the source dom node this transferable was
+        /// created from and the contentPolicyType for the transferable.
+        /// Note, currently only used on Windows for network principal and
+        /// contentPolicyType information in clipboard and drag operations.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetRequestingNodeAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aRequestingNode);
+		void SetRequestingPrincipalAttribute([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aRequestingPrincipal);
+		
+		/// <summary>Member GetContentPolicyTypeAttribute </summary>
+		/// <returns>A System.IntPtr</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetContentPolicyTypeAttribute();
+		
+		/// <summary>Member SetContentPolicyTypeAttribute </summary>
+		/// <param name='aContentPolicyType'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetContentPolicyTypeAttribute(System.IntPtr aContentPolicyType);
 	}
 	
 	/// <summary>nsITransferableConsts </summary>

@@ -42,10 +42,25 @@ namespace Gecko
 		void GetOriginAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aOrigin);
 		
 		/// <summary>
-        /// The URL to be opened after selection.
+        /// The array of candidate URLs.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetRequestURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRequestURL);
+		nsIArray GetRequestURLsAttribute();
+		
+		/// <summary>
+        /// The XUL browser element that the request was originated in.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMEventTarget GetChromeEventHandlerAttribute();
+		
+		/// <summary>
+        /// The principal of the request.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPrincipal GetPrincipalAttribute();
 		
 		/// <summary>
         /// Callback after selecting a device
@@ -55,10 +70,11 @@ namespace Gecko
 		void Select([MarshalAs(UnmanagedType.Interface)] nsIPresentationDevice device);
 		
 		/// <summary>
-        ///Callback after selection failed or canceled by user.
+        /// Callback after selection failed or canceled by user.
+        /// @param reason The error cause for canceling this request.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Cancel();
+		void Cancel(int reason);
 	}
 	
 	/// <summary>

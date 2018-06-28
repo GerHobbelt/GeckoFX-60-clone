@@ -69,15 +69,6 @@ namespace Gecko
 		new uint GetMatchCountAttribute();
 		
 		/// <summary>
-        /// If true, the results will not be displayed in the popup. However,
-        /// if a default index is specified, the default item will still be
-        /// completed in the input.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool GetTypeAheadResultAttribute();
-		
-		/// <summary>
         /// Get the value of the result at the given index
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -151,13 +142,6 @@ namespace Gecko
 		void SetSearchResult(ushort aSearchResult);
 		
 		/// <summary>
-        /// A writer for the readonly attribute 'typeAheadResult', typically set
-        /// because a result is only intended for type-ahead completion.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetTypeAheadResult([MarshalAs(UnmanagedType.U1)] bool aHidden);
-		
-		/// <summary>
         /// Inserts a match consisting of the given value, comment, image, style and
         /// the value to use for defaultIndex completion at a given position.
         /// @param aIndex
@@ -194,6 +178,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AppendMatch([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aComment, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aImage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aStyle, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFinalCompleteValue, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aLabel);
+		
+		/// <summary>
+        /// Removes an existing match.
+        /// @note this is different from removeValueAt, since it's not a consequence of
+        /// a user action, and as such it won't notify onValueRemoved.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveMatchAt(int aIndex);
 		
 		/// <summary>
         /// Gets the listener for changes in the result.

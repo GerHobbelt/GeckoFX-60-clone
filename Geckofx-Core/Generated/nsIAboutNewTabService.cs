@@ -32,34 +32,86 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6c66f022-beb1-46ea-8af6-c6c6dd937ea9")]
+	[Guid("dfcd2adc-7867-4d3a-ba70-17501f208142")]
 	public interface nsIAboutNewTabService
 	{
 		
 		/// <summary>
-        /// Returns "about:newtab" if not overridden, otherwise
-        /// a string represenation of the new URL.
+        /// Returns the url of the resource for the newtab page if not overridden,
+        /// otherwise a string represenation of the new URL.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetNewTabURLAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aNewTabURL);
 		
 		/// <summary>
-        /// Returns "about:newtab" if not overridden, otherwise
-        /// a string represenation of the new URL.
+        /// Returns the url of the resource for the newtab page if not overridden,
+        /// otherwise a string represenation of the new URL.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetNewTabURLAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aNewTabURL);
 		
 		/// <summary>
-        /// Returns true if the default of "about:newtab" got
-        /// overridden.
+        /// Returns the default URL (local or activity stream depending on pref)
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetDefaultURLAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aDefaultURL);
+		
+		/// <summary>
+        /// Returns the default URL (local or activity stream depending on pref)
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDefaultURLAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aDefaultURL);
+		
+		/// <summary>
+        /// Returns true if opening the New Tab page will notify the user of a change.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetWillNotifyUserAttribute();
+		
+		/// <summary>
+        /// Returns true if opening the New Tab page will notify the user of a change.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetWillNotifyUserAttribute([MarshalAs(UnmanagedType.U1)] bool aWillNotifyUser);
+		
+		/// <summary>
+        /// Returns true if the default resource got overridden.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetOverriddenAttribute();
 		
 		/// <summary>
-        /// Resets "about:newtab" to the default and also resets the
+        /// Returns true if the default resource is activity stream and isn't
+        /// overridden
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetActivityStreamEnabledAttribute();
+		
+		/// <summary>
+        /// Returns true if the the prerendering pref for activity stream is true
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetActivityStreamPrerenderAttribute();
+		
+		/// <summary>
+        /// Returns true if the the debug pref for activity stream is true
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetActivityStreamDebugAttribute();
+		
+		/// <summary>
+        /// Returns the locale of the activity stream interface
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetActivityStreamLocaleAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aActivityStreamLocale);
+		
+		/// <summary>
+        /// Resets to the default resource and also resets the
         /// overridden attribute to false.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

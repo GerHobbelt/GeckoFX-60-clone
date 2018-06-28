@@ -5,11 +5,11 @@ namespace Gecko
 {
     public static class CookieManager
     {
-        private static ComPtr<nsICookieManager2> _cookieManager;
+        private static ComPtr</* nsICookieManager2 */ nsISupports> _cookieManager;
 
         static CookieManager()
         {
-            _cookieManager = Xpcom.GetService2<nsICookieManager2>(Contracts.CookieManager);
+            _cookieManager = Xpcom.GetService2</* nsICookieManager2 */ nsISupports>(Contracts.CookieManager);
         }
 
         public static void Add(string host, string path, string name, string value, bool isSecure, bool isHttpOnly,

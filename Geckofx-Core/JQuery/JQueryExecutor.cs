@@ -37,7 +37,7 @@ namespace Gecko.JQuery
                 }
 
                 var nativeComObject = jsValue.ToComObject(autoContext.ContextPointer);
-                var element = Xpcom.QueryInterface<nsIDOMHTMLElement>(nativeComObject);
+                var element = Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(nativeComObject);
                 if (element != null)
                 {
                     return GeckoHtmlElement.Create(element);
@@ -86,7 +86,7 @@ namespace Gecko.JQuery
             var elementIndexString = elementIndex.ToString(CultureInfo.InvariantCulture);
             var firstNativeDom = SpiderMonkey.JS_GetProperty(autoContext.ContextPointer, jsValue.AsPtr, elementIndexString).ToComObject(autoContext.ContextPointer);
 
-            var element = Xpcom.QueryInterface<nsIDOMHTMLElement>(firstNativeDom);
+            var element = Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(firstNativeDom);
             if (element == null)
             {
                 return null;

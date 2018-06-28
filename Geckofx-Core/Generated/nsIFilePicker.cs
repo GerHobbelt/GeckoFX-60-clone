@@ -51,7 +51,7 @@ namespace Gecko
 	/// <summary>nsIFilePicker </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9840d564-42c8-4d78-9a4d-71002343c918")]
+	[Guid("9285b984-02d3-46b4-9514-7da8c471a747")]
 	public interface nsIFilePicker
 	{
 		
@@ -59,14 +59,14 @@ namespace Gecko
         /// Initialize the file picker widget.  The file picker is not valid until this
         /// method is called.
         ///
-        /// @param      parent   nsIDOMWindow parent.  This dialog will be dependent
+        /// @param      parent   mozIDOMWindow parent.  This dialog will be dependent
         /// on this parent. parent must be non-null.
         /// @param      title    The title for the file widget
         /// @param      mode     load, save, or get folder
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow parent, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase title, short mode);
+		void Init(mozIDOMWindowProxy parent, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase title, short mode);
 		
 		/// <summary>
         /// Append to the  filter list with things from the predefined list
@@ -139,6 +139,8 @@ namespace Gecko
 		
 		/// <summary>
         /// Set the directory that the file open/save dialog initially displays
+        /// Note that, if displaySpecialDirectory has been already set, this value will
+        /// be ignored.
         ///
         /// @param      displayDirectory  the name of the directory
         ///
@@ -149,12 +151,38 @@ namespace Gecko
 		
 		/// <summary>
         /// Set the directory that the file open/save dialog initially displays
+        /// Note that, if displaySpecialDirectory has been already set, this value will
+        /// be ignored.
         ///
         /// @param      displayDirectory  the name of the directory
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDisplayDirectoryAttribute([MarshalAs(UnmanagedType.Interface)] nsIFile aDisplayDirectory);
+		
+		/// <summary>
+        /// Set the directory that the file open/save dialog initially displays using
+        /// one of the special name as such as 'Desk', 'TmpD', and so on.
+        /// Note that, if displayDirectory has been already set, this value will be
+        /// ignored.
+        ///
+        /// @param      displaySpecialDirectory  the name of the special directory
+        ///
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetDisplaySpecialDirectoryAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDisplaySpecialDirectory);
+		
+		/// <summary>
+        /// Set the directory that the file open/save dialog initially displays using
+        /// one of the special name as such as 'Desk', 'TmpD', and so on.
+        /// Note that, if displayDirectory has been already set, this value will be
+        /// ignored.
+        ///
+        /// @param      displaySpecialDirectory  the name of the special directory
+        ///
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDisplaySpecialDirectoryAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDisplaySpecialDirectory);
 		
 		/// <summary>
         /// Get the nsIFile for the file or directory.
@@ -185,23 +213,23 @@ namespace Gecko
 		nsISimpleEnumerator GetFilesAttribute();
 		
 		/// <summary>
-        /// Get the DOM File for the file.
+        /// Get the DOM File or the DOM Directory
         ///
-        /// @return Returns the file currently selected as File
+        /// @return Returns the file or directory currently selected DOM object.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports GetDomfileAttribute();
+		nsISupports GetDomFileOrDirectoryAttribute();
 		
 		/// <summary>
-        /// Get the enumerator for the selected files
+        /// Get the enumerator for the selected files or directories
         /// only works in the modeOpenMultiple mode
         ///
-        /// @return Returns the files currently selected as Files
+        /// @return Returns the files/directories currently selected as DOM object.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISimpleEnumerator GetDomfilesAttribute();
+		nsISimpleEnumerator GetDomFileOrDirectoryEnumeratorAttribute();
 		
 		/// <summary>
         /// Controls whether the chosen file(s) should be added to the system's recent
@@ -223,15 +251,6 @@ namespace Gecko
 		void SetAddToRecentDocsAttribute([MarshalAs(UnmanagedType.U1)] bool aAddToRecentDocs);
 		
 		/// <summary>
-        /// Show File Dialog. The dialog is displayed modally.
-        ///
-        /// @return returnOK if the user selects OK, returnCancel if the user selects cancel
-        ///
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		short Show();
-		
-		/// <summary>
         /// Opens the file dialog asynchrounously.
         /// The passed in object's done method will be called upon completion.
         /// </summary>
@@ -244,6 +263,22 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		short GetModeAttribute();
+		
+		/// <summary>
+        /// If set to non-empty string, the nsIFilePicker implementation
+        /// may use okButtonLabel as the label for the button the user uses to accept
+        /// file selection.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetOkButtonLabelAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aOkButtonLabel);
+		
+		/// <summary>
+        /// If set to non-empty string, the nsIFilePicker implementation
+        /// may use okButtonLabel as the label for the button the user uses to accept
+        /// file selection.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOkButtonLabelAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aOkButtonLabel);
 	}
 	
 	/// <summary>nsIFilePickerConsts </summary>

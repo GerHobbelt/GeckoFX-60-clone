@@ -65,11 +65,10 @@ namespace Gecko
         /// Filters may use this method to report other, non-XML errors as
         /// well.
         ///
-        /// @param locator The locator object for the error (may be null).
         /// @param error The error message.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Error([MarshalAs(UnmanagedType.Interface)] nsISAXLocator locator, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase error);
+		void Error([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase error);
 		
 		/// <summary>
         /// Receive notification of a non-recoverable error.
@@ -92,11 +91,10 @@ namespace Gecko
         /// messages: in fact, SAX parsers are free to stop reporting any
         /// other events once this method has been invoked.
         ///
-        /// @param locator The locator object for the error (may be null).
         /// @param error The error message.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FatalError([MarshalAs(UnmanagedType.Interface)] nsISAXLocator locator, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase error);
+		void FatalError([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase error);
 		
 		/// <summary>
         /// Receive notification of a warning.
@@ -112,10 +110,9 @@ namespace Gecko
         /// Filters may use this method to report other, non-XML warnings
         /// as well.
         ///
-        /// @param locator The locator object for the warning (may be null).
         /// @param error The warning message.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void IgnorableWarning([MarshalAs(UnmanagedType.Interface)] nsISAXLocator locator, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase error);
+		void IgnorableWarning([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase error);
 	}
 }

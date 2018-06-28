@@ -36,48 +36,42 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// see nsIProgrammingLanguage for list of language consts
+        /// Interfaces for representing cross-language exceptions and stack traces.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetLanguageAttribute();
+		void GetFilenameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilename, System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetLanguageNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aLanguageName);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFilenameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilename);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
+		void GetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Valid line numbers begin at '1'. '0' indicates unknown.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetLineNumberAttribute();
+		int GetLineNumberAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetColumnNumberAttribute();
+		int GetColumnNumberAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetSourceLineAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSourceLine);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAsyncCauseAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAsyncCause);
+		void GetAsyncCauseAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAsyncCause, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIStackFrame GetAsyncCallerAttribute();
+		nsIStackFrame GetAsyncCallerAttribute(System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIStackFrame GetCallerAttribute();
+		nsIStackFrame GetCallerAttribute(System.IntPtr jsContext);
 		
 		/// <summary>
         /// Only works on JS-language stack frames.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFormattedStackAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFormattedStack);
+		void GetFormattedStackAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFormattedStack, System.IntPtr jsContext);
 		
 		/// <summary>
         /// or null if this is not a native JavaScript stack frame.
@@ -86,70 +80,46 @@ namespace Gecko
 		Gecko.JsVal GetNativeSavedFrameAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ToString([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
+		void ToString(System.IntPtr jsContext, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
+		
+		/// <summary>
+        /// Infallible things to be called from C++.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetFilename(System.IntPtr aCx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilename);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetName(System.IntPtr aCx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetLineNumber(System.IntPtr aCx);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetColumnNumber(System.IntPtr aCx);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAsyncCause(System.IntPtr aCx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAsyncCause);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISupports GetAsyncCaller(System.IntPtr aCx);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports GetCaller(System.IntPtr aCx);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetFormattedStack(System.IntPtr aCx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFormattedStack);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ToStringInfallible(System.IntPtr aCx, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aString);
 	}
 	
-	/// <summary>nsIException </summary>
+	/// <summary>
+    /// mozilla::dom::Exception instead.
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("4371b5bf-6845-487f-8d9d-3f1e4a9badd2")]
 	public interface nsIException
 	{
-		
-		/// <summary>
-        /// A custom message set by the thrower.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetMessageAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aMessage);
-		
-		/// <summary>
-        /// The nsresult associated with this exception.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetResultAttribute();
-		
-		/// <summary>
-        /// The name of the error code (ie, a string repr of |result|)
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
-		
-		/// <summary>
-        /// null indicates "no data"
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFilenameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFilename);
-		
-		/// <summary>
-        /// Valid line numbers begin at '1'. '0' indicates unknown.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetLineNumberAttribute();
-		
-		/// <summary>
-        /// We don't have an unambiguous indicator for unknown.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetColumnNumberAttribute();
-		
-		/// <summary>
-        /// A stack trace, if available.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIStackFrame GetLocationAttribute();
-		
-		/// <summary>
-        /// Arbitary data for the implementation.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports GetDataAttribute();
-		
-		/// <summary>
-        /// A generic formatter - make it suitable to print, etc.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ToString([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
 	}
 }

@@ -40,6 +40,6 @@ namespace Gecko
         /// prompts parented to aParent.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetPrompt([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent, ref System.Guid iid);
+		System.IntPtr GetPrompt(mozIDOMWindowProxy aParent, ref System.Guid iid);
 	}
 }

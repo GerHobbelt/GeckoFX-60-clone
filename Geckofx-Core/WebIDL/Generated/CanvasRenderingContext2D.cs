@@ -11,11 +11,11 @@ namespace Gecko.WebIDL
         {
         }
         
-        public nsIDOMHTMLCanvasElement Canvas
+        public /* nsIDOMHTMLCanvasElement */ nsISupports Canvas
         {
             get
             {
-                return this.GetProperty<nsIDOMHTMLCanvasElement>("canvas");
+                return this.GetProperty</* nsIDOMHTMLCanvasElement */ nsISupports>("canvas");
             }
         }
         
@@ -261,7 +261,7 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("createRadialGradient", x0, y0, r0, x1, y1, r1);
         }
         
-        public nsISupports CreatePattern(WebIDLUnion<nsIDOMHTMLImageElement,nsIDOMHTMLCanvasElement,nsISupports,nsISupports> image, string repetition)
+        public nsISupports CreatePattern(WebIDLUnion</* nsIDOMHTMLImageElement */ nsISupports,/* nsIDOMHTMLCanvasElement */ nsISupports,nsISupports,nsISupports> image, string repetition)
         {
             return this.CallMethod<nsISupports>("createPattern", image, repetition);
         }
@@ -401,17 +401,17 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("measureText", text);
         }
         
-        public void DrawImage(WebIDLUnion<nsIDOMHTMLImageElement,nsIDOMHTMLCanvasElement,nsISupports,nsISupports> image, double dx, double dy)
+        public void DrawImage(WebIDLUnion</* nsIDOMHTMLImageElement */ nsISupports,/* nsIDOMHTMLCanvasElement */ nsISupports,nsISupports,nsISupports> image, double dx, double dy)
         {
             this.CallVoidMethod("drawImage", image, dx, dy);
         }
         
-        public void DrawImage(WebIDLUnion<nsIDOMHTMLImageElement,nsIDOMHTMLCanvasElement,nsISupports,nsISupports> image, double dx, double dy, double dw, double dh)
+        public void DrawImage(WebIDLUnion</* nsIDOMHTMLImageElement */ nsISupports,/* nsIDOMHTMLCanvasElement */ nsISupports,nsISupports,nsISupports> image, double dx, double dy, double dw, double dh)
         {
             this.CallVoidMethod("drawImage", image, dx, dy, dw, dh);
         }
         
-        public void DrawImage(WebIDLUnion<nsIDOMHTMLImageElement,nsIDOMHTMLCanvasElement,nsISupports,nsISupports> image, double sx, double sy, double sw, double sh, double dx, double dy, double dw, double dh)
+        public void DrawImage(WebIDLUnion</* nsIDOMHTMLImageElement */ nsISupports,/* nsIDOMHTMLCanvasElement */ nsISupports,nsISupports,nsISupports> image, double sx, double sy, double sw, double sh, double dx, double dy, double dw, double dh)
         {
             this.CallVoidMethod("drawImage", image, sx, sy, sw, sh, dx, dy, dw, dh);
         }

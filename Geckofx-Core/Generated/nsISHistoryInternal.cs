@@ -116,6 +116,47 @@ namespace Gecko
 		void EvictAllContentViewers();
 		
 		/// <summary>
+        /// Add a BFCache entry to expiration tracker so it gets evicted on expiration.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AddToExpirationTracker([MarshalAs(UnmanagedType.Interface)] nsIBFCacheEntry aEntry);
+		
+		/// <summary>
+        /// Remove a BFCache entry from expiration tracker.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveFromExpirationTracker([MarshalAs(UnmanagedType.Interface)] nsIBFCacheEntry aEntry);
+		
+		/// <summary>
+        /// Remove dynamic entries found at given index.
+        ///
+        /// @param aIndex
+        /// Index to remove dynamic entries from. It will be passed to
+        /// RemoveEntries as aStartIndex.
+        /// @param aContainer (optional)
+        /// The container to start looking for dynamic entries. Only the
+        /// dynamic descendants of the container will be removed. If not given,
+        /// all dynamic entries at the index will be removed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveDynEntries(int aIndex, [MarshalAs(UnmanagedType.Interface)] nsISHContainer aContainer);
+		
+		/// <summary>
+        /// Similar to RemoveDynEntries, but instead of specifying an index, use the
+        /// given BFCacheEntry to find the index and remove dynamic entries from the
+        /// index.
+        ///
+        /// The method takes no effect if the bfcache entry is not or no longer hold
+        /// by the SHistory instance.
+        ///
+        /// @param aEntry
+        /// The bfcache entry to look up for index to remove dynamic entries
+        /// from.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveDynEntriesForBFCacheEntry([MarshalAs(UnmanagedType.Interface)] nsIBFCacheEntry aEntry);
+		
+		/// <summary>
         /// Removes entries from the history if their docshellID is in
         /// aIDs array.
         /// </summary>

@@ -32,17 +32,19 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f9d60700-e6dc-4a72-9537-689058655472")]
+	[Guid("a03b8b63-af8b-4164-b0e5-c41e8b2b7cfa")]
 	public interface nsIEventTarget
 	{
 		
 		/// <summary>
-        /// Check to see if this event target is associated with the current thread.
-        ///
-        /// @returns
-        /// A boolean value that if "true" indicates that events dispatched to this
-        /// event target will run on the current thread (i.e., the thread calling
-        /// this method).
+        /// for XPConnect purposes.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsOnCurrentThreadInfallible();
+		
+		/// <summary>
+        /// Fallible version of IsOnCurrentThread.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -54,9 +56,7 @@ namespace Gecko
         ///
         /// @param event
         /// The alreadyAddRefed<> event to dispatch.
-        /// NOTE that the event will be leaked if it fails to dispatch. Also note
-        /// that if "flags" includes DISPATCH_SYNC, it may return error from Run()
-        /// after a successful dispatch. In that case, the event is not leaked.
+        /// NOTE that the event will be leaked if it fails to dispatch.
         /// @param flags
         /// The flags modifying event dispatch.  The flags are described in detail
         /// below.
@@ -88,6 +88,28 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Dispatch([MarshalAs(UnmanagedType.Interface)] nsIRunnable @event, uint flags);
+		
+		/// <summary>
+        /// Dispatch an event to this event target, but do not run it before delay
+        /// milliseconds have passed.  This function may be called from any thread.
+        ///
+        /// @param event
+        /// The alreadyAddrefed<> event to dispatch.
+        /// @param delay
+        /// The delay (in ms) before running the event.  If event does not rise to
+        /// the top of the event queue before the delay has passed, it will be set
+        /// aside to execute once the delay has passed.  Otherwise, it will be
+        /// executed immediately.
+        ///
+        /// @throws NS_ERROR_INVALID_ARG
+        /// Indicates that event is null.
+        /// @throws NS_ERROR_UNEXPECTED
+        /// Indicates that the thread is shutting down and has finished processing
+        /// events, so this event would never run and has not been dispatched, or
+        /// that delay is zero.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DelayedDispatch(System.IntPtr @event, uint delay);
 	}
 	
 	/// <summary>nsIEventTargetConsts </summary>
@@ -110,5 +132,17 @@ namespace Gecko
         // given event to be processed.
         // </summary>
 		public const ulong DISPATCH_SYNC = 1;
+		
+		// <summary>
+        // This flag specifies that the dispatch is occurring from a running event
+        // that was dispatched to the same event target, and that event is about to
+        // finish.
+        //
+        // A thread pool can use this as an optimization hint to not spin up
+        // another thread, since the current thread is about to become idle.
+        //
+        // These events are always async.
+        // </summary>
+		public const ulong DISPATCH_AT_END = 2;
 	}
 }

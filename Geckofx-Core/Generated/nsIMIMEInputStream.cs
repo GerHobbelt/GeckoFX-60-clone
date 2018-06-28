@@ -127,27 +127,6 @@ namespace Gecko
 		new bool IsNonBlocking();
 		
 		/// <summary>
-        /// When true a "Content-Length" header is automatically added to the
-        /// stream. The value of the content-length is automatically calculated
-        /// using the available() method on the data stream. The value is
-        /// recalculated every time the stream is rewinded to the start.
-        /// Not allowed to be changed once the stream has been started to be read.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetAddContentLengthAttribute();
-		
-		/// <summary>
-        /// When true a "Content-Length" header is automatically added to the
-        /// stream. The value of the content-length is automatically calculated
-        /// using the available() method on the data stream. The value is
-        /// recalculated every time the stream is rewinded to the start.
-        /// Not allowed to be changed once the stream has been started to be read.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAddContentLengthAttribute([MarshalAs(UnmanagedType.U1)] bool aAddContentLength);
-		
-		/// <summary>
         /// Adds an additional header to the stream on the form "name: value". May
         /// not be called once the stream has been started to be read.
         /// @param name   name of the header
@@ -155,6 +134,16 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AddHeader([MarshalAs(UnmanagedType.LPStr)] string name, [MarshalAs(UnmanagedType.LPStr)] string value);
+		
+		/// <summary>
+        /// Visits all headers which have been added via addHeader.  Calling
+        /// addHeader while visiting request headers has undefined behavior.
+        ///
+        /// @param aVisitor
+        /// The header visitor instance.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void VisitHeaders([MarshalAs(UnmanagedType.Interface)] nsIHttpHeaderVisitor visitor);
 		
 		/// <summary>
         /// Sets data-stream. May not be called once the stream has been started
@@ -166,5 +155,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetData([MarshalAs(UnmanagedType.Interface)] nsIInputStream stream);
+		
+		/// <summary>
+        /// Get the wrapped data stream
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIInputStream GetDataAttribute();
 	}
 }

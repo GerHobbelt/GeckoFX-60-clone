@@ -29,9 +29,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<Promise < nsIDOMBlob >>("blob");
         }
         
-        public Promise < nsIDOMFormData > FormData()
+        public Promise < /* nsIDOMFormData */ nsISupports > FormData()
         {
-            return this.CallMethod<Promise < nsIDOMFormData >>("formData");
+            return this.CallMethod<Promise < /* nsIDOMFormData */ nsISupports >>("formData");
         }
         
         public Promise < Object > Json()

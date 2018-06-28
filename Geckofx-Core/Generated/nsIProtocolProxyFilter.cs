@@ -27,6 +27,31 @@ namespace Gecko
 	
 	
 	/// <summary>
+    /// Recipient of the result of implementers of nsIProtocolProxy(Channel)Filter
+    /// allowing the proxyinfo be provided asynchronously.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("009E6C3F-FB64-40C5-8093-F1495C64773E")]
+	public interface nsIProxyProtocolFilterResult
+	{
+		
+		/// <summary>
+        /// It's mandatory to call this method exactly once when the applyFilter()
+        /// implementation doesn't throw and to not call it when applyFilter() does
+        /// throw.
+        ///
+        /// It's mandatory to call this method on the same thread as the call to
+        /// applyFilter() has been made on.
+        ///
+        /// Following the above conditions, can be called either from within
+        /// applyFilter() or asynchronouly any time later.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnProxyFilterResult([MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy);
+	}
+	
+	/// <summary>
     /// This interface is used to apply filters to the proxies selected for a given
     /// URI.  Use nsIProtocolProxyService::registerFilter to hook up instances of
     /// this interface. See also nsIProtocolProxyChannelFilter.
@@ -50,15 +75,18 @@ namespace Gecko
         /// The proxy (or list of proxies) that would be used by default for
         /// the given URI.  This may be null.
         ///
-        /// @return The proxy (or list of proxies) that should be used in place of
+        /// @param aCallback
+        /// An object that the implementer is obligated to call on with
+        /// the result (from within applyFilter() or asynchronously) when
+        /// applyFilter didn't throw.  The argument passed to onProxyFilterResult
+        /// is the proxy (or list of proxies) that should be used in place of
         /// aProxy.  This can be just be aProxy if the filter chooses not to
         /// modify the proxy.  It can also be null to indicate that a direct
         /// connection should be used.  Use aProxyService.newProxyInfo to
         /// construct nsIProxyInfo objects.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIProxyInfo ApplyFilter([MarshalAs(UnmanagedType.Interface)] nsIProtocolProxyService aProxyService, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy);
+		void ApplyFilter([MarshalAs(UnmanagedType.Interface)] nsIProtocolProxyService aProxyService, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy, [MarshalAs(UnmanagedType.Interface)] nsIProxyProtocolFilterResult aCallback);
 	}
 	
 	/// <summary>
@@ -85,14 +113,17 @@ namespace Gecko
         /// The proxy (or list of proxies) that would be used by default for
         /// the given channel. This may be null.
         ///
-        /// @return The proxy (or list of proxies) that should be used in place of
-        /// aProxy. This can be just be aProxy if the filter chooses not to
-        /// modify the proxy. It can also be null to indicate that a direct
+        /// @param aCallback
+        /// An object that the implementer is obligated to call on with
+        /// the result (from within applyFilter() or asynchronously) when
+        /// applyFilter didn't throw.  The argument passed to onProxyFilterResult
+        /// is the proxy (or list of proxies) that should be used in place of
+        /// aProxy.  This can be just be aProxy if the filter chooses not to
+        /// modify the proxy.  It can also be null to indicate that a direct
         /// connection should be used.  Use aProxyService.newProxyInfo to
         /// construct nsIProxyInfo objects.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIProxyInfo ApplyFilter([MarshalAs(UnmanagedType.Interface)] nsIProtocolProxyService aProxyService, [MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel, [MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy);
+		void ApplyFilter([MarshalAs(UnmanagedType.Interface)] nsIProtocolProxyService aProxyService, [MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel, [MarshalAs(UnmanagedType.Interface)] nsIProxyInfo aProxy, [MarshalAs(UnmanagedType.Interface)] nsIProxyProtocolFilterResult aCallback);
 	}
 }

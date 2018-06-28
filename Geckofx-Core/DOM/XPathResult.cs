@@ -71,6 +71,7 @@ namespace Gecko.DOM
     public enum XPathResultType
         : ushort
     {
+#if PORTFF60
         Any = nsIDOMXPathResultConsts.ANY_TYPE,
         Number = nsIDOMXPathResultConsts.NUMBER_TYPE,
         String = nsIDOMXPathResultConsts.STRING_TYPE,
@@ -81,5 +82,6 @@ namespace Gecko.DOM
         OrderedNodeSnapshot = nsIDOMXPathResultConsts.ORDERED_NODE_SNAPSHOT_TYPE,
         AnyUnorderedNode = nsIDOMXPathResultConsts.ANY_UNORDERED_NODE_TYPE,
         FirstOrderedNode = nsIDOMXPathResultConsts.FIRST_ORDERED_NODE_TYPE,
+#endif
     }
 }

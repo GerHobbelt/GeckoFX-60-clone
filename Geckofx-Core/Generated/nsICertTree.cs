@@ -195,13 +195,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void GetImageSrc(int row, [MarshalAs(UnmanagedType.Interface)] nsITreeColumn col, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
-		/// <summary>Member GetProgressMode </summary>
-		/// <param name='row'> </param>
-		/// <param name='col'> </param>
-		/// <returns>A System.Int32</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new int GetProgressMode(int row, [MarshalAs(UnmanagedType.Interface)] nsITreeColumn col);
-		
 		/// <summary>
         /// The value for a given cell. This method is only called for columns
         /// of type other than |text|.
@@ -321,13 +314,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsICertTreeItem GetTreeItem(uint index);
-		
-		/// <summary>Member IsHostPortOverride </summary>
-		/// <param name='index'> </param>
-		/// <returns>A System.Boolean</returns>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsHostPortOverride(uint index);
 		
 		/// <summary>Member DeleteEntryObject </summary>
 		/// <param name='index'> </param>

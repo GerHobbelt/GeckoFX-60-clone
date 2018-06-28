@@ -32,9 +32,19 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c5f583f0-ae53-4e39-8af9-2c2d0d7af093")]
+	[Guid("72c34415-c6eb-48af-851f-772fa9ee5972")]
 	public interface nsICacheInfoChannel
 	{
+		
+		/// <summary>
+        /// Get the number of times the cache entry has been opened. This attribute is
+        /// equivalent to nsICachingChannel.cacheToken.fetchCount.
+        ///
+        /// @throws NS_ERROR_NOT_AVAILABLE if the cache entry or the alternate data
+        /// cache entry cannot be read.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetCacheTokenFetchCountAttribute();
 		
 		/// <summary>
         /// Get expiration time from cache token. This attribute is equivalent to
@@ -67,6 +77,19 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsFromCache();
+		
+		/// <summary>
+        /// The unique ID of the corresponding nsICacheEntry from which the response is
+        /// retrieved. By comparing the returned value, we can judge whether the data
+        /// of two distinct nsICacheInfoChannels is from the same nsICacheEntry. This
+        /// scenario could be useful when verifying whether the alternative data from
+        /// one nsICacheInfochannel matches the main data from another one.
+        ///
+        /// Note: NS_ERROR_NOT_AVAILABLE is thrown when a nsICacheInfoChannel has no
+        /// valid corresponding nsICacheEntry.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetCacheEntryId();
 		
 		/// <summary>
         /// Set/get the cache key... uniquely identifies the data in the cache
@@ -108,5 +131,61 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetCacheKeyAttribute([MarshalAs(UnmanagedType.Interface)] nsISupports aCacheKey);
+		
+		/// <summary>
+        /// Tells the channel to behave as if the LOAD_FROM_CACHE flag has been set,
+        /// but without affecting the loads for the entire loadGroup in case of this
+        /// channel being the default load group's channel.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetAllowStaleCacheContentAttribute();
+		
+		/// <summary>
+        /// Tells the channel to behave as if the LOAD_FROM_CACHE flag has been set,
+        /// but without affecting the loads for the entire loadGroup in case of this
+        /// channel being the default load group's channel.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAllowStaleCacheContentAttribute([MarshalAs(UnmanagedType.U1)] bool aAllowStaleCacheContent);
+		
+		/// <summary>
+        /// Calling this method instructs the channel to serve the alternative data
+        /// if that was previously saved in the cache, otherwise it will serve the
+        /// real data.
+        /// Must be called before AsyncOpen.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PreferAlternativeDataType([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase type);
+		
+		/// <summary>
+        /// Get the preferred alternative data type set by preferAlternativeDataType().
+        /// This attribute stands for the desired data type instead of the type of the
+        /// information retrieved from the network stack.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetPreferredAlternativeDataTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPreferredAlternativeDataType);
+		
+		/// <summary>
+        /// Holds the type of the alternative data representation that the channel
+        /// is returning.
+        /// Is empty string if no alternative data representation was requested, or
+        /// if the requested representation wasn't found in the cache.
+        /// Can only be called during or after OnStartRequest.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAlternativeDataTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aAlternativeDataType);
+		
+		/// <summary>
+        /// Opens and returns an output stream that a consumer may use to save an
+        /// alternate representation of the data.
+        /// Must be called after the OnStopRequest that delivered the real data.
+        /// The consumer may choose to replace the saved alt representation.
+        /// Opening the output stream will fail if there are any open input streams
+        /// reading the already saved alt representation.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIOutputStream OpenAlternativeOutputStream([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase type);
 	}
 }

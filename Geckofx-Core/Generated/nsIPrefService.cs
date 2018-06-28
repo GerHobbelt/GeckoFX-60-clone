@@ -42,23 +42,6 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Called to read in the preferences specified in a user preference file.
-        ///
-        /// @param aFile The file to be read.
-        ///
-        /// @note
-        /// If nullptr is passed in for the aFile parameter the default preferences
-        /// file(s) [prefs.js, user.js] will be read and processed.
-        ///
-        /// @throws Error File failed to read or contained invalid data.
-        ///
-        /// @see savePrefFile
-        /// @see nsIFile
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ReadUserPrefs([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
-		
-		/// <summary>
         /// Called to completely flush and re-initialize the preferences system.
         ///
         /// @throws Error The preference service failed to restart correctly.
@@ -84,7 +67,7 @@ namespace Gecko
         ///
         /// @throws Error File failed to write.
         ///
-        /// @see readUserPrefs
+        /// @see readUserPrefsFromFile
         /// @see nsIFile
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -146,5 +129,24 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetDirtyAttribute();
+		
+		/// <summary>
+        /// Read in the preferences specified in a default preference file. This
+        /// method does not clear preferences that were already set, but it may
+        /// overwrite existing preferences.
+        ///
+        /// @param aFile The file to be read.
+        ///
+        /// @throws Error File failed to read or contained invalid data.
+        /// @note This method is intended for internal unit testing only!
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReadDefaultPrefsFromFile([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
+		
+		/// <summary>
+        /// Like readDefaultPrefsFromFile, but for a user prefs file.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReadUserPrefsFromFile([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
 	}
 }

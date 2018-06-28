@@ -102,5 +102,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Abort([MarshalAs(UnmanagedType.LPStr)] string aFile, int aLine);
+		
+		/// <summary>
+        /// Request the process to trigger a fatal panic!() from Rust code.
+        ///
+        /// @param aMessage the string to pass to panic!().
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RustPanic([MarshalAs(UnmanagedType.LPStr)] string aMessage);
 	}
 }

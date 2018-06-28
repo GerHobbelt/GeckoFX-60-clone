@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a6cf906f-15b3-11d2-932e-00805f8add32")]
+	[Guid("8d64f457-fb8c-49ea-a359-cef30eed9774")]
 	public interface nsIDOMWindowCollection
 	{
 		
@@ -45,15 +45,13 @@ namespace Gecko
 		/// <summary>
         /// Method for accessing an item in this collection by index.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow Item(uint index);
+		mozIDOMWindowProxy Item(uint index);
 		
 		/// <summary>
         /// Method for accessing an item in this collection by window name.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow NamedItem([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name);
+		mozIDOMWindowProxy NamedItem([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name);
 	}
 }

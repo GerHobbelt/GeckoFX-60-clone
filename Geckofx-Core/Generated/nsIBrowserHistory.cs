@@ -36,29 +36,6 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Removes a page from global history.
-        ///
-        /// @note It is preferrable to use this one rather then RemovePages when
-        /// removing less than 10 pages, since it won't start a full batch
-        /// operation.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemovePage([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
-		
-		/// <summary>
-        /// Removes a list of pages from global history.
-        ///
-        /// @param aURIs
-        /// Array of URIs to be removed.
-        /// @param aLength
-        /// Length of the array.
-        ///
-        /// @note the removal happens in a batch.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemovePages([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] nsIURI[] aURIs, uint aLength);
-		
-		/// <summary>
         /// Removes all global history information about pages for a given host.
         ///
         /// @param aHost
@@ -90,34 +67,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RemovePagesByTimeframe(long aBeginTime, long aEndTime);
-		
-		/// <summary>
-        /// Removes all visits in a given timeframe.
-        /// Limits are included: aBeginTime <= timeframe <= aEndTime.
-        /// Any pages that becomes unvisited as a result will also be deleted.
-        ///
-        /// @param aBeginTime
-        /// Microseconds from epoch, representing the initial time.
-        /// @param aEndTime
-        /// Microseconds from epoch, representing the final time.
-        ///
-        /// @note The removal happens in a batch.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveVisitsByTimeframe(long aBeginTime, long aEndTime);
-		
-		/// <summary>
-        /// Removes all existing pages from global history.
-        /// Visits are removed synchronously, but pages are expired asynchronously
-        /// off the main-thread.
-        ///
-        /// @deprecated Please use PlacesUtils.history.clear() instead.
-        ///
-        /// @note The removal happens in a batch. Single removals are not notified,
-        /// instead an onClearHistory notification is sent to
-        /// nsINavHistoryObserver implementers.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveAllPages();
 	}
 }

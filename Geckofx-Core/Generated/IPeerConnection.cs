@@ -27,23 +27,6 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// Manager interface to PeerConnection.js so it is accessible from C++.
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c2218bd2-2648-4701-8fa6-305d3379e9f8")]
-	public interface IPeerConnectionManager
-	{
-		
-		/// <summary>
-        /// Manager interface to PeerConnection.js so it is accessible from C++.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool HasActivePeerConnection(uint innerWindowID);
-	}
-	
-	/// <summary>
     ///Do not confuse with nsIDOMRTCPeerConnection. This interface is purely for
     /// communication between the PeerConnection JS DOM binding and the C++
     /// implementation in SIPCC.

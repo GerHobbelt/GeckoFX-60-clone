@@ -32,7 +32,70 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5fe83b24-38b9-4901-a4a1-d1bd57d3fe18")]
+	[Guid("2822a840-f009-11e5-a837-0800200c9a66")]
+	public interface nsISuspendedTypes
+	{
+	}
+	
+	/// <summary>nsISuspendedTypesConsts </summary>
+	public class nsISuspendedTypesConsts
+	{
+		
+		// <summary>
+        // The suspended enum is used in three different situations,
+        // - platform audio focus (Fennec/B2G)
+        // - remote media control (Fennec)
+        // - block auto-play video in non-active page
+        //
+        // Note: the "remote side" must control the AudioChannelAgent using
+        // nsIAudioChannelAgentCallback.windowSuspendChanged() callback instead using
+        // play/pause methods or any button in the webpage.
+        //
+        // - SUSPENDED_PAUSE :
+        // It's used when transiently losing audio focus, the media can't be resumed
+        // until we gain the audio focus again. It would change the internal state of
+        // MediaElement when it's being suspended/resumed, and it would trigger the
+        // related JS event. eg. "play" and "pause" event.
+        //
+        // - SUSPENDED_BLOCK
+        // It's used to prevent auto-playing media in inactive page in order to
+        // reduce the power consumption, and the media can't be resumed until the
+        // page becomes active again. It would change the internal state of
+        // MediaElement when it's being blocked/resumed, so it won't trigger the
+        // related JS event. eg. "play" and "pause" event.
+        //
+        // - SUSPENDED_PAUSE_DISPOSABLE
+        // It's used for remote media-control to pause the playing media and when we
+        // lose audio focus permanently. It's disposable suspended, so the media can
+        // be resumed arbitrary after that. Same as SUSPENDED_PAUSE, it would change
+        // the internal state of MediaElement when it's being suspended.
+        //
+        // - SUSPENDED_STOP_DISPOSABLE
+        // It's used for remote media-control to stop the playing media. The remote
+        // control would disappear after stopping the media, so we would disconnect
+        // the audio channel agent. It's disposable suspended, so the media can be
+        // resumed arbitrary after that. Same as SUSPENDED_PAUSE, it would change
+        // the internal state of MediaElement when it's being suspended.
+        // </summary>
+		public const long NONE_SUSPENDED = 0;
+		
+		// 
+		public const long SUSPENDED_PAUSE = 1;
+		
+		// 
+		public const long SUSPENDED_BLOCK = 2;
+		
+		// 
+		public const long SUSPENDED_PAUSE_DISPOSABLE = 3;
+		
+		// 
+		public const long SUSPENDED_STOP_DISPOSABLE = 4;
+	}
+	
+	/// <summary>nsIAudioChannelAgentCallback </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("15c05894-408e-4798-b527-a8c32d9c5f8c")]
 	public interface nsIAudioChannelAgentCallback
 	{
 		
@@ -43,36 +106,32 @@ namespace Gecko
 		void WindowVolumeChanged(float aVolume, [MarshalAs(UnmanagedType.U1)] bool aMuted);
 		
 		/// <summary>
+        /// Notified when the window needs to be suspended or resumed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void WindowSuspendChanged(uint aSuspend);
+		
+		/// <summary>
         /// Notified when the capture state is changed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WindowAudioCaptureChanged();
+		void WindowAudioCaptureChanged([MarshalAs(UnmanagedType.U1)] bool aCapture);
 	}
 	
 	/// <summary>
     /// This interface provides an agent for gecko components to participate
     /// in the audio channel service. Gecko components are responsible for
-    /// 1. Indicating what channel type they are using (via the init() member
-    /// function).
-    /// 2. Before playing, checking the playable status of the channel.
-    /// 3. Notifying the agent when they start/stop using this channel.
-    /// 4. Notifying the agent of changes to the visibility of the component using
-    /// this channel.
+    /// 1. Notifying the agent when they start/stop using this channel.
+    /// 2. Notifying the agent when they are audible.
     ///
     /// The agent will invoke a callback to notify Gecko components of
     /// 1. Changes to the playable status of this channel.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("18222148-1b32-463d-b050-b741f43a07ba")]
+	[Guid("4d212770-5d7b-446f-9394-632e351d96ee")]
 	public interface nsIAudioChannelAgent
 	{
-		
-		/// <summary>
-        /// Before init() is called, this returns AUDIO_AGENT_CHANNEL_ERROR.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetAudioChannelTypeAttribute();
 		
 		/// <summary>
         /// Initialize the agent with a channel type.
@@ -80,8 +139,6 @@ namespace Gecko
         ///
         /// @param window
         /// The window
-        /// @param channelType
-        /// Audio Channel Type listed as above
         /// @param callback
         /// 1. Once the playable status changes, agent uses this callback function
         /// to notify Gecko component.
@@ -91,7 +148,7 @@ namespace Gecko
         /// object.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, int channelType, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback);
+		void Init(mozIDOMWindow window, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback);
 		
 		/// <summary>
         /// This method is just like init(), except the audio channel agent keeps a
@@ -101,27 +158,18 @@ namespace Gecko
         /// nsISupportsWeakReference.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitWithWeakCallback([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, int channelType, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback);
+		void InitWithWeakCallback(mozIDOMWindow window, [MarshalAs(UnmanagedType.Interface)] nsIAudioChannelAgentCallback callback);
 		
 		/// <summary>
         /// Notify the agent that we want to start playing.
         /// Note: Gecko component SHOULD call this function first then start to
         /// play audio stream only when return value is true.
         ///
-        /// @param notifyPlaying
-        /// Whether to send audio-playback notifications, one of AUDIO_CHANNEL_NOTIFY
-        /// or AUDIO_CHANNEL_DONT_NOTIFY.
-        ///
-        /// @return
-        /// normal state: the agent has registered with audio channel service and
-        /// the component should start playback.
-        /// muted state: the agent has registered with audio channel service but
-        /// the component should not start playback.
-        /// faded state: the agent has registered with audio channel service the
-        /// component should start playback as well as reducing the volume.
+        /// @param config
+        /// It contains the playback related states (volume/mute/suspend)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyStartedPlaying(uint notifyPlayback, ref float volume, [MarshalAs(UnmanagedType.U1)] ref bool muted);
+		void NotifyStartedPlaying(/* AudioPlaybackConfig */ nsISupports config, byte audible);
 		
 		/// <summary>
         /// Notify the agent we no longer want to play.
@@ -133,6 +181,16 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void NotifyStoppedPlaying();
+		
+		/// <summary>
+        /// Notify agent that we already start producing audible data.
+        ///
+        /// Note : sometime audio might become silent during playing, this method is used to
+        /// notify the actually audible state to other services which want to know
+        /// about that, ex. tab sound indicator.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyStartedAudible(byte audible, uint reason);
 	}
 	
 	/// <summary>nsIAudioChannelAgentConsts </summary>
@@ -142,43 +200,12 @@ namespace Gecko
 		// <summary>
         // This interface provides an agent for gecko components to participate
         // in the audio channel service. Gecko components are responsible for
-        // 1. Indicating what channel type they are using (via the init() member
-        // function).
-        // 2. Before playing, checking the playable status of the channel.
-        // 3. Notifying the agent when they start/stop using this channel.
-        // 4. Notifying the agent of changes to the visibility of the component using
-        // this channel.
+        // 1. Notifying the agent when they start/stop using this channel.
+        // 2. Notifying the agent when they are audible.
         //
         // The agent will invoke a callback to notify Gecko components of
         // 1. Changes to the playable status of this channel.
         // </summary>
-		public const long AUDIO_AGENT_CHANNEL_NORMAL = 0;
-		
-		// 
-		public const long AUDIO_AGENT_CHANNEL_CONTENT = 1;
-		
-		// 
-		public const long AUDIO_AGENT_CHANNEL_NOTIFICATION = 2;
-		
-		// 
-		public const long AUDIO_AGENT_CHANNEL_ALARM = 3;
-		
-		// 
-		public const long AUDIO_AGENT_CHANNEL_TELEPHONY = 4;
-		
-		// 
-		public const long AUDIO_AGENT_CHANNEL_RINGER = 5;
-		
-		// 
-		public const long AUDIO_AGENT_CHANNEL_PUBLICNOTIFICATION = 6;
-		
-		// 
-		public const long AUDIO_AGENT_CHANNEL_SYSTEM = 7;
-		
-		// 
-		public const long AUDIO_AGENT_CHANNEL_ERROR = 1000;
-		
-		// 
 		public const long AUDIO_AGENT_STATE_NORMAL = 0;
 		
 		// 
@@ -186,11 +213,5 @@ namespace Gecko
 		
 		// 
 		public const long AUDIO_AGENT_STATE_FADED = 2;
-		
-		// 
-		public const long AUDIO_AGENT_DONT_NOTIFY = 0;
-		
-		// 
-		public const long AUDIO_AGENT_NOTIFY = 1;
 	}
 }

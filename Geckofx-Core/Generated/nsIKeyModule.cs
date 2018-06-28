@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4b31f4ed-9424-4710-b946-79b7e33cf3a8")]
+	[Guid("ee2dc516-ba7b-4e77-89fe-c43b886ef715")]
 	public interface nsIKeyObject
 	{
 		
@@ -39,17 +39,14 @@ namespace Gecko
         /// for freeing the key memory when destroyed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitKey(short aAlgorithm, System.IntPtr aKey);
+		void InitKey(short aAlgorithm, nsISupports aKey);
 		
 		/// <summary>
-        /// Return a pointer to the underlying key object
+        /// Returns a pointer to the underlying key object.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetKeyObj();
+        nsISupports GetKeyObj();
 		
-		/// <summary>
-        /// Will return NS_ERROR_NOT_INITIALIZED if initKey hasn't been run
-        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		short GetType();
 	}
@@ -63,50 +60,23 @@ namespace Gecko
         // </summary>
 		public const short SYM_KEY = 1;
 		
-		// 
-		public const short PRIVATE_KEY = 2;
-		
-		// 
-		public const short PUBLIC_KEY = 3;
-		
 		// <summary>
         // Algorithm types
         // </summary>
-		public const short RC4 = 1;
-		
-		// 
-		public const short AES_CBC = 2;
-		
-		// 
 		public const short HMAC = 257;
 	}
 	
 	/// <summary>nsIKeyObjectFactory </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("264eb54d-e20d-49a0-890c-1a5986ea81c4")]
+	[Guid("838bdbf1-8244-448f-8bcd-cede70227d75")]
 	public interface nsIKeyObjectFactory
 	{
 		
-		/// <summary>Member LookupKeyByName </summary>
-		/// <param name='aName'> </param>
-		/// <returns>A nsIKeyObject</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIKeyObject LookupKeyByName([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName);
-		
-		/// <summary>Member UnwrapKey </summary>
+		/// <summary>Member KeyFromString </summary>
 		/// <param name='aAlgorithm'> </param>
-		/// <param name='aWrappedKey'> </param>
-		/// <param name='aWrappedKeyLen'> </param>
+		/// <param name='aKey'> </param>
 		/// <returns>A nsIKeyObject</returns>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIKeyObject UnwrapKey(short aAlgorithm, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] byte[] aWrappedKey, uint aWrappedKeyLen);
-		
-		/// <summary>
-        /// This is not FIPS compliant and should not be used.
-        /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIKeyObject KeyFromString(short aAlgorithm, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aKey);

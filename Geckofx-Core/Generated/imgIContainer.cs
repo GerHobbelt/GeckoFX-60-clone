@@ -81,11 +81,11 @@ namespace Gecko
         /// @param aDest The size of the destination rect into which this image will be
         /// drawn, in device pixels.
         /// @param aWhichFrame Frame specifier of the FRAME_* variety.
-        /// @param aFilter The filter to be used if we're scaling the image.
+        /// @param aSamplingFilter The filter to be used if we're scaling the image.
         /// @param aFlags Flags of the FLAG_* variety
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint OptimalImageSizeForDest(gfxSize aDest, uint aWhichFrame, System.IntPtr aFilter, uint aFlags);
+		uint OptimalImageSizeForDest(gfxSize aDest, uint aWhichFrame, nsISupports aSamplingFilter, uint aFlags);
 		
 		/// <summary>
         /// The type of this image (one of the TYPE_* values above).
@@ -129,11 +129,14 @@ namespace Gecko
 		System.IntPtr GetFrameAtSize(uint aSize, uint aWhichFrame, uint aFlags);
 		
 		/// <summary>
-        /// Whether this image is opaque (i.e., needs a background painted behind it).
+        /// Returns true if this image will draw opaquely right now if asked to draw
+        /// with FLAG_HIGH_QUALITY_SCALING and otherwise default flags. If this image
+        /// (when decoded) is opaque but no decoded frames are available then
+        /// willDrawOpaqueNow will return false.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsOpaque();
+		bool WillDrawOpaqueNow();
 		
 		/// <summary>
         /// @return true if getImageContainer() is expected to return a valid
@@ -146,7 +149,7 @@ namespace Gecko
 		
 		/// <summary>
         /// Attempts to create an ImageContainer (and Image) containing the current
-        /// frame.
+        /// frame at its native size.
         ///
         /// Avoid calling this unless you're actually going to layerize this image.
         ///
@@ -160,6 +163,39 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetImageContainer(System.IntPtr aManager, uint aFlags);
+		
+		/// <summary>
+        /// @return true if getImageContainer() is expected to return a valid
+        /// ImageContainer when passed the given @Manager, @Size and @Flags
+        /// parameters.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsImageContainerAvailableAtSize(System.IntPtr aManager, uint aSize, uint aFlags);
+		
+		/// <summary>
+        /// Attempts to create an ImageContainer (and Image) containing the current
+        /// frame at the given size. Match the requested size is best effort; it's
+        /// not guaranteed that the surface you get will be a perfect match. (Some
+        /// reasons you may get a surface of a different size include: if you
+        /// requested upscaling, or if downscale-during-decode is disabled.)
+        ///
+        /// Avoid calling this unless you're actually going to layerize this image.
+        ///
+        /// @param aManager The LayerManager which will be used to create the
+        /// ImageContainer.
+        /// @param aSVGContext If specified, SVG-related rendering context, such as
+        /// overridden attributes on the image document's root <svg>
+        /// node, and the size of the viewport that the full image
+        /// would occupy. Ignored for raster images.
+        /// @param aFlags Decoding / drawing flags (in other words, FLAG_* flags).
+        /// Currently only FLAG_SYNC_DECODE and FLAG_SYNC_DECODE_IF_FAST
+        /// are supported.
+        /// @return An ImageContainer for the current frame, or nullptr if one could
+        /// not be created.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetImageContainerAtSize(System.IntPtr aManager, uint aSize, System.IntPtr aSVGContext, uint aFlags);
 		
 		/// <summary>
         /// Draw the requested frame of this image onto the context specified.
@@ -257,26 +293,41 @@ namespace Gecko
         /// is only of use to callers which need to draw with pixel
         /// snapping.
         /// @param aWhichFrame Frame specifier of the FRAME_* variety.
-        /// @param aFilter The filter to be used if we're scaling the image.
+        /// @param aSamplingFilter The filter to be used if we're scaling the image.
         /// @param aSVGContext If specified, SVG-related rendering context, such as
         /// overridden attributes on the image document's root <svg>
         /// node, and the size of the viewport that the full image
         /// would occupy. Ignored for raster images.
         /// @param aFlags Flags of the FLAG_* variety
-        /// @return A DrawResult value indicating whether and to what degree the
+        /// @return A ImgDrawResult value indicating whether and to what degree the
         /// drawing operation was successful.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr Draw(gfxContext aContext, uint aSize, System.IntPtr aRegion, uint aWhichFrame, System.IntPtr aFilter, System.IntPtr aSVGContext, uint aFlags);
+		nsISupports Draw(gfxContext aContext, uint aSize, System.IntPtr aRegion, uint aWhichFrame, nsISupports aSamplingFilter, System.IntPtr aSVGContext, uint aFlags, float aOpacity);
 		
 		/// <summary>
         /// Ensures that an image is decoding. Calling this function guarantees that
         /// the image will at some point fire off decode notifications. Images that
         /// can be decoded "quickly" according to some heuristic will be decoded
         /// synchronously.
+        ///
+        /// @param aFlags Flags of the FLAG_* variety. Only FLAG_ASYNC_NOTIFY
+        /// is accepted; all others are ignored.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void StartDecoding();
+		void StartDecoding(uint aFlags);
+		
+		/// <summary>
+        /// Exactly like startDecoding above except returns whether the current frame
+        /// of the image is complete or not.
+        ///
+        /// @param aFlags Flags of the FLAG_* variety. Only FLAG_ASYNC_NOTIFY
+        /// is accepted; all others are ignored.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool StartDecodingWithResult(uint aFlags);
 		
 		/// <summary>
         /// This method triggers decoding for an image, but unlike startDecoding() it
@@ -455,7 +506,11 @@ namespace Gecko
         //
         // FLAG_HIGH_QUALITY_SCALING: A hint as to whether this image should be
         // scaled using the high quality scaler. Do not set this if not drawing to
-        // a window or not listening to invalidations.
+        // a window or not listening to invalidations. Passing this flag will do two
+        // things: 1) request a decode of the image at the size asked for by the
+        // caller if one isn't already started or complete, and 2) allows a decoded
+        // frame of any size (it could be neither the requested size, nor the
+        // intrinsic size) to be substituted.
         //
         // FLAG_WANT_DATA_SURFACE: Can be passed to GetFrame when the caller wants a
         // DataSourceSurface instead of a hardware accelerated surface. This can be
@@ -466,6 +521,25 @@ namespace Gecko
         // cached rendering from the surface cache. This is used when we are printing,
         // for example, where we want the vector commands from VectorImages to end up
         // in the PDF output rather than a cached rendering at screen resolution.
+        //
+        // FLAG_FORCE_PRESERVEASPECTRATIO_NONE: Force scaling this image
+        // non-uniformly if necessary. This flag is for vector image only. A raster
+        // image should ignore this flag. While drawing a vector image with this
+        // flag, do not force uniform scaling even if its root <svg> node has a
+        // preserveAspectRatio attribute that would otherwise require uniform
+        // scaling , such as xMinYMin/ xMidYMin. Always scale the graphic content of
+        // the given image non-uniformly if necessary such that the image's
+        // viewBox (if specified or implied by height/width attributes) exactly
+        // matches the viewport rectangle.
+        //
+        // FLAG_FORCE_UNIFORM_SCALING: Signal to ClippedImage::OptimalSizeForDest that
+        // its returned size can only scale the image's size *uniformly* (by the same
+        // factor in each dimension). We need this flag when painting border-image
+        // section with SVG image source-data, if the SVG image has no viewBox and no
+        // intrinsic size. In such a case, we synthesize a viewport for the SVG image
+        // (a "window into SVG space") based on the border image area, and we need to
+        // be sure we don't subsequently scale that viewport in a way that distorts
+        // its contents by stretching them more in one dimension than the other.
         // </summary>
 		public const ulong FLAG_NONE = 0x0;
 		
@@ -495,6 +569,12 @@ namespace Gecko
 		
 		// 
 		public const ulong FLAG_BYPASS_SURFACE_CACHE = 0x100;
+		
+		// 
+		public const ulong FLAG_FORCE_PRESERVEASPECTRATIO_NONE = 0x200;
+		
+		// 
+		public const ulong FLAG_FORCE_UNIFORM_SCALING = 0x400;
 		
 		// <summary>
         // A constant specifying the default set of decode flags (i.e., the default

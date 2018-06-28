@@ -27,27 +27,11 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// This interface represents a content node that loads images.  The interface
-    /// exists to allow getting information on the images that the content node
-    /// loads and to allow registration of observers for the image loads.
-    ///
-    /// Implementors of this interface should handle all the mechanics of actually
-    /// loading an image -- getting the URI, checking with content policies and
-    /// the security manager to see whether loading the URI is allowed, performing
-    /// the load, firing any DOM events as needed.
-    ///
-    /// An implementation of this interface may support the concepts of a
-    /// "current" image and a "pending" image.  If it does, a request to change
-    /// the currently loaded image will start a "pending" request which will
-    /// become current only when the image is loaded.  It is the responsibility of
-    /// observers to check which request they are getting notifications for.
-    ///
-    /// Please make sure to update the MozImageLoadingContent WebIDL
-    /// interface to mirror this interface when changing it.
+    /// constants.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("770f7d84-c917-42d7-bf8d-d1b70649e733")]
+	[Guid("0357123d-9224-4d12-a47e-868c32689777")]
 	public interface nsIImageLoadingContent : imgINotificationObserver
 	{
 		
@@ -55,21 +39,12 @@ namespace Gecko
 		new void Notify(imgIRequest aProxy, int aType, [MarshalAs(UnmanagedType.Interface)] nsIntRect aRect);
 		
 		/// <summary>
-        /// loadingEnabled is used to enable and disable loading in
-        /// situations where loading images is unwanted.  Note that enabling
-        /// loading will *not* automatically trigger an image load.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetLoadingEnabledAttribute();
-		
-		/// <summary>
-        /// loadingEnabled is used to enable and disable loading in
+        /// setLoadingEnabled is used to enable and disable loading in
         /// situations where loading images is unwanted.  Note that enabling
         /// loading will *not* automatically trigger an image load.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetLoadingEnabledAttribute([MarshalAs(UnmanagedType.U1)] bool aLoadingEnabled);
+		void SetLoadingEnabled([MarshalAs(UnmanagedType.U1)] bool aEnabled);
 		
 		/// <summary>
         /// Returns the image blocking status (@see nsIContentPolicy).  This
@@ -88,11 +63,9 @@ namespace Gecko
         /// current and pending, will be passed through.
         ///
         /// @param aObserver the observer to register
-        ///
-        /// @throws NS_ERROR_OUT_OF_MEMORY
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddObserver(imgINotificationObserver aObserver);
+		void AddNativeObserver(imgINotificationObserver aObserver);
 		
 		/// <summary>
         /// Used to unregister an image decoder observer.
@@ -100,7 +73,7 @@ namespace Gecko
         /// @param aObserver the observer to unregister
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveObserver(imgINotificationObserver aObserver);
+		void RemoveNativeObserver(imgINotificationObserver aObserver);
 		
 		/// <summary>
         /// Accessor to get the image requests
@@ -115,6 +88,16 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		imgIRequest GetRequest(int aRequestType);
+		
+		/// <summary>
+        /// Call this function when the request was blocked by any of the
+        /// security policies enforced.
+        ///
+        /// @param aContentDecision the decision returned from nsIContentPolicy
+        /// (any of the types REJECT_*)
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetBlockedRequest(short aContentDecision);
 		
 		/// <summary>
         /// @return true if the current request's size is available.
@@ -177,14 +160,9 @@ namespace Gecko
 		nsIStreamListener LoadImageWithChannel([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel);
 		
 		/// <summary>
-        ///= true </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ForceReload([MarshalAs(UnmanagedType.U1)] bool aNotify, int argc);
-		
-		/// <summary>
-        /// Enables/disables image state forcing. When |aForce| is PR_TRUE, we force
+        /// Enables/disables image state forcing. When |aForce| is true, we force
         /// nsImageLoadingContent::ImageState() to return |aState|. Call again with |aForce|
-        /// as PR_FALSE to revert ImageState() to its original behaviour.
+        /// as false to revert ImageState() to its original behaviour.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ForceImageState([MarshalAs(UnmanagedType.U1)] bool aForce, ulong aState);
@@ -200,22 +178,19 @@ namespace Gecko
 		uint GetNaturalHeightAttribute();
 		
 		/// <summary>
-        /// A visible count is stored, if it is non-zero then this image is considered
-        /// visible. These methods increment, decrement, or return the visible count.
+        /// Called by layout to announce when the frame associated with this content
+        /// has changed its visibility state.
         ///
-        /// @param aNonvisibleAction What to do if the image's visibility count is now
-        /// zero. If ON_NONVISIBLE_NO_ACTION, nothing will be
-        /// done. If ON_NONVISIBLE_REQUEST_DISCARD, the image
-        /// will be asked to discard its surfaces if possible.
+        /// @param aNewVisibility    The new visibility state.
+        /// @param aNonvisibleAction A requested action if the frame has become
+        /// nonvisible. If Nothing(), no action is
+        /// requested. If DISCARD_IMAGES is specified, the
+        /// frame is requested to ask any images it's
+        /// associated with to discard their surfaces if
+        /// possible.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void IncrementVisibleCount();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DecrementVisibleCount(uint aNonvisibleAction);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetVisibleCount();
+		void OnVisibilityChange(nsISupports aNewVisibility, nsISupports aNonvisibleAction);
 	}
 	
 	/// <summary>nsIImageLoadingContentConsts </summary>
@@ -237,11 +212,5 @@ namespace Gecko
 		
 		// 
 		public const long PENDING_REQUEST = 1;
-		
-		// 
-		public const long ON_NONVISIBLE_NO_ACTION = 0;
-		
-		// 
-		public const long ON_NONVISIBLE_REQUEST_DISCARD = 1;
 	}
 }

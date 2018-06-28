@@ -68,15 +68,12 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new int GetResultCodeAttribute();
 		
-		/// <summary>Member GetUsageAttribute </summary>
-		/// <returns>A System.UInt64</returns>
+		/// <summary>
+        ///   nsIQuotaOriginUsageResult
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ulong GetUsageAttribute();
-		
-		/// <summary>Member GetFileUsageAttribute </summary>
-		/// <returns>A System.UInt64</returns>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ulong GetFileUsageAttribute();
+		nsIVariant GetResultAttribute();
 		
 		/// <summary>Member GetCallbackAttribute </summary>
 		/// <returns>A nsIQuotaUsageCallback</returns>
@@ -113,6 +110,13 @@ namespace Gecko
 		/// <returns>A System.Int32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new int GetResultCodeAttribute();
+		
+		/// <summary>
+        ///   bool
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIVariant GetResultAttribute();
 		
 		/// <summary>Member GetCallbackAttribute </summary>
 		/// <returns>A nsIQuotaCallback</returns>

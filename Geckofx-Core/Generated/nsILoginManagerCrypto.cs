@@ -54,6 +54,18 @@ namespace Gecko
 		void Encrypt([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase plainText, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
+        /// encryptMany
+        ///
+        /// @param plainTexts
+        /// The strings to be encrypted.
+        ///
+        /// Encrypts the specified strings, similar to encrypt, but returning a promise
+        /// which resolves with the the encrypted strings.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal EncryptMany(ref Gecko.JsVal plainTexts);
+		
+		/// <summary>
         /// decrypt
         ///
         /// @param cipherText

@@ -58,18 +58,16 @@ namespace Gecko
 		
 		/// <summary>
         /// A contract ID through which an instance of this class can be created
-        /// (or accessed as a service, if |flags & SINGLETON|), or null.
+        /// (or accessed as a service, if |flags & SINGLETON|), or null/void.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetContractIDAttribute();
+		void GetContractIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aContractID);
 		
 		/// <summary>
-        /// A human readable string naming the class, or null.
+        /// A human readable string naming the class, or null/void.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetClassDescriptionAttribute();
+		void GetClassDescriptionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aClassDescription);
 		
 		/// <summary>
         /// A class ID through which an instance of this class can be created

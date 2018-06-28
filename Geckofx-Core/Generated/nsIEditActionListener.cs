@@ -43,58 +43,21 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Called before the editor creates a node.
-        /// @param aTag      The tag name of the DOM Node to create.
-        /// @param aParent   The node to insert the new object into
-        /// @param aPosition The place in aParent to insert the new node
-        /// 0=first child, 1=second child, etc.
-        /// any number > number of current children = last child
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WillCreateNode([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTag, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aParent, int aPosition);
-		
-		/// <summary>
         /// Called after the editor creates a node.
         /// @param aTag      The tag name of the DOM Node to create.
-        /// @param aNode     The DOM Node that was created.
-        /// @param aParent   The node to insert the new object into
-        /// @param aPosition The place in aParent to insert the new node
-        /// 0=first child, 1=second child, etc.
-        /// any number > number of current children = last child
+        /// @param aNewNode  The DOM Node that was created.
         /// @param aResult   The result of the create node operation.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DidCreateNode([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTag, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aParent, int aPosition, int aResult);
-		
-		/// <summary>
-        /// Called before the editor inserts a node.
-        /// @param aNode     The DOM Node to insert.
-        /// @param aParent   The node to insert the new object into
-        /// @param aPosition The place in aParent to insert the new node
-        /// 0=first child, 1=second child, etc.
-        /// any number > number of current children = last child
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WillInsertNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aParent, int aPosition);
+		void DidCreateNode([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTag, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNewNode, int aResult);
 		
 		/// <summary>
         /// Called after the editor inserts a node.
         /// @param aNode     The DOM Node to insert.
-        /// @param aParent   The node to insert the new object into
-        /// @param aPosition The place in aParent to insert the new node
-        /// 0=first child, 1=second child, etc.
-        /// any number > number of current children = last child
         /// @param aResult   The result of the insert node operation.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DidInsertNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aParent, int aPosition, int aResult);
-		
-		/// <summary>
-        /// Called before the editor deletes a node.
-        /// @param aChild    The node to delete
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WillDeleteNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aChild);
+		void DidInsertNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, int aResult);
 		
 		/// <summary>
         /// Called after the editor deletes a node.
@@ -105,33 +68,14 @@ namespace Gecko
 		void DidDeleteNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aChild, int aResult);
 		
 		/// <summary>
-        /// Called before the editor splits a node.
-        /// @param aExistingRightNode   the node to split.  It will become the new node's next sibling.
-        /// @param aOffset              the offset of aExistingRightNode's content|children to do the split at
-        /// @param aNewLeftNode         [OUT] the new node resulting from the split, becomes aExistingRightNode's previous sibling.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WillSplitNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aExistingRightNode, int aOffset);
-		
-		/// <summary>
         /// Called after the editor splits a node.
-        /// @param aExistingRightNode   the node to split.  It will become the new node's next sibling.
-        /// @param aOffset              the offset of aExistingRightNode's content|children to do the split at
-        /// @param aNewLeftNode         [OUT] the new node resulting from the split, becomes aExistingRightNode's previous sibling.
+        /// @param aExistingRightNode   The node which was split.  It will become the
+        /// next sibling of the new left node.
+        /// @param aNewLeftNode         The new node resulting from the split, becomes
+        /// the previous sibling of aExistingRightNode.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DidSplitNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aExistingRightNode, int aOffset, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNewLeftNode, int aResult);
-		
-		/// <summary>
-        /// Called before the editor joins 2 nodes.
-        /// @param aLeftNode   This node will be merged into the right node
-        /// @param aRightNode  The node that will be merged into.
-        /// There is no requirement that the two nodes be of
-        /// the same type.
-        /// @param aParent     The parent of aRightNode
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WillJoinNodes([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aLeftNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aRightNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aParent);
+		void DidSplitNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aExistingRightNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNewLeftNode);
 		
 		/// <summary>
         /// Called after the editor joins 2 nodes.
@@ -144,15 +88,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DidJoinNodes([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aLeftNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aRightNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aParent, int aResult);
-		
-		/// <summary>
-        /// Called before the editor inserts text.
-        /// @param aTextNode   This node getting inserted text
-        /// @param aOffset     The offset in aTextNode to insert at.
-        /// @param aString     The string that gets inserted.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WillInsertText([MarshalAs(UnmanagedType.Interface)] nsIDOMCharacterData aTextNode, int aOffset, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aString);
 		
 		/// <summary>
         /// Called after the editor inserts text.

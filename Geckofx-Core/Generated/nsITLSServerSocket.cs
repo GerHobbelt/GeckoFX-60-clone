@@ -251,7 +251,19 @@ namespace Gecko
         /// This is required to be set before calling |asyncListen|.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCipherSuites(unsigned short aCipherSuites, uint aLength);
+		void SetCipherSuites(ushort aCipherSuites, uint aLength);
+		
+		/// <summary>
+        /// setVersionRange
+        ///
+        /// The server's TLS versions that is used by the TLS handshake.
+        /// This is required to be set before calling |asyncListen|.
+        ///
+        /// aMinVersion and aMaxVersion is a TLS version value from
+        /// |nsITLSClientStatus| constants.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetVersionRange(ushort aMinVersion, ushort aMaxVersion);
 	}
 	
 	/// <summary>nsITLSServerSocketConsts </summary>
@@ -363,6 +375,9 @@ namespace Gecko
 		
 		// 
 		public const short TLS_VERSION_1_2 = 0x0303;
+		
+		// 
+		public const short TLS_VERSION_1_3 = 0x0304;
 		
 		// 
 		public const short TLS_VERSION_UNKNOWN = -1;

@@ -72,17 +72,15 @@ namespace Gecko
 		/// <summary>
         /// Get a human readable description of the cache device.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetDescriptionAttribute();
+		void GetDescriptionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aDescription);
 		
 		/// <summary>
         /// Get a usage report, statistics, miscellaneous data about
         /// the cache device.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetUsageReportAttribute();
+		void GetUsageReportAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUsageReport);
 		
 		/// <summary>
         /// Get the number of stored cache entries.
@@ -113,16 +111,14 @@ namespace Gecko
 		/// <summary>
         /// Get the client id associated with this cache entry.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetClientIDAttribute();
+		void GetClientIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aClientID);
 		
 		/// <summary>
         /// Get the id for the device that stores this cache entry.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetDeviceIDAttribute();
+		void GetDeviceIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aDeviceID);
 		
 		/// <summary>
         /// Get the key identifying the cache entry.

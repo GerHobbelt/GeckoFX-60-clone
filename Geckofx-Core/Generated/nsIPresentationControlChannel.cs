@@ -107,22 +107,30 @@ namespace Gecko
 		void OnIceCandidate([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase candidate);
 		
 		/// <summary>
-        /// The callback for notifying channel opened.
+        /// The callback for notifying channel connected. This should be async called
+        /// after nsIPresentationDevice::establishControlChannel.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyOpened();
+		void NotifyConnected();
 		
 		/// <summary>
-        /// The callback for notifying channel closed.
+        /// The callback for notifying channel disconnected.
         /// @param reason The reason of channel close, NS_OK represents normal close.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyClosed(int reason);
+		void NotifyDisconnected(int reason);
+		
+		/// <summary>
+        /// The callback for notifying the reconnect command is acknowledged.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyReconnected();
 	}
 	
 	/// <summary>
     /// The control channel for establishing RTCPeerConnection for a presentation
-    /// session. SDP Offer/Answer will be exchanged through this interface.
+    /// session. SDP Offer/Answer will be exchanged through this interface. The
+    /// control channel should be in-order.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -171,10 +179,37 @@ namespace Gecko
 		void SendIceCandidate([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase candidate);
 		
 		/// <summary>
-        /// Close the transport channel.
-        /// @param reason The reason of channel close; NS_OK represents normal.
+        /// Launch a presentation on remote endpoint.
+        /// @param presentationId The Id for representing this session.
+        /// @param url The URL requested to open by remote device.
+        /// @throws NS_ERROR_FAILURE on failure
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Close(int reason);
+		void Launch([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase presentationId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url);
+		
+		/// <summary>
+        /// Terminate a presentation on remote endpoint.
+        /// @param presentationId The Id for representing this session.
+        /// @throws NS_ERROR_FAILURE on failure
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Terminate([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase presentationId);
+		
+		/// <summary>
+        /// Disconnect the control channel.
+        /// @param reason The reason of disconnecting channel; NS_OK represents normal.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Disconnect(int reason);
+		
+		/// <summary>
+        /// Reconnect a presentation on remote endpoint.
+        /// Note that only controller is allowed to reconnect a session.
+        /// @param presentationId The Id for representing this session.
+        /// @param url The URL requested to open by remote device.
+        /// @throws NS_ERROR_FAILURE on failure
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Reconnect([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase presentationId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url);
 	}
 }

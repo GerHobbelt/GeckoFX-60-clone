@@ -40,13 +40,11 @@ namespace Gecko
         ///This Source Code Form is subject to the terms of the Mozilla Public
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string ConvertAndEscape([MarshalAs(UnmanagedType.LPStr)] string charset, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string text);
+		void ConvertAndEscape([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase charset, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase text, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string UnEscapeAndConvert([MarshalAs(UnmanagedType.LPStr)] string charset, [MarshalAs(UnmanagedType.LPStr)] string text);
+		void UnEscapeAndConvert([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase charset, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase text, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// Unescapes the given URI fragment (for UI purpose only)
@@ -77,7 +75,7 @@ namespace Gecko
         /// @param aURIFragment the URI (or URI fragment) to unescape
         /// @return Unescaped aURIFragment  converted to unicode
         /// @throws NS_ERROR_UCONV_NOCONV when there is no decoder for aCharset
-        /// or error code of nsIUnicodeDecoder in case of conversion failure
+        /// or NS_ERROR_UDEC_ILLEGALINPUT in case of conversion failure
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void UnEscapeNonAsciiURI([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCharset, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIFragment, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);

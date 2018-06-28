@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("30cda5a1-a6df-4f32-9a73-0e59a32928c5")]
+	[Guid("df0da056-357d-427f-bafd-e6cbf19c9381")]
 	public interface nsIWindowMediator
 	{
 		
@@ -93,25 +93,22 @@ namespace Gecko
         /// If null, return the topmost window of any type.
         /// @return the topmost window
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetMostRecentWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aWindowType);
+		mozIDOMWindowProxy GetMostRecentWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aWindowType);
 		
 		/// <summary>
         /// Return the outer window with the given ID, if any.  Can return null.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetOuterWindowWithId(ulong aOuterWindowID);
+		mozIDOMWindowProxy GetOuterWindowWithId(ulong aOuterWindowID);
 		
 		/// <summary>
-        /// Return the outer window with the given current window ID, if any.
+        /// Return the inner window with the given current window ID, if any.
         /// Can return null if no inner window with the ID exists or if it's not
         /// a current inner anymore.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetCurrentInnerWindowWithId(ulong aInnerWindowID);
+		mozIDOMWindow GetCurrentInnerWindowWithId(ulong aInnerWindowID);
 		
 		/// <summary>
         ///Add the window to the list of known windows. Listeners (see
@@ -137,15 +134,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void UpdateWindowTimeStamp([MarshalAs(UnmanagedType.Interface)] nsIXULWindow aWindow);
-		
-		/// <summary>
-        ///Call this method when a window's title changes. Listeners (see
-        /// addListener) will be notified through their onWindowTitleChange method.
-        /// @param aWindow the window whose title has changed
-        /// @param inTitle the window's new title
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UpdateWindowTitle([MarshalAs(UnmanagedType.Interface)] nsIXULWindow aWindow, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string inTitle);
 		
 		/// <summary>
         ///A window wants to be moved in z-order. Calculate whether and how
@@ -249,7 +237,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("88b54988-7f3c-40d2-a625-7e42a9c196c2")]
+	[Guid("b9ed4063-39a2-4302-8e5c-7287eef021fe")]
 	public interface nsIWindowMediator_44 : nsIWindowMediator
 	{
 		
@@ -310,25 +298,22 @@ namespace Gecko
         /// If null, return the topmost window of any type.
         /// @return the topmost window
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMWindow GetMostRecentWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aWindowType);
+		new mozIDOMWindowProxy GetMostRecentWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aWindowType);
 		
 		/// <summary>
         /// Return the outer window with the given ID, if any.  Can return null.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMWindow GetOuterWindowWithId(ulong aOuterWindowID);
+		new mozIDOMWindowProxy GetOuterWindowWithId(ulong aOuterWindowID);
 		
 		/// <summary>
-        /// Return the outer window with the given current window ID, if any.
+        /// Return the inner window with the given current window ID, if any.
         /// Can return null if no inner window with the ID exists or if it's not
         /// a current inner anymore.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMWindow GetCurrentInnerWindowWithId(ulong aInnerWindowID);
+		new mozIDOMWindow GetCurrentInnerWindowWithId(ulong aInnerWindowID);
 		
 		/// <summary>
         ///Add the window to the list of known windows. Listeners (see
@@ -354,15 +339,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void UpdateWindowTimeStamp([MarshalAs(UnmanagedType.Interface)] nsIXULWindow aWindow);
-		
-		/// <summary>
-        ///Call this method when a window's title changes. Listeners (see
-        /// addListener) will be notified through their onWindowTitleChange method.
-        /// @param aWindow the window whose title has changed
-        /// @param inTitle the window's new title
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void UpdateWindowTitle([MarshalAs(UnmanagedType.Interface)] nsIXULWindow aWindow, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string inTitle);
 		
 		/// <summary>
         ///A window wants to be moved in z-order. Calculate whether and how
@@ -449,8 +425,7 @@ namespace Gecko
         /// Same as getMostRecentWindow, but ignores private browsing
         /// windows.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetMostRecentNonPBWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aWindowType);
+		mozIDOMWindowProxy GetMostRecentNonPBWindow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aWindowType);
 	}
 }

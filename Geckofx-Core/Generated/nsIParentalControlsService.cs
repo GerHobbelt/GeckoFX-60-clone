@@ -202,17 +202,22 @@ namespace Gecko
 		// <summary>
         // Camera and microphone (WebRTC)
         // </summary>
-		public const short TELEMETRY = 19;
+		public const short BLOCK_LIST = 19;
+		
+		// <summary>
+        // Block websites that include sensitive content
+        // </summary>
+		public const short TELEMETRY = 20;
 		
 		// <summary>
         // Submit telemetry data
         // </summary>
-		public const short HEALTH_REPORT = 20;
+		public const short HEALTH_REPORT = 21;
 		
 		// <summary>
         // Submit FHR data
         // </summary>
-		public const short DEFAULT_THEME = 21;
+		public const short DEFAULT_THEME = 22;
 		
 		// <summary>
         // Log entry types. Additional types can be defined and implemented

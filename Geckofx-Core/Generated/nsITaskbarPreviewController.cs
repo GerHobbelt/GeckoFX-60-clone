@@ -27,6 +27,28 @@ namespace Gecko
 	
 	
 	/// <summary>
+    /// nsITaskbarPreviewCallback
+    ///
+    /// Provides an interface for async image result callbacks. See
+    /// nsITaskbarPreviewController request apis below.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("f3744696-320d-4804-9c27-6a84c29acaa6")]
+	public interface nsITaskbarPreviewCallback
+	{
+		
+		/// <summary>
+        /// nsITaskbarPreviewCallback
+        ///
+        /// Provides an interface for async image result callbacks. See
+        /// nsITaskbarPreviewController request apis below.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Done([MarshalAs(UnmanagedType.Interface)] nsISupports aCanvas, [MarshalAs(UnmanagedType.U1)] bool aDrawBorder);
+	}
+	
+	/// <summary>
     /// nsITaskbarPreviewController
     ///
     /// nsITaskbarPreviewController provides the behavior for the taskbar previews.
@@ -37,20 +59,20 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4FC0AFBB-3E22-4FBA-AC21-953350AF0411")]
+	[Guid("8b427646-e446-4941-ae0b-c1122a173a68")]
 	public interface nsITaskbarPreviewController
 	{
 		
 		/// <summary>
         /// The width of the preview image. This value is allowed to change at any
-        /// time. See drawPreview for more information.
+        /// time. See requestPreview for more information.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetWidthAttribute();
 		
 		/// <summary>
         /// The height of the preview image. This value is allowed to change at any
-        /// time.  See drawPreview for more information.
+        /// time.  See requestPreview for more information.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetHeightAttribute();
@@ -58,40 +80,37 @@ namespace Gecko
 		/// <summary>
         /// The aspect ratio of the thumbnail - this does not need to match the ratio
         /// of the preview. This value is allowed to change at any time. See
-        /// drawThumbnail for more information.
+        /// requestThumbnail for more information.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		float GetThumbnailAspectRatioAttribute();
 		
 		/// <summary>
-        /// Invoked by nsITaskbarPreview when it needs to render the preview. The
-        /// context is attached to a surface with the controller's width and height
-        /// which are obtained immediately before the call.
+        /// Invoked by nsITaskbarPreview when it needs to render the preview.
         ///
-        /// Note that the context is not attached to a canvas element.
-        ///
-        /// @param ctx Canvas drawing context
+        /// @param aCallback Async callback the controller should invoke once
+        /// the thumbnail is rendered. aCallback receives as its only parameter
+        /// a canvas containing the preview image.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool DrawPreview([MarshalAs(UnmanagedType.Interface)] nsISupports ctx);
+		void RequestPreview([MarshalAs(UnmanagedType.Interface)] nsITaskbarPreviewCallback aCallback);
 		
 		/// <summary>
-        /// Invoked by the taskbar preview when it needs to draw the thumbnail in the
-        /// taskbar's application preview window.
-        ///
         /// Note: it is guaranteed that width/height == thumbnailAspectRatio
         /// (modulo rounding errors)
         ///
         /// Also note that the context is not attached to a canvas element.
         ///
-        /// @param ctx Canvas drawing context
-        /// @param width The width of the surface backing the drawing context
-        /// @param height The height of the surface backing the drawing context
+        /// @param aCallback Async callback the controller should invoke once
+        /// the thumbnail is rendered. aCallback receives as its only parameter
+        /// a canvas containing the thumbnail image. Canvas dimensions should
+        /// match the requested width or height otherwise setting the thumbnail
+        /// will fail.
+        /// @param width The width of the requested thumbnail
+        /// @param height The height of the requested thumbnail
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool DrawThumbnail([MarshalAs(UnmanagedType.Interface)] nsISupports ctx, uint width, uint height);
+		void RequestThumbnail([MarshalAs(UnmanagedType.Interface)] nsITaskbarPreviewCallback aCallback, uint width, uint height);
 		
 		/// <summary>
         /// Invoked when the user presses the close button on the tab preview.

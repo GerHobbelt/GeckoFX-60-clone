@@ -30,7 +30,7 @@ namespace Gecko
     ///Doc interface here </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("75D1553D-63BF-4b5d-A8F7-E4E4CAC21BA4")]
+	[Guid("72006d06-a2a5-4250-ae92-04b2f0e2ab8d")]
 	public interface nsIPrintingPromptService
 	{
 		
@@ -43,7 +43,7 @@ namespace Gecko
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ShowPrintDialog([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow parent, [MarshalAs(UnmanagedType.Interface)] nsIWebBrowserPrint webBrowserPrint, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings printSettings);
+		void ShowPrintDialog(mozIDOMWindowProxy parent, [MarshalAs(UnmanagedType.Interface)] nsIWebBrowserPrint webBrowserPrint, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings printSettings);
 		
 		/// <summary>
         /// Shows the print progress dialog
@@ -61,31 +61,15 @@ namespace Gecko
         /// For Print Preview Progress there is intermediate progress
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ShowProgress([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow parent, [MarshalAs(UnmanagedType.Interface)] nsIWebBrowserPrint webBrowserPrint, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings printSettings, [MarshalAs(UnmanagedType.Interface)] nsIObserver openDialogObserver, [MarshalAs(UnmanagedType.U1)] bool isForPrinting, [MarshalAs(UnmanagedType.Interface)] ref nsIWebProgressListener webProgressListener, [MarshalAs(UnmanagedType.Interface)] ref nsIPrintProgressParams printProgressParams, [MarshalAs(UnmanagedType.U1)] ref bool notifyOnOpen);
+		void ShowProgress(mozIDOMWindowProxy parent, [MarshalAs(UnmanagedType.Interface)] nsIWebBrowserPrint webBrowserPrint, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings printSettings, [MarshalAs(UnmanagedType.Interface)] nsIObserver openDialogObserver, [MarshalAs(UnmanagedType.U1)] bool isForPrinting, [MarshalAs(UnmanagedType.Interface)] ref nsIWebProgressListener webProgressListener, [MarshalAs(UnmanagedType.Interface)] ref nsIPrintProgressParams printProgressParams, [MarshalAs(UnmanagedType.U1)] ref bool notifyOnOpen);
 		
 		/// <summary>
         /// Shows the print progress dialog
         ///
         /// @param parent - a DOM windows the dialog will be parented to (required)
         /// @param printSettings - PrintSettings for page setup (required)
-        /// @param aObs - An observer to know if the contents of the Print Settings
-        /// object has changed while the dialog is being shown.
-        /// For example, some platforms may implement an "Apply" button (not required)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ShowPageSetup([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow parent, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings printSettings, [MarshalAs(UnmanagedType.Interface)] nsIObserver aObs);
-		
-		/// <summary>
-        /// Sometimes platforms need to bring up a special properties dialog for showing
-        /// print specific properties. Although the PrintSettings has a place to set the
-        /// printer name, here is is an argument to be clear as to what printer is being
-        /// asked to have the properties set for it. The Printer name in the PS is ignored.
-        ///
-        /// @param parent - a DOM windows the dialog will be parented to (required)
-        /// @param printerName - name of printer (required)
-        /// @param printSettings - PrintSettings for page setup (required)
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ShowPrinterProperties([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow parent, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string printerName, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings printSettings);
+		void ShowPageSetup(mozIDOMWindowProxy parent, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings printSettings);
 	}
 }

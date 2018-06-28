@@ -9,14 +9,14 @@ namespace Gecko
     /// </summary>
     public class GeckoDocument : GeckoDomDocument
     {
-        private nsIDOMHTMLDocument _domHtmlDocument;
+        private /* nsIDOMHTMLDocument */nsISupports _domHtmlDocument;
 
-        internal GeckoDocument(nsIDOMHTMLDocument document) : base(document)
+        internal GeckoDocument(/* nsIDOMHTMLDocument */nsISupports document) : base(document)
         {
             this._domHtmlDocument = document;
         }
 
-        internal static GeckoDocument Create(nsIDOMHTMLDocument document)
+        internal static GeckoDocument Create(/* nsIDOMHTMLDocument */nsISupports document)
         {
             return (document == null) ? null : new GeckoDocument(document);
         }
@@ -35,7 +35,7 @@ namespace Gecko
             {
                 return (_domHtmlDocument == null)
                     ? null
-                    : GeckoHtmlElement.Create<GeckoHeadElement>((nsIDOMHTMLElement) _domHtmlDocument.GetHeadAttribute());
+                    : GeckoHtmlElement.Create<GeckoHeadElement>((/* nsIDOMHTMLElement */nsISupports) _domHtmlDocument.GetHeadAttribute());
             }
         }
 
@@ -62,7 +62,7 @@ namespace Gecko
                 this.List = document._domHtmlDocument.GetStyleSheetsAttribute();
             }
 
-            private nsIDOMStyleSheetList List;
+            private /* nsIDOMStyleSheetList */nsISupports List;
 
             /// <summary>
             /// Gets the number of items in the collection.

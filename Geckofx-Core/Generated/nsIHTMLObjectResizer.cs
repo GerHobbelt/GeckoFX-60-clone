@@ -74,47 +74,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RefreshResizers();
-		
-		/// <summary>
-        /// event callback when a mouse button is pressed
-        /// @param aX      [IN] horizontal position of the pointer
-        /// @param aY      [IN] vertical position of the pointer
-        /// @param aTarget [IN] the element triggering the event
-        /// @param aMouseEvent [IN] the event
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MouseDown(int aX, int aY, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aTarget, [MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aMouseEvent);
-		
-		/// <summary>
-        /// event callback when a mouse button is released
-        /// @param aX      [IN] horizontal position of the pointer
-        /// @param aY      [IN] vertical position of the pointer
-        /// @param aTarget [IN] the element triggering the event
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MouseUp(int aX, int aY, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aTarget);
-		
-		/// <summary>
-        /// event callback when the mouse pointer is moved
-        /// @param aMouseEvent [IN] the event
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MouseMove([MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aMouseEvent);
-		
-		/// <summary>
-        /// Creates a resize listener that can be used to get notifications
-        /// that the user started to resize an object or finalized such an operation
-        /// @param aListener [IN] an instance of nsIHTMLObjectResizeListener
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddObjectResizeEventListener([MarshalAs(UnmanagedType.Interface)] nsIHTMLObjectResizeListener aListener);
-		
-		/// <summary>
-        /// Deletes a resize listener
-        /// @param aListener [IN] an instance of nsIHTMLObjectResizeListener
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveObjectResizeEventListener([MarshalAs(UnmanagedType.Interface)] nsIHTMLObjectResizeListener aListener);
 	}
 	
 	/// <summary>nsIHTMLObjectResizerConsts </summary>

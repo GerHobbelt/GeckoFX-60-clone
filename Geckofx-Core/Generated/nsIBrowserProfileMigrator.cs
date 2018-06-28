@@ -51,33 +51,35 @@ namespace Gecko
         /// @param   aProfile the profile that we are looking for available data
         /// to import
         /// @param   aDoingStartup "true" if the profile is not currently being used.
-        /// @return  bit field containing profile items (see above)
+        /// @return  Promise containing a bit field containing profile items (see above)
         /// @note    a return value of 0 represents no items rather than ALL.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetMigrateData(ref Gecko.JsVal aProfile, [MarshalAs(UnmanagedType.U1)] bool aDoingStartup);
+		Gecko.JsVal GetMigrateData(ref Gecko.JsVal aProfile, [MarshalAs(UnmanagedType.U1)] bool aDoingStartup);
 		
 		/// <summary>
-        /// Whether or not there is any data that can be imported from this
+        /// Get the last time data from this browser was modified
+        /// @return a promise that resolves to a JS Date object
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetLastUsedDate();
+		
+		/// <summary>
+        /// Get whether or not there is any data that can be imported from this
         /// browser (i.e. whether or not it is installed, and there exists
         /// a user profile)
+        /// @return a promise that resolves with a boolean.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetSourceExistsAttribute();
+		Gecko.JsVal IsSourceAvailable();
 		
 		/// <summary>
         /// An enumeration of available profiles. If the import source does
         /// not support profiles, this attribute is null.
+        /// @return a promise that resolves with an array of profiles or null.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetSourceProfilesAttribute();
-		
-		/// <summary>
-        /// The import source homepage.  Returns null if not present/available
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSourceHomePageURLAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSourceHomePageURL);
+		Gecko.JsVal GetSourceProfiles();
 		
 		/// <summary>
         /// Whether the source browser data is locked/in-use meaning migration likely

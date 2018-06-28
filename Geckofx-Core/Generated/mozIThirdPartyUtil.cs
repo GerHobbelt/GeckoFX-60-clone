@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b711bd7f-0674-49be-ae77-f221db5f7b6c")]
+	[Guid("fd82700e-ffb4-4932-b7d6-08f0b5697dda")]
 	public interface mozIThirdPartyUtil
 	{
 		
@@ -100,7 +100,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsThirdPartyWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		bool IsThirdPartyWindow(mozIDOMWindowProxy aWindow, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
 		
 		/// <summary>
         /// isThirdPartyChannel
@@ -177,15 +177,14 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIURI GetURIFromWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		nsIURI GetURIFromWindow(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         /// getTopWindowForChannel
         ///
         /// Returns the top-level window associated with the given channel.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetTopWindowForChannel([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel);
+		mozIDOMWindowProxy GetTopWindowForChannel([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel);
 	}
 }

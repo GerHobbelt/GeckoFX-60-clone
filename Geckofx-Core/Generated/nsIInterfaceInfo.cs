@@ -27,7 +27,8 @@ namespace Gecko
 	
 	
 	/// <summary>
-    ///this is NOT intended to be scriptable </summary>
+    /// We bend the rules to do a [shared] nsIID (but this is never scriptable)
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("3820e663-8e22-4789-b470-56bcf7083f2b")]
@@ -35,7 +36,8 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        ///this is NOT intended to be scriptable </summary>
+        /// We bend the rules to do a [shared] nsIID (but this is never scriptable)
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		string GetNameAttribute();

@@ -89,10 +89,39 @@ namespace Gecko
 		void GetNegotiatedNPNAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aNegotiatedNPN);
 		
 		/// <summary>
-        ///e.g. "spdy/2" </summary>
+        ///For 0RTT we need to know the alpn protocol selected for the last tls
+        /// session. This function will return a value if applicable or an error
+        /// NS_ERROR_NOT_AVAILABLE.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAlpnEarlySelection([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        ///If 0RTT handshake was applied and some data has been sent, as soon as
+        /// the handshake finishes this attribute will be set to appropriate value.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetEarlyDataAcceptedAttribute();
+		
+		/// <summary>
+        ///When 0RTT is performed, PR_Write will not drive the handshake forward.
+        /// It must be forced by calling this function.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DriveHandshake();
+		
+		/// <summary>
+        ///e.g. "h2" </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool JoinConnection([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase npnProtocol, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase hostname, int port);
+		
+		/// <summary>
+        ///e.g. "h2" </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool TestJoinConnection([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase npnProtocol, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase hostname, int port);
 		
 		/// <summary>
         ///Determine if existing connection should be trusted to convey information about
@@ -122,6 +151,12 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetProviderFlagsAttribute();
 		
+		/// <summary>
+        /// The original TLS flags from the socket provider.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetProviderTlsFlagsAttribute();
+		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		short GetSSLVersionUsedAttribute();
 		
@@ -130,6 +165,21 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		short GetMACAlgorithmUsedAttribute();
+		
+		/// <summary>
+        /// If set to true before the server requests a client cert
+        /// no cert will be sent.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetDenyClientCertAttribute();
+		
+		/// <summary>
+        /// If set to true before the server requests a client cert
+        /// no cert will be sent.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDenyClientCertAttribute([MarshalAs(UnmanagedType.U1)] bool aDenyClientCert);
 		
 		/// <summary>
         /// If set before the server requests a client cert (assuming it does so at
@@ -147,6 +197,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetClientCertAttribute([MarshalAs(UnmanagedType.Interface)] nsIX509Cert aClientCert);
+		
+		/// <summary>
+        /// True iff a client cert has been sent to the server - i.e. this
+        /// socket has been client-cert authenticated.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetClientCertSentAttribute();
 		
 		/// <summary>
         /// bypassAuthentication is true if the server certificate checks are
@@ -185,6 +243,9 @@ namespace Gecko
 		
 		// 
 		public const short TLS_VERSION_1_2 = 0x0303;
+		
+		// 
+		public const short TLS_VERSION_1_3 = 0x0304;
 		
 		// 
 		public const short SSL_VERSION_UNKNOWN = -1;

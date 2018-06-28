@@ -117,6 +117,17 @@ namespace Gecko
 		void Remove([MarshalAs(UnmanagedType.U1)] bool removeFiles);
 		
 		/// <summary>
+        /// Removes the profile from the registry of profiles.
+        /// The profile directory is removed in the stream transport thread.
+        ///
+        /// @param removeFiles
+        /// Indicates whether or not the profile directory should be
+        /// removed in addition.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveInBackground([MarshalAs(UnmanagedType.U1)] bool removeFiles);
+		
+		/// <summary>
         /// Lock this profile using platform-specific locking methods.
         ///
         /// @param lockFile If locking fails, this may return a lockFile object

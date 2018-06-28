@@ -45,6 +45,9 @@ namespace Gecko
         /// surrounding chrome, window frame, title bar, and so on.
         ///
         /// @param flags  Combination of position, inner and outer size flags.
+        /// The ignore flags are telling the parent to use the
+        /// current values for those dimensions and ignore the
+        /// corresponding parameters the child sends.
         /// @param x      Left hand corner of the outer area.
         /// @param y      Top corner of the outer area.
         /// @param cx     Width of the inner or outer area.
@@ -81,11 +84,11 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
         unsafe void GetDimensions(uint flags, int* x, int* y, int* cx, int* cy);
-		
-		/// <summary>
+
+        /// <summary>
         /// Give the window focus.
         /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetFocus();
 		
 		/// <summary>
@@ -104,15 +107,14 @@ namespace Gecko
 		/// <summary>
         /// Title of the window.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTitleAttribute();
+		void GetTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTitle);
 		
 		/// <summary>
         /// Title of the window.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aTitle);
+		void SetTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTitle);
 		
 		/// <summary>
         /// Native window for the site's window. The implementor should copy the
@@ -169,5 +171,33 @@ namespace Gecko
         // @see DIM_FLAGS_SIZE_INNER
         // </summary>
 		public const ulong DIM_FLAGS_SIZE_OUTER = 4;
+		
+		// <summary>
+        // Flag indicates that the x parameter should be ignored.
+        //
+        // @see setDimensions
+        // </summary>
+		public const ulong DIM_FLAGS_IGNORE_X = 8;
+		
+		// <summary>
+        // Flag indicates that the y parameter should be ignored.
+        //
+        // @see setDimensions
+        // </summary>
+		public const ulong DIM_FLAGS_IGNORE_Y = 16;
+		
+		// <summary>
+        // Flag indicates that the cx parameter should be ignored.
+        //
+        // @see setDimensions
+        // </summary>
+		public const ulong DIM_FLAGS_IGNORE_CX = 32;
+		
+		// <summary>
+        // Flag indicates that the cy parameter should be ignored.
+        //
+        // @see setDimensions
+        // </summary>
+		public const ulong DIM_FLAGS_IGNORE_CY = 64;
 	}
 }

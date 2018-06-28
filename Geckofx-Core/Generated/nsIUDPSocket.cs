@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e0377f7b-34a9-4d0f-8191-7e0cba77a52f")]
+	[Guid("d423bf4e-4499-40cf-bc03-153e2bf206d1")]
 	public interface nsIUDPSocket
 	{
 		
@@ -58,6 +58,9 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init(int aPort, [MarshalAs(UnmanagedType.U1)] bool aLoopbackOnly, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.U1)] bool aAddressReuse, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Init2([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aAddr, int aPort, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.U1)] bool aAddressReuse, int argc);
 		
 		/// <summary>
         /// initWithAddress
@@ -104,6 +107,17 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AsyncListen([MarshalAs(UnmanagedType.Interface)] nsIUDPSocketListener aListener);
+		
+		/// <summary>
+        /// connect
+        ///
+        /// This method connects the UDP socket to a remote UDP address.
+        ///
+        /// @param aRemoteAddr
+        /// The remote address to connect to
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Connect(System.IntPtr aAddr);
 		
 		/// <summary>
         /// Returns the local address of this UDP socket
@@ -290,6 +304,38 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetMulticastInterfaceAddrAttribute(System.IntPtr aMulticastInterfaceAddr);
+		
+		/// <summary>
+        /// recvBufferSize
+        ///
+        /// The size of the receive buffer. Default depends on the OS.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetRecvBufferSizeAttribute();
+		
+		/// <summary>
+        /// recvBufferSize
+        ///
+        /// The size of the receive buffer. Default depends on the OS.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRecvBufferSizeAttribute(int aRecvBufferSize);
+		
+		/// <summary>
+        /// sendBufferSize
+        ///
+        /// The size of the send buffer. Default depends on the OS.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetSendBufferSizeAttribute();
+		
+		/// <summary>
+        /// sendBufferSize
+        ///
+        /// The size of the send buffer. Default depends on the OS.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetSendBufferSizeAttribute(int aSendBufferSize);
 	}
 	
 	/// <summary>
@@ -376,6 +422,6 @@ namespace Gecko
 		Gecko.JsVal GetRawDataAttribute(System.IntPtr jsContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Uint8TArrayRef GetDataAsTArray();
+        nsISupports GetDataAsTArray();
 	}
 }

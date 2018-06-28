@@ -102,5 +102,14 @@ namespace Gecko
         /// aHost: host name </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RequestDNSLookup([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHost, NetDashboardCallback cb);
+		
+		/// <summary>
+        /// Asyncly returns stats regarding the "Race Cache With Network" feature.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RequestRcwnStats(NetDashboardCallback cb);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetLogPath([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
 	}
 }

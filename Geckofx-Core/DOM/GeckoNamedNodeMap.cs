@@ -10,12 +10,12 @@ namespace Gecko.DOM
     public class GeckoNamedNodeMap
         : IGeckoArray<GeckoNode>, IEnumerable<GeckoNode>
     {
-        private ComPtr<nsIDOMMozNamedAttrMap> _map;
+        private ComPtr</* nsIDOMMozNamedAttrMap */nsISupports> _map;
 
-        public GeckoNamedNodeMap(nsIDOMMozNamedAttrMap map)
+        public GeckoNamedNodeMap(/* nsIDOMMozNamedAttrMap */nsISupports map)
         {
             // map should be not null
-            this._map = new ComPtr<nsIDOMMozNamedAttrMap>(map);
+            this._map = new ComPtr</* nsIDOMMozNamedAttrMap */nsISupports>(map);
         }
 
 

@@ -120,9 +120,14 @@ namespace Gecko
         /// header stream is formatted as:
         /// ( HEADER "\r\n" )*
         /// This parameter is optional and may be null.
+        /// @param aTriggeringPrincipal
+        /// The principal that initiated the load of aURI. If omitted docShell
+        /// tries to create a codeBasePrincipal from aReferrer if not null. If
+        /// aReferrer is also null docShell peforms a load using the
+        /// SystemPrincipal as the triggeringPrincipal.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LoadURI([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aURI, uint aLoadFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostData, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeaders, nsISupports ptr);
+		void LoadURI([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aURI, uint aLoadFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostData, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeaders, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
 		
 		/// <summary>
         /// Loads a given URI.  This will give priority to loading the requested URI
@@ -146,7 +151,7 @@ namespace Gecko
         /// URI will be inferred internally.
         /// @param aReferrerPolicy
         /// One of the REFERRER_POLICY_* constants from nsIHttpChannel.
-        /// Normal case is REFERRER_POLICY_DEFAULT.
+        /// Normal case is REFERRER_POLICY_NO_REFERRER_WHEN_DOWNGRADE.
         /// @param aPostData
         /// If the URI corresponds to a HTTP request, then this stream is
         /// appended directly to the HTTP request headers.  It may be prefixed
@@ -164,9 +169,14 @@ namespace Gecko
         /// that at present this argument is only used with view-source aURIs
         /// and cannot be used to resolve aURI.
         /// This parameter is optional and may be null.
+        /// @param aTriggeringPrincipal
+        /// The principal that initiated the load of aURI. If omitted docShell
+        /// tries to create a codeBasePrincipal from aReferrer if not null. If
+        /// aReferrer is also null docShell peforms a load using the
+        /// SystemPrincipal as the triggeringPrincipal.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LoadURIWithOptions([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aURI, uint aLoadFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, uint aReferrerPolicy, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostData, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeaders, [MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
+		void LoadURIWithOptions([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aURI, uint aLoadFlags, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, uint aReferrerPolicy, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aPostData, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aHeaders, [MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
 		
 		/// <summary>
         /// Tells the Object to reload the current page.  There may be cases where the
@@ -229,6 +239,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSessionHistoryAttribute([MarshalAs(UnmanagedType.Interface)] nsISHistory aSessionHistory);
+		
+		/// <summary>
+        /// Set an OriginAttributes dictionary in the docShell. This can be done only
+        /// before loading any content.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOriginAttributesBeforeLoading(ref Gecko.JsVal OriginAttributes);
 	}
 	
 	/// <summary>nsIWebNavigationConsts </summary>
@@ -341,7 +358,12 @@ namespace Gecko
 		
 		// <summary>
         // Prevent the owner principal from being inherited for this load.
+        // Note: Within Gecko we use the term principal rather than owners
+        // but some legacy addons might still rely on the outdated term.
         // </summary>
+		public const ulong LOAD_FLAGS_DISALLOW_INHERIT_PRINCIPAL = 0x40000;
+		
+		// 
 		public const ulong LOAD_FLAGS_DISALLOW_INHERIT_OWNER = 0x40000;
 		
 		// <summary>
@@ -361,6 +383,12 @@ namespace Gecko
         // This flag specifies that common scheme typos should be corrected.
         // </summary>
 		public const ulong LOAD_FLAGS_FIXUP_SCHEME_TYPOS = 0x200000;
+		
+		// <summary>
+        // Allows a top-level data: navigation to occur. E.g. view-image
+        // is an explicit user action which should be allowed.
+        // </summary>
+		public const ulong LOAD_FLAGS_FORCE_ALLOW_DATA_URI = 0x400000;
 		
 		// <summary>
         // This flag specifies that all network activity should be stopped.  This

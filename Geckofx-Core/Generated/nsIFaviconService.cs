@@ -73,6 +73,26 @@ namespace Gecko
 		void ExpireAllFavicons();
 		
 		/// <summary>
+        /// Sets the default size returned by preferredSizeFromURI when the uri doesn't
+        /// specify a size ref. If this is not invoked first, or 0 is passed to it,
+        /// preferredSizeFromURI() will return UINT16_MAX, that matches the biggest
+        /// icon available.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDefaultIconURIPreferredSize(ushort aDefaultSize);
+		
+		/// <summary>
+        /// Tries to extract the preferred size from an icon uri ref fragment.
+        ///
+        /// @param aURI
+        /// The URI to parse.
+        /// @return The preferred size, or a default size set through
+        /// setDefaultIconURIPreferredSize, or UINT16_MAX if neither are set.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint PreferredSizeFromURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		
+		/// <summary>
         /// Adds a given favicon's URI to the failed favicon cache.
         ///
         /// The lifespan of the favicon cache is up to the caching system.  This cache
@@ -116,6 +136,12 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIURI GetDefaultFaviconAttribute();
+		
+		/// <summary>
+        /// The default favicon mimeType
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetDefaultFaviconMimeTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDefaultFaviconMimeType);
 	}
 	
 	/// <summary>nsIFaviconServiceConsts </summary>
@@ -131,6 +157,12 @@ namespace Gecko
         // The favicon is being loaded from a non-private browsing window
         // </summary>
 		public const ulong FAVICON_LOAD_NON_PRIVATE = 2;
+		
+		// <summary>
+        // The limit in bytes of the size of favicons in memory and passed via the
+        // favicon protocol.
+        // </summary>
+		public const ulong MAX_FAVICON_BUFFER_SIZE = 65536;
 	}
 	
 	/// <summary>nsIFaviconDataCallback </summary>
@@ -164,12 +196,15 @@ namespace Gecko
         /// Icon data, or an empty array if aDataLen is 0.
         /// @param aMimeType
         /// Mime type of the icon, or an empty string if aDataLen is 0.
+        /// @param aWidth
+        /// Width of the icon. 0 if the width is unknown or if the icon is
+        /// vectorial.
         ///
         /// @note If you want to open a network channel to access the favicon, it's
         /// recommended that you call the getFaviconLinkForIcon method to convert
         /// the "favicon URI" into a "favicon link URI".
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnComplete([MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, uint aDataLen, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte[] aData, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aMimeType);
+		void OnComplete([MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, uint aDataLen, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte[] aData, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aMimeType, ushort aWidth);
 	}
 }

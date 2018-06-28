@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoTableCellElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLTableCellElement DOMHTMLElement;
+        private /* nsIDOMHTMLTableCellElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoTableCellElement(nsIDOMHTMLTableCellElement element) : base(element)
+        internal GeckoTableCellElement(/* nsIDOMHTMLTableCellElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoTableCellElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoTableCellElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLTableCellElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLTableCellElement */ nsISupports;
         }
 
         public int CellIndex

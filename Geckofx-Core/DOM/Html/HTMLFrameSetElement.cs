@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoFrameSetElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLFrameSetElement DOMHTMLElement;
+        private /* nsIDOMHTMLFrameSetElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoFrameSetElement(nsIDOMHTMLFrameSetElement element) : base(element)
+        internal GeckoFrameSetElement(/* nsIDOMHTMLFrameSetElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoFrameSetElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoFrameSetElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLFrameSetElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLFrameSetElement */ nsISupports;
         }
 
         public string Cols

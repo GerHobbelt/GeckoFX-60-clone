@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("edb99640-8378-4106-8673-e701a086eb1c")]
+	[Guid("9b7c586f-9214-480c-a2c4-49b526fff1a6")]
 	public interface nsIDocShellTreeItem
 	{
 		
@@ -58,7 +58,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool NameEquals([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string name);
+		bool NameEquals([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name);
 		
 		/// <summary>
         ///The type this item is.
@@ -84,10 +84,9 @@ namespace Gecko
 		
 		/// <summary>
         ///This getter returns the same thing parent does however if the parent
-        ///	is of a different itemType, or if the parent is an <iframe mozbrowser>
-        ///	or <iframe mozapp>, it will instead return nullptr.  This call is a
-        ///	convience function for those wishing to not cross the boundaries at
-        ///	which item types change.
+        ///	is of a different itemType, or if the parent is an <iframe mozbrowser>.
+        ///	It will instead return nullptr.  This call is a convience function for
+        ///	Ithose wishing to not cross the boundaries at which item types change.
         ///	 </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -121,8 +120,8 @@ namespace Gecko
         ///			ii.) Do not ask a child if it is of a different item type.
         ///	3.)  If there is a parent of the same item type ask parent to perform the check
         ///		a.) Do not ask parent if it is the aRequestor
-        ///	4.)  If there is a tree owner ask the tree owner to perform the check
-        ///		a.)  Do not ask the tree owner if it is the aRequestor
+        ///	4.)  If there is a tab group ask the tab group to perform the check
+        ///		a.)  Do not ask the tab group if aSkipTabGroup
         ///		b.)  This should only be done if there is no parent of the same type.
         ///	Return the child DocShellTreeItem with the specified name.
         ///	name - This is the name of the item that is trying to be found.
@@ -135,10 +134,11 @@ namespace Gecko
         ///		asked it to search.  Children also use this to test against the treeOwner;
         ///	aOriginalRequestor - The original treeitem that made the request, if any.
         ///		This is used to ensure that we don't run into cross-site issues.
+        ///	aSkipTabGroup - Whether the tab group should be checked.
         ///	 </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDocShellTreeItem FindItemWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string name, [MarshalAs(UnmanagedType.Interface)] nsISupports aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
+		nsIDocShellTreeItem FindItemWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor, [MarshalAs(UnmanagedType.U1)] bool aSkipTabGroup);
 		
 		/// <summary>
         ///The owner of the DocShell Tree.  This interface will be called upon when
@@ -214,13 +214,13 @@ namespace Gecko
         ///	 </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDocShellTreeItem FindChildWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aName, [MarshalAs(UnmanagedType.U1)] bool aRecurse, [MarshalAs(UnmanagedType.U1)] bool aSameType, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
+		nsIDocShellTreeItem FindChildWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, [MarshalAs(UnmanagedType.U1)] bool aRecurse, [MarshalAs(UnmanagedType.U1)] bool aSameType, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetDocument();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetWindow();
+		/* nsPIDOMWindowOuter */ nsISupports GetWindow();
 	}
 	
 	/// <summary>nsIDocShellTreeItemConsts </summary>

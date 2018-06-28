@@ -41,46 +41,5 @@ namespace Gecko
 	[Guid("ae419e24-1dd1-11b2-b39a-d3e5e7073802")]
 	public interface nsIPrefLocalizedString
 	{
-		
-		/// <summary>
-        /// Provides access to string data stored in this property.
-        ///
-        /// @throws Error An error occurred.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetDataAttribute();
-		
-		/// <summary>
-        /// Provides access to string data stored in this property.
-        ///
-        /// @throws Error An error occurred.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDataAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aData);
-		
-		/// <summary>
-        /// Used to retrieve the contents of this object into a wide string.
-        ///
-        /// @return wstring The string containing the data stored within this object.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string ToString();
-		
-		/// <summary>
-        /// Used to set the contents of this object.
-        ///
-        /// @param length The length of the string. This value should not include
-        /// space for the null terminator, nor should it account for the
-        /// size of a character. It should  only be the number of
-        /// characters for which there is space in the string.
-        /// @param data   The string data to be stored.
-        ///
-        /// @note
-        /// This makes a copy of the string argument passed in.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDataWithLength(uint length, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler", SizeParamIndex=0)] string data);
 	}
 }

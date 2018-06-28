@@ -31,7 +31,7 @@ namespace Gecko
     ///
     /// A performance group is a set of JavaScript compartments whose
     /// performance is observed as a single entity. Typical examples of
-    /// performance groups: an add-on, a webpage without its frames, a
+    /// performance groups: a webpage without its frames, a
     /// webpage with all its frames, the entire JS runtime, ...
     /// </summary>
 	[ComImport()]
@@ -56,13 +56,6 @@ namespace Gecko
 		void GetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
 		
 		/// <summary>
-        /// If the component is an add-on, the ID of the addon,
-        /// otherwise an empty string.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAddonIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId);
-		
-		/// <summary>
         /// If the component is code executed in a window, the ID of the topmost
         /// outer window (i.e. the tab), otherwise 0.
         /// </summary>
@@ -71,7 +64,7 @@ namespace Gecko
 		
 		/// <summary>
         /// `true` if this component is executed with system privileges
-        /// (e.g. the platform itself or an add-on), `false` otherwise
+        /// (e.g. the platform itself), `false` otherwise
         /// (e.g. webpages).
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
@@ -93,7 +86,7 @@ namespace Gecko
 	}
 	
 	/// <summary>
-    /// Snapshot of the performance of a component, e.g. an add-on, a web
+    /// Snapshot of the performance of a component, e.g. a web
     /// page, system built-ins, a module or the entire process itself.
     ///
     /// All values are monotonic and are updated only when
@@ -121,13 +114,6 @@ namespace Gecko
 		new void GetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
 		
 		/// <summary>
-        /// If the component is an add-on, the ID of the addon,
-        /// otherwise an empty string.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetAddonIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId);
-		
-		/// <summary>
         /// If the component is code executed in a window, the ID of the topmost
         /// outer window (i.e. the tab), otherwise 0.
         /// </summary>
@@ -136,7 +122,7 @@ namespace Gecko
 		
 		/// <summary>
         /// `true` if this component is executed with system privileges
-        /// (e.g. the platform itself or an add-on), `false` otherwise
+        /// (e.g. the platform itself), `false` otherwise
         /// (e.g. webpages).
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
@@ -184,7 +170,7 @@ namespace Gecko
         /// lasted at lest 2^i ms.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetDurations(ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref System.UInt32[] long aNumberOfOccurrences);
+		void GetDurations(ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref long aNumberOfOccurrences);
 	}
 	
 	/// <summary>
@@ -221,12 +207,13 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("463c92d9-2e55-4f57-9b22-7badbbdfb2b7")]
+	[Guid("a85706ab-d703-4687-8865-78cd771eab93")]
 	public interface nsIPerformanceAlert
 	{
 		
 		/// <summary>
-        /// The reason for the alert.
+        /// The reason for the alert, as a bitwise or of the various REASON_*
+        /// constants.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetReasonAttribute();
@@ -234,6 +221,12 @@ namespace Gecko
 		/// <summary>
         /// Longest interval spent executing code in this group
         /// since the latest alert, in microseconds.
+        ///
+        /// Note that the underlying algorithm is probabilistic and may
+        /// provide false positives, so clients of this API are expected to
+        /// perform post-processing to filter out such false positives. In
+        /// particular, a high system load will increase the noise level on
+        /// this measure.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ulong GetHighestJankAttribute();
@@ -241,6 +234,10 @@ namespace Gecko
 		/// <summary>
         /// Longest interval spent executing CPOW in this group
         /// since the latest alert, in microseconds.
+        ///
+        /// This measure is reliable and involves no heuristics. However,
+        /// note that the duration of CPOWs is increased by high system
+        /// loads.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ulong GetHighestCPOWAttribute();
@@ -251,9 +248,40 @@ namespace Gecko
 	{
 		
 		// <summary>
-        // Alert was caused by jank exceeding the threshold.
+        // A slowdown was detected.
+        //
+        // See REASON_JANK_* for details on whether this slowdown was user-noticeable.
         // </summary>
-		public const ulong REASON_JANK = 0;
+		public const ulong REASON_SLOWDOWN = 1;
+		
+		// <summary>
+        // This alert was triggered during a jank in animation.
+        //
+        // In the current implementation, we consider that there is a jank
+        // in animation if delivery of the vsync message to the main thread
+        // has been delayed too much (see
+        // nsIPerformanceStatsService.animationJankLevelThreshold).
+        //
+        // Note that this is a heuristic which may provide false positives,
+        // so clients of this API are expected to perform post-processing to
+        // filter out such false positives.
+        // </summary>
+		public const ulong REASON_JANK_IN_ANIMATION = 2;
+		
+		// <summary>
+        // This alert was triggered during a jank in user input.
+        //
+        // In the current implementation, we consider that there is a jank
+        // in animation if a user input was received either immediately
+        // before executing the offending code (see
+        // nsIPerformanceStatsService.userInputDelayThreshold) or while
+        // executing the offending code.
+        //
+        // Note that this is a heuristic which may provide false positives,
+        // so clients of this API are expected to perform post-processing to
+        // filter out such false positives.
+        // </summary>
+		public const ulong REASON_JANK_IN_INPUT = 4;
 	}
 	
 	/// <summary>
@@ -313,7 +341,7 @@ namespace Gecko
 	/// <summary>nsIPerformanceStatsService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("5675d1d9-638e-4af0-9392-b04aacfad79a")]
+	[Guid("505bc42e-be38-4a53-baba-92cb33690cde")]
 	public interface nsIPerformanceStatsService
 	{
 		
@@ -345,8 +373,8 @@ namespace Gecko
 		
 		/// <summary>
         /// `true` if all compartments need to be monitored individually,
-        /// `false` if only performance groups (i.e. entire add-ons, entire
-        /// webpages, etc.) need to be monitored.
+        /// `false` if only performance groups (i.e. entire webpages, etc.)
+        /// need to be monitored.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -354,8 +382,8 @@ namespace Gecko
 		
 		/// <summary>
         /// `true` if all compartments need to be monitored individually,
-        /// `false` if only performance groups (i.e. entire add-ons, entire
-        /// webpages, etc.) need to be monitored.
+        /// `false` if only performance groups (i.e. entire webpages, etc.)
+        /// need to be monitored.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsMonitoringPerCompartmentAttribute([MarshalAs(UnmanagedType.U1)] bool aIsMonitoringPerCompartment, System.IntPtr jsContext);
@@ -382,6 +410,50 @@ namespace Gecko
 		void SetJankAlertThresholdAttribute(ulong aJankAlertThreshold);
 		
 		/// <summary>
+        /// If a user is seeing an animation and we spend too long executing
+        /// JS code while blocking refresh, this will be visible to the user.
+        ///
+        /// We assume that any jank during an animation and lasting more than
+        /// 2^animationJankLevelThreshold ms will be visible.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		short GetAnimationJankLevelThresholdAttribute();
+		
+		/// <summary>
+        /// If a user is seeing an animation and we spend too long executing
+        /// JS code while blocking refresh, this will be visible to the user.
+        ///
+        /// We assume that any jank during an animation and lasting more than
+        /// 2^animationJankLevelThreshold ms will be visible.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetAnimationJankLevelThresholdAttribute(short aAnimationJankLevelThreshold);
+		
+		/// <summary>
+        /// If a user performs an input (e.g. clicking, pressing a key, but
+        /// *NOT* moving the mouse), and we spend too long executing JS code
+        /// before displaying feedback, this will be visible to the user even
+        /// if there is no ongoing animation.
+        ///
+        /// We assume that any jank during `userInputDelayThreshold` us after
+        /// the user input will be visible.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetUserInputDelayThresholdAttribute();
+		
+		/// <summary>
+        /// If a user performs an input (e.g. clicking, pressing a key, but
+        /// *NOT* moving the mouse), and we spend too long executing JS code
+        /// before displaying feedback, this will be visible to the user even
+        /// if there is no ongoing animation.
+        ///
+        /// We assume that any jank during `userInputDelayThreshold` us after
+        /// the user input will be visible.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetUserInputDelayThresholdAttribute(ulong aUserInputDelayThreshold);
+		
+		/// <summary>
         /// A buffering delay, in milliseconds, used by the service to
         /// regroup performance alerts, before observers are actually
         /// noticed. Higher delays let the system avoid redundant
@@ -400,23 +472,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetJankAlertBufferingDelayAttribute(uint aJankAlertBufferingDelay);
-		
-		/// <summary>
-        /// Get a nsIPerformanceObservable representing an add-on. This
-        /// observable may then be used to (un)register for watching
-        /// performance alerts for this add-on.
-        ///
-        /// Note that this method has no way of finding out whether an add-on with this
-        /// id is installed on the system. Also note that this covers only the current
-        /// process.
-        ///
-        /// Use special add-on name "*" to get an observable that may be used
-        /// to (un)register for watching performance alerts of all add-ons at
-        /// once.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPerformanceObservable GetObservableAddon([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase addonId);
 		
 		/// <summary>
         /// Get a nsIPerformanceObservable representing a DOM window. This

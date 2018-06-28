@@ -43,17 +43,14 @@ namespace Gecko
 		nsIPK11Token GetInternalKeyToken();
 		
 		/// <summary>
-        /// Find a token by name
+        /// Find a token by name. Throws NS_ERROR_FAILURE if no token with the given
+        /// name can be found.
+        /// @param tokenName a string identifying the name of the token. Must be
+        /// non-empty.
+        /// @return a token with the given name
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPK11Token FindTokenByName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string tokenName);
-		
-		/// <summary>
-        /// List all tokens
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIEnumerator ListTokens();
+		nsIPK11Token FindTokenByName([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase tokenName);
 	}
 }

@@ -109,23 +109,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EnableStyleSheet([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aURL, [MarshalAs(UnmanagedType.U1)] bool aEnable);
-		
-		/// <summary>
-        ///Get the CSSStyleSheet associated with the given URL.
-        ///
-        /// @param aURL         The style sheet's URL
-        /// @return             the style sheet
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetStyleSheetForURL([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aURL);
-		
-		/// <summary>
-        ///Get the URL associated with the given CSSStyleSheet.
-        ///
-        /// @param aStyleSheet  The style sheet
-        /// @return             the style sheet's URL
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetURLForStyleSheet(System.IntPtr aStyleSheet, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 	}
 }

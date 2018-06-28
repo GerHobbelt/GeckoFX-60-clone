@@ -50,4 +50,35 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIInputStream Clone();
 	}
+	
+	/// <summary>
+    /// stream with range than doing clone + SlicedInputStream().
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("ece853c3-aded-4cef-8f51-0d1493d60bd5")]
+	public interface nsICloneableInputStreamWithRange : nsICloneableInputStream
+	{
+		
+		/// <summary>
+        /// their base stream supports cloning.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetCloneableAttribute();
+		
+		/// <summary>
+        /// after the clone() occurs.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIInputStream Clone();
+		
+		/// <summary>
+        /// stream with range than doing clone + SlicedInputStream().
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIInputStream CloneWithRange(ulong start, ulong length);
+	}
 }

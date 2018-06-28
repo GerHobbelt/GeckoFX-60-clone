@@ -41,12 +41,11 @@ namespace Gecko
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ChooseToken([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] tokenNameList, uint count, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] ref string tokenName, [MarshalAs(UnmanagedType.U1)] ref bool canceled);
+		void ChooseToken([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] tokenNameList, uint count, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase tokenName, [MarshalAs(UnmanagedType.U1)] ref bool canceled);
 		
 		/// <summary>
-        /// displayProtectedAuth - displays notification dialog to the user
-        /// that he is expected to authenticate to the token using its
-        /// "protected authentication path" feature
+        /// Displays notification dialog to the user that they are expected to
+        /// authenticate to the token using its "protected authentication path" feature.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DisplayProtectedAuth([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx, [MarshalAs(UnmanagedType.Interface)] nsIProtectedAuthThread runnable);

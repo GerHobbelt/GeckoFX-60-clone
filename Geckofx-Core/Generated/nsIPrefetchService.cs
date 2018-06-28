@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2df8b475-f536-4a1a-afea-b39843df8005")]
+	[Guid("422a1807-4e7f-463d-b8d7-ca2ceb9b5d53")]
 	public interface nsIPrefetchService
 	{
 		
@@ -49,10 +49,28 @@ namespace Gecko
 		void PrefetchURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrerURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aSource, [MarshalAs(UnmanagedType.U1)] bool aExplicit);
 		
 		/// <summary>
+        /// Start a preload of the specified URI.
+        ///
+        /// @param aURI the URI of the document to preload
+        /// @param aReferrerURI the URI of the referring page
+        /// @param aSource the DOM node (such as a <link> tag) that requested this
+        /// fetch, or null if the prefetch was not requested by a DOM node.
+        /// @param aPolicyType content policy to be used for this load.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void PreloadURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrerURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aSource, System.IntPtr aPolicyType);
+		
+		/// <summary>
         /// Find out if there are any prefetches running or queued
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool HasMoreElements();
+		
+		/// <summary>
+        /// Cancel prefetch or preload for a nsIDomNode.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CancelPrefetchPreloadURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aSource);
 	}
 }

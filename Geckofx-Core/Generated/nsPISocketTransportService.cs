@@ -147,22 +147,7 @@ namespace Gecko
 		void Init();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Shutdown();
-		
-		/// <summary>
-        /// controls whether or not the socket transport service should poke
-        /// the autodialer on connection failure.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetAutodialEnabledAttribute();
-		
-		/// <summary>
-        /// controls whether or not the socket transport service should poke
-        /// the autodialer on connection failure.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAutodialEnabledAttribute([MarshalAs(UnmanagedType.U1)] bool aAutodialEnabled);
+		void Shutdown([MarshalAs(UnmanagedType.U1)] bool aXpcomShutdown);
 		
 		/// <summary>
         /// controls the TCP sender window clamp

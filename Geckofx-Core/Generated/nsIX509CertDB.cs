@@ -62,18 +62,32 @@ namespace Gecko
 		void VerifySignedDirectoryFinished(int rv, [MarshalAs(UnmanagedType.Interface)] nsIX509Cert aSignerCert);
 	}
 	
-	/// <summary>nsIVerifySignedManifestCallback </summary>
+	/// <summary>
+    /// Callback type for use with asyncVerifyCertAtTime.
+    /// If aPRErrorCode is PRErrorCodeSuccess (i.e. 0), aVerifiedChain represents the
+    /// verified certificate chain determined by asyncVerifyCertAtTime. aHasEVPolicy
+    /// represents whether or not the end-entity certificate verified as EV.
+    /// If aPRErrorCode is non-zero, it represents the error encountered during
+    /// verification. aVerifiedChain is null in that case and aHasEVPolicy has no
+    /// meaning.
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3d6a9c87-5c5f-46fc-9410-96da6092f0f2")]
-	public interface nsIVerifySignedManifestCallback
+	[Guid("49e16fc8-efac-4f57-8361-956ef6b960a4")]
+	public interface nsICertVerificationCallback
 	{
 		
-		/// <summary>Member VerifySignedManifestFinished </summary>
-		/// <param name='rv'> </param>
-		/// <param name='aSignerCert'> </param>
+		/// <summary>
+        /// Callback type for use with asyncVerifyCertAtTime.
+        /// If aPRErrorCode is PRErrorCodeSuccess (i.e. 0), aVerifiedChain represents the
+        /// verified certificate chain determined by asyncVerifyCertAtTime. aHasEVPolicy
+        /// represents whether or not the end-entity certificate verified as EV.
+        /// If aPRErrorCode is non-zero, it represents the error encountered during
+        /// verification. aVerifiedChain is null in that case and aHasEVPolicy has no
+        /// meaning.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void VerifySignedManifestFinished(int rv, [MarshalAs(UnmanagedType.Interface)] nsIX509Cert aSignerCert);
+		void VerifyCertFinished(int aPRErrorCode, [MarshalAs(UnmanagedType.Interface)] nsIX509CertList aVerifiedChain, [MarshalAs(UnmanagedType.U1)] bool aHasEVPolicy);
 	}
 	
 	/// <summary>
@@ -82,25 +96,9 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a36c45fb-f7b5-423e-a0f7-ea1eb4fd60b5")]
+	[Guid("5c16cd9b-5a73-47f1-ab0f-11ede7495cce")]
 	public interface nsIX509CertDB
 	{
-		
-		/// <summary>
-        /// Given a nickname and optionally a token,
-        /// locate the matching certificate.
-        ///
-        /// @param aToken Optionally limits the scope of
-        /// this function to a token device.
-        /// Can be null to mean any token.
-        /// @param aNickname The nickname to be used as the key
-        /// to find a certificate.
-        ///
-        /// @return The matching certificate if found.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert FindCertByNickname([MarshalAs(UnmanagedType.Interface)] nsISupports aToken, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNickname);
 		
 		/// <summary>
         /// Will find a certificate based on its dbkey
@@ -109,61 +107,14 @@ namespace Gecko
         ///
         /// @param aDBkey Database internal key, as obtained using
         /// attribute dbkey in nsIX509Cert.
-        /// @param aToken Optionally limits the scope of
-        /// this function to a token device.
-        /// Can be null to mean any token.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert FindCertByDBKey([MarshalAs(UnmanagedType.LPStr)] string aDBkey, [MarshalAs(UnmanagedType.Interface)] nsISupports aToken);
-		
-		/// <summary>
-        /// Obtain a list of certificate nicknames from the database.
-        /// What the name is depends on type:
-        /// user, ca, or server cert - the nickname
-        /// email cert - the email address
-        ///
-        /// @param aToken Optionally limits the scope of
-        /// this function to a token device.
-        /// Can be null to mean any token.
-        /// @param aType Type of certificate to obtain
-        /// See certificate type constants in nsIX509Cert.
-        /// @param count The number of nicknames in the returned array
-        /// @param certNameList The returned array of certificate nicknames.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FindCertNicknames([MarshalAs(UnmanagedType.Interface)] nsISupports aToken, uint aType, ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref System.IntPtr[] certNameList);
-		
-		/// <summary>
-        /// Find user's own email encryption certificate by nickname.
-        ///
-        /// @param aNickname The nickname to be used as the key
-        /// to find the certificate.
-        ///
-        /// @return The matching certificate if found.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert FindEmailEncryptionCert([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNickname);
-		
-		/// <summary>
-        /// Find user's own email signing certificate by nickname.
-        ///
-        /// @param aNickname The nickname to be used as the key
-        /// to find the certificate.
-        ///
-        /// @return The matching certificate if found.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert FindEmailSigningCert([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNickname);
+		nsIX509Cert FindCertByDBKey([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aDBkey);
 		
 		/// <summary>
         /// Find a certificate by email address.
         ///
-        /// @param aToken Optionally limits the scope of
-        /// this function to a token device.
-        /// Can be null to mean any token.
         /// @param aEmailAddress The email address to be used as the key
         /// to find the certificate.
         ///
@@ -171,7 +122,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert FindCertByEmailAddress([MarshalAs(UnmanagedType.Interface)] nsISupports aToken, [MarshalAs(UnmanagedType.LPStr)] string aEmailAddress);
+		nsIX509Cert FindCertByEmailAddress([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aEmailAddress);
 		
 		/// <summary>
         /// Use this to import a stream sent down as a mime type into
@@ -195,16 +146,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ImportEmailCertificate([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte[] data, uint length, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx);
-		
-		/// <summary>
-        /// Import a server machine's certificate into the database.
-        ///
-        /// @param data The raw data to be imported
-        /// @param length The length of the data to be imported
-        /// @param ctx A UI context.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ImportServerCertificate([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte[] data, uint length, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx);
 		
 		/// <summary>
         /// Import a personal certificate into the database, assuming
@@ -242,11 +183,14 @@ namespace Gecko
 		/// <summary>
         /// @param cert        The certificate for which to modify trust.
         /// @param trustString decoded by CERT_DecodeTrustString. 3 comma separated
-        /// characters, indicating SSL, Email, and Obj signing
-        /// trust.
+        /// characters, indicating SSL, Email, and Object signing
+        /// trust. The object signing trust flags are effectively
+        /// ignored by gecko, but they still must be specified (at
+        /// least by a final trailing comma) because this argument
+        /// is passed to CERT_DecodeTrustString.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCertTrustFromString([MarshalAs(UnmanagedType.Interface)] nsIX509Cert cert, [MarshalAs(UnmanagedType.LPStr)] string trustString);
+		void SetCertTrustFromString([MarshalAs(UnmanagedType.Interface)] nsIX509Cert cert, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase trustString);
 		
 		/// <summary>
         /// Query whether a certificate is trusted for a particular use.
@@ -265,42 +209,32 @@ namespace Gecko
 		/// <summary>
         /// Import certificate(s) from file
         ///
-        /// @param aToken Optionally limits the scope of
-        /// this function to a token device.
-        /// Can be null to mean any token.
         /// @param aFile Identifies a file that contains the certificate
         /// to be imported.
         /// @param aType Describes the type of certificate that is going to
         /// be imported. See type constants in nsIX509Cert.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ImportCertsFromFile([MarshalAs(UnmanagedType.Interface)] nsISupports aToken, [MarshalAs(UnmanagedType.Interface)] nsIFile aFile, uint aType);
+		void ImportCertsFromFile([MarshalAs(UnmanagedType.Interface)] nsIFile aFile, uint aType);
 		
 		/// <summary>
         /// Import a PKCS#12 file containing cert(s) and key(s) into the database.
         ///
-        /// @param aToken Optionally limits the scope of
-        /// this function to a token device.
-        /// Can be null to mean any token.
-        /// @param aFile Identifies a file that contains the data
-        /// to be imported.
+        /// @param aFile Identifies a file that contains the data to be imported.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ImportPKCS12File([MarshalAs(UnmanagedType.Interface)] nsISupports aToken, [MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
+		void ImportPKCS12File([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
 		
 		/// <summary>
         /// Export a set of certs and keys from the database to a PKCS#12 file.
         ///
-        /// @param aToken Optionally limits the scope of
-        /// this function to a token device.
-        /// Can be null to mean any token.
-        /// @param aFile Identifies a file that will be filled with the data
-        /// to be exported.
+        /// @param aFile Identifies a file that will be filled with the data to be
+        /// exported.
         /// @param count The number of certificates to be exported.
         /// @param aCerts The array of all certificates to be exported.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ExportPKCS12File([MarshalAs(UnmanagedType.Interface)] nsISupports aToken, [MarshalAs(UnmanagedType.Interface)] nsIFile aFile, uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] nsIX509Cert[] aCerts);
+		void ExportPKCS12File([MarshalAs(UnmanagedType.Interface)] nsIFile aFile, uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] nsIX509Cert[] aCerts);
 		
 		/// <summary>
         /// Decode a raw data presentation and instantiate an object in memory.
@@ -311,19 +245,18 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert ConstructX509FromBase64([MarshalAs(UnmanagedType.LPStr)] string base64);
+		nsIX509Cert ConstructX509FromBase64([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase base64);
 		
 		/// <summary>
         /// Decode a raw data presentation and instantiate an object in memory.
         ///
         /// @param certDER The raw representation of a certificate,
         /// encoded as raw DER.
-        /// @param length  The length of the DER string.
         /// @return The new certificate object.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert ConstructX509([MarshalAs(UnmanagedType.LPStr)] string certDER, uint length);
+		nsIX509Cert ConstructX509([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase certDER);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OpenSignedAppFileAsync(uint trustedRoot, [MarshalAs(UnmanagedType.Interface)] nsIFile aJarFile, [MarshalAs(UnmanagedType.Interface)] nsIOpenSignedAppFileCallback callback);
@@ -344,39 +277,36 @@ namespace Gecko
 		void VerifySignedDirectoryAsync(uint trustedRoot, [MarshalAs(UnmanagedType.Interface)] nsIFile aUnpackedDir, [MarshalAs(UnmanagedType.Interface)] nsIVerifySignedDirectoryCallback callback);
 		
 		/// <summary>
-        /// Given streams containing a signature and a manifest file, verifies
-        /// that the signature is valid for the manifest. The signature must
-        /// come from a certificate that is trusted for code signing and that
-        /// was issued by the given trusted root.
-        ///
-        /// On success, NS_OK and the trusted certificate that signed the
-        /// Manifest are returned.
-        ///
-        /// On failure, an error code is returned.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void VerifySignedManifestAsync(uint trustedRoot, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aManifestStream, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aSignatureStream, [MarshalAs(UnmanagedType.Interface)] nsIVerifySignedManifestCallback callback);
-		
-		/// <summary>
         /// Add a cert to a cert DB from a binary string.
         ///
         /// @param certDER The raw DER encoding of a certificate.
-        /// @param aTrust decoded by CERT_DecodeTrustString. 3 comma separated characters,
-        /// indicating SSL, Email, and Obj signing trust
-        /// @param aName name of the cert for display purposes.
+        /// @param trust String describing the trust settings to assign the
+        /// certificate. Decoded by CERT_DecodeTrustString. Consists of 3
+        /// comma separated sets of characters, indicating SSL, Email, and
+        /// Object signing trust. The object signing trust flags are
+        /// effectively ignored by gecko, but they still must be specified
+        /// (at least by a final trailing comma) because this argument is
+        /// passed to CERT_DecodeTrustString.
+        /// @return nsIX509Cert the resulting certificate
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddCert([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase certDER, [MarshalAs(UnmanagedType.LPStr)] string aTrust, [MarshalAs(UnmanagedType.LPStr)] string aName);
+		nsIX509Cert AddCert([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase certDER, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase trust);
 		
 		/// <summary>
         ///SECCertificateUsage </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int VerifyCertAtTime([MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, long aUsage, uint aFlags, [MarshalAs(UnmanagedType.LPStr)] string aHostname, ulong aTime, [MarshalAs(UnmanagedType.Interface)] ref nsIX509CertList aVerifiedChain, [MarshalAs(UnmanagedType.U1)] ref bool aHasEVPolicy);
+		int VerifyCertAtTime([MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, long aUsage, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostname, ulong aTime, [MarshalAs(UnmanagedType.Interface)] ref nsIX509CertList aVerifiedChain, [MarshalAs(UnmanagedType.U1)] ref bool aHasEVPolicy);
 		
 		/// <summary>
         ///SECCertificateUsage </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int VerifyCertNow([MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, long aUsage, uint aFlags, [MarshalAs(UnmanagedType.LPStr)] string aHostname, [MarshalAs(UnmanagedType.Interface)] ref nsIX509CertList aVerifiedChain, [MarshalAs(UnmanagedType.U1)] ref bool aHasEVPolicy);
+		int VerifyCertNow([MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, long aUsage, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostname, [MarshalAs(UnmanagedType.Interface)] ref nsIX509CertList aVerifiedChain, [MarshalAs(UnmanagedType.U1)] ref bool aHasEVPolicy);
+		
+		/// <summary>
+        ///SECCertificateUsage </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AsyncVerifyCertAtTime([MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, long aUsage, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostname, ulong aTime, [MarshalAs(UnmanagedType.Interface)] nsICertVerificationCallback aCallback);
 		
 		/// <summary>
         /// implementation.
@@ -387,14 +317,19 @@ namespace Gecko
 		/// <summary>
         /// Add a cert to a cert DB from a base64 encoded string.
         ///
-        /// @param base64 The raw representation of a certificate,
-        /// encoded as Base 64.
-        /// @param aTrust decoded by CERT_DecodeTrustString. 3 comma separated characters,
-        /// indicating SSL, Email, and Obj signing trust
-        /// @param aName name of the cert for display purposes.
+        /// @param base64 The raw representation of a certificate, encoded as Base 64.
+        /// @param trust String describing the trust settings to assign the
+        /// certificate. Decoded by CERT_DecodeTrustString. Consists of 3
+        /// comma separated sets of characters, indicating SSL, Email, and
+        /// Object signing trust. The object signing trust flags are
+        /// effectively ignored by gecko, but they still must be specified
+        /// (at least by a final trailing comma) because this argument is
+        /// passed to CERT_DecodeTrustString.
+        /// @return nsIX509Cert the resulting certificate
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddCertFromBase64([MarshalAs(UnmanagedType.LPStr)] string base64, [MarshalAs(UnmanagedType.LPStr)] string aTrust, [MarshalAs(UnmanagedType.LPStr)] string aName);
+		nsIX509Cert AddCertFromBase64([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase base64, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase trust);
 		
 		/// <summary>
         /// Get all the known certs in the database
@@ -402,6 +337,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIX509CertList GetCerts();
+		
+		/// <summary>
+        /// Get a list of imported enterprise root certificates (currently only
+        /// implemented on Windows).
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIX509CertList GetEnterpriseRoots();
 	}
 	
 	/// <summary>nsIX509CertDBConsts </summary>
@@ -420,40 +363,9 @@ namespace Gecko
 		// 
 		public const ulong TRUSTED_EMAIL = 1<<1;
 		
-		// 
-		public const ulong TRUSTED_OBJSIGN = 1<<2;
-		
 		// <summary>
-        // Verifies the signature on the given JAR file to verify that it has a
-        // valid signature.  To be considered valid, there must be exactly one
-        // signature on the JAR file and that signature must have signed every
-        // entry. Further, the signature must come from a certificate that
-        // is trusted for code signing.
-        //
-        // On success, NS_OK, a nsIZipReader, and the trusted certificate that
-        // signed the JAR are returned.
-        //
-        // On failure, an error code is returned.
-        //
-        // This method returns a nsIZipReader, instead of taking an nsIZipReader
-        // as input, to encourage users of the API to verify the signature as the
-        // first step in opening the JAR.
+        // 5 used to be AppMarketplaceStageRoot.
         // </summary>
-		public const long AppMarketplaceProdPublicRoot = 1;
-		
-		// 
-		public const long AppMarketplaceProdReviewersRoot = 2;
-		
-		// 
-		public const long AppMarketplaceDevPublicRoot = 3;
-		
-		// 
-		public const long AppMarketplaceDevReviewersRoot = 4;
-		
-		// 
-		public const long AppMarketplaceStageRoot = 5;
-		
-		// 
 		public const long AppXPCShellRoot = 6;
 		
 		// 

@@ -58,7 +58,7 @@ namespace Gecko
 		void SetEnableRealTimeSpellAttribute([MarshalAs(UnmanagedType.U1)] bool aEnableRealTimeSpell);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SpellCheckAfterEditorChange(int aAction, [MarshalAs(UnmanagedType.Interface)] nsISelection aSelection, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aPreviousSelectedNode, int aPreviousSelectedOffset, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aStartNode, int aStartOffset, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aEndNode, int aEndOffset);
+		void SpellCheckAfterEditorChange(int aAction, [MarshalAs(UnmanagedType.Interface)] nsISelection aSelection, System.IntPtr aPreviousSelectedNode, uint aPreviousSelectedOffset, System.IntPtr aStartNode, uint aStartOffset, System.IntPtr aEndNode, uint aEndOffset);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SpellCheckRange([MarshalAs(UnmanagedType.Interface)] nsIDOMRange aSelection);

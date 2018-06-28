@@ -125,6 +125,12 @@ namespace Gecko
 		new void SetSubstitution([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase root, [MarshalAs(UnmanagedType.Interface)] nsIURI baseURI);
 		
 		/// <summary>
+        /// Same as setSubstitution, but with specific flags.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetSubstitutionWithFlags([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase root, [MarshalAs(UnmanagedType.Interface)] nsIURI baseURI, uint flags);
+		
+		/// <summary>
         /// Gets the substitution for the root key.
         ///
         /// @throws NS_ERROR_NOT_AVAILABLE if none exists.
@@ -149,5 +155,28 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void ResolveURI([MarshalAs(UnmanagedType.Interface)] nsIURI resURI, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
+		
+		/// <summary>
+        /// Adds an observer that will be notified on the main thread whenever a
+        /// substitition is set or unset. Notifications are not sent for substitutions
+        /// that were set prior to the observer being added. Holds an owning reference
+        /// to the observer until removeObserver is called or the protocol handler is
+        /// destroyed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void AddObserver([MarshalAs(UnmanagedType.Interface)] nsISubstitutionObserver observer);
+		
+		/// <summary>
+        /// Removes the observer.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void RemoveObserver([MarshalAs(UnmanagedType.Interface)] nsISubstitutionObserver observer);
+		
+		/// <summary>
+        /// Protocol handler interface for the resource:// protocol
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool AllowContentToAccess([MarshalAs(UnmanagedType.Interface)] nsIURI url);
 	}
 }

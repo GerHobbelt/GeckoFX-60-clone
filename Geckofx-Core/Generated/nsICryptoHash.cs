@@ -73,8 +73,7 @@ namespace Gecko
         ///
         /// @param aLen the length of the buffer |aData|
         ///
-        /// @throws NS_ERROR_NOT_INITIALIZED if |init| has not been
-        /// called.
+        /// @throws NS_ERROR_NOT_INITIALIZED If |init| has not been called.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Update([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte[] aData, uint aLen);
@@ -84,14 +83,12 @@ namespace Gecko
         ///
         /// @param aStream an input stream to read from.
         ///
-        /// @param aLen how much to read from the given |aStream|.  Passing
-        /// UINT32_MAX indicates that all data available will be used
-        /// to update the hash.
+        /// @param aLen How much to read from the given |aStream|. Passing UINT32_MAX
+        /// indicates that all data available will be used to update the hash.
         ///
-        /// @throws NS_ERROR_NOT_INITIALIZED if |init| has not been
-        /// called.
+        /// @throws NS_ERROR_NOT_INITIALIZED If |init| has not been called.
         ///
-        /// @throws NS_ERROR_NOT_AVAILABLE if the requested amount of
+        /// @throws NS_ERROR_NOT_AVAILABLE If the requested amount of
         /// data to be calculated into the hash is not available.
         ///
         /// </summary>
@@ -101,15 +98,13 @@ namespace Gecko
 		/// <summary>
         /// Completes this hash object and produces the actual hash data.
         ///
-        /// @param aASCII if true then the returned value is a base-64
-        /// encoded string.  if false, then the returned value is
-        /// binary data.
+        /// @param aASCII If true then the returned value is a base64 encoded string.
+        /// If false, then the returned value is binary data.
         ///
         /// @return a hash of the data that was read by this object.  This can
         /// be either binary data or base 64 encoded.
         ///
-        /// @throws NS_ERROR_NOT_INITIALIZED if |init| has not been
-        /// called.
+        /// @throws NS_ERROR_NOT_INITIALIZED If |init| has not been called.
         ///
         /// NOTE: This method may be called any time after |init|
         /// is called.  This call resets the object to its

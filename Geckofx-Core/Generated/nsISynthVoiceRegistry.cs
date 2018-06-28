@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("dac09c3a-156e-4025-a4ab-bc88b0ea92e7")]
+	[Guid("5d7a0b38-77e5-4ee5-897c-ce5db9b85d44")]
 	public interface nsISynthVoiceRegistry
 	{
 		
@@ -57,6 +57,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RemoveVoice([MarshalAs(UnmanagedType.Interface)] nsISpeechService aService, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aUri);
+		
+		/// <summary>
+        /// Notify content of voice availability changes. This allows content
+        /// to be notified of voice catalog changes in real time.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyVoicesChanged();
 		
 		/// <summary>
         /// Set a voice as default.

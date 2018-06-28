@@ -49,6 +49,17 @@ namespace Gecko
 		void ClearCache([MarshalAs(UnmanagedType.U1)] bool chrome);
 		
 		/// <summary>
+        /// Evict images from the cache.
+        ///
+        /// @param uri The URI to remove.
+        /// @param doc The document to remove the cache entry for.
+        /// @throws NS_ERROR_NOT_AVAILABLE if \a uri was unable to be removed from
+        /// the cache.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveEntry([MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.Interface)] nsIDOMDocument doc);
+		
+		/// <summary>
         /// Find Properties
         /// Used to get properties such as 'type' and 'content-disposition'
         /// 'type' is a nsISupportsCString containing the images' mime type such as

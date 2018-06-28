@@ -50,12 +50,31 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetReferrerAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aReferrer);
 		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetReferrerPolicyAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetReferrerPolicyAttribute(uint aReferrerPolicy);
+		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsPrivateAttribute();
 		
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsPrivateAttribute([MarshalAs(UnmanagedType.U1)] bool aIsPrivate);
+		nsIPrincipal GetTriggeringPrincipalAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTriggeringPrincipalAttribute([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
+		
+		/// <summary>
+        /// opener window in the content process. May be null.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetOpenerBrowserAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetOpenerAttribute(System.IntPtr jsContext);
 	}
 	
 	/// <summary>
@@ -67,32 +86,63 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("31da1ce2-aec4-4c26-ac66-d622935c3bf4")]
+	[Guid("2a9bb880-5d73-40f3-8152-c60c8d137a14")]
 	public interface nsIBrowserDOMWindow
 	{
 		
 		/// <summary>
-        /// Load a URI
-        /// @param aURI the URI to open. null is allowed.  If null is passed in, no
-        /// load will be done, though the window the load would have
-        /// happened in will be returned.
+        /// Create the content window for the given URI.
+        /// @param aURI the URI to be opened in the window (can be null).
         /// @param aWhere see possible values described above.
-        /// @param aOpener window requesting the open (can be null).
-        /// @param aContext the context in which the URI is being opened. This
-        /// is used only when aWhere == OPEN_DEFAULTWINDOW.
-        /// @return the window into which the URI was opened.
+        /// @param aOpener window requesting the creation (can be null).
+        /// @param aFlags flags which control the behavior of the load. The
+        /// OPEN_EXTERNAL/OPEN_NEW flag is only used when
+        /// aWhere == OPEN_DEFAULTWINDOW.
+        /// @param aTriggeringPrincipal the principal that would trigger the potential
+        /// load of aURI.
+        /// @return the window into which the URI would have been opened.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow OpenURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aOpener, short aWhere, short aContext);
+		mozIDOMWindowProxy CreateContentWindow([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, mozIDOMWindowProxy aOpener, short aWhere, int aFlags, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
 		
 		/// <summary>
         /// As above, but return the nsIFrameLoaderOwner for the new window.
+        ///
+        /// Additional Parameters:
+        /// @param aNextTabParentId The TabParent to associate the window with.
+        /// @param aName The name to give the window opened in the new tab.
+        /// @return The nsIFrameLoaderOwner for the newly opened window.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr CreateContentWindowInFrame([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIOpenURIInFrameParams @params, short aWhere, int aFlags, ulong aNextTabParentId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
+		
+		/// <summary>
+        /// Load a URI.
+        /// @param aURI the URI to open. null is not allowed. To create the window
+        /// without loading the URI, use createContentWindow instead.
+        /// @param aWhere see possible values described above.
+        /// @param aOpener window requesting the open (can be null).
+        /// @param aFlags flags which control the behavior of the load. The
+        /// OPEN_EXTERNAL/OPEN_NEW flag is only used when
+        /// aWhere == OPEN_DEFAULTWINDOW.
+        /// @param aTriggeringPrincipal the principal that triggered the load of aURI.
+        /// @return the window into which the URI was opened.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		mozIDOMWindowProxy OpenURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, mozIDOMWindowProxy aOpener, short aWhere, int aFlags, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
+		
+		/// <summary>
+        /// As above, but return the nsIFrameLoaderOwner for the new window.
+        ///
+        /// Additional Parameters:
+        /// @param aNextTabParentId The TabParent to associate the window with.
+        /// @param aName The name to give the window opened in the new tab.
+        /// @return The nsIFrameLoaderOwner for the newly opened window.
         ///   // XXXbz is this the right API?
         ///   // See bug 537428
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr OpenURIInFrame([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIOpenURIInFrameParams @params, short aWhere, short aContext);
+		System.IntPtr OpenURIInFrame([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIOpenURIInFrameParams @params, short aWhere, int aFlags, ulong aNextTabParentId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
 		
 		/// <summary>
         /// @param  aWindow the window to test.
@@ -150,13 +200,18 @@ namespace Gecko
 		public const short OPEN_SWITCHTAB = 4;
 		
 		// <summary>
-        // external link (load request from another application, xremote, etc).
+        // Internal open new window.
         // </summary>
-		public const short OPEN_EXTERNAL = 1;
+		public const long OPEN_NEW = 0x0;
 		
 		// <summary>
-        // internal open new window
+        // External link (load request from another application, xremote, etc).
         // </summary>
-		public const short OPEN_NEW = 2;
+		public const long OPEN_EXTERNAL = 0x1;
+		
+		// <summary>
+        // Don't set the window.opener property on the window which is being opened.
+        // </summary>
+		public const long OPEN_NO_OPENER = 0x4;
 	}
 }

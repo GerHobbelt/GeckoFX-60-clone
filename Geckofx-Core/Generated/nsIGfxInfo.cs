@@ -30,7 +30,7 @@ namespace Gecko
     ///NOTE: this interface is completely undesigned, not stable and likely to change </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4b5ea59e-af89-44f7-8c1c-2dea47a170d1")]
+	[Guid("1accd618-4c80-4703-9d29-ecf257d397c8")]
 	public interface nsIGfxInfo
 	{
 		
@@ -45,11 +45,40 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetDWriteEnabledAttribute();
 		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetUsingGPUProcessAttribute();
+		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetDWriteVersionAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDWriteVersion);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetCleartypeParametersAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCleartypeParameters);
+		
+		/// <summary>
+        /// These are valid across all platforms.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetContentBackendAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aContentBackend);
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetWebRenderEnabledAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsHeadlessAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetUsesTilingAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetOffMainThreadPaintEnabledAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetOffMainThreadPaintWorkerCountAttribute();
 		
 		/// <summary>
         /// The name of the display adapter.
@@ -129,10 +158,12 @@ namespace Gecko
 		void LogFailure([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase failure);
 		
 		/// <summary>
-        /// Ask about a feature, and return the status of that feature
+        /// Ask about a feature, and return the status of that feature.
+        /// If the feature is not ok then aFailureId will give a unique failure Id
+        /// otherwise it will be empty.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetFeatureStatus(int aFeature);
+		int GetFeatureStatus(int aFeature, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFailureId);
 		
 		/// <summary>
         /// Ask about a feature, return the minimum driver version required for it if its status is
@@ -140,14 +171,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetFeatureSuggestedDriverVersion(int aFeature, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
-		
-		/// <summary>
-        /// WebGL info; valid params are "full-renderer", "vendor", "renderer", "version",
-        /// "shading_language_version", "extensions".  These return info from
-        /// underlying GL impl that's used to implement WebGL.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetWebGLParameter([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aParam, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// only useful on X11
@@ -159,10 +182,28 @@ namespace Gecko
 		Gecko.JsVal GetInfo(System.IntPtr jsContext);
 		
 		/// <summary>
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetFeatureLog(System.IntPtr jsContext);
+		
+		/// <summary>
         ///   }
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetFeatures(System.IntPtr jsContext);
+		
+		/// <summary>
+        ///   ]
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetActiveCrashGuards(System.IntPtr jsContext);
+		
+		/// <summary>
+        /// xpcshell-tests.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool ControlGPUProcessForXPCShell([MarshalAs(UnmanagedType.U1)] bool aEnable);
 	}
 	
 	/// <summary>nsIGfxInfoConsts </summary>
@@ -228,6 +269,42 @@ namespace Gecko
 		// <summary>
         //Whether Webrtc Hardware acceleration is supported, starting in 42. </summary>
 		public const long FEATURE_WEBRTC_HW_ACCELERATION_DECODE = 15;
+		
+		// <summary>
+        //Whether Canvas acceleration is supported, starting in 45 </summary>
+		public const long FEATURE_CANVAS2D_ACCELERATION = 16;
+		
+		// <summary>
+        //Whether hardware VP8 decoding is supported, starting in 48; not for downloadable blocking. </summary>
+		public const long FEATURE_VP8_HW_DECODE = 17;
+		
+		// <summary>
+        //Whether hardware VP9 decoding is supported, starting in 48; not for downloadable blocking. </summary>
+		public const long FEATURE_VP9_HW_DECODE = 18;
+		
+		// <summary>
+        //Whether NV_dx_interop2 is supported, starting in 50; downloadable blocking in 58. </summary>
+		public const long FEATURE_DX_INTEROP2 = 19;
+		
+		// <summary>
+        //Whether the GPU process is supported, starting in 52; downloadable blocking in 58. </summary>
+		public const long FEATURE_GPU_PROCESS = 20;
+		
+		// <summary>
+        //Whether the WebGL2 is supported, starting in 54 </summary>
+		public const long FEATURE_WEBGL2 = 21;
+		
+		// <summary>
+        //Whether Advanced Layers is supported, starting in 56 </summary>
+		public const long FEATURE_ADVANCED_LAYERS = 22;
+		
+		// <summary>
+        //Whether D3D11 keyed mutex is supported, starting in 56 </summary>
+		public const long FEATURE_D3D11_KEYED_MUTEX = 23;
+		
+		// <summary>
+        //the maximum feature value. </summary>
+		public const long FEATURE_MAX_VALUE = FEATURE_D3D11_KEYED_MUTEX;
 		
 		// <summary>
         //The driver is safe to the best of our knowledge </summary>

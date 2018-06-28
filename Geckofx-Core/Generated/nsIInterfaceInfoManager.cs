@@ -27,7 +27,7 @@ namespace Gecko
 	
 	
 	/// <summary>
-    ///this is NOT intended to be scriptable </summary>
+    ///The nsIInterfaceInfoManager public declaration. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("1d53d8d9-1d92-428f-b5cc-198b55e897d7")]
@@ -35,7 +35,7 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        ///this is NOT intended to be scriptable </summary>
+        ///The nsIInterfaceInfoManager public declaration. </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIInterfaceInfo GetInfoForIID(System.Guid iid);
@@ -43,18 +43,5 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIInterfaceInfo GetInfoForName([MarshalAs(UnmanagedType.LPStr)] string name);
-		
-		System.Guid GetIIDForName([MarshalAs(UnmanagedType.LPStr)] string name);
-		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetNameForIID(System.Guid iid);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AutoRegisterInterfaces();
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIEnumerator EnumerateInterfacesWhoseNamesStartWith([MarshalAs(UnmanagedType.LPStr)] string prefix);
 	}
 }

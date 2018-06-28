@@ -45,25 +45,14 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetEntriesAttribute();
 		
-		/// <summary>
-        /// Start-up parameters for subprocesses are passed through nsIObserverService,
-        /// which, unfortunately, means we need to implement nsISupports in order to
-        /// go through it.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetEntriesAttribute(uint aEntries);
-		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		double GetIntervalAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIntervalAttribute(double aInterval);
+		uint GetFeaturesAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetFeatures();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetThreadFilterNames();
+		System.IntPtr GetFilters();
 	}
 	
 	/// <summary>nsIProfiler </summary>
@@ -84,10 +73,10 @@ namespace Gecko
 		/// <param name='aInterval'> </param>
 		/// <param name='aFeatures'> </param>
 		/// <param name='aFeatureCount'> </param>
-		/// <param name='aThreadNameFilters'> </param>
+		/// <param name='aFilters'> </param>
 		/// <param name='aFilterCount'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void StartProfiler(uint aEntries, double aInterval, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] string[] aFeatures, uint aFeatureCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=5)] string[] aThreadNameFilters, uint aFilterCount);
+		void StartProfiler(uint aEntries, double aInterval, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] string[] aFeatures, uint aFeatureCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=5)] string[] aFilters, uint aFilterCount);
 		
 		/// <summary>Member StopProfiler </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -135,17 +124,40 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISupports GetProfileDataAsync(double aSinceTime, System.IntPtr jsContext);
 		
+		/// <summary>Member GetProfileDataAsArrayBuffer </summary>
+		/// <param name='aSinceTime'> </param>
+		/// <param name='jsContext'> </param>
+		/// <returns>A nsISupports</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISupports GetProfileDataAsArrayBuffer(double aSinceTime, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Returns a promise that resolves once the file has been written.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISupports DumpProfileToFileAsync([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFilename, double aSinceTime, System.IntPtr jsContext);
+		
 		/// <summary>Member IsActive </summary>
 		/// <returns>A System.Boolean</returns>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsActive();
 		
-		/// <summary>Member GetFeatures </summary>
-		/// <param name='aCount'> </param>
-		/// <param name='aFeatures'> </param>
+		/// <summary>
+        /// Returns an array of the features that are supported in this build.
+        /// Features may vary depending on platform and build flags.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetFeatures(ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref string[] aFeatures);
+		
+		/// <summary>
+        /// Returns an array of all features that are supported by the profiler.
+        /// The array may contain features that are not supported in this build.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAllFeatures(ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref string[] aFeatures);
 		
 		/// <summary>
         /// The starting parameters that were sent to the profiler for sampling.
@@ -154,14 +166,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIProfilerStartParams GetStartParamsAttribute();
-		
-		/// <summary>
-        /// The profileGatherer will be null if the profiler is not currently
-        /// active.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports GetProfileGathererAttribute();
 		
 		/// <summary>Member GetBufferInfo </summary>
 		/// <param name='aCurrentPosition'> </param>
@@ -179,22 +183,38 @@ namespace Gecko
 		double GetElapsedTime();
 		
 		/// <summary>
-        /// Returns a JSON string of an array of shared library objects.
-        /// Every object has three properties: start, end, and name.
-        /// start and end are integers describing the address range that the library
-        /// occupies in memory. name is the path of the library as a string.
-        ///
-        /// On Windows profiling builds, the shared library objects will have
-        /// additional pdbSignature and pdbAge properties for uniquely identifying
-        /// shared library versions for stack symbolication.
+        /// Contains an array of shared library objects.
+        /// Every object has the properties:
+        /// - start:      The start address of the memory region occupied by this library.
+        /// - end:        The end address of the memory region occupied by this library.
+        /// - offset:     Usually zero, except on Android if the region was mapped from
+        /// a file (using mmap), then this is the offset in the file where
+        /// the mapping begins.
+        /// - name:       The name (file basename) of the binary.
+        /// - path:       The full absolute path to the binary.
+        /// - debugName:  On Windows, the name of the pdb file for the binary. On other
+        /// platforms, the same as |name|.
+        /// - debugPath:  On Windows, the full absolute path of the pdb file for the
+        /// binary. On other platforms, the same as |path|.
+        /// - arch:       On Mac, the name of the architecture that identifies the right
+        /// binary image of a fat binary. Example values are "i386", "x86_64",
+        /// and "x86_64h". (x86_64h is used for binaries that contain
+        /// instructions that are specific to the Intel Haswell microarchitecture.)
+        /// On non-Mac platforms, arch is "".
+        /// - breakpadId: A unique identifier string for this library, as used by breakpad.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetSharedLibraryInformation([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		Gecko.JsVal GetSharedLibrariesAttribute(System.IntPtr jsContext);
 		
 		/// <summary>
         /// Dump the collected profile to a file.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DumpProfileToFile([MarshalAs(UnmanagedType.LPStr)] string aFilename);
+		
+		/// <summary>Member ReceiveShutdownProfile </summary>
+		/// <param name='aProfile'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReceiveShutdownProfile(nsISupports aProfile);
 	}
 }

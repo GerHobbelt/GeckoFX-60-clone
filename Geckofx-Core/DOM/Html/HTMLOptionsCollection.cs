@@ -7,9 +7,9 @@ namespace Gecko.DOM
 {
     public class GeckoOptionsCollection
     {
-        private nsIDOMHTMLOptionsCollection DOMHTMLElement;
+        private /* nsIDOMHTMLOptionsCollection */ nsISupports DOMHTMLElement;
 
-        internal GeckoOptionsCollection(nsIDOMHTMLOptionsCollection element)
+        internal GeckoOptionsCollection(/* nsIDOMHTMLOptionsCollection */ nsISupports element)
         {
             this.DOMHTMLElement = element;
         }

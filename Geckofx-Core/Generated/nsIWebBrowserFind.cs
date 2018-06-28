@@ -41,7 +41,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2f977d44-5485-11d4-87e2-0010a4e75ef2")]
+	[Guid("e4920136-b3e0-49e0-b1cd-6c783d2591a8")]
 	public interface nsIWebBrowserFind
 	{
 		
@@ -199,9 +199,8 @@ namespace Gecko
         /// be set to be the last frame searched, whether or not a result was found.
         /// Has to be equal to or contained within the rootSearchFrame.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetCurrentSearchFrameAttribute();
+		mozIDOMWindowProxy GetCurrentSearchFrameAttribute();
 		
 		/// <summary>
         /// currentSearchFrame
@@ -211,17 +210,7 @@ namespace Gecko
         /// Has to be equal to or contained within the rootSearchFrame.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCurrentSearchFrameAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aCurrentSearchFrame);
-		
-		/// <summary>
-        /// rootSearchFrame
-        ///
-        /// Frame within which to confine the search (normally the content area frame).
-        /// Set this to only search a subtree of the frame hierarchy.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetRootSearchFrameAttribute();
+		void SetCurrentSearchFrameAttribute(mozIDOMWindowProxy aCurrentSearchFrame);
 		
 		/// <summary>
         /// rootSearchFrame
@@ -230,7 +219,16 @@ namespace Gecko
         /// Set this to only search a subtree of the frame hierarchy.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetRootSearchFrameAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aRootSearchFrame);
+		mozIDOMWindowProxy GetRootSearchFrameAttribute();
+		
+		/// <summary>
+        /// rootSearchFrame
+        ///
+        /// Frame within which to confine the search (normally the content area frame).
+        /// Set this to only search a subtree of the frame hierarchy.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRootSearchFrameAttribute(mozIDOMWindowProxy aRootSearchFrame);
 		
 		/// <summary>
         /// searchSubframes

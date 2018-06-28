@@ -106,12 +106,6 @@ namespace Gecko
 		void PluginCrashed([MarshalAs(UnmanagedType.Interface)] nsIPluginTag pluginTag, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase pluginDumpID, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase browserDumpID, [MarshalAs(UnmanagedType.U1)] bool submittedCrashReport);
 		
 		/// <summary>
-        /// This method will play a plugin that has been stopped by click-to-play.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void PlayPlugin();
-		
-		/// <summary>
         /// Forces a re-evaluation and reload of the tag, optionally invalidating its
         /// click-to-play state.  This can be used when the MIME type that provides a
         /// type has changed, for instance, to force the tag to re-evalulate the
@@ -161,28 +155,10 @@ namespace Gecko
 		nsIURI GetSrcURIAttribute();
 		
 		/// <summary>
-        /// The plugin's current state of fallback content. This property
-        /// only makes sense if the plugin is not activated.
+        /// Disable the use of fake plugins and reload the tag if necessary.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetPluginFallbackTypeAttribute();
-		
-		/// <summary>
-        /// If this object currently owns a running plugin, regardless of whether or
-        /// not one is pending spawn/despawn.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetHasRunningPluginAttribute();
-		
-		/// <summary>
-        /// If this plugin runs out-of-process, it has a runID to differentiate
-        /// between different times the plugin process has been instantiated.
-        ///
-        /// This throws NS_ERROR_NOT_IMPLEMENTED for in-process plugins.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetRunIDAttribute();
+		void SkipFakePlugins();
 	}
 	
 	/// <summary>nsIObjectLoadingContentConsts </summary>
@@ -201,10 +177,13 @@ namespace Gecko
 		public const ulong TYPE_PLUGIN = 2;
 		
 		// 
-		public const ulong TYPE_DOCUMENT = 3;
+		public const ulong TYPE_FAKE_PLUGIN = 3;
 		
 		// 
-		public const ulong TYPE_NULL = 4;
+		public const ulong TYPE_DOCUMENT = 4;
+		
+		// 
+		public const ulong TYPE_NULL = 5;
 		
 		// 
 		public const ulong PLUGIN_ACTIVE = 0xFF;
@@ -263,5 +242,15 @@ namespace Gecko
         // The plugin is vulnerable (no update available)
         // </summary>
 		public const ulong PLUGIN_VULNERABLE_NO_UPDATE = 10;
+		
+		// <summary>
+        // The plugin is click-to-play, but the user won't see overlays
+        // </summary>
+		public const ulong PLUGIN_CLICK_TO_PLAY_QUIET = 11;
+		
+		// <summary>
+        // plugin badge in the URL bar.
+        // </summary>
+		public const ulong PLUGIN_PERMISSION_PROMPT_ACTION_QUIET = 8;
 	}
 }

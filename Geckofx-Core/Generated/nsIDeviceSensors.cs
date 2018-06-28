@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1B406E32-CF42-471E-A470-6FD600BF4C7B")]
+	[Guid("0462247e-fe8c-4aa5-b675-3752547e485f")]
 	public interface nsIDeviceSensorData
 	{
 		
@@ -54,7 +54,7 @@ namespace Gecko
 	{
 		
 		// <summary>
-        // Keep in sync with hal/HalSensor.h
+        // and [2, 1] if absolute orientation (compass heading) is required.
         // </summary>
 		public const ulong TYPE_ORIENTATION = 0;
 		
@@ -72,6 +72,12 @@ namespace Gecko
 		
 		// 
 		public const ulong TYPE_LIGHT = 5;
+		
+		// 
+		public const ulong TYPE_ROTATION_VECTOR = 6;
+		
+		// 
+		public const ulong TYPE_GAME_ROTATION_VECTOR = 7;
 	}
 	
 	/// <summary>nsIDeviceSensors </summary>

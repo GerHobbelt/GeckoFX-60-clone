@@ -6,12 +6,12 @@ namespace Gecko
     public class GeckoHtmlElementCollection
         : GeckoElementCollection
     {
-        internal GeckoHtmlElementCollection(nsIDOMHTMLCollection col) : base(null)
+        internal GeckoHtmlElementCollection(/* nsIDOMHTMLCollection */nsISupports col) : base(null)
         {
             this.Collection = col;
         }
 
-        private nsIDOMHTMLCollection Collection;
+        private /* nsIDOMHTMLCollection */nsISupports Collection;
 
         public override int Length
         {
@@ -25,7 +25,7 @@ namespace Gecko
                 if (index < 0 || index >= Length)
                     throw new ArgumentOutOfRangeException("index");
 
-                return GeckoHtmlElement.Create((nsIDOMHTMLElement) Collection.Item((uint) index));
+                return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) Collection.Item((uint) index));
             }
         }
 
@@ -34,7 +34,7 @@ namespace Gecko
             int length = Length;
             for (int i = 0; i < length; i++)
             {
-                yield return GeckoHtmlElement.Create((nsIDOMHTMLElement) Collection.Item((uint) i));
+                yield return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) Collection.Item((uint) i));
             }
         }
     }

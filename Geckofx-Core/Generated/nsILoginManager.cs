@@ -52,13 +52,30 @@ namespace Gecko
         ///
         /// @param aLogin
         /// The login to be added.
+        /// @return a clone of the login info with the guid set (even if it was not provided)
         ///
         /// Default values for the login's nsILoginMetaInfo properties will be
         /// created. However, if the caller specifies non-default values, they will
         /// be used instead.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddLogin([MarshalAs(UnmanagedType.Interface)] nsILoginInfo aLogin);
+		nsILoginInfo AddLogin([MarshalAs(UnmanagedType.Interface)] nsILoginInfo aLogin);
+		
+		/// <summary>
+        /// Like addLogin, but asynchronous and for many logins.
+        ///
+        /// @param aLogins
+        /// A JS Array of nsILoginInfos to add.
+        /// @return A promise which resolves with a JS Array of cloned logins with
+        /// the guids set.
+        ///
+        /// Default values for each login's nsILoginMetaInfo properties will be
+        /// created. However, if the caller specifies non-default values, they will
+        /// be used instead.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal AddLogins(ref Gecko.JsVal aLogins);
 		
 		/// <summary>
         /// Remove a login from the login manager.
@@ -229,6 +246,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AutoCompleteSearchAsync([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSearchString, [MarshalAs(UnmanagedType.Interface)] nsIAutoCompleteResult aPreviousResult, [MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLInputElement aElement, [MarshalAs(UnmanagedType.Interface)] nsIFormAutoCompleteObserver aListener);
+		
+		/// <summary>
+        /// Stop a previously-started async search.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void StopSearch();
 		
 		/// <summary>
         /// Search for logins in the login manager. An array is always returned;

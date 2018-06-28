@@ -276,15 +276,6 @@ namespace Gecko
 		public const ulong OutputAbsoluteLinks = (1<<7);
 		
 		// <summary>
-        // Attempt to encode entities standardized at W3C (HTML, MathML, etc).
-        // This is a catch-all flag for documents with mixed contents. Beware of
-        // interoperability issues. See below for other flags which might likely
-        // do what you want.
-        // HTML output only.
-        // </summary>
-		public const ulong OutputEncodeW3CEntities = (1<<8);
-		
-		// <summary>
         // LineBreak processing: if this flag is set than CR line breaks will
         // be written. If neither this nor OutputLFLineBreak is set, then we
         // will use platform line breaks. The combination of the two flags will
@@ -327,22 +318,6 @@ namespace Gecko
         // HTML output only.
         // </summary>
 		public const ulong OutputEncodeBasicEntities = (1<<14);
-		
-		// <summary>
-        // Encode entities when outputting to a string.
-        // The Latin1 entity set additionally includes 8bit accented letters
-        // between 128 and 255.
-        // HTML output only.
-        // </summary>
-		public const ulong OutputEncodeLatin1Entities = (1<<15);
-		
-		// <summary>
-        // Encode entities when outputting to a string.
-        // The HTML entity set additionally includes accented letters, greek
-        // letters, and other special markup symbols as defined in HTML4.
-        // HTML output only.
-        // </summary>
-		public const ulong OutputEncodeHTMLEntities = (1<<16);
 		
 		// <summary>
         // Normally &nbsp; is replaced with a space character when
@@ -415,5 +390,12 @@ namespace Gecko
         // not be broken just as "normal" longs strings aren't broken.
         // </summary>
 		public const ulong OutputDisallowLineBreaking = (1<<27);
+		
+		// <summary>
+        // Release reference of nsIDocument after using encodeTo* method to recycle
+        // this encoder without holding nsIDocument. To use this encoder again,
+        // we have to call init again.
+        // </summary>
+		public const ulong RequiresReinitAfterOutput = (1<<28);
 	}
 }

@@ -42,21 +42,21 @@ using System.Runtime.InteropServices;
 namespace Gecko
 {
     /// <summary>
-    /// Wrapper around nsIDOMCSSStyleDeclaration
+    /// Wrapper around /* /* nsIDOMCSSStyleDeclaration s */nsISupports
     /// Allows viewing and modifying inline CSS styles.
     /// TODO: could add the following functionality if needed:
     /// GetParentRule, RemoveProperty, GetPropertyPriority
     /// </summary>
     public class GeckoStyle
     {
-        private nsIDOMCSSStyleDeclaration StyleDelcaration;
+        private /* /* nsIDOMCSSStyleDeclaration s */nsISupports StyleDelcaration;
 
-        internal GeckoStyle(nsIDOMCSSStyleDeclaration styleDeclaration)
+        internal GeckoStyle(/* /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
         {
             StyleDelcaration = styleDeclaration;
         }
 
-        internal static GeckoStyle Create(nsIDOMCSSStyleDeclaration styleDeclaration)
+        internal static GeckoStyle Create(/* /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
         {
             return (styleDeclaration == null) ? null : new GeckoStyle(styleDeclaration);
         }
@@ -124,12 +124,12 @@ namespace Gecko
     /// </summary>
     public class GeckoStyleSheet
     {
-        private GeckoStyleSheet(nsIDOMCSSStyleSheet styleSheet)
+        private GeckoStyleSheet(/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
         {
             _DomStyleSheet = styleSheet;
         }
 
-        internal static GeckoStyleSheet Create(nsIDOMCSSStyleSheet styleSheet)
+        internal static GeckoStyleSheet Create(/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
         {
             return (styleSheet == null) ? null : new GeckoStyleSheet(styleSheet);
         }
@@ -142,7 +142,7 @@ namespace Gecko
             get { return _DomStyleSheet; }
         }
 
-        private nsIDOMCSSStyleSheet _DomStyleSheet;
+        private /* nsIDOMCSSStyleSheet */nsISupports _DomStyleSheet;
 
         /// <summary>
         /// Gets or sets whether the style sheet is disabled.
@@ -166,7 +166,7 @@ namespace Gecko
         /// </summary>
         public GeckoStyleSheet ParentStyleSheet
         {
-            get { return Create((nsIDOMCSSStyleSheet) _DomStyleSheet.GetParentStyleSheetAttribute()); }
+            get { return Create((/* nsIDOMCSSStyleSheet */nsISupports) _DomStyleSheet.GetParentStyleSheetAttribute()); }
         }
 
         /// <summary>
@@ -215,16 +215,16 @@ namespace Gecko
             }
 
             private GeckoStyleSheet StyleSheet;
-            private nsIDOMCSSRuleList List;
+            private /* nsIDOMCSSRuleList */nsISupports List;
             private nsIDOMWindow _window;
 
-            private nsIDOMCSSRuleList GetRuleList()
+            private /* nsIDOMCSSRuleList */nsISupports GetRuleList()
             {
                 using (AutoJSContext context = new AutoJSContext(GetGlobalWindow()))
                 {
                     var window = GetGlobalWindow();
                     var val = context.EvaluateScript("this.document.styleSheets[0].cssRules;", window);
-                    return (nsIDOMCSSRuleList) val.ToObject();
+                    return (/* nsIDOMCSSRuleList */nsISupports) val.ToObject();
                 }
             }
 
@@ -393,12 +393,12 @@ namespace Gecko
     /// </summary>
     public class GeckoStyleRule
     {
-        private GeckoStyleRule(nsIDOMCSSRule rule)
+        private GeckoStyleRule(/* nsIDOMCSSRule */nsISupports rule)
         {
             _DomStyleRule = rule;
         }
 
-        internal static GeckoStyleRule Create(nsIDOMCSSRule rule)
+        internal static GeckoStyleRule Create(/* nsIDOMCSSRule */nsISupports rule)
         {
             return (rule == null) ? null : new GeckoStyleRule(rule);
         }
@@ -411,7 +411,7 @@ namespace Gecko
             get { return _DomStyleRule; }
         }
 
-        private nsIDOMCSSRule _DomStyleRule;
+        private /* nsIDOMCSSRule */nsISupports _DomStyleRule;
 
         /// <summary>
         /// Gets the selector text for this rule, or null if it is not a style rule; otherwise, null.
@@ -470,7 +470,7 @@ namespace Gecko
         /// </summary>
         public GeckoStyleSheet ParentStyleSheet
         {
-            get { return GeckoStyleSheet.Create((nsIDOMCSSStyleSheet) _DomStyleRule.GetParentStyleSheetAttribute()); }
+            get { return GeckoStyleSheet.Create((/* nsIDOMCSSStyleSheet */nsISupports) _DomStyleRule.GetParentStyleSheetAttribute()); }
         }
 
         /// <summary>
@@ -483,7 +483,7 @@ namespace Gecko
                 nsIDOMCSSImportRule rule = Xpcom.QueryInterface<nsIDOMCSSImportRule>(DomStyleRule);
                 if (rule != null)
                 {
-                    return GeckoStyleSheet.Create((nsIDOMCSSStyleSheet) rule.GetStyleSheetAttribute());
+                    return GeckoStyleSheet.Create((/* nsIDOMCSSStyleSheet */nsISupports) rule.GetStyleSheetAttribute());
                 }
                 return null;
             }
@@ -540,12 +540,12 @@ namespace Gecko
     /// </summary>
     public class GeckoMediaList : IEnumerable<string>
     {
-        internal GeckoMediaList(nsIDOMMediaList mediaList)
+        internal GeckoMediaList(/* nsIDOMMediaList */nsISupports mediaList)
         {
             this.MediaList = mediaList;
         }
 
-        private nsIDOMMediaList MediaList;
+        private /* nsIDOMMediaList */nsISupports MediaList;
 
         /// <summary>
         /// Gets the number of mediums in the list.

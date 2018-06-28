@@ -225,7 +225,7 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("sendBeacon", url);
         }
         
-        public bool SendBeacon(string url, WebIDLUnion<IntPtr,nsIDOMBlob,System.String,nsIDOMFormData> data)
+        public bool SendBeacon(string url, WebIDLUnion<IntPtr,nsIDOMBlob,System.String,/* nsIDOMFormData */ nsISupports> data)
         {
             return this.CallMethod<bool>("sendBeacon", url, data);
         }

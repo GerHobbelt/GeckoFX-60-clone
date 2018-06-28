@@ -105,58 +105,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SwapCache();
-		
-		/// <summary>
-        ///Events </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOncheckingAttribute(System.IntPtr jsContext);
-		
-		/// <summary>
-        ///Events </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOncheckingAttribute(Gecko.JsVal aOnchecking, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOnerrorAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOnerrorAttribute(Gecko.JsVal aOnerror, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOnnoupdateAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOnnoupdateAttribute(Gecko.JsVal aOnnoupdate, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOndownloadingAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOndownloadingAttribute(Gecko.JsVal aOndownloading, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOnprogressAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOnprogressAttribute(Gecko.JsVal aOnprogress, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOnupdatereadyAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOnupdatereadyAttribute(Gecko.JsVal aOnupdateready, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOncachedAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOncachedAttribute(Gecko.JsVal aOncached, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal GetOnobsoleteAttribute(System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOnobsoleteAttribute(Gecko.JsVal aOnobsolete, System.IntPtr jsContext);
 	}
 	
 	/// <summary>nsIDOMOfflineResourceListConsts </summary>

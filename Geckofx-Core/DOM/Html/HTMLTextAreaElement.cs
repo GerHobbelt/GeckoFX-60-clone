@@ -7,19 +7,19 @@ namespace Gecko.DOM
 {
     public class GeckoTextAreaElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLTextAreaElement DOMHTMLElement;
+        private /* nsIDOMHTMLTextAreaElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoTextAreaElement(nsIDOMHTMLTextAreaElement element) : base(element)
+        internal GeckoTextAreaElement(/* nsIDOMHTMLTextAreaElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoTextAreaElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoTextAreaElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLTextAreaElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLTextAreaElement */ nsISupports;
         }
 
-        #region nsIDOMHTMLTextAreaElement members
+        #region /* nsIDOMHTMLTextAreaElement */ nsISupports members
 
         public bool Autofocus
         {

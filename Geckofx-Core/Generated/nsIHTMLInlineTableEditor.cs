@@ -56,27 +56,6 @@ namespace Gecko
 		void SetInlineTableEditingEnabledAttribute([MarshalAs(UnmanagedType.U1)] bool aInlineTableEditingEnabled);
 		
 		/// <summary>
-        /// Shows inline table editing UI around a table cell
-        /// @param aCell [IN] a DOM Element being a table cell, td or th
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ShowInlineTableEditingUI([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aCell);
-		
-		/// <summary>
-        /// Hide all inline table editing UI
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void HideInlineTableEditingUI();
-		
-		/// <summary>
-        /// Modifies the table containing the selection according to the
-        /// activation of an inline table editing UI element
-        /// @param aUIAnonymousElement [IN] the inline table editing UI element
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DoInlineTableEditingAction([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aUIAnonymousElement);
-		
-		/// <summary>
         /// Refresh already visible inline table editing UI
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

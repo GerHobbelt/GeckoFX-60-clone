@@ -355,7 +355,25 @@ namespace Gecko
         /// to a cross-process frame whose process has crashed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, System.IntPtr jsContext, int argc);
+		void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, ref Gecko.JsVal transfers, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// For remote browsers there is always a corresponding process message
+        /// manager. The intention of this attribute is to link leaf level frame
+        /// message managers on the parent side with the corresponding process
+        /// message managers (if there is one). For any other cases this property
+        /// is null.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIMessageSender GetProcessMessageManagerAttribute();
+		
+		/// <summary>
+        /// For remote browsers, this contains the remoteType of the content child.
+        /// Otherwise, it is empty.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetRemoteTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRemoteType);
 	}
 	
 	/// <summary>
@@ -443,6 +461,13 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIMessageListenerManager GetChildAt(uint aIndex);
+		
+		/// <summary>
+        /// Some processes are kept alive after their last tab/window are closed for testing
+        /// (see dom.ipc.keepProcessesAlive). This function releases those.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReleaseCachedProcesses();
 	}
 	
 	/// <summary>nsISyncMessageSender </summary>
@@ -519,7 +544,25 @@ namespace Gecko
         /// to a cross-process frame whose process has crashed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, System.IntPtr jsContext, int argc);
+		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, ref Gecko.JsVal transfers, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// For remote browsers there is always a corresponding process message
+        /// manager. The intention of this attribute is to link leaf level frame
+        /// message managers on the parent side with the corresponding process
+        /// message managers (if there is one). For any other cases this property
+        /// is null.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIMessageSender GetProcessMessageManagerAttribute();
+		
+		/// <summary>
+        /// For remote browsers, this contains the remoteType of the content child.
+        /// Otherwise, it is empty.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetRemoteTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRemoteType);
 		
 		/// <summary>
         /// Like |sendAsyncMessage()|, except blocks the sender until all
@@ -616,7 +659,25 @@ namespace Gecko
         /// to a cross-process frame whose process has crashed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, System.IntPtr jsContext, int argc);
+		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, ref Gecko.JsVal transfers, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// For remote browsers there is always a corresponding process message
+        /// manager. The intention of this attribute is to link leaf level frame
+        /// message managers on the parent side with the corresponding process
+        /// message managers (if there is one). For any other cases this property
+        /// is null.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIMessageSender GetProcessMessageManagerAttribute();
+		
+		/// <summary>
+        /// For remote browsers, this contains the remoteType of the content child.
+        /// Otherwise, it is empty.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetRemoteTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRemoteType);
 		
 		/// <summary>
         /// Like |sendAsyncMessage()|, except blocks the sender until all
@@ -667,7 +728,7 @@ namespace Gecko
 	/// <summary>nsIContentFrameMessageManager </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("fff36099-9f84-4c7c-b69a-1cbf103d1708")]
+	[Guid("694e367c-aa25-4446-8499-2c527c4bd838")]
 	public interface nsIContentFrameMessageManager : nsIMessageManagerGlobal
 	{
 		
@@ -738,7 +799,25 @@ namespace Gecko
         /// to a cross-process frame whose process has crashed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, System.IntPtr jsContext, int argc);
+		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, ref Gecko.JsVal transfers, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// For remote browsers there is always a corresponding process message
+        /// manager. The intention of this attribute is to link leaf level frame
+        /// message managers on the parent side with the corresponding process
+        /// message managers (if there is one). For any other cases this property
+        /// is null.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIMessageSender GetProcessMessageManagerAttribute();
+		
+		/// <summary>
+        /// For remote browsers, this contains the remoteType of the content child.
+        /// Otherwise, it is empty.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetRemoteTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRemoteType);
 		
 		/// <summary>
         /// Like |sendAsyncMessage()|, except blocks the sender until all
@@ -788,9 +867,8 @@ namespace Gecko
 		/// <summary>
         /// The current top level window in the frame or null.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetContentAttribute();
+		mozIDOMWindowProxy GetContentAttribute();
 		
 		/// <summary>
         /// The top level docshell or null.
@@ -798,12 +876,20 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDocShell GetDocShellAttribute();
+		
+		/// <summary>
+        /// Returns the SchedulerEventTarget corresponding to the TabGroup
+        /// for this frame.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIEventTarget GetTabEventTargetAttribute();
 	}
 	
 	/// <summary>nsIInProcessContentFrameMessageManager </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9c6bd4d7-88d2-46d6-8606-f2d57d46f051")]
+	[Guid("b39a3324-b574-4f85-8cdb-274d04f807ef")]
 	public interface nsIInProcessContentFrameMessageManager : nsIContentFrameMessageManager
 	{
 		
@@ -874,7 +960,25 @@ namespace Gecko
         /// to a cross-process frame whose process has crashed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, System.IntPtr jsContext, int argc);
+		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, ref Gecko.JsVal transfers, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// For remote browsers there is always a corresponding process message
+        /// manager. The intention of this attribute is to link leaf level frame
+        /// message managers on the parent side with the corresponding process
+        /// message managers (if there is one). For any other cases this property
+        /// is null.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIMessageSender GetProcessMessageManagerAttribute();
+		
+		/// <summary>
+        /// For remote browsers, this contains the remoteType of the content child.
+        /// Otherwise, it is empty.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetRemoteTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRemoteType);
 		
 		/// <summary>
         /// Like |sendAsyncMessage()|, except blocks the sender until all
@@ -924,9 +1028,8 @@ namespace Gecko
 		/// <summary>
         /// The current top level window in the frame or null.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMWindow GetContentAttribute();
+		new mozIDOMWindowProxy GetContentAttribute();
 		
 		/// <summary>
         /// The top level docshell or null.
@@ -934,6 +1037,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsIDocShell GetDocShellAttribute();
+		
+		/// <summary>
+        /// Returns the SchedulerEventTarget corresponding to the TabGroup
+        /// for this frame.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIEventTarget GetTabEventTargetAttribute();
 		
 		/// <summary>Member GetOwnerContent </summary>
 		/// <returns>A System.IntPtr</returns>
@@ -1020,7 +1131,25 @@ namespace Gecko
         /// to a cross-process frame whose process has crashed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, System.IntPtr jsContext, int argc);
+		new void SendAsyncMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase messageName, ref Gecko.JsVal obj, ref Gecko.JsVal objects, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, ref Gecko.JsVal transfers, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// For remote browsers there is always a corresponding process message
+        /// manager. The intention of this attribute is to link leaf level frame
+        /// message managers on the parent side with the corresponding process
+        /// message managers (if there is one). For any other cases this property
+        /// is null.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new nsIMessageSender GetProcessMessageManagerAttribute();
+		
+		/// <summary>
+        /// For remote browsers, this contains the remoteType of the content child.
+        /// Otherwise, it is empty.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetRemoteTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRemoteType);
 		
 		/// <summary>
         /// Like |sendAsyncMessage()|, except blocks the sender until all
@@ -1183,88 +1312,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetInitialProcessDataAttribute(System.IntPtr jsContext);
-	}
-	
-	/// <summary>nsIProcessChecker </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("637e8538-4f8f-4a3d-8510-e74386233e19")]
-	public interface nsIProcessChecker
-	{
-		
-		/// <summary>Member KillChild </summary>
-		/// <returns>A System.Boolean</returns>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool KillChild();
-		
-		/// <summary>
-        /// Return true if the "remote" process has |aPermission|.  This is
-        /// intended to be used by JS implementations of cross-process DOM
-        /// APIs, like so
-        ///
-        /// recvFooRequest: function(message) {
-        /// if (!message.target.assertPermission("foo")) {
-        /// return false;
-        /// }
-        /// // service foo request
-        ///
-        /// This interface only returns meaningful data when our content is
-        /// in a separate process.  If it shares the same OS process as us,
-        /// then applying this permission check doesn't add any security,
-        /// though it doesn't hurt anything either.
-        ///
-        /// Note: If the remote content process does *not* have |aPermission|,
-        /// it will be killed as a precaution.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool AssertPermission([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPermission);
-		
-		/// <summary>
-        /// Return true if the "remote" process has |aManifestURL|.  This is
-        /// intended to be used by JS implementations of cross-process DOM
-        /// APIs, like so
-        ///
-        /// recvFooRequest: function(message) {
-        /// if (!message.target.assertContainApp("foo")) {
-        /// return false;
-        /// }
-        /// // service foo request
-        ///
-        /// This interface only returns meaningful data when our content is
-        /// in a separate process.  If it shares the same OS process as us,
-        /// then applying this manifest URL check doesn't add any security,
-        /// though it doesn't hurt anything either.
-        ///
-        /// Note: If the remote content process does *not* contain |aManifestURL|,
-        /// it will be killed as a precaution.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool AssertContainApp([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aManifestURL);
-		
-		/// <summary>Member AssertAppHasPermission </summary>
-		/// <param name='aPermission'> </param>
-		/// <returns>A System.Boolean</returns>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool AssertAppHasPermission([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPermission);
-		
-		/// <summary>
-        /// Return true if the "remote" process' principal has an appStatus equal to
-        /// |aStatus|.
-        ///
-        /// This interface only returns meaningful data when our content is
-        /// in a separate process.  If it shares the same OS process as us,
-        /// then applying this permission check doesn't add any security,
-        /// though it doesn't hurt anything either.
-        ///
-        /// Note: If the remote content process does *not* has the |aStatus|,
-        /// it will be killed as a precaution.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool AssertAppHasStatus(ushort aStatus);
 	}
 }

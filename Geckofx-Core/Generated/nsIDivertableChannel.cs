@@ -46,13 +46,13 @@ namespace Gecko
         /// 1) divertToParent is called in the child process.  It can only be called
         /// during OnStartRequest().
         ///
-        /// 2) The ChannelDiverterChild that is returned is an IPDL object. It should
+        /// 2) The /* ChannelDiverterChild */ nsISupports that is returned is an IPDL object. It should
         /// be passed via some other IPDL method of the client's choosing to the
         /// parent.  On the parent the ChannelDiverterParent's divertTo() function
         /// should be called with an nsIStreamListener that will then receive the
         /// OnStartRequest/OnDataAvailable/OnStopRequest for the channel.  The
         /// ChannelDiverterParent can then be deleted (which will also destroy the
-        /// ChannelDiverterChild in the child).
+        /// /* ChannelDiverterChild */ nsISupports in the child).
         ///
         /// After divertToParent() has been called, NO further function calls
         /// should be made on the channel.  It is a dead object for all purposes.
@@ -61,14 +61,14 @@ namespace Gecko
         /// nsIStreamListener calls (OnDataAvailable, OnStopRequest) will be made
         /// to it.
         ///
-        /// @return ChannelDiverterChild IPDL actor to be passed to parent process by
+        /// @return /* ChannelDiverterChild */ nsISupports IPDL actor to be passed to parent process by
         /// client IPDL message, e.g. PClient.DivertUsing(PDiverterChild).
         ///
         /// @throws exception if the channel was canceled early. Throws status code of
         /// canceled channel.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ChannelDiverterChild DivertToParent();
+		/* ChannelDiverterChild */ nsISupports DivertToParent();
 		
 		/// <summary>
         /// nsUnknownDecoder delays calling OnStartRequest until it gets enough data

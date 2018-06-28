@@ -27,6 +27,32 @@ namespace Gecko
 	
 	
 	/// <summary>
+    /// This interface contains feilds in Matches object of FullHashResponse(V4).
+    /// Reference from:
+    /// https://developers.google.com/safe-browsing/v4/update-api#http-post-response_2
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("aabeb50e-d9f7-418e-9469-2cd9608958c0")]
+	public interface nsIFullHashMatch
+	{
+		
+		/// <summary>
+        /// This interface contains feilds in Matches object of FullHashResponse(V4).
+        /// Reference from:
+        /// https://developers.google.com/safe-browsing/v4/update-api#http-post-response_2
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetTableNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aTableName);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetFullHashAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFullHash);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetCacheDurationAttribute();
+	}
+	
+	/// <summary>
     /// This interface is implemented by nsIUrlClassifierHashCompleter clients.
     /// </summary>
 	[ComImport()]
@@ -41,14 +67,30 @@ namespace Gecko
         /// nsIUrlClassifierCompleter::complete() call.
         ///
         /// @param hash
-        /// The 128-bit hash that was discovered.
+        /// The 256-bit hash that was discovered.
         /// @param table
         /// The name of the table that this hash belongs to.
         /// @param chunkId
         /// The database chunk that this hash belongs to.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Completion([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase hash, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase table, uint chunkId);
+		void CompletionV2([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase hash, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase table, uint chunkId);
+		
+		/// <summary>
+        /// This will be called when a fullhash response is received and parsed
+        /// no matter if any full hash has been found.
+        ///
+        /// @param partialHash
+        /// The hash that was sent for completion.
+        /// @param table
+        /// The name of the table that this hash belongs to.
+        /// @param negativeCacheDuration
+        /// The negative cache duration in millisecond.
+        /// @param fullHashes
+        /// Array of fullhashes that match the prefix.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CompletionV4([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase partialHash, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase table, uint negativeCacheDuration, [MarshalAs(UnmanagedType.Interface)] nsIArray fullHashes);
 		
 		/// <summary>
         /// The completion is complete.  This method is called once per
@@ -84,10 +126,12 @@ namespace Gecko
         /// The 32-bit hash encountered by the url-classifier.
         /// @param gethashUrl
         /// The gethash url to use.
+        /// @param tableName
+        /// The table where we matched the partial hash.
         /// @param callback
         /// An nsIUrlClassifierCompleterCallback instance.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Complete([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase partialHash, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase gethashUrl, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierHashCompleterCallback callback);
+		void Complete([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase partialHash, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase gethashUrl, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierHashCompleterCallback callback);
 	}
 }

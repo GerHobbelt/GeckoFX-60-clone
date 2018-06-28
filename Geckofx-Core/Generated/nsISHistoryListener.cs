@@ -51,15 +51,19 @@ namespace Gecko
         /// or content area, for example via nsIWebNavigation::loadURI()
         ///
         /// @param aNewURI     The URI of the document to be added to session history.
+        /// @param aOldIndex   The index of the current history item before the operation.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnHistoryNewEntry([MarshalAs(UnmanagedType.Interface)] nsIURI aNewURI);
+		void OnHistoryNewEntry([MarshalAs(UnmanagedType.Interface)] nsIURI aNewURI, int aOldIndex);
 		
 		/// <summary>
         /// Called when navigating to a previous session history entry, for example
         /// due to a nsIWebNavigation::goBack() call.
         ///
         /// @param aBackURI    The URI of the session history entry being navigated to.
+        /// It could be null in case of a grouped session history
+        /// navigation since we have no URI information of entries
+        /// existing in other partial histories.
         /// @return            Whether the operation can proceed.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
@@ -71,6 +75,9 @@ namespace Gecko
         /// due to a nsIWebNavigation::goForward() call.
         ///
         /// @param aForwardURI   The URI of the session history entry being navigated to.
+        /// It could be null in case of a grouped session history
+        /// navigation since we have no URI information of entries
+        /// existing in other partial histories.
         /// @return              Whether the operation can proceed.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
@@ -99,6 +106,9 @@ namespace Gecko
         ///
         /// @param aIndex        The index in session history of the entry to be loaded.
         /// @param aGotoURI      The URI of the session history entry to be loaded.
+        /// It could be null in case of a grouped session history
+        /// navigation since we have no URI information of entries
+        /// existing in other partial histories.
         /// @return              Whether the operation can proceed.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
@@ -130,5 +140,21 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnHistoryReplaceEntry(int aIndex);
+		
+		/// <summary>
+        /// Called when nsISHistory::count has been updated. Unlike OnHistoryNewEntry
+        /// and OnHistoryPurge which happen before the modifications are actually done
+        /// and maybe cancellable, this function is called after these modifications.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnLengthChanged(int aCount);
+		
+		/// <summary>
+        /// Called when nsISHistory::index has been updated. Unlike the other methods
+        /// on this interface, which happen before the modifications are actually done
+        /// and maybe cancellable, this function is called after these modifications.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnIndexChanged(int aIndex);
 	}
 }

@@ -40,17 +40,32 @@ namespace Gecko
         ///return a array of inner windows that have active captures </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray GetActiveMediaCaptureWindowsAttribute();
+		nsIArray GetActiveMediaCaptureWindowsAttribute();
 		
 		/// <summary>
         ///Get the capture state for the given window and all descendant windows (iframes, etc) </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MediaCaptureWindowState([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.U1)] ref bool aVideo, [MarshalAs(UnmanagedType.U1)] ref bool aAudio, [MarshalAs(UnmanagedType.U1)] ref bool aScreenShare, [MarshalAs(UnmanagedType.U1)] ref bool aWindowShare, [MarshalAs(UnmanagedType.U1)] ref bool aAppShare, [MarshalAs(UnmanagedType.U1)] ref bool aBrowserShare);
+		void MediaCaptureWindowState([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, ref ushort aCamera, ref ushort aMicrophone, ref ushort aScreenShare, ref ushort aWindowShare, ref ushort aAppShare, ref ushort aBrowserShare);
 		
 		/// <summary>
         ///Clear per-orgin list of persistent DeviceIds stored for enumerateDevices
         ///     sinceTime is milliseconds since 1 January 1970 00:00:00 UTC. 0 = clear all </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SanitizeDeviceIds(long sinceWhen);
+	}
+	
+	/// <summary>nsIMediaManagerServiceConsts </summary>
+	public class nsIMediaManagerServiceConsts
+	{
+		
+		// <summary>
+        //possible states for camera and microphone capture </summary>
+		public const ushort STATE_NOCAPTURE = 0;
+		
+		// 
+		public const ushort STATE_CAPTURE_ENABLED = 1;
+		
+		// 
+		public const ushort STATE_CAPTURE_DISABLED = 2;
 	}
 }

@@ -48,6 +48,14 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIX509Cert GetServerCertAttribute();
 		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIX509CertList GetFailedCertChainAttribute();
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIX509CertList GetSucceededCertChainAttribute();
+		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetCipherNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCipherName);
 		
@@ -58,7 +66,16 @@ namespace Gecko
 		uint GetSecretKeyLengthAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetKeaGroupNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aKeaGroupName);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetSignatureSchemeNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSignatureSchemeName);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ushort GetProtocolVersionAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ushort GetCertificateTransparencyStatusAttribute();
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -103,5 +120,20 @@ namespace Gecko
 		
 		// 
 		public const short TLS_VERSION_1_2 = 3;
+		
+		// 
+		public const short TLS_VERSION_1_3 = 4;
+		
+		// 
+		public const short CERTIFICATE_TRANSPARENCY_NOT_APPLICABLE = 0;
+		
+		// 
+		public const short CERTIFICATE_TRANSPARENCY_POLICY_COMPLIANT = 5;
+		
+		// 
+		public const short CERTIFICATE_TRANSPARENCY_POLICY_NOT_ENOUGH_SCTS = 6;
+		
+		// 
+		public const short CERTIFICATE_TRANSPARENCY_POLICY_NOT_DIVERSE_SCTS = 7;
 	}
 }

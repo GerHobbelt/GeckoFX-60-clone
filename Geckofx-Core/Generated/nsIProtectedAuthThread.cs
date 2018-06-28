@@ -27,9 +27,8 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// nsIProtectedAuthThread
-    /// This is used to communicate with the thread login on to
-    /// a token with CKF_PROTECTED_AUTHENTICATION_PATH set.
+    /// Used to communicate with the thread for logging on to a token with
+    /// CKF_PROTECTED_AUTHENTICATION_PATH set.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

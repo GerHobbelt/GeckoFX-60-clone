@@ -41,6 +41,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init([MarshalAs(UnmanagedType.Interface)] nsIInputStream fillFromStream, uint bufferSize);
+		
+		/// <summary>
+        /// Get the wrapped data stream
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIInputStream GetDataAttribute();
 	}
 	
 	/// <summary>
@@ -154,5 +161,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init([MarshalAs(UnmanagedType.Interface)] nsIOutputStream sinkToStream, uint bufferSize);
+		
+		/// <summary>
+        /// Get the wrapped data stream
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIOutputStream GetDataAttribute();
 	}
 }

@@ -85,9 +85,12 @@ namespace Gecko
         /// it's not in composing mode. DOM compositionend event is not good
         /// timing for calling handleText(). DOM input event immediately after
         /// DOM compositionend event is the best timing to call this.
+        ///
+        /// @return whether this handler started a new search.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void HandleText();
+		bool HandleText();
 		
 		/// <summary>
         /// Notify the controller that the user wishes to enter the current text. If
@@ -95,16 +98,24 @@ namespace Gecko
         /// fill this value into the input field before continuing. If false, just
         /// use the current value of the input field.
         ///
-        /// @return True if the controller wishes to prevent event propagation and default event
+        /// @param aIsPopupSelection
+        /// Pass true if the selection was made from the popup.
+        /// @param aEvent
+        /// The event that triggered the enter, like a key event if the user
+        /// pressed the Return key or a click event if the user clicked a popup
+        /// item.
+        /// @return Whether the controller wishes to prevent event propagation and
+        /// default event.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool HandleEnter([MarshalAs(UnmanagedType.U1)] bool aIsPopupSelection);
+		bool HandleEnter([MarshalAs(UnmanagedType.U1)] bool aIsPopupSelection, [MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aEvent);
 		
 		/// <summary>
         /// Notify the controller that the user wishes to revert autocomplete
         ///
-        /// @return True if the controller wishes to prevent event propagation and default event
+        /// @return Whether the controller wishes to prevent event propagation and
+        /// default event.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -138,7 +149,8 @@ namespace Gecko
         /// Notify the controller of the following key navigation events:
         /// up, down, left, right, page up, page down
         ///
-        /// @return True if the controller wishes to prevent event propagation and default event
+        /// @return Whether the controller wishes to prevent event propagation and
+        /// default event
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -147,6 +159,8 @@ namespace Gecko
 		/// <summary>
         /// Notify the controller that the user chose to delete the current
         /// auto-complete result.
+        ///
+        /// @return Whether the controller removed a result item.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -200,6 +214,26 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSearchStringAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSearchString);
+		
+		/// <summary>
+        /// Set the index of the result item that should be initially selected.
+        /// This should be used when a search wants to pre-select an element before
+        /// the user starts using results.
+        ///
+        /// @note Setting this is not the same as just setting selectedIndex in
+        /// nsIAutocompletePopup, since this will take care of updating any internal
+        /// tracking variables of features like completeSelectedIndex.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetInitiallySelectedIndex(int index);
+		
+		/// <summary>
+        /// Reset controller internal caches for cases where the input doesn't change
+        /// but its context resets, thus it is about to start a completely new search
+        /// session.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ResetInternalState();
 	}
 	
 	/// <summary>nsIAutoCompleteControllerConsts </summary>

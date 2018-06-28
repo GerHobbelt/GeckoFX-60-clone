@@ -36,12 +36,6 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        ///Whether the pref for image resizing has been set. </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetImageResizingEnabledAttribute();
-		
-		/// <summary>
         ///Whether the image is overflowing visible area. </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

@@ -89,16 +89,15 @@ namespace Gecko
         /// The currently focused nsDOMWindow when the browser is active,
         /// or the last focused nsDOMWindow when the browser is inactive.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetFocusedWindowAttribute();
+		mozIDOMWindowProxy GetFocusedWindowAttribute();
 		
 		/// <summary>
         /// The currently focused nsDOMWindow when the browser is active,
         /// or the last focused nsDOMWindow when the browser is inactive.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetFocusedWindowAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aFocusedWindow);
+		void SetFocusedWindowAttribute(mozIDOMWindowProxy aFocusedWindow);
 		
 		/// <summary>
         /// The currently focused nsDOMElement when the browser is active,

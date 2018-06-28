@@ -33,11 +33,6 @@ namespace Gecko
     /// differs from nsIPrintSettings, which stores data which may
     /// be valid across a number of jobs.
     ///
-    /// This interface is currently empty since, at this point, only
-    /// platform-specific derived interfaces offer any functionality.
-    /// It is here as a placeholder for when the printing session has
-    /// XP functionality.
-    ///
     /// The creation of a component which implements this interface
     /// will begin the session. Likewise, destruction of that object
     /// will end the session.
@@ -46,8 +41,20 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2f977d52-5485-11d4-87e2-0010a4e75ef2")]
+	[Guid("424ae4bb-10ca-4f35-b84e-eab893322df4")]
 	public interface nsIPrintSession
 	{
+		
+		/// <summary>
+        /// The remote print job is used for printing via the parent process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports GetRemotePrintJobAttribute();
+		
+		/// <summary>
+        /// The remote print job is used for printing via the parent process.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRemotePrintJobAttribute(nsISupports aRemotePrintJob);
 	}
 }

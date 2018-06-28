@@ -37,12 +37,57 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Returns true if unprivileged code associated with the given addon may load
-        /// data from |aURI|.
+        /// Returns the base content security policy, which is applied to all
+        /// extension documents, in addition to any custom policies.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetBaseCSPAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aBaseCSP);
+		
+		/// <summary>
+        /// Returns the default content security policy which applies to extension
+        /// documents which do not specify any custom policies.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetDefaultCSPAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDefaultCSP);
+		
+		/// <summary>
+        /// Returns the content security policy which applies to documents belonging
+        /// to the extension with the given ID. This may be either a custom policy,
+        /// if one was supplied, or the default policy if one was not.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetAddonCSP([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// Returns the generated background page as a data-URI, if any. If the addon
+        /// does not have an auto-generated background page, an empty string is
+        /// returned.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetGeneratedBackgroundPageUrl([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aAddonId, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Returns true if the addon was granted the |aPerm| API permission.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool AddonMayLoadURI([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		bool AddonHasPermission([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPerm);
+		
+		/// <summary>
+        /// Returns true if unprivileged code associated with the given addon may load
+        /// data from |aURI|.  If |aExplicit| is true, the <all_urls> permission and
+        /// permissive host globs are ignored when checking for a match.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool AddonMayLoadURI([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.U1)] bool aExplicit);
+		
+		/// <summary>
+        /// Returns the name of the WebExtension with the given ID, or the ID string
+        /// if no matching add-on can be found.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetExtensionName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// Returns true if a given extension:// URI is web-accessible.
@@ -56,5 +101,24 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ExtensionURIToAddonId([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+	}
+	
+	/// <summary>
+    /// This interface exposes functionality related to add-on content policy
+    /// enforcement.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("7a4fe60b-9131-45f5-83f3-dc63b5d71a5d")]
+	public interface nsIAddonContentPolicy
+	{
+		
+		/// <summary>
+        /// Checks a custom content security policy string, to ensure that it meets
+        /// minimum security requirements. Returns null for valid policies, or a
+        /// string describing the error for invalid policies.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ValidateAddonCSP([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPolicyString, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 	}
 }

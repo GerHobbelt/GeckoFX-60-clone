@@ -27,8 +27,42 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// Some utility methods used by the url classifier.
+    /// Interface for parseFindFullHashResponseV4 callback
     /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("fbb9684a-a0aa-11e6-88b0-08606e456b8a")]
+	public interface nsIUrlClassifierParseFindFullHashCallback
+	{
+		
+		/// <summary>
+        /// Callback when a match is found in full hash response. This callback may be
+        /// called multiple times when there are more than one matches in response.
+        ///
+        /// @param aCompleteHash A 32-byte complete hash string.
+        /// @param aTableNames The table names that this complete hash is associated with.
+        /// Since the server responded with a threat type, multiple
+        /// list names can be returned. The caller is reponsible
+        /// for filtering out the unrequested table names.
+        /// See |convertThreatTypeToListNames| for the format.
+        /// @param aPerHashCacheDuration See "FindFullHashesResponse" in safebrowsing.proto.
+        ///
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnCompleteHashFound([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCompleteHash, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aTableNames, uint aPerHashCacheDuration);
+		
+		/// <summary>
+        /// Callback when full hash response is received.
+        ///
+        /// @param aMinWaitDuration See "FindFullHashesResponse" in safebrowsing.proto.
+        /// @param aNegCacheDuration See "FindFullHashesResponse" in safebrowsing.proto.
+        ///
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnResponseParsed(uint aMinWaitDuration, uint aNegCacheDuration);
+	}
+	
+	/// <summary>nsIUrlClassifierUtils </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("e4f0e59c-b922-48b0-a7b6-1735c1f96fed")]
@@ -45,5 +79,107 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetKeyForURI([MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Get the provider by table name.
+        ///
+        /// @param tableName The table name that we want to lookup
+        ///
+        /// @returns the provider name that the given table belongs.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetProvider([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Get the provider used for Telemetry.
+        /// Because recording Telemetry will leak user-controlled strings,
+        /// only built-in providers should be recorded.
+        ///
+        /// @param tableName The table name that we want to lookup
+        ///
+        /// @returns the filtered provider for telemetry.
+        ///
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetTelemetryProvider([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Get the protocol version for the given provider.
+        ///
+        /// @param provider String the provider name. e.g. "google"
+        ///
+        /// @returns String to indicate the protocol version. e.g. "2.2"
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetProtocolVersion([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase provider, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Convert threat type to list name.
+        ///
+        /// @param Integer to indicate threat type.
+        ///
+        /// @returns The list names separated by ','. For example,
+        /// 'goog-phish-proto,test-phish-proto'.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ConvertThreatTypeToListNames(uint threatType, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Convert list name to threat type.
+        ///
+        /// @param The list name.
+        ///
+        /// @returns The threat type in integer.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint ConvertListNameToThreatType([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase listName);
+		
+		/// <summary>
+        /// Make update request for given lists and their states.
+        ///
+        /// @param aListNames An array of list name represented in string.
+        /// @param aState An array of states (encoded in base64 format) for each list.
+        /// @param aCount The array length of aList and aState.
+        ///
+        /// @returns A base64url encoded string.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MakeUpdateRequestV4([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] string[] aListNames, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] string[] aStatesBase64, uint aCount, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Make "find full hash" request by for the given prefixes.
+        ///
+        /// @param aListNames An array of list names represented in string.
+        /// @param aListStatesBase64 An array of list states represented in base64.
+        /// @param aPrefixes An array of prefixes for which we'd like to find full hashes..
+        /// @param aListCount The array length of aListNames
+        /// @param aPrefixCount The array length of aPrefixes
+        ///
+        /// @returns A base64url encoded string.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MakeFindFullHashRequestV4([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] string[] aListNames, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] string[] aListStatesBase64, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=4)] string[] aPrefixes, uint aListCount, uint aPrefixCount, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Make ThreatHit report request body.
+        ///
+        /// @param aChannel channel which encountered the threat.
+        /// @param aListName listname represented in string.
+        /// @param aHashBase64 hash-based hit represented in base64.
+        ///
+        /// @returns A base64 encoded string.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MakeThreatHitReport([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aListName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHashBase64, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Parse V4 FindFullHash response.
+        ///
+        /// @param aResponse Byte stream from the server.
+        /// @param aCallback The callback function on each complete hash parsed.
+        /// Can be called multiple times in one parsing.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ParseFindFullHashResponseV4([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aResponse, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierParseFindFullHashCallback aCallback);
 	}
 }

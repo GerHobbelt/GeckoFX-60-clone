@@ -40,24 +40,55 @@ namespace Gecko
         /// Initialize the prompter. Must be called before using other interfaces.
         ///
         /// @param aWindow
-        /// The in which the user is doing some login-related action that's
+        /// The window in which the user is doing some login-related action that's
         /// resulting in a need to prompt them for something. The prompt
         /// will be associated with this window (or, if a notification bar
         /// is being used, topmost opener in some cases).
+        ///
+        /// aWindow can be null if there is no associated window, e.g. in a JSM
+        /// or Sandbox. In this case there will be no checkbox to save the login
+        /// since the window is needed to know if this is a private context.
+        ///
+        /// If this window is a content window, the corresponding window and browser
+        /// elements will be calculated. If this window is a chrome window, the
+        /// corresponding browser element needs to be set using setBrowser.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
 		
 		/// <summary>
-        /// If the caller knows which browser this prompter is being created for,
-        /// they can call this function to avoid having to calculate it from the
-        /// window passed to init.
-        ///
-        /// @param aBrowser the <browser> to use for this prompter.
-        /// @param aOpener the opener to use for this prompter.
+        /// The browser this prompter is being created for.
+        /// This is required if the init function received a chrome window as argument.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMElement GetBrowserAttribute();
+		
+		/// <summary>
+        /// The browser this prompter is being created for.
+        /// This is required if the init function received a chrome window as argument.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetE10sData([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aBrowser, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aOpener);
+		void SetBrowserAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aBrowser);
+		
+		/// <summary>
+        /// The opener that was used to open the window passed to init.
+        /// The opener can be used to determine in which window the prompt
+        /// should be shown. Must be a content window that is not a frame window,
+        /// make sure to pass the top window using e.g. window.top.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIDOMWindow GetOpenerAttribute();
+		
+		/// <summary>
+        /// The opener that was used to open the window passed to init.
+        /// The opener can be used to determine in which window the prompt
+        /// should be shown. Must be a content window that is not a frame window,
+        /// make sure to pass the top window using e.g. window.top.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOpenerAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aOpener);
 		
 		/// <summary>
         /// Ask the user if they want to save a login (Yes, Never, Not Now)

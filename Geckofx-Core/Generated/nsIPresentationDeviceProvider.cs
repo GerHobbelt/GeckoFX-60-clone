@@ -56,6 +56,26 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnSessionRequest([MarshalAs(UnmanagedType.Interface)] nsIPresentationDevice device, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase presentationId, [MarshalAs(UnmanagedType.Interface)] nsIPresentationControlChannel controlChannel);
+		
+		/// <summary>
+        /// Callback while the remote device is requesting to terminate a presentation session.
+        /// @param device The remote device that sent session request.
+        /// @param presentationId The Id for representing this session.
+        /// @param controlChannel The control channel for this session.
+        /// @param aIsFromReceiver true if termination is initiated by receiver.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnTerminateRequest([MarshalAs(UnmanagedType.Interface)] nsIPresentationDevice device, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase presentationId, [MarshalAs(UnmanagedType.Interface)] nsIPresentationControlChannel controlChannel, [MarshalAs(UnmanagedType.U1)] bool aIsFromReceiver);
+		
+		/// <summary>
+        /// Callback while the remote device is requesting to reconnect a presentation session.
+        /// @param device The remote device that sent session request.
+        /// @param aUrl The URL requested to open by remote device.
+        /// @param presentationId The Id for representing this session.
+        /// @param controlChannel The control channel for this session.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnReconnectRequest([MarshalAs(UnmanagedType.Interface)] nsIPresentationDevice device, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase presentationId, [MarshalAs(UnmanagedType.Interface)] nsIPresentationControlChannel controlChannel);
 	}
 	
 	/// <summary>

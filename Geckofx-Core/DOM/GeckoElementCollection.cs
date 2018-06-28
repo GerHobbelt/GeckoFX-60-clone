@@ -29,7 +29,7 @@ namespace Gecko
                 if (index < 0 || index >= Length)
                     throw new ArgumentOutOfRangeException("index");
 
-                return GeckoHtmlElement.Create((nsIDOMHTMLElement) List.Item((uint) index));
+                return GeckoHtmlElement.Create((/*  nsIDOMHTMLElement */nsISupports) List.Item((uint) index));
             }
         }
 
@@ -40,7 +40,7 @@ namespace Gecko
             int length = Length;
             for (int i = 0; i < length; i++)
             {
-                yield return GeckoHtmlElement.Create((nsIDOMHTMLElement) List.Item((uint) i));
+                yield return GeckoHtmlElement.Create((/*  nsIDOMHTMLElement */nsISupports) List.Item((uint) i));
             }
         }
 

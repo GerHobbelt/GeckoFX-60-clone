@@ -39,7 +39,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("16784db0-fcb1-4352-b0c9-6a3a67e3cf79")]
+	[Guid("fef7db8a-a4e2-49d1-9685-19ed7e309b7d")]
 	public interface nsIHttpAuthenticator
 	{
 		
@@ -69,6 +69,47 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ChallengeReceived([MarshalAs(UnmanagedType.Interface)] nsIHttpAuthenticableChannel aChannel, [MarshalAs(UnmanagedType.LPStr)] string aChallenge, [MarshalAs(UnmanagedType.U1)] bool aProxyAuth, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aSessionState, [MarshalAs(UnmanagedType.Interface)] ref nsISupports aContinuationState, [MarshalAs(UnmanagedType.U1)] ref bool aInvalidatesIdentity);
+		
+		/// <summary>
+        /// Called to generate the authentication credentials for a particular
+        /// server/proxy challenge asynchronously. Credentials will be sent back
+        /// to the server via an Authorization/Proxy-Authorization header.
+        ///
+        /// @param aChannel
+        /// the http channel requesting credentials
+        /// @param aCallback
+        /// callback function to be called when credentials are available
+        /// @param aChallenge
+        /// the challenge from the WWW-Authenticate/Proxy-Authenticate
+        /// server response header.  (possibly from the auth cache.)
+        /// @param aProxyAuth
+        /// flag indicating whether or not aChallenge is from a proxy.
+        /// @param aDomain
+        /// string containing the domain name (if appropriate)
+        /// @param aUser
+        /// string containing the user name
+        /// @param aPassword
+        /// string containing the password
+        /// @param aSessionState
+        /// state stored along side the user's identity in the auth cache
+        /// for the lifetime of the browser session.  if a new auth cache
+        /// entry is created for this challenge, then this parameter will
+        /// be null.  on return, the result will be stored in the new auth
+        /// cache entry.  this parameter is non-null when an auth cache entry
+        /// is being reused. currently modification of session state is not
+        /// communicated to caller, thus caching credentials obtained by
+        /// asynchronous way is not supported.
+        /// @param aContinuationState
+        /// state held by the channel between consecutive calls to
+        /// generateCredentials, assuming multiple calls are required
+        /// to authenticate.  this state is held for at most the lifetime of
+        /// the channel.
+        /// @pram aCancel
+        /// returns cancellable runnable object which caller can use to cancel
+        /// calling aCallback when finished.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GenerateCredentialsAsync([MarshalAs(UnmanagedType.Interface)] nsIHttpAuthenticableChannel aChannel, [MarshalAs(UnmanagedType.Interface)] nsIHttpAuthenticatorCallback aCallback, [MarshalAs(UnmanagedType.LPStr)] string aChallenge, [MarshalAs(UnmanagedType.U1)] bool aProxyAuth, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aDomain, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aUser, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aPassword, [MarshalAs(UnmanagedType.Interface)] nsISupports aSessionState, [MarshalAs(UnmanagedType.Interface)] nsISupports aContinuationState, [MarshalAs(UnmanagedType.Interface)] ref nsICancelable aCancel);
 		
 		/// <summary>
         /// Called to generate the authentication credentials for a particular

@@ -27,8 +27,10 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// The event of a device requesting for a presentation session. User can
-    /// monitor the session request on every device by observing "presentation-sesion-request".
+    /// The event of a device requesting for starting or reconnecting
+    /// a presentation session. User can monitor the session request
+    /// on every device by observing "presentation-sesion-request" for a
+    /// new session and "presentation-reconnect-request" for reconnecting.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

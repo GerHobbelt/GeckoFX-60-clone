@@ -43,7 +43,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c68f3def-c7c8-4ee8-861c-eef49a48b702")]
+	[Guid("788f331b-2e1f-436c-b405-4f88a31a105b")]
 	public interface nsIHttpChannelAuthProvider : nsICancelable
 	{
 		
@@ -89,9 +89,13 @@ namespace Gecko
 		
 		/// <summary>
         /// Add credentials from the http auth cache.
+        ///
+        /// @param dontUseCachedWWWCreds
+        /// When true, the method will not add any Authorization headers from
+        /// the auth cache.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddAuthorizationHeaders();
+		void AddAuthorizationHeaders([MarshalAs(UnmanagedType.U1)] bool dontUseCachedWWWCreds);
 		
 		/// <summary>
         /// Check if an unnecessary(and maybe malicious) url authentication has been

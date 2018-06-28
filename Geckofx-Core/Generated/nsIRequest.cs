@@ -173,11 +173,17 @@ namespace Gecko
 		public const ulong LOAD_BACKGROUND = 1<<0;
 		
 		// <summary>
-        // This flag prevents loading of the request with an HTTP pipeline.
-        // Generally this is because the resource is expected to take a
-        // while to load and may cause head of line blocking problems.
+        // This flag marks the request as being made to load the data for an html
+        // <object> tag. This means that the LOAD_DOCUMENT_URI flag may be set after
+        // the channel has been provided with the MIME type.
         // </summary>
-		public const ulong INHIBIT_PIPELINE = 1<<6;
+		public const ulong LOAD_HTML_OBJECT_DATA = 1<<1;
+		
+		// <summary>
+        // This flag marks the request as belonging to a document that requires access
+        // to the document.cookies API.
+        // </summary>
+		public const ulong LOAD_DOCUMENT_NEEDS_COOKIE = 1<<2;
 		
 		// <summary>
         // This flag prevents caching of any kind.  It does not, however, prevent
@@ -187,8 +193,7 @@ namespace Gecko
 		
 		// <summary>
         // This flag prevents caching on disk (or other persistent media), which
-        // may be needed to preserve privacy.  For HTTPS, this flag is set auto-
-        // matically.
+        // may be needed to preserve privacy.
         // </summary>
 		public const ulong INHIBIT_PERSISTENT_CACHING = 1<<8;
 		
@@ -219,7 +224,7 @@ namespace Gecko
         // cached content is automatically validated if necessary before reuse.
         //
         // VALIDATE_ALWAYS forces validation of any cached content independent of
-        // its expiration time.
+        // its expiration time (unless it is https with Cache-Control: immutable)
         //
         // VALIDATE_NEVER disables validation of cached content, unless it arrived
         // with the "Cache: no-store" header, or arrived via HTTPS with the

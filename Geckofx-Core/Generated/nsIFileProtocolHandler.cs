@@ -124,6 +124,18 @@ namespace Gecko
 		nsIURI NewFileURI([MarshalAs(UnmanagedType.Interface)] nsIFile aFile);
 		
 		/// <summary>
+        /// This method constructs a new file URI, and returns a URI mutator
+        /// that has not yet been finalized, allowing the URI to be changed without
+        /// being cloned.
+        ///
+        /// @param aFile nsIFile
+        /// @return reference to a new nsIURIMutator object
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURIMutator NewFileURIMutator([MarshalAs(UnmanagedType.Interface)] nsIFile file);
+		
+		/// <summary>
         /// Converts the nsIFile to the corresponding URL string.  NOTE: under
         /// some platforms this is a lossy conversion (e.g., Mac Carbon build).
         /// If the nsIFile is a local file, then the result will be a file://

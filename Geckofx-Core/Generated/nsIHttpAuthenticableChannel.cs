@@ -158,5 +158,21 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnAuthCancelled([MarshalAs(UnmanagedType.U1)] bool userCancel);
+		
+		/// <summary>
+        /// Tells the channel to drop and close any sticky connection, since this
+        /// connection oriented schema cannot be negotiated second time on
+        /// the same connection.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CloseStickyConnection();
+		
+		/// <summary>
+        /// Tells the channel to mark the connection as allowed to restart on
+        /// authentication retry.  This is allowed when the request is a start
+        /// of a new authentication round.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ConnectionRestartable([MarshalAs(UnmanagedType.U1)] bool restartable);
 	}
 }

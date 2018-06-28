@@ -48,5 +48,9 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EnableDisableCommands([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase action, uint enabledLength, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] string[] enabledCommands, uint disabledLength, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] string[] disabledCommands);
+		
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPrincipal GetContentPrincipalAttribute();
 	}
 }

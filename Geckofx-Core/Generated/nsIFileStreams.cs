@@ -53,16 +53,6 @@ namespace Gecko
 	{
 		
 		// <summary>
-        // If this is set, the file will be deleted by the time the stream is
-        // closed.  It may be removed before the stream is closed if it is possible
-        // to delete it and still read from it.
-        //
-        // If OPEN_ON_READ is defined, and the file was recreated after the first
-        // delete, the file will be deleted again when it is closed again.
-        // </summary>
-		public const long DELETE_ON_CLOSE = 1<<1;
-		
-		// <summary>
         // If this is set, the file will close automatically when the end of the
         // file is reached.
         // </summary>
@@ -114,7 +104,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e6f68040-c7ec-11d3-8cda-0060b0fc14a3")]
+	[Guid("e734cac9-1295-4e6f-9684-3ac4e1f91063")]
 	public interface nsIFileOutputStream : nsIOutputStream
 	{
 		
@@ -225,6 +215,16 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init([MarshalAs(UnmanagedType.Interface)] nsIFile file, int ioFlags, int perm, int behaviorFlags);
+		
+		/// <summary>
+        /// @param length        asks the operating system to allocate storage for
+        /// this file of at least |length| bytes long, and
+        /// set the file length to the corresponding size.
+        /// @throws NS_ERROR_FAILURE if the preallocation fails.
+        /// @throws NS_ERROR_NOT_INITIALIZED if the file is not opened.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Preallocate(long length);
 	}
 	
 	/// <summary>nsIFileOutputStreamConsts </summary>
@@ -247,39 +247,6 @@ namespace Gecko
         // appear on the disk until the first write.
         // </summary>
 		public const long DEFER_OPEN = 1<<0;
-	}
-	
-	/// <summary>
-    /// An input stream that allows you to read from a slice of a file.
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3ce03a2f-97f7-4375-b6bb-1788a60cad3b")]
-	public interface nsIPartialFileInputStream
-	{
-		
-		/// <summary>
-        /// Initialize with a file and new start/end positions. Both start and
-        /// start+length must be smaller than the size of the file. Not doing so
-        /// will lead to undefined behavior.
-        /// You must initialize the stream, and only initialize it once, before it
-        /// can be used.
-        ///
-        /// @param file          file to read from
-        /// @param start         start offset of slice to read. Must be smaller
-        /// than the size of the file.
-        /// @param length        length of slice to read. Must be small enough that
-        /// start+length is smaller than the size of the file.
-        /// @param ioFlags       file open flags listed in prio.h (see
-        /// PR_Open documentation) or -1 to open the
-        /// file in default mode (PR_RDONLY).
-        /// @param perm          file mode bits listed in prio.h or -1 to
-        /// use the default value (0)
-        /// @param behaviorFlags flags specifying various behaviors of the class
-        /// (see enumerations in nsIFileInputStream)
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIFile file, ulong start, ulong length, int ioFlags, int perm, int behaviorFlags);
 	}
 	
 	/// <summary>
@@ -335,7 +302,16 @@ namespace Gecko
 	
 	/// <summary>
     /// An interface that allows you to get some metadata like file size and
-    /// file last modified time.
+    /// file last modified time. These methods and attributes can throw
+    /// NS_BASE_STREAM_WOULD_BLOCK in case the informations are not available yet.
+    /// If this happens, consider the use of nsIAsyncFileMetadata.
+    ///
+    /// If using nsIAsyncFileMetadata, you should retrieve any data via this
+    /// interface before taking any action that might consume the underlying stream.
+    /// For example, once Available(), Read(), or nsIAsyncInputStream::AsyncWait()
+    /// are invoked, these methods may return NS_BASE_STREAM_CLOSED.  This will
+    /// happen when using IPCBlobInputStream with an underlying file stream, for
+    /// example.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -344,7 +320,7 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// File size in bytes;
+        /// File size in bytes.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		long GetSizeAttribute();
@@ -355,5 +331,71 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		long GetLastModifiedAttribute();
+		
+		/// <summary>
+        /// The internal file descriptor. It can be used for memory mapping of the
+        /// underlying file. Please use carefully! If this returns
+        /// NS_BASE_STREAM_WOULD_BLOCK, consider the use of nsIAsyncFileMetadata.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr GetFileDescriptor();
+	}
+	
+	/// <summary>nsIAsyncFileMetadata </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("de15b80b-29ba-4b7f-9220-a3d75b17ae8c")]
+	public interface nsIAsyncFileMetadata : nsIFileMetadata
+	{
+		
+		/// <summary>
+        /// File size in bytes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new long GetSizeAttribute();
+		
+		/// <summary>
+        /// File last modified time in milliseconds from midnight (00:00:00),
+        /// January 1, 1970 Greenwich Mean Time (GMT).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new long GetLastModifiedAttribute();
+		
+		/// <summary>
+        /// The internal file descriptor. It can be used for memory mapping of the
+        /// underlying file. Please use carefully! If this returns
+        /// NS_BASE_STREAM_WOULD_BLOCK, consider the use of nsIAsyncFileMetadata.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new System.IntPtr GetFileDescriptor();
+		
+		/// <summary>
+        /// Asynchronously wait for the object to be ready.
+        ///
+        /// @param aCallback The callback will be used when the stream is ready to
+        /// return File metadata. Use a nullptr to cancel a
+        /// previous operation.
+        ///
+        /// @param aEventTarget The event target where aCallback will be executed.
+        /// If aCallback is passed, aEventTarget cannot be null.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AsyncWait([MarshalAs(UnmanagedType.Interface)] nsIFileMetadataCallback aCallback, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aEventTarget);
+	}
+	
+	/// <summary>
+    /// This is a companion interface for nsIAsyncFileMetadata::asyncWait.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("d01c7ead-7ba3-4726-b399-618ec8ec7057")]
+	public interface nsIFileMetadataCallback
+	{
+		
+		/// <summary>
+        /// Called to indicate that the nsIFileMetadata object is ready.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnFileMetadataReady([MarshalAs(UnmanagedType.Interface)] nsIAsyncFileMetadata aObject);
 	}
 }

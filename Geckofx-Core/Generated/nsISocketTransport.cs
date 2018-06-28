@@ -150,6 +150,32 @@ namespace Gecko
 		int GetPortAttribute();
 		
 		/// <summary>
+        /// The origin attributes are used to create sockets.  The first party domain
+        /// will eventually be used to isolate OCSP cache and is only non-empty when
+        /// "privacy.firstparty.isolate" is enabled.  Setting this is the only way to
+        /// carry origin attributes down to NSPR layers which are final consumers.
+        /// It must be set before the socket transport is built.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetOriginAttributesAttribute(System.IntPtr jsContext);
+		
+		/// <summary>
+        /// The origin attributes are used to create sockets.  The first party domain
+        /// will eventually be used to isolate OCSP cache and is only non-empty when
+        /// "privacy.firstparty.isolate" is enabled.  Setting this is the only way to
+        /// carry origin attributes down to NSPR layers which are final consumers.
+        /// It must be set before the socket transport is built.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOriginAttributesAttribute(Gecko.JsVal aOriginAttributes, System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports BinaryGetOriginAttributes();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BinarySetOriginAttributes(System.IntPtr aOriginAttrs);
+		
+		/// <summary>
         /// The platform-specific network interface id that this socket
         /// associated with. Note that this attribute can be only accessed
         /// in the socket thread.
@@ -250,6 +276,12 @@ namespace Gecko
 		void SetTimeout(uint aType, uint aValue);
 		
 		/// <summary>
+        /// True to set addr and port reuse socket options.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetReuseAddrPort([MarshalAs(UnmanagedType.U1)] bool reuseAddrPort);
+		
+		/// <summary>
         /// connectionFlags is a bitmask that can be used to modify underlying
         /// behavior of the socket connection. See the flags below.
         /// </summary>
@@ -262,6 +294,22 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetConnectionFlagsAttribute(uint aConnectionFlags);
+		
+		/// <summary>
+        /// An opaque flags for non-standard behavior of the TLS system.
+        /// It is unlikely this will need to be set outside of telemetry studies
+        /// relating to the TLS implementation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetTlsFlagsAttribute();
+		
+		/// <summary>
+        /// An opaque flags for non-standard behavior of the TLS system.
+        /// It is unlikely this will need to be set outside of telemetry studies
+        /// relating to the TLS implementation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTlsFlagsAttribute(uint aTlsFlags);
 		
 		/// <summary>
         /// Socket QoS/ToS markings. Valid values are IPTOS_DSCP_AFxx or
@@ -324,6 +372,12 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetKeepaliveVals(int keepaliveIdleTime, int keepaliveRetryInterval);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetFastOpenCallback(nsISupports aFastOpen);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetFirstRetryErrorAttribute();
 	}
 	
 	/// <summary>nsISocketTransportConsts </summary>
@@ -378,6 +432,12 @@ namespace Gecko
 		// 
 		public const ulong STATUS_RECEIVING_FROM = 0x804b0006;
 		
+		// 
+		public const ulong STATUS_TLS_HANDSHAKE_STARTING = 0x804b000c;
+		
+		// 
+		public const ulong STATUS_TLS_HANDSHAKE_ENDED = 0x804b000d;
+		
 		// <summary>
         // Values for the connectionFlags
         //
@@ -429,5 +489,28 @@ namespace Gecko
         // a TLS socket without authentication.
         // </summary>
 		public const ulong MITM_OK = (1<<6);
+		
+		// <summary>
+        // If set, do not use newer protocol features that might have interop problems
+        // on the Internet. Intended only for use with critical infra like the updater.
+        // default is false.
+        // </summary>
+		public const ulong BE_CONSERVATIVE = (1<<7);
+		
+		// <summary>
+        // If set, do not use TRR for resolving the host name. Intended only for
+        // retries or other scenarios when TRR is deemed likely to have returned a
+        // wrong adddress.
+        // </summary>
+		public const ulong DISABLE_TRR = (1<<8);
+		
+		// <summary>
+        // Values for the connectionFlags
+        //
+        // When using BYPASS_CACHE, setting this bit will invalidate the existing
+        // cached entry immediately while the new resolve is being done to avoid
+        // other users from using stale content in the mean time.
+        // </summary>
+		public const ulong REFRESH_CACHE = (1<<9);
 	}
 }

@@ -86,15 +86,7 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("texSubImage3D", target, level, xoffset, yoffset, zoffset, format, type, data);
         }
         
-        public void TexSubImage3D(UInt32 target, Int32 level, Int32 xoffset, Int32 yoffset, Int32 zoffset, UInt32 format, UInt32 type, nsIDOMHTMLImageElement image)
-        {
-            this.CallVoidMethod("texSubImage3D", target, level, xoffset, yoffset, zoffset, format, type, image);
-        }
-        
-        public void TexSubImage3D(UInt32 target, Int32 level, Int32 xoffset, Int32 yoffset, Int32 zoffset, UInt32 format, UInt32 type, nsIDOMHTMLCanvasElement canvas)
-        {
-            this.CallVoidMethod("texSubImage3D", target, level, xoffset, yoffset, zoffset, format, type, canvas);
-        }
+   
         
         public void CopyTexSubImage3D(UInt32 target, Int32 level, Int32 xoffset, Int32 yoffset, Int32 zoffset, Int32 x, Int32 y, Int32 width, Int32 height)
         {

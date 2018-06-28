@@ -51,7 +51,8 @@ namespace Gecko
         /// GetSelection will return the selection that the presentation
         /// shell may implement.
         ///
-        /// @param aType will hold the type of selection //SelectionType
+        /// @param aType This will hold the type of selection.  This value must be one
+        /// of RawSelectionType values.
         /// @param _return will hold the return value
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -59,10 +60,17 @@ namespace Gecko
 		nsISelection GetSelection(short type);
 		
 		/// <summary>
+        /// Return the selection object corresponding to a selection type.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports GetDOMSelection(short aType);
+		
+		/// <summary>
         /// ScrollSelectionIntoView scrolls a region of the selection,
         /// so that it is visible in the scrolled view.
         ///
-        /// @param aType the selection to scroll into view. //SelectionType
+        /// @param aType the selection to scroll into view.  This value must be one
+        /// of RawSelectionType values.
         /// @param aRegion the region inside the selection to scroll into view. //SelectionRegion
         /// @param aFlags the scroll flags.  Valid bits include:
         /// SCROLL_SYNCHRONOUS: when set, scrolls the selection into view
@@ -72,6 +80,9 @@ namespace Gecko
         /// into view.
         /// SCROLL_OVERFLOW_HIDDEN: if set, scrolls even if the overflow is specified
         /// as hidden.
+        /// SCROLL_FOR_CARET_MOVE: set to indicate whether scrolling is in response
+        /// to the caret being moved. Does not affect behavior (used for telemetry
+        /// purposes only).
         ///
         /// Note that if isSynchronous is true, then this might flush the pending
         /// reflow. It's dangerous for some objects. See bug 418470 comment 12.
@@ -295,9 +306,8 @@ namespace Gecko
 	{
 		
 		// <summary>
-        //This Source Code Form is subject to the terms of the Mozilla Public
-        // License, v. 2.0. If a copy of the MPL was not distributed with this
-        // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+        // RawSelectionType values:
+        // </summary>
 		public const short SELECTION_NONE = 0;
 		
 		// 
@@ -307,35 +317,37 @@ namespace Gecko
 		public const short SELECTION_SPELLCHECK = 2;
 		
 		// 
-		public const short SELECTION_IME_RAWINPUT = 4;
+		public const short SELECTION_IME_RAWINPUT = 3;
 		
 		// 
-		public const short SELECTION_IME_SELECTEDRAWTEXT = 8;
+		public const short SELECTION_IME_SELECTEDRAWTEXT = 4;
 		
 		// 
-		public const short SELECTION_IME_CONVERTEDTEXT = 16;
+		public const short SELECTION_IME_CONVERTEDTEXT = 5;
 		
 		// 
-		public const short SELECTION_IME_SELECTEDCONVERTEDTEXT = 32;
-		
-		// 
-		public const short SELECTION_ACCESSIBILITY = 64;
+		public const short SELECTION_IME_SELECTEDCONVERTEDTEXT = 6;
 		
 		// <summary>
         // For accessibility API usage
         // </summary>
-		public const short SELECTION_FIND = 128;
+		public const short SELECTION_ACCESSIBILITY = 7;
 		
 		// 
-		public const short SELECTION_URLSECONDARY = 256;
+		public const short SELECTION_FIND = 8;
 		
 		// 
-		public const short SELECTION_URLSTRIKEOUT = 512;
+		public const short SELECTION_URLSECONDARY = 9;
+		
+		// 
+		public const short SELECTION_URLSTRIKEOUT = 10;
 		
 		// 
 		public const short NUM_SELECTIONTYPES = 11;
 		
-		// 
+		// <summary>
+        // SelectionRegion values:
+        // </summary>
 		public const short SELECTION_ANCHOR_REGION = 0;
 		
 		// 
@@ -375,6 +387,9 @@ namespace Gecko
 		
 		// 
 		public const short SCROLL_OVERFLOW_HIDDEN = 1<<5;
+		
+		// 
+		public const short SCROLL_FOR_CARET_MOVE = 1<<6;
 		
 		// <summary>
         // nsFrameSelection::PhysicalMove depends on the ordering of these values;

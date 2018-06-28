@@ -114,16 +114,6 @@ namespace Gecko
 		void SetProtocolHandlerDefaults([MarshalAs(UnmanagedType.Interface)] nsIHandlerInfo aHandlerInfo, [MarshalAs(UnmanagedType.U1)] bool aOSHandlerExists);
 		
 		/// <summary>
-        /// Used to load a url via an external protocol handler (if one exists)
-        ///
-        /// @param aURL The url to load
-        ///
-        /// @deprecated Use LoadURI instead (See Bug 389565 for removal)
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LoadUrl([MarshalAs(UnmanagedType.Interface)] nsIURI aURL);
-		
-		/// <summary>
         /// Used to load a URI via an external application. Might prompt the user for
         /// permission to load the external application.
         ///

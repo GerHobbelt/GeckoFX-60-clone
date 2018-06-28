@@ -27,6 +27,24 @@ namespace Gecko
 	
 	
 	/// <summary>
+    /// Interface allowing the nsIInterceptedChannel to callback when it is
+    /// done reading from the body stream.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("51039eb6-bea0-40c7-b523-ccab56cc4fde")]
+	public interface nsIInterceptedBodyCallback
+	{
+		
+		/// <summary>
+        /// Interface allowing the nsIInterceptedChannel to callback when it is
+        /// done reading from the body stream.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BodyComplete(int aRv);
+	}
+	
+	/// <summary>
     /// Interface to allow implementors of nsINetworkInterceptController to control the behaviour
     /// of intercepted channels without tying implementation details of the interception to
     /// the actual channel. nsIInterceptedChannel is expected to be implemented by objects
@@ -34,7 +52,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("64439e24-eda5-4f39-9a7e-162c4b5e0150")]
+	[Guid("f4b82975-6a86-4cc4-87fe-9a1fd430c86d")]
 	public interface nsIInterceptedChannel
 	{
 		
@@ -60,14 +78,35 @@ namespace Gecko
 		void SynthesizeHeader([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase name, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase value);
 		
 		/// <summary>
-        /// Instruct a channel that has been intercepted that a response has been
-        /// synthesized and can now be read. No further header modification is allowed
-        /// after this point. The caller may optionally pass a spec for a URL that
-        /// this response originates from; an empty string will cause the original
+        /// Instruct a channel that has been intercepted that a response is
+        /// starting to be synthesized.  No further header modification is allowed
+        /// after this point.  There are a few parameters:
+        /// - A body stream may be optionally passed.  If nullptr, then an
+        /// empty body is assumed.
+        /// - A callback may be optionally passed.  It will be invoked
+        /// when the body is complete.  For a nullptr body this may be
+        /// synchronously on the current thread.  Otherwise it will be invoked
+        /// asynchronously on the current thread.
+        /// - A cacheInfoChannel may be optionally passed. If the body stream is
+        /// from alternative data cache, this cacheInfoChannel provides needed
+        /// cache information.
+        /// - The caller may optionally pass a spec for a URL that this response
+        /// originates from; an empty string will cause the original
         /// intercepted request's URL to be used instead.
+        /// - The responseRedirected flag is false will cause the channel do an
+        /// internal redirect when the original intercepted reauest's URL is
+        /// different from the response's URL. The flag is true will cause the
+        /// chaanel do a non-internal redirect when the URLs are different.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FinishSynthesizedResponse([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase finalURLSpec);
+		void StartSynthesizedResponse([MarshalAs(UnmanagedType.Interface)] nsIInputStream body, [MarshalAs(UnmanagedType.Interface)] nsIInterceptedBodyCallback callback, [MarshalAs(UnmanagedType.Interface)] nsICacheInfoChannel channel, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase finalURLSpec, [MarshalAs(UnmanagedType.U1)] bool responseRedirected);
+		
+		/// <summary>
+        /// Instruct a channel that has been intercepted that response synthesis
+        /// has completed and all outstanding resources can be closed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void FinishSynthesizedResponse();
 		
 		/// <summary>
         /// Cancel the pending intercepted request.
@@ -75,14 +114,7 @@ namespace Gecko
         /// the original request has been instructed to continue.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Cancel(int status);
-		
-		/// <summary>
-        /// The synthesized response body to be produced.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIOutputStream GetResponseBodyAttribute();
+		void CancelInterception(int status);
 		
 		/// <summary>
         /// The underlying channel object that was intercepted.
@@ -92,10 +124,18 @@ namespace Gecko
 		nsIChannel GetChannelAttribute();
 		
 		/// <summary>
+        /// The URL of the underlying channel object, corrected for a potential
+        /// secure upgrade.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetSecureUpgradedChannelURIAttribute();
+		
+		/// <summary>
         /// This method allows to override the channel info for the channel.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetChannelInfo(ChannelInfo channelInfo);
+		void SetChannelInfo(nsISupports channelInfo);
 		
 		/// <summary>
         /// Get the internal load type from the underlying channel.
@@ -105,7 +145,55 @@ namespace Gecko
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIConsoleReportCollector GetConsoleReportCollectorAttribute();
+        nsISupports GetConsoleReportCollectorAttribute();
+		
+		/// <summary>
+        /// Save the timestamps of various service worker interception phases.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetLaunchServiceWorkerStart(ulong aTimeStamp);
+		
+		/// <summary>
+        /// A hack to get sw launch start time for telemetry.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetLaunchServiceWorkerStart(ref ulong aTimeStamp);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetLaunchServiceWorkerEnd(ulong aTimeStamp);
+		
+		/// <summary>
+        /// A hack to get sw launch end time for telemetry.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetLaunchServiceWorkerEnd(ref ulong aTimeStamp);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDispatchFetchEventStart(ulong aTimeStamp);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDispatchFetchEventEnd(ulong aTimeStamp);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetHandleFetchEventStart(ulong aTimeStamp);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetHandleFetchEventEnd(ulong aTimeStamp);
+		
+		/// <summary>
+        /// |ChannelResetEnd|.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetFinishResponseStart(ulong aTimeStamp);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetFinishSynthesizedResponseEnd(ulong aTimeStamp);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetChannelResetEnd(ulong aTimeStamp);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SaveTimeStamps();
 		
 		/// <summary>
         /// Allow the ServiceWorkerManager to set an RAII-style object on the
@@ -117,32 +205,13 @@ namespace Gecko
 	}
 	
 	/// <summary>
-    /// Interface to allow consumers to dispatch the fetch event asynchronously.
-    /// Consumers get access to this interface by calling channelIntercepted(),
-    /// and they can choose to either dispatch() immediately or do that at some
-    /// later time.
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("799504e4-36f8-4ab5-b9d2-53f0c0c40c04")]
-	public interface nsIFetchEventDispatcher
-	{
-		
-		/// <summary>
-        /// Actually dispatches the fetch event to the service worker.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Dispatch();
-	}
-	
-	/// <summary>
     /// Interface to allow consumers to attach themselves to a channel's
     /// notification callbacks/loadgroup and determine if a given channel
     /// request should be intercepted before any network request is initiated.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("49eb1997-90fb-49d6-a25d-41f51c7c99e8")]
+	[Guid("70d2b4fe-a552-48cd-8d93-1d8437a56b53")]
 	public interface nsINetworkInterceptController
 	{
 		
@@ -150,12 +219,14 @@ namespace Gecko
         /// Returns true if a channel should avoid initiating any network
         /// requests until specifically instructed to do so.
         ///
-        /// @param aURI the URI being requested by a channel
-        /// @param aIsNavigate True if the request is for a navigation, false for a fetch.
+        /// @param aURI The URI to be loaded.  Note, this may differ from
+        /// the channel's current URL in some cases.
+        /// @param aChannel The channel that may be intercepted.  It will
+        /// be in the state prior to calling OnStartRequest().
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool ShouldPrepareForIntercept([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.U1)] bool aIsNonSubresourceRequest);
+		bool ShouldPrepareForIntercept([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel);
 		
 		/// <summary>
         /// Notification when a given intercepted channel is prepared to accept a synthesized
@@ -163,8 +234,7 @@ namespace Gecko
         ///
         /// @param aChannel the controlling interface for a channel that has been intercepted
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIFetchEventDispatcher ChannelIntercepted([MarshalAs(UnmanagedType.Interface)] nsIInterceptedChannel aChannel);
+		void ChannelIntercepted([MarshalAs(UnmanagedType.Interface)] nsIInterceptedChannel aChannel);
 	}
 }

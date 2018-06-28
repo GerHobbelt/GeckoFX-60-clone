@@ -32,7 +32,7 @@ namespace Gecko
     /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("481f15ce-224a-40b6-9927-7effbc326776")]
+	[Guid("1e6ad73b-6c05-4d78-9a88-2d357b88f58b")]
 	public interface nsIUDPSocketChild
 	{
 		
@@ -62,7 +62,13 @@ namespace Gecko
         /// Tell the chrome process to bind the UDP socket to a given local host and port
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Bind([MarshalAs(UnmanagedType.Interface)] nsIUDPSocketInternal socket, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase host, ushort port, [MarshalAs(UnmanagedType.U1)] bool addressReuse, [MarshalAs(UnmanagedType.U1)] bool loopback);
+		void Bind([MarshalAs(UnmanagedType.Interface)] nsIUDPSocketInternal socket, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase host, ushort port, [MarshalAs(UnmanagedType.U1)] bool addressReuse, [MarshalAs(UnmanagedType.U1)] bool loopback, uint recvBufferSize, uint sendBufferSize, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget mainThreadTarget);
+		
+		/// <summary>
+        /// Tell the chrome process to connect the UDP socket to a given remote host and port
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Connect([MarshalAs(UnmanagedType.Interface)] nsIUDPSocketInternal socket, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase host, ushort port);
 		
 		/// <summary>
         /// Tell the chrome process to perform equivalent operations to all following methods
@@ -100,7 +106,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("44cd9ad5-d574-4169-baf9-e1af0648a143")]
+	[Guid("613dd3ad-598b-4da9-ad63-bbda50c20098")]
 	public interface nsIUDPSocketInternal
 	{
 		
@@ -109,6 +115,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void CallListenerOpened();
+		
+		/// <summary>
+        /// callback while socket is connected.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CallListenerConnected();
 		
 		/// <summary>
         /// callback while socket is closed.

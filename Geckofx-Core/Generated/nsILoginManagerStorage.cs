@@ -70,13 +70,17 @@ namespace Gecko
         ///
         /// @param aLogin
         /// The login to be added.
+        /// @param aPreEncrypted
+        /// Whether the login was already encrypted or not.
+        /// @return a clone of the login info with the guid set (even if it was not provided).
         ///
         /// Default values for the login's nsILoginMetaInfo properties will be
         /// created. However, if the caller specifies non-default values, they will
         /// be used instead.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddLogin([MarshalAs(UnmanagedType.Interface)] nsILoginInfo aLogin);
+		nsILoginInfo AddLogin([MarshalAs(UnmanagedType.Interface)] nsILoginInfo aLogin, [MarshalAs(UnmanagedType.U1)] bool aPreEncrypted);
 		
 		/// <summary>
         /// Remove a login from the storage module.
@@ -161,48 +165,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SearchLogins(ref uint count, [MarshalAs(UnmanagedType.Interface)] nsIPropertyBag matchData, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref nsILoginInfo[] logins);
-		
-		/// <summary>
-        /// Obtain a list of all hosts for which password saving is disabled.
-        ///
-        /// @param count
-        /// The number of elements in the array. JS callers can simply use
-        /// the array's .length property and omit this param.
-        /// @param hostnames
-        /// An array of hostname strings, in origin URL format without a
-        /// pathname. For example: "https://www.site.com".
-        ///
-        /// NOTE: This can be called from JS as:
-        /// var logins = pwmgr.getAllDisabledHosts();
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAllDisabledHosts(ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref System.IntPtr[] hostnames);
-		
-		/// <summary>
-        /// Check to see if saving logins has been disabled for a host.
-        ///
-        /// @param aHost
-        /// The hostname to check. This argument should be in the origin
-        /// URL format, without a pathname. For example: "http://foo.com".
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetLoginSavingEnabled([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aHost);
-		
-		/// <summary>
-        /// Disable (or enable) storing logins for the specified host. When
-        /// disabled, the login manager will not prompt to store logins for
-        /// that host. Existing logins are not affected.
-        ///
-        /// @param aHost
-        /// The hostname to set. This argument should be in the origin
-        /// URL format, without a pathname. For example: "http://foo.com".
-        /// @param isEnabled
-        /// Specify if saving logins should be enabled (true) or
-        /// disabled (false)
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetLoginSavingEnabled([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aHost, [MarshalAs(UnmanagedType.U1)] bool isEnabled);
 		
 		/// <summary>
         /// Search for logins matching the specified criteria. Called when looking

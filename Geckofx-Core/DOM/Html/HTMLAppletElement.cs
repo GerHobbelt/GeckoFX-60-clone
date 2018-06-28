@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoAppletElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLAppletElement DOMHTMLElement;
+        private /* nsIDOMHTMLAppletElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoAppletElement(nsIDOMHTMLAppletElement element) : base(element)
+        internal GeckoAppletElement(/* nsIDOMHTMLAppletElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoAppletElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoAppletElement(object element) : base(element as /* nsIDOMHTMLElement */nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLAppletElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLAppletElement */ nsISupports;
         }
 
         public string Align

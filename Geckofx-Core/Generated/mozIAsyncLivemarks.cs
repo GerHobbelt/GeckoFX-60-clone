@@ -88,6 +88,9 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ReloadLivemarks([MarshalAs(UnmanagedType.U1)] bool aForceUpdate);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal InvalidateCachedLivemarks();
 	}
 	
 	/// <summary>mozILivemarkInfo </summary>

@@ -31,7 +31,7 @@ namespace Gecko
     ///   bookkeeping methods, not part of the public (embedding) interface. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("0f2d9d75-c46b-4114-802e-83b4655e61d2")]
+	[Guid("d162f9c4-19d5-4723-931f-f1e51bfa9f68")]
 	public interface nsPIWindowWatcher
 	{
 		
@@ -45,14 +45,14 @@ namespace Gecko
         ///                     will be cleared.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsIWebBrowserChrome aChrome);
+		void AddWindow(mozIDOMWindowProxy aWindow, [MarshalAs(UnmanagedType.Interface)] nsIWebBrowserChrome aChrome);
 		
 		/// <summary>
         ///A window has been closed. Remove it from our list.
         ///      @param aWindow the window to remove
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		void RemoveWindow(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         ///Like the public interface's open(), but can handle openDialog-style
@@ -70,10 +70,18 @@ namespace Gecko
         ///      @param aDialog use dialog defaults (see nsIDOMWindow::openDialog)
         ///      @param aNavigate true if we should navigate the new window to the
         ///             specified URL.
-        ///      @param aOpeningTab the nsITabParent that is opening the new window. The
-        ///                         nsITabParent is a remote tab belonging to aParent. Can
-        ///                         be nullptr if this window is not being opened from a tab.
         ///      @param aArgs Window argument
+        ///      @param aIsPopupSpam true if the window is a popup spam window; used for
+        ///                          popup blocker internals.
+        ///      @param aForceNoOpener If true, force noopener behavior.  This means not
+        ///                            looking for existing windows with the given name,
+        ///                            not setting an opener on the newly opened window,
+        ///                            and returning null from this method.
+        ///      @param aLoadInfo if aNavigate is true, this allows the caller to pass in
+        ///                       an nsIDocShellLoadInfo to use for the navigation.
+        ///                       Callers can pass in null if they want the windowwatcher
+        ///                       to just construct a loadinfo itself.  If aNavigate is
+        ///                       false, this argument is ignored.
         ///      @return the new window
         ///      @note This method may examine the JS context stack for purposes of
         ///            determining the security context to use for the search for a given
@@ -83,9 +91,36 @@ namespace Gecko
         ///            (which is determined based on the JS stack and the value of
         ///            aParent).  This is not guaranteed, however.
         /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		mozIDOMWindowProxy OpenWindow2(mozIDOMWindowProxy aParent, [MarshalAs(UnmanagedType.LPStr)] string aUrl, [MarshalAs(UnmanagedType.LPStr)] string aName, [MarshalAs(UnmanagedType.LPStr)] string aFeatures, [MarshalAs(UnmanagedType.U1)] bool aCalledFromScript, [MarshalAs(UnmanagedType.U1)] bool aDialog, [MarshalAs(UnmanagedType.U1)] bool aNavigate, [MarshalAs(UnmanagedType.Interface)] nsISupports aArgs, [MarshalAs(UnmanagedType.U1)] bool aIsPopupSpam, [MarshalAs(UnmanagedType.U1)] bool aForceNoOpener, [MarshalAs(UnmanagedType.Interface)] nsIDocShellLoadInfo aLoadInfo);
+		
+		/// <summary>
+        /// Opens a new window so that the window that aOpeningTab belongs to
+        /// is set as the parent window. The newly opened window will also
+        /// inherit load context information from aOpeningTab.
+        ///
+        /// @param aOpeningTab
+        /// The nsITabParent that is requesting the new window be opened.
+        /// @param aFeatures
+        /// Window features if called with window.open or similar.
+        /// @param aCalledFromJS
+        /// True if called via window.open or similar.
+        /// @param aOpenerFullZoom
+        /// The current zoom multiplier for the opener tab. This is then
+        /// applied to the newly opened window.
+        /// @param aNextTabParentId
+        /// The integer ID for the next tab parent actor.
+        /// 0 means there is no next tab parent actor to use.
+        /// @param aForceNoOpener
+        /// If true, then aOpeningTab will not be used to set the opener
+        /// for the newly created window.
+        ///
+        /// @return the nsITabParent of the initial browser for the newly opened
+        /// window.
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow OpenWindow2([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent, [MarshalAs(UnmanagedType.LPStr)] string aUrl, [MarshalAs(UnmanagedType.LPStr)] string aName, [MarshalAs(UnmanagedType.LPStr)] string aFeatures, [MarshalAs(UnmanagedType.U1)] bool aCalledFromScript, [MarshalAs(UnmanagedType.U1)] bool aDialog, [MarshalAs(UnmanagedType.U1)] bool aNavigate, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab, [MarshalAs(UnmanagedType.Interface)] nsISupports aArgs);
+		nsITabParent OpenWindowWithTabParent([MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFeatures, [MarshalAs(UnmanagedType.U1)] bool aCalledFromJS, float aOpenerFullZoom, ulong aNextTabParentId, [MarshalAs(UnmanagedType.U1)] bool aForceNoOpener);
 		
 		/// <summary>
         /// Find a named docshell tree item amongst all windows registered
@@ -108,6 +143,6 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDocShellTreeItem FindItemWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aName, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
+		nsIDocShellTreeItem FindItemWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
 	}
 }

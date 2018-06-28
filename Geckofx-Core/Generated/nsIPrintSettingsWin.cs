@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f13b225d-473e-4372-b11f-b6dff9fe0c5b")]
+	[Guid("c63eed41-6ac5-459e-8a64-033eb9ad770a")]
 	public interface nsIPrintSettingsWin
 	{
 		
@@ -48,9 +48,8 @@ namespace Gecko
         /// via the "m_pd" data member of the CPrintDialog
         /// in MFC.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetDeviceNameAttribute();
+		void GetDeviceNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDeviceName);
 		
 		/// <summary>
         /// Data Members
@@ -66,19 +65,65 @@ namespace Gecko
         /// in MFC.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDeviceNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aDeviceName);
-		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetDriverNameAttribute();
+		void SetDeviceNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDeviceName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDriverNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aDriverName);
+		void GetDriverNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDriverName);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetDriverNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDriverName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetDevModeAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDevModeAttribute(System.IntPtr aDevMode);
+		
+		/// <summary>
+        /// On Windows we use the printable width and height for the printing surface.
+        /// We don't want to have to create native print device contexts in the content
+        /// process, so we need to store these in the settings.
+        /// Storing in Inches is most convenient as they are retrieved from the device
+        /// using fields which are in pixels and pixels per inch.
+        /// Note these are stored in portrait format to ensure that we can take account
+        /// of our own changes to the orientation print setting.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double GetPrintableWidthInInchesAttribute();
+		
+		/// <summary>
+        /// On Windows we use the printable width and height for the printing surface.
+        /// We don't want to have to create native print device contexts in the content
+        /// process, so we need to store these in the settings.
+        /// Storing in Inches is most convenient as they are retrieved from the device
+        /// using fields which are in pixels and pixels per inch.
+        /// Note these are stored in portrait format to ensure that we can take account
+        /// of our own changes to the orientation print setting.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetPrintableWidthInInchesAttribute(double aPrintableWidthInInches);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double GetPrintableHeightInInchesAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetPrintableHeightInInchesAttribute(double aPrintableHeightInInches);
+		
+		/// <summary>
+        /// Copy relevant print settings from native Windows device.
+        ///
+        /// @param hdc HDC to copy from
+        /// @param devMode DEVMODE to copy from
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CopyFromNative(nsISupports hdc, System.IntPtr devMode);
+		
+		/// <summary>
+        /// Copy relevant print settings to native windows structures.
+        ///
+        /// @param devMode DEVMODE to be populated.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CopyToNative(System.IntPtr devMode);
 	}
 }

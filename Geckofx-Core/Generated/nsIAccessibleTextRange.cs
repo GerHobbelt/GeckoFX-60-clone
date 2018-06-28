@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("525b3401-8a67-4822-b35d-661065767cd8")]
+	[Guid("c4515623-55f9-4543-a3d5-c1e9afa588f4")]
 	public interface nsIAccessibleTextRange
 	{
 		
@@ -112,6 +112,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Normalize(uint aUnit);
+		
+		/// <summary>
+        /// Crops the range by the given accessible element.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool Crop([MarshalAs(UnmanagedType.Interface)] nsIAccessible aContainer);
 		
 		/// <summary>
         /// Return range enclosing the found text.

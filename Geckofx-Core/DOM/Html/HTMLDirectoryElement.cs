@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoDirectoryElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLDirectoryElement DOMHTMLElement;
+        private /* nsIDOMHTMLDirectoryElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoDirectoryElement(nsIDOMHTMLDirectoryElement element) : base(element)
+        internal GeckoDirectoryElement(/* nsIDOMHTMLDirectoryElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoDirectoryElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoDirectoryElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLDirectoryElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLDirectoryElement */ nsISupports;
         }
     }
 }

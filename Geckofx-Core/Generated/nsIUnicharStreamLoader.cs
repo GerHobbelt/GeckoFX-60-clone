@@ -154,5 +154,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetCharsetAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCharset);
+		
+		/// <summary>
+        /// Get the raw bytes as seen on the wire prior to character converstion.
+        /// Used by Subresource Integrity checker to generate the correct hash.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetRawBufferAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRawBuffer);
 	}
 }

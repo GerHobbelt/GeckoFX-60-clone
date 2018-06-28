@@ -41,8 +41,6 @@ namespace Gecko
         /// Setting this attribute to a value not in getDictionaryList will throw
         /// NS_ERROR_FILE_NOT_FOUND.
         ///
-        /// The spellcheck engine will send a notification with
-        /// "spellcheck-dictionary-update" as topic when this changes.
         /// If the dictionary is changed to no dictionary (the empty string), an
         /// observer is allowed to set another dictionary before it returns.
         /// </summary>
@@ -56,8 +54,6 @@ namespace Gecko
         /// Setting this attribute to a value not in getDictionaryList will throw
         /// NS_ERROR_FILE_NOT_FOUND.
         ///
-        /// The spellcheck engine will send a notification with
-        /// "spellcheck-dictionary-update" as topic when this changes.
         /// If the dictionary is changed to no dictionary (the empty string), an
         /// observer is allowed to set another dictionary before it returns.
         /// </summary>
@@ -66,9 +62,6 @@ namespace Gecko
 		
 		/// <summary>
         /// The language this spellchecker is using when checking
-        ///
-        /// The spellcheck engine will send a notification with
-        /// "spellcheck-dictionary-update" as topic when this changes.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -122,9 +115,6 @@ namespace Gecko
 		
 		/// <summary>
         /// check a word
-        ///
-        /// The spellcheck engine will send a notification with
-        /// "spellcheck-dictionary-update" as topic when this changes.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -132,9 +122,6 @@ namespace Gecko
 		
 		/// <summary>
         /// get a list of suggestions for a misspelled word
-        ///
-        /// The spellcheck engine will send a notification with
-        /// "spellcheck-dictionary-update" as topic when this changes.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Suggest([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string word, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref System.IntPtr[] suggestions, ref uint count);

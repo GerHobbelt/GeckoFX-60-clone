@@ -61,9 +61,19 @@ namespace Gecko
 		/// <summary>
         /// Hook for clients who need to perform actions during/by the end of
         /// the shutdown of the database.
+        /// May be null if it's too late to get one.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIAsyncShutdownClient GetShutdownClientAttribute();
+		
+		/// <summary>
+        /// Hook for internal clients who need to perform actions just before the
+        /// connection gets closed.
+        /// May be null if it's too late to get one.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIAsyncShutdownClient GetConnectionShutdownClientAttribute();
 	}
 }

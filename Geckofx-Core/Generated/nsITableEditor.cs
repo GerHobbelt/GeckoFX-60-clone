@@ -283,27 +283,6 @@ namespace Gecko
 		nsIDOMNode GetNextRow([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aTableElement);
 		
 		/// <summary>
-        ///Reset a selected cell or collapsed selection (the caret) after table editing
-        ///
-        /// @param aTable      A table in the document
-        /// @param aRow        The row ...
-        /// @param aCol        ... and column defining the cell
-        /// where we will try to place the caret
-        /// @param aSelected   If true, we select the whole cell instead of setting caret
-        /// @param aDirection  If cell at (aCol, aRow) is not found,
-        /// search for previous cell in the same
-        /// column (aPreviousColumn) or row (ePreviousRow)
-        /// or don't search for another cell (aNoSearch)
-        /// If no cell is found, caret is place just before table;
-        /// and if that fails, at beginning of document.
-        /// Thus we generally don't worry about the return value
-        /// and can use the nsSetSelectionAfterTableEdit stack-based
-        /// object to insure we reset the caret in a table-editing method.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetSelectionAfterTableEdit([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aTable, int aRow, int aCol, int aDirection, [MarshalAs(UnmanagedType.U1)] bool aSelected);
-		
-		/// <summary>
         ///Examine the current selection and find
         /// a selected TABLE, TD or TH, or TR element.
         /// or return the parent TD or TH if selection is inside a table cell

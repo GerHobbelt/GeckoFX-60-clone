@@ -142,5 +142,11 @@ namespace Gecko
         // out SVG.
         // </summary>
 		public const ulong SanitizerDropMedia = (1<<5);
+		
+		// <summary>
+        // Flag for sanitizer: Log messages to the console for everything that gets
+        // sanitized
+        // </summary>
+		public const ulong SanitizerLogRemovals = (1<<6);
 	}
 }

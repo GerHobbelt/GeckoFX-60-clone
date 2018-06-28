@@ -56,7 +56,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2487F9CA-D05F-4BD1-8F43-5964E746C482")]
+	[Guid("86e1f1e1-365d-493b-b52a-a649f3f311dc")]
 	public interface nsIFocusManager
 	{
 		
@@ -67,9 +67,8 @@ namespace Gecko
         /// to null or to a non-top-level window throws an NS_ERROR_INVALID_ARG
         /// exception.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetActiveWindowAttribute();
+		mozIDOMWindowProxy GetActiveWindowAttribute();
 		
 		/// <summary>
         /// The most active (frontmost) window, or null if no window that is part of
@@ -79,21 +78,7 @@ namespace Gecko
         /// exception.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetActiveWindowAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aActiveWindow);
-		
-		/// <summary>
-        /// The child window within the activeWindow that is focused. This will
-        /// always be activeWindow, a child window of activeWindow or null if no
-        /// child window is focused. Setting the focusedWindow changes the focused
-        /// window and raises the toplevel window it is in. If the current focus
-        /// within the new focusedWindow is a frame element, then the focusedWindow
-        /// will actually be set to the child window and the current element within
-        /// that set as the focused element. This process repeats downwards until a
-        /// non-frame element is found.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetFocusedWindowAttribute();
+		void SetActiveWindowAttribute(mozIDOMWindowProxy aActiveWindow);
 		
 		/// <summary>
         /// The child window within the activeWindow that is focused. This will
@@ -106,7 +91,20 @@ namespace Gecko
         /// non-frame element is found.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetFocusedWindowAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aFocusedWindow);
+		mozIDOMWindowProxy GetFocusedWindowAttribute();
+		
+		/// <summary>
+        /// The child window within the activeWindow that is focused. This will
+        /// always be activeWindow, a child window of activeWindow or null if no
+        /// child window is focused. Setting the focusedWindow changes the focused
+        /// window and raises the toplevel window it is in. If the current focus
+        /// within the new focusedWindow is a frame element, then the focusedWindow
+        /// will actually be set to the child window and the current element within
+        /// that set as the focused element. This process repeats downwards until a
+        /// non-frame element is found.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetFocusedWindowAttribute(mozIDOMWindowProxy aFocusedWindow);
 		
 		/// <summary>
         /// The element that is currently focused. This will always be an element
@@ -125,7 +123,7 @@ namespace Gecko
         /// element.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetLastFocusMethod([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		uint GetLastFocusMethod(mozIDOMWindowProxy window);
 		
 		/// <summary>
         /// Changes the focused element reference within the window containing
@@ -154,7 +152,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement MoveFocus([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aStartElement, uint aType, uint aFlags);
+		nsIDOMElement MoveFocus(mozIDOMWindowProxy aWindow, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aStartElement, uint aType, uint aFlags);
 		
 		/// <summary>
         /// Clears the focused element within aWindow. If the current focusedWindow
@@ -163,7 +161,7 @@ namespace Gecko
         /// @throws NS_ERROR_INVALID_ARG if aWindow is null
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ClearFocus([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		void ClearFocus(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         /// Returns the currently focused element within aWindow. If aWindow is equal
@@ -184,13 +182,13 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement GetFocusedElementForWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.U1)] bool aDeep, [MarshalAs(UnmanagedType.Interface)] ref nsIDOMWindow aFocusedWindow);
+		nsIDOMElement GetFocusedElementForWindow(mozIDOMWindowProxy aWindow, [MarshalAs(UnmanagedType.U1)] bool aDeep, ref mozIDOMWindowProxy aFocusedWindow);
 		
 		/// <summary>
         /// Moves the selection caret within aWindow to the current focus.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void MoveCaretToFocus([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		void MoveCaretToFocus(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         /// Check if given element is focusable.
@@ -203,13 +201,13 @@ namespace Gecko
         /// Called when a window has been raised.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WindowRaised([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		void WindowRaised(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         /// Called when a window has been lowered.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WindowLowered([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		void WindowLowered(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         /// Called when a new document in a window is shown.
@@ -218,14 +216,14 @@ namespace Gecko
         /// window if this window is in the focused window chain.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WindowShown([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.U1)] bool aNeedsFocus);
+		void WindowShown(mozIDOMWindowProxy aWindow, [MarshalAs(UnmanagedType.U1)] bool aNeedsFocus);
 		
 		/// <summary>
         /// Called when a document in a window has been hidden or otherwise can no
         /// longer accept focus.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void WindowHidden([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		void WindowHidden(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         /// Fire any events that have been delayed due to synchronized actions.
@@ -246,7 +244,7 @@ namespace Gecko
         /// active or deactive.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ParentActivated([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.U1)] bool active);
+		void ParentActivated(mozIDOMWindowProxy aWindow, [MarshalAs(UnmanagedType.U1)] bool active);
 	}
 	
 	/// <summary>nsIFocusManagerConsts </summary>

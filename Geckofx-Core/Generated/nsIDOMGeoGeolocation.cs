@@ -41,10 +41,7 @@ namespace Gecko
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int WatchPosition([MarshalAs(UnmanagedType.Interface)] nsIDOMGeoPositionCallback callback, [MarshalAs(UnmanagedType.Interface)] nsIDOMGeoPositionErrorCallback errorCallback, System.IntPtr options);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCurrentPosition([MarshalAs(UnmanagedType.Interface)] nsIDOMGeoPositionCallback callback, [MarshalAs(UnmanagedType.Interface)] nsIDOMGeoPositionErrorCallback errorCallback, System.IntPtr options);
+		int WatchPosition([MarshalAs(UnmanagedType.Interface)] nsIDOMGeoPositionCallback callback, [MarshalAs(UnmanagedType.Interface)] nsIDOMGeoPositionErrorCallback errorCallback, nsISupports options);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ClearWatch(int watchId);

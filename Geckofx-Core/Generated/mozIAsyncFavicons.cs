@@ -70,18 +70,20 @@ namespace Gecko
         /// @param aFaviconLoadType
         /// Set to FAVICON_LOAD_PRIVATE if the favicon is loaded from a private
         /// browsing window.  Set to FAVICON_LOAD_NON_PRIVATE otherwise.
-        /// @param aCallback
+        /// @param [optional] aCallback
         /// Once we're done setting and/or fetching the favicon, we invoke this
         /// callback.
-        /// @param aLoadingPrincipal
+        /// @param [optional] aLoadingPrincipal
         /// Principal of the page whose favicon is being set. If this argument
-        /// is omitted, the loadingPrincipal defaults to the systemPrincipal
-        /// and we cannot guarantee security checks anymore (see Bug 1227289)
+        /// is omitted, the loadingPrincipal defaults to the nullPrincipal.
+        /// @param [optional] aRequestContextID
+        /// used to inform Necko of how to link the
+        /// favicon request with other requests in the same tab.
         ///
         /// @see nsIFaviconDataCallback in nsIFaviconService.idl.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAndFetchFaviconForPage([MarshalAs(UnmanagedType.Interface)] nsIURI aPageURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.U1)] bool aForceReload, uint aFaviconLoadType, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal);
+		mozIPlacesPendingOperation SetAndFetchFaviconForPage([MarshalAs(UnmanagedType.Interface)] nsIURI aPageURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aFaviconURI, [MarshalAs(UnmanagedType.U1)] bool aForceReload, uint aFaviconLoadType, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, ulong aRequestContextID);
 		
 		/// <summary>
         /// Sets the data for a given favicon URI either by replacing existing data in
@@ -117,7 +119,7 @@ namespace Gecko
         /// MIME type of the data to store.  This is important so that we know
         /// what to report when the favicon is used.  You should always set this
         /// param unless you are clearing an icon.
-        /// @param aExpiration
+        /// @param [optional] aExpiration
         /// Time in microseconds since the epoch when this favicon expires.
         /// Until this time, we won't try to load it again.
         /// @throws NS_ERROR_FAILURE
@@ -137,13 +139,12 @@ namespace Gecko
         /// @param aDataURL
         /// string containing a data URL that represents the contents of
         /// the favicon to save
-        /// @param aExpiration
+        /// @param [optional] aExpiration
         /// Time in microseconds since the epoch when this favicon expires.
         /// Until this time, we won't try to load it again.
-        /// @param aLoadingPrincipal
+        /// @param [optional] aLoadingPrincipal
         /// Principal of the page whose favicon is being set. If this argument
-        /// is omitted, the loadingPrincipal defaults to the systemPrincipal
-        /// and we cannot guarantee security checks anymore (see Bug 1227289)
+        /// is omitted, the loadingPrincipal defaults to the nullPrincipal.
         /// @throws NS_ERROR_FAILURE
         /// Thrown if the favicon is overbloated and won't be saved to the db.
         /// </summary>
@@ -159,18 +160,24 @@ namespace Gecko
         /// This callback is always invoked to notify the result of the lookup.
         /// The aURI parameter will be the favicon URI, or null when no favicon
         /// is associated with the page or an error occurred while fetching it.
+        /// aDataLen will be always 0, aData will be an empty array, and
+        /// aMimeType will be an empty string, regardless of whether a favicon
+        /// was found.
+        /// @param [optional] aPreferredWidth
+        /// The preferred icon width, 0 for the biggest available.
         ///
-        /// @note When the callback is invoked, aDataLen will be always 0, aData will
-        /// be an empty array, and aMimeType will be an empty string, regardless
-        /// of whether a favicon is associated with the page.
+        /// @note If a favicon specific to this page cannot be found, this will try to
+        /// fallback to the /favicon.ico for the root domain.
         ///
         /// @see nsIFaviconDataCallback in nsIFaviconService.idl.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFaviconURLForPage([MarshalAs(UnmanagedType.Interface)] nsIURI aPageURI, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback);
+		void GetFaviconURLForPage([MarshalAs(UnmanagedType.Interface)] nsIURI aPageURI, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback, ushort aPreferredWidth);
 		
 		/// <summary>
         /// Retrieves the favicon URI and data associated to the given page, if any.
+        /// If the page icon is not available, it will try to return the root domain
+        /// icon data, when it's known.
         ///
         /// @param aPageURI
         /// URI of the page whose favicon URI and data we're looking up.
@@ -182,10 +189,32 @@ namespace Gecko
         /// However, if no favicon data is currently associated with the favicon
         /// URI, aDataLen will be 0, aData will be an empty array, and aMimeType
         /// will be an empty string.
+        /// @param [optional] aPreferredWidth
+        /// The preferred icon width, 0 for the biggest available.
+        /// @note If a favicon specific to this page cannot be found, this will try to
+        /// fallback to the /favicon.ico for the root domain.
         ///
         /// @see nsIFaviconDataCallback in nsIFaviconService.idl.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetFaviconDataForPage([MarshalAs(UnmanagedType.Interface)] nsIURI aPageURI, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback);
+		void GetFaviconDataForPage([MarshalAs(UnmanagedType.Interface)] nsIURI aPageURI, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback, ushort aPreferredWidth);
+		
+		/// <summary>
+        /// Copies cached favicons from a page to another one.
+        ///
+        /// @param aFromPageURI
+        /// URI of the originating page.
+        /// @param aToPageURI
+        /// URI of the destination page.
+        /// @param aFaviconLoadType
+        /// Set to FAVICON_LOAD_PRIVATE if the copy is started from a private
+        /// browsing window.  Set to FAVICON_LOAD_NON_PRIVATE otherwise.
+        /// @param [optional] aCallback
+        /// Once we're done copying the favicon, we invoke this callback.
+        /// If a copy has been done, the callback will report one of the
+        /// favicons uri as aFaviconURI, otherwise all the params will be null.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CopyFavicons([MarshalAs(UnmanagedType.Interface)] nsIURI aFromPageURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aToPageURI, uint aFaviconLoadType, [MarshalAs(UnmanagedType.Interface)] nsIFaviconDataCallback aCallback);
 	}
 }

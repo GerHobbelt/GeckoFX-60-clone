@@ -52,6 +52,8 @@ namespace Gecko
         ///
         /// @param aSource
         /// Source URI of the download
+        /// @param aReferrer
+        /// Referrer URI of the download
         /// @param aTarget
         /// Downloaded file
         /// @param aContentType
@@ -61,7 +63,7 @@ namespace Gecko
         /// @return none
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DownloadDone([MarshalAs(UnmanagedType.Interface)] nsIURI aSource, [MarshalAs(UnmanagedType.Interface)] nsIFile aTarget, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentType, [MarshalAs(UnmanagedType.U1)] bool aIsPrivate);
+		void DownloadDone([MarshalAs(UnmanagedType.Interface)] nsIURI aSource, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.Interface)] nsIFile aTarget, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentType, [MarshalAs(UnmanagedType.U1)] bool aIsPrivate);
 		
 		/// <summary>
         /// Proxy for IInternetSecurityManager::MapUrlToZone().

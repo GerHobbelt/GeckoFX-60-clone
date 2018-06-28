@@ -39,7 +39,7 @@ namespace Gecko.DOM.Xul
         {
             get
             {
-                nsIDOMCSSStyleDeclaration style;
+                /* nsIDOMCSSStyleDeclaration */ nsISupports style;
                 using (var element = new ComPtr<nsIDOMElement>(Xpcom.QueryInterface<nsIDOMElement>(this.DomObject)))
                 {
                     var window = new WebIDL.Window(OwnerDocument.DefaultView.DomWindow,

@@ -272,7 +272,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("581f6619-76ed-478c-905d-b8e6553a714a")]
+	[Guid("47ae2181-2e98-4d58-84a2-b8db6764ce9a")]
 	public interface nsITextInputProcessor
 	{
 		
@@ -301,7 +301,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool BeginInputTransaction([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsITextInputProcessorCallback aCallback);
+		bool BeginInputTransaction(mozIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsITextInputProcessorCallback aCallback);
 		
 		/// <summary>
         /// When you create an instance for automated test, you must call
@@ -312,7 +312,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool BeginInputTransactionForTests([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsITextInputProcessorCallback aCallback, int argc);
+		bool BeginInputTransactionForTests(mozIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsITextInputProcessorCallback aCallback, int argc);
 		
 		/// <summary>
         /// startComposition() dispatches compositionstart event explicitly.
@@ -333,7 +333,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool StartComposition([MarshalAs(UnmanagedType.Interface)] nsIDOMKeyEvent aKeyboardEvent, uint aKeyFlags, int argc);
+		bool StartComposition([MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aKeyboardEvent, uint aKeyFlags, int argc);
 		
 		/// <summary>
         /// Set new composition string.  Pending composition will be flushed by
@@ -412,7 +412,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool FlushPendingComposition([MarshalAs(UnmanagedType.Interface)] nsIDOMKeyEvent aKeyboardEvent, uint aKeyFlags, int argc);
+		bool FlushPendingComposition([MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aKeyboardEvent, uint aKeyFlags, int argc);
 		
 		/// <summary>
         /// commitComposition() will commit composition with the last composition
@@ -425,7 +425,7 @@ namespace Gecko
         /// @param aKeyFlags       See KEY_* constants.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CommitComposition([MarshalAs(UnmanagedType.Interface)] nsIDOMKeyEvent aKeyboardEvent, uint aKeyFlags, int argc);
+		void CommitComposition([MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aKeyboardEvent, uint aKeyFlags, int argc);
 		
 		/// <summary>
         /// commitCompositionWith() will commit composition with the specific string.
@@ -446,7 +446,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool CommitCompositionWith([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCommitString, [MarshalAs(UnmanagedType.Interface)] nsIDOMKeyEvent aKeyboardEvent, uint aKeyFlags, int argc);
+		bool CommitCompositionWith([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCommitString, [MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aKeyboardEvent, uint aKeyFlags, int argc);
 		
 		/// <summary>
         /// cancelComposition() will cancel composition.  This is for now the same as
@@ -464,7 +464,7 @@ namespace Gecko
         /// @param aKeyFlags       See KEY_* constants.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CancelComposition([MarshalAs(UnmanagedType.Interface)] nsIDOMKeyEvent aKeyboardEvent, uint aKeyFlags, int argc);
+		void CancelComposition([MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aKeyboardEvent, uint aKeyFlags, int argc);
 		
 		/// <summary>
         /// keydown() may dispatch a keydown event and some keypress events if
@@ -518,14 +518,14 @@ namespace Gecko
         /// default action has been taken).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint Keydown([MarshalAs(UnmanagedType.Interface)] nsIDOMKeyEvent aKeyboardEvent, uint aKeyFlags, int argc);
+		uint Keydown([MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aKeyboardEvent, uint aKeyFlags, int argc);
 		
 		/// <summary>
         /// Similar to keydown(), but this dispatches only a keyup event.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool Keyup([MarshalAs(UnmanagedType.Interface)] nsIDOMKeyEvent aKeyboardEvent, uint aKeyFlags, int argc);
+		bool Keyup([MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aKeyboardEvent, uint aKeyFlags, int argc);
 		
 		/// <summary>
         /// getModifierState() returns modifier state managed by this instance.

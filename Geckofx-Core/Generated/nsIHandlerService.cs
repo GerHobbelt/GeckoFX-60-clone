@@ -37,6 +37,13 @@ namespace Gecko
 	{
 		
 		/// <summary>
+        /// Asynchronously performs any IO that the nsIHandlerService needs to do
+        /// before it can be of use.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AsyncInit();
+		
+		/// <summary>
         /// Retrieve a list of all handlers in the datastore.  This list is not
         /// guaranteed to be in any particular order, and callers should not assume
         /// it will remain in the same order in the future.
@@ -147,5 +154,17 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetTypeFromExtension([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFileExtension, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Whether or not there is a handler known to the OS for the
+        /// specified protocol type.
+        ///
+        /// @param aProtocolScheme scheme to check for support
+        ///
+        /// @returns whether or not a handler exists
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool ExistsForProtocol([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aProtocolScheme);
 	}
 }

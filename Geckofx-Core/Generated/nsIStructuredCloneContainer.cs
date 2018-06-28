@@ -58,7 +58,7 @@ namespace Gecko
         /// structured clone algorithm which was used to generate aData.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitFromBase64([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aData, uint aFormatVersion, System.IntPtr jsContext);
+		void InitFromBase64([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aData, uint aFormatVersion);
 		
 		/// <summary>
         /// Deserializes this structured clone container returning it as a jsval.

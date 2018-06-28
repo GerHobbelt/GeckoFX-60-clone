@@ -54,13 +54,7 @@ namespace Gecko
         /// Dispatch a "data" event at this object with an Array
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FireDataArrayEvent([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase type, nsUint8TArrayRef data);
-		
-		/// <summary>
-        /// Dispatch a "data" event at this object with an ArrayBuffer argument
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FireDataEvent(System.IntPtr cx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase type, ref Gecko.JsVal data);
+		void FireDataArrayEvent([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase type, nsISupports data);
 		
 		/// <summary>
         /// Dispatch an event of the given type at this object.

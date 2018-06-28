@@ -55,13 +55,26 @@ namespace Gecko
 		
 		/// <summary>
         /// Establish a control channel to this device.
-        /// @param url The URL requested to open by remote device.
-        /// @param presentationId The Id for representing this session.
         /// @returns The control channel for this session.
         /// @throws  NS_ERROR_FAILURE if the establishment fails
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPresentationControlChannel EstablishControlChannel([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase presentationId);
+		nsIPresentationControlChannel EstablishControlChannel();
+		
+		/// <summary>
+        /// Do something when presentation session is disconnected.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Disconnect();
+		
+		/// <summary>
+        /// Query if requested presentation URL is supported.
+        /// @params requestedUrl the designated URL for a presentation request.
+        /// @returns true if designated URL is supported.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsRequestedUrlSupported([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase requestedUrl);
 	}
 }

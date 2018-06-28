@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoAreaElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLAreaElement DOMHTMLElement;
+        private /* nsIDOMHTMLAreaElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoAreaElement(nsIDOMHTMLAreaElement element) : base(element)
+        internal GeckoAreaElement(/* nsIDOMHTMLAreaElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoAreaElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoAreaElement(object element) : base(element as /* nsIDOMHTMLElement */nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLAreaElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLAreaElement */ nsISupports;
         }
 
         public string Alt

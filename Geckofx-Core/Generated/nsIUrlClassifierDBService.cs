@@ -111,14 +111,24 @@ namespace Gecko
 		void Lookup([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tables, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback c);
 		
 		/// <summary>
-        /// Lists the tables along with which chunks are available in each table.
-        /// This list is in the format of the request body:
-        /// tablename;chunkdata\n
-        /// tablename2;chunkdata2\n
+        /// Lists the tables along with their meta info in the following format:
         ///
-        /// For example:
-        /// goog-phish-regexp;a:10,14,30-40s:56,67
-        /// goog-white-regexp;a:1-3,5
+        /// tablename;[metadata]\n
+        /// tablename2;[metadata]\n
+        ///
+        /// For v2 tables, the metadata is the chunks info such as
+        ///
+        /// goog-phish-shavar;a:10,14,30-40s:56,67
+        /// goog-unwanted-shavar;a:1-3,5
+        ///
+        /// For v4 tables, base64 encoded state is currently the only info in the
+        /// metadata (can be extended whenever necessary). For exmaple,
+        ///
+        /// goog-phish-proto;Cg0IARAGGAEiAzAwMTABEKqTARoCGAjT1gDD:oCGAjT1gDD\n
+        /// goog-malware-proto;Cg0IAhAGGAEiAzAwMTABENCQARoCGAjx5Yty:BENCQARoCGAj\n
+        ///
+        /// Note that the metadata is colon-separated.
+        ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetTables([MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback c);
@@ -132,11 +142,10 @@ namespace Gecko
 		void SetHashCompleter([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierHashCompleter completer);
 		
 		/// <summary>
-        /// Set the last update time for the given table. We use this to
-        /// remember freshness past restarts. Time is in milliseconds since epoch.
+        /// Forget the results that were used in the last DB update.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetLastUpdateTime([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, ulong lastUpdateTime);
+		void ClearLastResults();
 		
 		/// <summary>
         /// Begin an update process.  Will throw NS_ERROR_NOT_AVAILABLE if there
@@ -200,136 +209,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ResetDatabase();
-	}
-	
-	/// <summary>
-    /// Interface for the actual worker thread.  Implementations of this need not
-    /// be thread aware and just work on the database.
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b7b505d0-bfa2-44db-abf8-6e2bfc25bbab")]
-	public interface nsIUrlClassifierDBServiceWorker : nsIUrlClassifierDBService
-	{
 		
 		/// <summary>
-        /// Looks up a URI in the specified tables.
-        ///
-        /// @param principal: The principal containing the URI to search.
-        /// @param c: The callback will be called with a comma-separated list
-        /// of tables to which the key belongs.
+        /// Reload he url-classifier database. This will empty all cache for
+        /// completions from gethash, and reload it from database. Mostly intended
+        /// for use in tests.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Lookup([MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tables, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback c);
+		void ReloadDatabase();
 		
 		/// <summary>
-        /// Lists the tables along with which chunks are available in each table.
-        /// This list is in the format of the request body:
-        /// tablename;chunkdata\n
-        /// tablename2;chunkdata2\n
-        ///
-        /// For example:
-        /// goog-phish-regexp;a:10,14,30-40s:56,67
-        /// goog-white-regexp;a:1-3,5
+        /// Empty all the caches.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetTables([MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback c);
-		
-		/// <summary>
-        /// Set the nsIUrlClassifierCompleter object for a given table.  This
-        /// object will be used to request complete versions of partial
-        /// hashes.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetHashCompleter([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierHashCompleter completer);
-		
-		/// <summary>
-        /// Set the last update time for the given table. We use this to
-        /// remember freshness past restarts. Time is in milliseconds since epoch.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetLastUpdateTime([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, ulong lastUpdateTime);
-		
-		/// <summary>
-        /// Begin an update process.  Will throw NS_ERROR_NOT_AVAILABLE if there
-        /// is already an update in progress.
-        ///
-        /// @param updater The update observer tied to this update.
-        /// @param tables A comma-separated list of tables included in this update.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BeginUpdate([MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierUpdateObserver updater, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tables);
-		
-		/// <summary>
-        /// Begin a stream update.  This should be called once per url being
-        /// fetched.
-        ///
-        /// @param table The table the contents of this stream will be associated
-        /// with, or empty for the initial stream.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void BeginStream([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase table);
-		
-		/// <summary>
-        /// Update the table incrementally.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void UpdateStream([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase updateChunk);
-		
-		/// <summary>
-        /// Finish an individual stream update.  Must be called for every
-        /// beginStream() call, before the next beginStream() or finishUpdate().
-        ///
-        /// The update observer's streamFinished will be called once the
-        /// stream has been processed.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void FinishStream();
-		
-		/// <summary>
-        /// Finish an incremental update.  This will attempt to commit any
-        /// pending changes and resets the update interface.
-        ///
-        /// The update observer's updateSucceeded or updateError methods
-        /// will be called when the update has been processed.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void FinishUpdate();
-		
-		/// <summary>
-        /// Cancel an incremental update.  This rolls back any pending changes.
-        /// and resets the update interface.
-        ///
-        /// The update observer's updateError method will be called when the
-        /// update has been rolled back.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CancelUpdate();
-		
-		/// <summary>
-        /// Reset the url-classifier database.  This call will delete the existing
-        /// database, emptying all tables.  Mostly intended for use in unit tests.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ResetDatabase();
-		
-		/// <summary>
-        /// Open the DB connection
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OpenDb();
-		
-		/// <summary>
-        /// Provide a way to forcibly close the db connection.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CloseDb();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CacheCompletions(System.IntPtr completions);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CacheMisses(System.IntPtr misses);
+		void ClearCache();
 	}
 	
 	/// <summary>
@@ -355,5 +248,25 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void LookupComplete(System.IntPtr results);
+	}
+	
+	/// <summary>
+    /// This is an internal helper interface which is called after each
+    /// classify completes to provide and handle a set of possible results,
+    /// which the main thread may need to expand using an nsIURIClassifierCallback.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("091adf98-28a5-473d-8dec-5b34b4e62496")]
+	public interface nsIUrlClassifierClassifyCallback
+	{
+		
+		/// <summary>
+        /// The function is called each time the URL matches a Safe Browsing list
+        /// The function could be called multiple times if URL matches multiple lists
+        ///
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void HandleResult([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aList, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPrefix);
 	}
 }

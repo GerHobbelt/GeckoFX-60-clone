@@ -77,7 +77,7 @@ namespace Gecko
         /// @throws <other-error> on failure
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-        unsafe uint Write(IntPtr aBuf, uint aCount);
+		uint Write([MarshalAs(UnmanagedType.LPStr)] string aBuf, uint aCount);
 		
 		/// <summary>
         /// Writes data into the stream from an input stream.

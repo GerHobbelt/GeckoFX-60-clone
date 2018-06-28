@@ -104,7 +104,7 @@ namespace Gecko
             else if (!File.Exists(filename))
                 throw new FileNotFoundException();
 
-            _prefService.Instance.ReadUserPrefs((nsIFile) Xpcom.NewNativeLocalFile(filename));
+            _prefService.Instance.ReadUserPrefsFromFile((nsIFile) Xpcom.NewNativeLocalFile(filename));
         }
 
         /// <summary>
@@ -201,9 +201,9 @@ namespace Gecko
                     case PREF_STRING:
                         return GetUnicodePref(_branch.Instance, prefName);
                     case PREF_INT:
-                        return _branch.Instance.GetIntPref(prefName);
+                        return _branch.Instance.GetIntPrefXPCOM(prefName);
                     case PREF_BOOL:
-                        return _branch.Instance.GetBoolPrefXPCom(prefName);
+                        return _branch.Instance.GetBoolPrefXPCOM(prefName);
                 }
                 throw new ArgumentException("prefName");
             }
@@ -246,7 +246,7 @@ namespace Gecko
 
         public string Root
         {
-            get { return _branch.Instance.GetRootAttribute(); }
+            get { return nsString.Get(_branch.Instance.GetRootAttribute); }
         }
 
         #region Typed properties
@@ -264,7 +264,7 @@ namespace Gecko
                     value = null;
                     return true;
                 case PREF_INT:
-                    value = _branch.Instance.GetIntPref(prefName);
+                    value = _branch.Instance.GetIntPrefXPCOM(prefName);
                     return true;
                 default:
                     value = null;
@@ -315,7 +315,7 @@ namespace Gecko
                     value = null;
                     return true;
                 case PREF_BOOL:
-                    value = _branch.Instance.GetBoolPrefXPCom(prefName);
+                    value = _branch.Instance.GetBoolPrefXPCOM(prefName);
                     return true;
                 default:
                     value = null;
@@ -419,7 +419,7 @@ namespace Gecko
                     return true;
                     // float is stored as string
                 case PREF_STRING:
-                    value = _branch.Instance.GetFloatPref(prefName);
+                    value = _branch.Instance.GetFloatPrefXPCOM(prefName);
                     return true;
                 default:
                     value = null;

@@ -99,6 +99,24 @@ namespace Gecko
 		void GetAddonBlocklistURL(ref Gecko.JsVal addon, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase appVersion, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase toolkitVersion, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
+        /// Returns the blocklist entry, as an object with `state` and `url`
+        /// properties, if a blocklist entry for the add-on exists, or null
+        /// othereise.
+        /// @param   addon
+        /// The addon object to match.
+        /// @param   appVersion
+        /// The version of the application we are checking in the blocklist.
+        /// If this parameter is null, the version of the running application
+        /// is used.
+        /// @param   toolkitVersion
+        /// The version of the toolkit we are checking in the blocklist.
+        /// If this parameter is null, the version of the running toolkit
+        /// is used.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetAddonBlocklistEntry(ref Gecko.JsVal addon, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase appVersion, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase toolkitVersion);
+		
+		/// <summary>
         /// Determine the blocklist web page of a plugin.
         /// @param   plugin
         /// The blocked plugin that we are determining the web page for.
@@ -116,6 +134,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetPluginInfoURL([MarshalAs(UnmanagedType.Interface)] nsIPluginTag plugin, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// Whether or not we've finished loading the blocklist.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsLoadedAttribute();
+		
+		/// <summary>
+        /// Trigger loading the blocklist content asynchronously.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void LoadBlocklistAsync();
 	}
 	
 	/// <summary>nsIBlocklistServiceConsts </summary>

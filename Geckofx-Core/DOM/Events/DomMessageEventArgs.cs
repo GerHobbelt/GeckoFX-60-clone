@@ -7,20 +7,20 @@ namespace Gecko
 {
     /// <summary>
     /// Provides data froma a message event.
-    /// doxygen.db48x.net/mozilla.../interfacensIDOMMessageEvent.html
+    /// doxygen.db48x.net/mozilla.../interface/* nsIDOMMessageEvent */nsISupports.html
     /// </summary>
     public class DomMessageEventArgs
         : DomEventArgs
     {
-        private nsIDOMMessageEvent _messageEvent;
+        private /* nsIDOMMessageEvent */nsISupports _messageEvent;
 
-        private DomMessageEventArgs(nsIDOMMessageEvent ev)
+        private DomMessageEventArgs(/* nsIDOMMessageEvent */nsISupports ev)
             : base(ev)
         {
             _messageEvent = ev;
         }
 
-        public static DomMessageEventArgs Create(nsIDOMMessageEvent ev)
+        public static DomMessageEventArgs Create(/* nsIDOMMessageEvent */nsISupports ev)
         {
             return new DomMessageEventArgs(ev);
         }

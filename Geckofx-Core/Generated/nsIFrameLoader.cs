@@ -65,30 +65,22 @@ namespace Gecko
         /// from the owner content in the frame loader.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LoadFrame();
+		void LoadFrame([MarshalAs(UnmanagedType.U1)] bool originalSrc);
 		
 		/// <summary>
         /// Loads the specified URI in this frame. Behaves identically to loadFrame,
         /// except that this method allows specifying the URI to load.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LoadURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		void LoadURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.U1)] bool originalSrc);
 		
 		/// <summary>
-        /// Loads the specified URI in this frame but using a different process.
-        /// Behaves identically to loadURI, except that this method only works
-        /// with remote frame. For a signed package, we need to specifiy the
-        /// package identifier.
-        /// Throws an exception with non-remote frames.
+        /// Adds a blocking promise for the current cross process navigation.
+        /// This method can only be called while the "BrowserWillChangeProcess" event
+        /// is being fired.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SwitchProcessAndLoadURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPackageId);
-		
-		/// <summary>
-        /// Puts the frameloader in prerendering mode.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsPrerendered();
+		void AddProcessChangeBlockingPromise(ref Gecko.JsVal aPromise, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Destroy the frame loader and everything inside it. This will
@@ -148,12 +140,6 @@ namespace Gecko
 		nsIMessageSender GetMessageManagerAttribute();
 		
 		/// <summary>
-        /// @see nsIDOMWindowUtils sendKeyEvent.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SendCrossProcessKeyEvent([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aType, int aKeyCode, int aCharCode, int aModifiers, [MarshalAs(UnmanagedType.U1)] bool aPreventDefault);
-		
-		/// <summary>
         /// Request that the next time a remote layer transaction has been
         /// received by the Compositor, a MozAfterRemoteFrame event be sent
         /// to the window.
@@ -162,15 +148,21 @@ namespace Gecko
 		void RequestNotifyAfterRemotePaint();
 		
 		/// <summary>
-        /// Request an event when the layer tree from the remote tab becomes
-        /// available or unavailable. When this happens, a mozLayerTreeReady
-        /// or mozLayerTreeCleared event is fired.
+        /// Close the window through the ownerElement.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RequestNotifyLayerTreeReady();
+		void RequestFrameLoaderClose();
 		
+		/// <summary>
+        /// Print the current document.
+        ///
+        /// @param aOuterWindowID the ID of the outer window to print
+        /// @param aPrintSettings optional print settings to use; printSilent can be
+        /// set to prevent prompting.
+        /// @param aProgressListener optional print progress listener.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RequestNotifyLayerTreeCleared();
+		void Print(ulong aOuterWindowID, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings aPrintSettings, [MarshalAs(UnmanagedType.Interface)] nsIWebProgressListener aProgressListener);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetEventModeAttribute();
@@ -230,41 +222,37 @@ namespace Gecko
 		ulong GetChildIDAttribute();
 		
 		/// <summary>
-        /// Get or set this frame loader's visibility.
-        ///
-        /// The notion of "visibility" here is separate from the notion of a
-        /// window/docshell's visibility.  This field is mostly here so that we can
-        /// have a notion of visibility in the parent process when frames are OOP.
+        /// Find out whether the owner content really is a mozbrowser. <xul:browser>
+        /// is not considered to be a mozbrowser frame.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetVisibleAttribute();
+		bool GetOwnerIsMozBrowserFrameAttribute();
 		
 		/// <summary>
-        /// Get or set this frame loader's visibility.
-        ///
-        /// The notion of "visibility" here is separate from the notion of a
-        /// window/docshell's visibility.  This field is mostly here so that we can
-        /// have a notion of visibility in the parent process when frames are OOP.
+        /// The last known width of the frame. Reading this property will not trigger
+        /// a reflow, and therefore may not reflect the current state of things. It
+        /// should only be used in asynchronous APIs where values are not guaranteed
+        /// to be up-to-date when received.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetVisibleAttribute([MarshalAs(UnmanagedType.U1)] bool aVisible);
+		uint GetLazyWidthAttribute();
 		
 		/// <summary>
-        /// Find out whether the owner content really is a browser or app frame
-        /// Especially, a widget frame is regarded as an app frame.
+        /// The last known height of the frame. Reading this property will not trigger
+        /// a reflow, and therefore may not reflect the current state of things. It
+        /// should only be used in asynchronous APIs where values are not guaranteed
+        /// to be up-to-date when received.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetLazyHeightAttribute();
+		
+		/// <summary>
+        /// Is `true` if the frameloader is dead (destroy has been called on it)
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetOwnerIsBrowserOrAppFrameAttribute();
-		
-		/// <summary>
-        /// Find out whether the owner content really is a widget. If this attribute
-        /// returns true, |ownerIsBrowserOrAppFrame| must return true.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetOwnerIsWidgetAttribute();
+		bool GetIsDeadAttribute();
 	}
 	
 	/// <summary>nsIFrameLoaderConsts </summary>
@@ -291,7 +279,7 @@ namespace Gecko
 	/// <summary>nsIFrameLoaderOwner </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c4abebcf-55f3-47d4-af15-151311971255")]
+	[Guid("adc1b3ba-8deb-4943-8045-e6de0044f2ce")]
 	public interface nsIFrameLoaderOwner
 	{
 		
@@ -307,22 +295,13 @@ namespace Gecko
 		System.IntPtr GetFrameLoader();
 		
 		/// <summary>
-        /// Puts the FrameLoaderOwner in prerendering mode.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsPrerendered();
-		
-		/// <summary>
-        /// Swap frame loaders with the given nsIFrameLoaderOwner.  This may
-        /// only be posible in a very limited range of circumstances, or
-        /// never, depending on the object implementing this interface.
+        /// This method is used internally by SwapFrameLoaders to set the frame loader
+        /// on the target nsFrameLoader.
         ///
-        /// @throws NS_ERROR_NOT_IMPLEMENTED if the swapping logic is not
-        /// implemented for the two given frame loader owners.
-        /// @throws NS_ERROR_DOM_SECURITY_ERR if the swap is not allowed on
-        /// security grounds.
+        /// Avoid using this method outside of that context, and instead prefer using
+        /// SwapFrameLoaders.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SwapFrameLoaders(System.IntPtr aOtherOwner);
+		void InternalSetFrameLoader(System.IntPtr aNewFrameLoader);
 	}
 }

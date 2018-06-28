@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoSelectElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLSelectElement DOMHTMLElement;
+        private /* nsIDOMHTMLSelectElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoSelectElement(nsIDOMHTMLSelectElement element) : base(element)
+        internal GeckoSelectElement(/* nsIDOMHTMLSelectElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoSelectElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoSelectElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLSelectElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLSelectElement */ nsISupports;
         }
 
         public string Type
@@ -86,7 +86,7 @@ namespace Gecko.DOM
 
         public void add(GeckoHtmlElement element, GeckoHtmlElement before)
         {
-            DOMHTMLElement.Add(element.DomObject as nsIDOMHTMLElement, before.DomObject as nsIVariant);
+            DOMHTMLElement.Add(element.DomObject as /* /* nsIDOMHTMLElement*/nsISupports, before.DomObject as nsIVariant);
         }
 
         public void remove(int index)

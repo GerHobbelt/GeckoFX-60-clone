@@ -62,6 +62,27 @@ namespace Gecko
 		void EnumerateFonts([MarshalAs(UnmanagedType.LPStr)] string aLangGroup, [MarshalAs(UnmanagedType.LPStr)] string aGeneric, ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref System.IntPtr[] aResult);
 		
 		/// <summary>
+        /// Return a promise that resolves to a sorted array of the names of all
+        /// installed fonts.
+        ///
+        /// @return Promise that resolves to Array
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal EnumerateAllFontsAsync(System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Return a promise that resolves to a sorted array of names of fonts
+        /// that support the given language group and are suitable for use as the given
+        /// CSS generic font.
+        ///
+        /// @param  aLangGroup language group
+        /// @param  aGeneric   CSS generic font
+        /// @return Promise that resolves to Array
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal EnumerateFontsAsync([MarshalAs(UnmanagedType.LPStr)] string aLangGroup, [MarshalAs(UnmanagedType.LPStr)] string aGeneric, System.IntPtr jsContext);
+		
+		/// <summary>
         ///@param  aLangGroup language group
         ///    @return bool do we have a font for this language group
         /// </summary>

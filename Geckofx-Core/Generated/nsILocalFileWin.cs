@@ -35,7 +35,7 @@ namespace Gecko
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("e7a3a954-384b-4aeb-a5f7-55626b0de9be")]
-	public interface nsILocalFileWin : nsILocalFile
+	public interface nsILocalFileWin : nsIFile
 	{
 		
 		/// <summary>
@@ -311,7 +311,7 @@ namespace Gecko
 		new void GetPathAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPath);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void GetNativePathAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aNativePath);
+		new nsISupports NativePath();
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -483,7 +483,8 @@ namespace Gecko
 		
 		/// <summary>
         /// Return the result of PR_Open on the file.  The caller is
-        /// responsible for calling PR_Close on the result.
+        /// responsible for calling PR_Close on the result.  On success, the
+        /// returned PRFileDescr must be non-null.
         ///
         /// @param flags the PR_Open flags from prio.h, plus optionally
         /// OS_READAHEAD or DELETE_ON_CLOSE. OS_READAHEAD is a hint to the
@@ -497,7 +498,8 @@ namespace Gecko
 		
 		/// <summary>
         /// Return the result of fopen on the file.  The caller is
-        /// responsible for calling fclose on the result.
+        /// responsible for calling fclose on the result.  On success, the
+        /// returned FILE pointer must be non-null.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new System.IntPtr OpenANSIFileDesc([MarshalAs(UnmanagedType.LPStr)] string mode);
@@ -635,6 +637,18 @@ namespace Gecko
 		new void SetRelativePath([MarshalAs(UnmanagedType.Interface)] nsIFile fromFile, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase relativeDesc);
 		
 		/// <summary>
+        /// initWithCommandLine
+        ///
+        /// Initialize this object based on the main app path of a commandline
+        /// handler.
+        ///
+        /// @param aCommandLine
+        /// the commandline to parse an app path out of.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void InitWithCommandLine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aCommandLine);
+		
+		/// <summary>
         /// getVersionInfoValue
         ///
         /// Retrieve a metadata field from the file's VERSIONINFO block.
@@ -682,34 +696,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetFileAttributesWinAttribute(uint aFileAttributesWin);
-		
-		/// <summary>
-        /// setShortcut
-        ///
-        /// Creates the specified shortcut, or updates it if it already exists.
-        ///
-        /// If the shortcut is being updated (i.e. the shortcut already exists),
-        /// any excluded parameters will remain unchanged in the shortcut file.
-        /// For example, if you want to change the description of a specific
-        /// shortcut but keep the target, working dir, args, and icon the same,
-        /// pass null for those parameters and only pass in a value for the
-        /// description.
-        ///
-        /// If the shortcut does not already exist and targetFile is not specified,
-        /// setShortcut will throw NS_ERROR_FILE_TARGET_DOES_NOT_EXIST.
-        ///
-        /// @param targetFile      the path that the shortcut should target
-        /// @param workingDir      the working dir that should be set for the shortcut
-        /// @param args            the args string that should be set for the shortcut
-        /// @param description     the description that should be set for the shortcut
-        /// @param iconFile        the file containing an icon to be used for this
-        ///                              shortcut
-        /// @param iconIndex       this value selects a specific icon from within
-        ///                              iconFile.  If iconFile contains only one icon, this
-        ///                              value should be 0.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetShortcut([MarshalAs(UnmanagedType.Interface)] nsIFile targetFile, [MarshalAs(UnmanagedType.Interface)] nsIFile workingDir, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string args, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string description, [MarshalAs(UnmanagedType.Interface)] nsIFile iconFile, int iconIndex);
 		
 		/// <summary>
         /// Identical to nsIFile::openNSPRFileDesc except it also uses the

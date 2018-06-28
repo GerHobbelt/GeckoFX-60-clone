@@ -236,18 +236,11 @@ namespace Gecko
 		nsIAsyncShutdownClient GetQuitApplicationGrantedAttribute();
 		
 		/// <summary>
-        /// Barrier for notification profile-before-change2.
+        /// Barrier for notification profile-before-change-telemetry.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIAsyncShutdownClient GetSendTelemetryAttribute();
-		
-		/// <summary>
-        /// Barriers for global shutdown stages in the content processes.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIAsyncShutdownClient GetContentChildShutdownAttribute();
 		
 		/// <summary>
         /// Barrier for notification web-workers-shutdown.
@@ -257,10 +250,10 @@ namespace Gecko
 		nsIAsyncShutdownClient GetWebWorkersShutdownAttribute();
 		
 		/// <summary>
-        /// Barrier for notification xpcom-threads-shutdown.
+        /// Barrier for notification xpcom-will-shutdown.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIAsyncShutdownClient GetXpcomThreadsShutdownAttribute();
+		nsIAsyncShutdownClient GetXpcomWillShutdownAttribute();
 	}
 }

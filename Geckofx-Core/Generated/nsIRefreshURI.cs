@@ -44,24 +44,30 @@ namespace Gecko
         /// queued and executed when the current load finishes.
         ///
         /// @param aUri The uri to refresh.
+        /// @param aPrincipal The triggeringPrincipal for the refresh load
+        /// May be null, in which case the principal of current document will be
+        /// applied.
         /// @param aMillis The number of milliseconds to wait.
         /// @param aRepeat Flag to indicate if the uri is to be
         /// repeatedly refreshed every aMillis milliseconds.
         /// @param aMetaRefresh Flag to indicate if this is a Meta refresh.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RefreshURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, int aMillis, [MarshalAs(UnmanagedType.U1)] bool aRepeat, [MarshalAs(UnmanagedType.U1)] bool aMetaRefresh);
+		void RefreshURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, int aMillis, [MarshalAs(UnmanagedType.U1)] bool aRepeat, [MarshalAs(UnmanagedType.U1)] bool aMetaRefresh);
 		
 		/// <summary>
         /// Loads a URI immediately as if it were a refresh.
         ///
         /// @param aURI The URI to refresh.
+        /// @param aPrincipal The triggeringPrincipal for the refresh load
+        /// May be null, in which case the principal of current document will be
+        /// applied.
         /// @param aMillis The number of milliseconds by which this refresh would
         /// be delayed if it were not being forced.
         /// @param aMetaRefresh Flag to indicate if this is a meta refresh.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ForceRefreshURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, int aMillis, [MarshalAs(UnmanagedType.U1)] bool aMetaRefresh);
+		void ForceRefreshURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, int aMillis, [MarshalAs(UnmanagedType.U1)] bool aMetaRefresh);
 		
 		/// <summary>
         /// Checks the passed in channel to see if there is a refresh header,
@@ -85,7 +91,9 @@ namespace Gecko
         /// the current page finishes loading.
         ///
         /// @param aBaseURI base URI to resolve refresh uri with.
-        /// @param principal the associated principal
+        /// @param aPrincipal The triggeringPrincipal for the refresh load
+        /// May be null, in which case the principal of current document will be
+        /// applied.
         /// @param aHeader  The meta refresh header string.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

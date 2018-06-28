@@ -189,7 +189,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIURI GetCurrentURIAttribute();
+		nsIURI GetFinalURIAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		imgINotificationObserver GetNotificationObserverAttribute();
@@ -249,7 +249,15 @@ namespace Gecko
         /// if it does not yet exist.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void StartDecoding();
+		void StartDecoding(uint aFlags);
+		
+		/// <summary>
+        /// Exactly like startDecoding above except returns whether the current frame
+        /// of the image is complete or not.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool StartDecodingWithResult(uint aFlags);
 		
 		/// <summary>
         /// Locks an image. If the image does not exist yet, locks it once it becomes
@@ -304,6 +312,9 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DecrementAnimationConsumers();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BoostPriority(uint aCategory);
 	}
 	
 	/// <summary>imgIRequestConsts </summary>
@@ -346,5 +357,26 @@ namespace Gecko
 		
 		// 
 		public const long CORS_USE_CREDENTIALS = 3;
+		
+		// <summary>
+        // Request loading priority boost to requested category, each category
+        // of request increases priority only one time..
+        //
+        // CATEGORY_FRAME_INIT: increase priority when the imgRequest is associated
+        // with an nsImageFrame.
+        //
+        // CATEGORY_SIZE_QUERY: increase priority when size decoding is necessary to
+        // determine the layout size of the associated nsImageFrame.
+        //
+        // CATEGORY_DISPLAY: increase priority when the image is about to be displayed
+        // in the viewport.
+        // </summary>
+		public const long CATEGORY_FRAME_INIT = 1<<0;
+		
+		// 
+		public const long CATEGORY_SIZE_QUERY = 1<<1;
+		
+		// 
+		public const long CATEGORY_DISPLAY = 1<<2;
 	}
 }

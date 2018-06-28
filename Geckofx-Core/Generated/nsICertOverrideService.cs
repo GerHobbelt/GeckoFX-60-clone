@@ -44,14 +44,34 @@ namespace Gecko
         /// The implementation will store a fingerprint of the cert.
         /// The implementation will decide which fingerprint alg is used.
         ///
+        /// Each override is specific to exactly the errors overridden, so
+        /// overriding everything won't match certs at the given host:port
+        /// which only exhibit some subset of errors.
+        ///
         /// @param aHostName The host (punycode) this mapping belongs to
         /// @param aPort The port this mapping belongs to, if it is -1 then it
         /// is internaly treated as 443
         /// @param aCert The cert that should always be accepted
-        /// @param aOverrideBits The errors we want to be overriden
+        /// @param aOverrideBits The precise set of errors we want to be overriden
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RememberValidityOverride([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostName, int aPort, [MarshalAs(UnmanagedType.Interface)] nsIX509Cert aCert, uint aOverrideBits, [MarshalAs(UnmanagedType.U1)] bool aTemporary);
+		
+		/// <summary>
+        /// Certs with the given fingerprint should always be accepted for the
+        /// given hostname:port, regardless of errors verifying the cert.
+        /// Host:Port is a primary key, only one entry per host:port can exist.
+        /// The fingerprint should be an SHA-256 hash of the certificate.
+        ///
+        /// @param aHostName The host (punycode) this mapping belongs to
+        /// @param aPort The port this mapping belongs to, if it is -1 then it
+        /// is internaly treated as 443
+        /// @param aCertFingerprint The cert fingerprint that should be accepted, in
+        /// the format 'AA:BB:...' (colon-separated upper-case hex bytes).
+        /// @param aOverrideBits The errors we want to be overriden
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RememberTemporaryValidityOverrideUsingFingerprint([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostName, int aPort, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCertFingerprint, uint aOverrideBits);
 		
 		/// <summary>
         /// Return whether this host, port, cert triple has a stored override.

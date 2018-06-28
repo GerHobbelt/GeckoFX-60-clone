@@ -49,24 +49,5 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool VerifyData([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aData, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSignature, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPublicKey);
-		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIX509Cert VerifySignature([MarshalAs(UnmanagedType.LPStr)] string aSignature, uint aSignatureLen, [MarshalAs(UnmanagedType.LPStr)] string plaintext, uint plaintextLen, ref int errorCode);
-	}
-	
-	/// <summary>nsIDataSignatureVerifierConsts </summary>
-	public class nsIDataSignatureVerifierConsts
-	{
-		
-		// <summary>
-        //Sig Verification Error Codes </summary>
-		public const long VERIFY_OK = 0;
-		
-		// 
-		public const long VERIFY_ERROR_UNKNOWN_ISSUER = 1;
-		
-		// 
-		public const long VERIFY_ERROR_OTHER = 2;
 	}
 }

@@ -39,19 +39,28 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Starts a modal drag session with an array of transaferables
+        /// Starts a modal drag session with an array of transaferables.
         ///
+        /// Note: This method is deprecated for non-native code.
+        ///
+        /// @param  aPrincipalURISpec - the URI of the triggering principal of the
+        /// drag, or an empty string if it's from browser chrome or OS
         /// @param  aTransferables - an array of transferables to be dragged
         /// @param  aRegion - a region containing rectangles for cursor feedback,
         /// in window coordinates.
         /// @param  aActionType - specified which of copy/move/link are allowed
+        /// @param  aContentPolicyType - the contentPolicyType that will be
+        /// passed to the loadInfo when creating a new channel
+        /// (defaults to TYPE_OTHER)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InvokeDragSession([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aDOMNode, [MarshalAs(UnmanagedType.Interface)] nsISupportsArray aTransferables, [MarshalAs(UnmanagedType.Interface)] nsIScriptableRegion aRegion, uint aActionType);
+		void InvokeDragSession([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aDOMNode, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aPrincipalURISpec, [MarshalAs(UnmanagedType.Interface)] nsIArray aTransferables, [MarshalAs(UnmanagedType.Interface)] nsIScriptableRegion aRegion, uint aActionType, System.IntPtr aContentPolicyType);
 		
 		/// <summary>
         /// Starts a modal drag session using an image. The first four arguments are
         /// the same as invokeDragSession.
+        ///
+        /// Note: This method is deprecated for non-native code.
         ///
         /// A custom image may be specified using the aImage argument. If this is
         /// supplied, the aImageX and aImageY arguments specify the offset within
@@ -75,15 +84,17 @@ namespace Gecko
         /// event are needed to calculate the image location.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InvokeDragSessionWithImage([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aDOMNode, [MarshalAs(UnmanagedType.Interface)] nsISupportsArray aTransferableArray, [MarshalAs(UnmanagedType.Interface)] nsIScriptableRegion aRegion, uint aActionType, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aImage, int aImageX, int aImageY, [MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aDragEvent, [MarshalAs(UnmanagedType.Interface)] nsIDOMDataTransfer aDataTransfer);
+		void InvokeDragSessionWithImage([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aDOMNode, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aPrincipalURISpec, [MarshalAs(UnmanagedType.Interface)] nsIArray aTransferableArray, [MarshalAs(UnmanagedType.Interface)] nsIScriptableRegion aRegion, uint aActionType, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aImage, int aImageX, int aImageY, [MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aDragEvent, [MarshalAs(UnmanagedType.Interface)] nsIDOMDataTransfer aDataTransfer);
 		
 		/// <summary>
         /// Start a modal drag session using the selection as the drag image.
         /// The aDragEvent must be supplied as the current screen coordinates of the
         /// event are needed to calculate the image location.
+        ///
+        /// Note: This method is deprecated for non-native code.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InvokeDragSessionWithSelection([MarshalAs(UnmanagedType.Interface)] nsISelection aSelection, [MarshalAs(UnmanagedType.Interface)] nsISupportsArray aTransferableArray, uint aActionType, [MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aDragEvent, [MarshalAs(UnmanagedType.Interface)] nsIDOMDataTransfer aDataTransfer);
+		void InvokeDragSessionWithSelection([MarshalAs(UnmanagedType.Interface)] nsISelection aSelection, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aPrincipalURISpec, [MarshalAs(UnmanagedType.Interface)] nsIArray aTransferableArray, uint aActionType, [MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aDragEvent, [MarshalAs(UnmanagedType.Interface)] nsIDOMDataTransfer aDataTransfer);
 		
 		/// <summary>
         /// Returns the current Drag Session
@@ -107,13 +118,13 @@ namespace Gecko
         /// just left the window.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void EndDragSession([MarshalAs(UnmanagedType.U1)] bool aDoneDrag);
+		void EndDragSession([MarshalAs(UnmanagedType.U1)] bool aDoneDrag, uint aKeyModifiers);
 		
 		/// <summary>
         /// Fire a drag event at the source of the drag
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FireDragEventAtSource(System.IntPtr aEventMessage);
+		void FireDragEventAtSource(System.IntPtr aEventMessage, uint aKeyModifiers);
 		
 		/// <summary>
         /// Increase/decrease dragging suppress level by one.

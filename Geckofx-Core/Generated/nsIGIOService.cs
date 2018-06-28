@@ -32,14 +32,74 @@ namespace Gecko
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("ca6bad0c-8a48-48ac-82c7-27bb8f510fbe")]
-	public interface nsIGIOMimeApp
+	public interface nsIGIOMimeApp : nsIHandlerApp
 	{
+		
+		/// <summary>
+        /// Human readable name for the handler
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
+		
+		/// <summary>
+        /// Human readable name for the handler
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
+		
+		/// <summary>
+        /// Detailed description for this handler. Suitable for
+        /// a tooltip or short informative sentence.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetDetailedDescriptionAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDetailedDescription);
+		
+		/// <summary>
+        /// Detailed description for this handler. Suitable for
+        /// a tooltip or short informative sentence.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetDetailedDescriptionAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDetailedDescription);
+		
+		/// <summary>
+        /// Whether or not the given handler app is logically equivalent to the
+        /// invokant (i.e. they represent the same app).
+        ///
+        /// Two apps are the same if they are both either local or web handlers
+        /// and their executables/URI templates and command line parameters are
+        /// the same.
+        ///
+        /// @param aHandlerApp the handler app to compare to the invokant
+        ///
+        /// @returns true if the two are logically equivalent, false otherwise
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool Equals([MarshalAs(UnmanagedType.Interface)] nsIHandlerApp aHandlerApp);
+		
+		/// <summary>
+        /// Launches the application with the specified URI.
+        ///
+        /// @param aURI
+        /// The URI to launch this application with
+        ///
+        /// @param aWindowContext
+        ///
+        /// Currently only relevant to web-handler apps.  If given, this
+        /// represents the docshell to load the handler in and is passed
+        /// through to nsIURILoader.openURI.  If this parameter is null or
+        /// not present, the web handler app implementation will attempt to
+        /// find/create a place to load the handler and do so.  As of this
+        /// writing, it tries to load the web handler in a new window using
+        /// nsIBrowserDOMWindow.openURI.  In the future, it may attempt to
+        /// have a more comprehensive strategy which could include handing
+        /// off to the system default browser (bug 394479).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void LaunchWithURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor aWindowContext);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetIdAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aId);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetCommandAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aCommand);
@@ -53,9 +113,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIUTF8StringEnumerator GetSupportedURISchemesAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Launch([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase uri);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAsDefaultForMimeType([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase mimeType);
@@ -102,19 +159,31 @@ namespace Gecko
         ///Obtain the preferred application for opening a given URI scheme </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIGIOMimeApp GetAppForURIScheme([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIScheme);
+		nsIHandlerApp GetAppForURIScheme([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIScheme);
+		
+		/// <summary>
+        ///Obtain list of application capable of opening given URI scheme </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIMutableArray GetAppsForURIScheme([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIScheme);
 		
 		/// <summary>
         ///Obtain the preferred application for opening a given MIME type </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIGIOMimeApp GetAppForMimeType([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase mimeType);
+		nsIHandlerApp GetAppForMimeType([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase mimeType);
 		
 		/// <summary>
-        ///Obtain the preferred application for opening a given MIME type </summary>
+        ///Create application info for given command and name </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIGIOMimeApp CreateAppFromCommand([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase cmd, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase appName);
+		
+		/// <summary>
+        ///Find the application info by given command </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIGIOMimeApp FindAppFromCommand([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase cmd);
 		
 		/// <summary>
         ///Obtain a description for the given MIME type </summary>

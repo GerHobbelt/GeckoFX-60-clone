@@ -42,26 +42,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISelection GetSelectionAttribute();
 		
-		/// <summary>
-        /// Finalizes selection and caret for the editor.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void FinalizeSelection();
-		
-		/// <summary>
-        /// Init is to tell the implementation of nsIEditor to begin its services
-        /// @param aDoc          The dom document interface being observed
-        /// @param aRoot         This is the root of the editable section of this
-        /// document. If it is null then we get root
-        /// from document body.
-        /// @param aSelCon       this should be used to get the selection location
-        /// (will be null for HTML editors)
-        /// @param aFlags        A bitmask of flags for specifying the behavior
-        /// of the editor.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument doc, System.IntPtr aRoot, [MarshalAs(UnmanagedType.Interface)] nsISelectionController aSelCon, uint aFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase initialValue);
-		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAttributeOrEquivalent([MarshalAs(UnmanagedType.Interface)] nsIDOMElement element, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceAttrName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceAttrValue, [MarshalAs(UnmanagedType.U1)] bool aSuppressTransaction);
 		
@@ -207,12 +187,6 @@ namespace Gecko
 		nsITransactionManager GetTransactionManagerAttribute();
 		
 		/// <summary>
-        ///transactionManager Get the transaction manager the editor is using.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetTransactionManagerAttribute([MarshalAs(UnmanagedType.Interface)] nsITransactionManager aTransactionManager);
-		
-		/// <summary>
         ///doTransaction() fires a transaction.
         /// It is provided here so clients can create their own transactions.
         /// If a transaction manager is present, it is used.
@@ -316,12 +290,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EndTransaction();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void BeginPlaceHolderTransaction([MarshalAs(UnmanagedType.Interface)] nsIAtom name);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void EndPlaceHolderTransaction();
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -447,7 +415,17 @@ namespace Gecko
 		void SelectAll();
 		
 		/// <summary>
-        ///sets the document selection to the beginning of the document </summary>
+        /// Collapses selection at start of the document.  If it's an HTML editor,
+        /// collapses selection at start of current editing host (<body> element if
+        /// it's in designMode) instead.  If there is a non-editable node before any
+        /// editable text nodes or inline elements which can have text nodes as their
+        /// children, collapses selection at start of the editing host.  If there is
+        /// an editable text node which is not collapsed, collapses selection at
+        /// start of the text node.  If there is an editable inline element which
+        /// cannot have text nodes as its child, collapses selection at before the
+        /// element node.  Otherwise, collapses selection at start of the editing
+        /// host.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void BeginningOfDocument();
 		
@@ -522,18 +500,6 @@ namespace Gecko
 		void CloneAttributes([MarshalAs(UnmanagedType.Interface)] nsIDOMNode destNode, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode sourceNode);
 		
 		/// <summary>
-        /// createNode instantiates a new element of type aTag and inserts it
-        /// into aParent at aPosition.
-        /// @param aTag      The type of object to create
-        /// @param aParent   The node to insert the new object into
-        /// @param aPosition The place in aParent to insert the new node
-        /// @return          The node created.  Caller must release aNewNode.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMNode CreateNode([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase tag, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode parent, int position);
-		
-		/// <summary>
         /// insertNode inserts aNode into aParent at aPosition.
         /// No checking is done to verify the legality of the insertion.
         /// That is the responsibility of the caller.
@@ -578,14 +544,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DeleteNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode child);
-		
-		/// <summary>
-        /// Returns true if markNodeDirty() has any effect.  Returns false if
-        /// markNodeDirty() is a no-op.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool OutputsMozDirty();
 		
 		/// <summary>
         /// markNodeDirty() sets a special dirty attribute on the node.
@@ -659,12 +617,6 @@ namespace Gecko
 		void DebugUnitTests(ref int outNumTests, ref int outNumTestsFailed);
 		
 		/// <summary>
-        ///checks if a node is read-only or not </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsModifiableNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode);
-		
-		/// <summary>
         ///Set true if you want to suppress dispatching input event. </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -676,13 +628,17 @@ namespace Gecko
 		void SetSuppressDispatchingInputEventAttribute([MarshalAs(UnmanagedType.U1)] bool aSuppressDispatchingInputEvent);
 		
 		/// <summary>
-        /// True if an edit action is being handled (in other words, between calls of
-        /// nsIEditorObserver::BeforeEditAction() and nsIEditorObserver::EditAction()
-        /// or nsIEditorObserver::CancelEditAction().  Otherwise, false.
+        /// forceCompositionEnd() force the composition end
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ForceCompositionEnd();
+		
+		/// <summary>
+        /// whether this editor has active IME transaction
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsInEditActionAttribute();
+		bool GetComposingAttribute();
 	}
 	
 	/// <summary>nsIEditorConsts </summary>

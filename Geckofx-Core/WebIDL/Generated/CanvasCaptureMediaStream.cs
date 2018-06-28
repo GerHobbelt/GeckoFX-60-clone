@@ -11,11 +11,11 @@ namespace Gecko.WebIDL
         {
         }
         
-        public nsIDOMHTMLCanvasElement Canvas
+        public /* nsIDOMHTMLCanvasElement */ nsISupports Canvas
         {
             get
             {
-                return this.GetProperty<nsIDOMHTMLCanvasElement>("canvas");
+                return this.GetProperty</* nsIDOMHTMLCanvasElement */ nsISupports>("canvas");
             }
         }
         

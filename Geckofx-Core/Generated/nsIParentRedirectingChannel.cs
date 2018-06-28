@@ -27,6 +27,28 @@ namespace Gecko
 	
 	
 	/// <summary>
+    ///This Source Code Form is subject to the terms of the Mozilla Public
+    /// License, v. 2.0. If a copy of the MPL was not distributed with this
+    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("01987690-48cf-45de-bae3-e143c2adc2a8")]
+	public interface nsIAsyncVerifyRedirectReadyCallback
+	{
+		
+		/// <summary>
+        /// Asynchronous callback when redirected channel finishes the preparation for
+        /// completing the verification procedure.
+        ///
+        /// @param result
+        /// SUCCEEDED if preparation for redirection verification succceed.
+        /// If FAILED the redirection must be aborted.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReadyToVerify(int result);
+	}
+	
+	/// <summary>
     /// Implemented by chrome side of IPC protocols that support redirect responses.
     /// </summary>
 	[ComImport()]
@@ -83,7 +105,7 @@ namespace Gecko
 		new void OnDataAvailable([MarshalAs(UnmanagedType.Interface)] nsIRequest aRequest, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aInputStream, ulong aOffset, uint aCount);
 		
 		/// <summary>
-        /// Called to set the HttpChannelParentListener object (optional).
+        /// Called to set the /* HttpChannelParent */ nsISupportsListener object (optional).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetParentListener(System.IntPtr listener);
@@ -94,6 +116,25 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void NotifyTrackingProtectionDisabled();
+		
+		/// <summary>
+        /// Called to set matched information when URL matches SafeBrowsing list.
+        /// @param aList
+        /// Name of the list that matched
+        /// @param aProvider
+        /// Name of provider that matched
+        /// @param aFullHash
+        /// String represents full hash that matched
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void SetClassifierMatchedInfo([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aList, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aProvider, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFullHash);
+		
+		/// <summary>
+        /// Called to notify the HttpChannelChild that the resource being loaded
+        /// is on the tracking protection list.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void NotifyTrackingResource();
 		
 		/// <summary>
         /// Called to invoke deletion of the IPC protocol.
@@ -118,12 +159,24 @@ namespace Gecko
 		void StartRedirect(uint newChannelId, [MarshalAs(UnmanagedType.Interface)] nsIChannel newChannel, uint redirectFlags, [MarshalAs(UnmanagedType.Interface)] nsIAsyncVerifyRedirectCallback callback);
 		
 		/// <summary>
+        /// Called to new channel when the original channel got Redirect2Verify
+        /// response from child. Callback will be invoked when the new channel
+        /// finishes the preparation for Redirect2Verify and can be called immediately.
+        ///
+        /// @param callback
+        /// redirect ready callback, will be called when redirect verification
+        /// procedure can proceed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ContinueVerification([MarshalAs(UnmanagedType.Interface)] nsIAsyncVerifyRedirectReadyCallback callback);
+		
+		/// <summary>
         /// Called after we are done with redirecting process and we know if to
         /// redirect or not.  Forward the redirect result to the child process.  From
         /// that moment the nsIParentChannel implementation expects it will be
         /// forwarded all notifications from the 'real' channel.
         ///
-        /// Primarilly used by HttpChannelParentListener::OnRedirectResult and kept
+        /// Primarilly used by /* HttpChannelParent */ nsISupportsListener::OnRedirectResult and kept
         /// as mActiveChannel and mRedirectChannel in that class.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

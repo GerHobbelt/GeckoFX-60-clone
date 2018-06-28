@@ -60,10 +60,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetIdConst([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] ref string idConst);
 		
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIAtom GetAtomAttribute();
-		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetIndexAttribute();
 		
@@ -109,10 +105,7 @@ namespace Gecko
 		public const short TYPE_CHECKBOX = 2;
 		
 		// 
-		public const short TYPE_PROGRESSMETER = 3;
-		
-		// 
-		public const short TYPE_PASSWORD = 4;
+		public const short TYPE_PASSWORD = 3;
 	}
 	
 	/// <summary>nsITreeColumns </summary>

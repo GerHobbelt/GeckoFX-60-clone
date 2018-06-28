@@ -97,19 +97,19 @@ namespace Gecko
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetPosition(int x, int y);
-
-        /// <summary>
-        ///Sets the current x and y coordinates of the control.  This is relative to
-        ///	the parent window.
-        ///	 </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void setPositionDesktopPix(int x, int y);
-
-        /// <summary>
+		
+		/// <summary>
+        ///Ditto, with arguments in global desktop pixels rather than (potentially
+        ///  ambiguous) device pixels
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetPositionDesktopPix(int x, int y);
+		
+		/// <summary>
         ///Gets the current x and y coordinates of the control.  This is relatie to the
         ///	parent window.
         ///	 </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetPosition(ref int x, ref int y);
 		
 		/// <summary>
@@ -129,7 +129,7 @@ namespace Gecko
         ///	Also is more efficient than calling both.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPositionAndSize(int x, int y, int cx, int cy, [MarshalAs(UnmanagedType.U1)] bool fRepaint);
+		void SetPositionAndSize(int x, int y, int cx, int cy, uint flags);
 		
 		/// <summary>
         ///Convenience function combining the GetPosition and GetSize into one call.
@@ -253,6 +253,21 @@ namespace Gecko
 		double GetUnscaledDevicePixelsPerCSSPixelAttribute();
 		
 		/// <summary>
+        ///The number of device pixels per display pixel on this window's current
+        ///	screen. (The meaning of "display pixel" varies across OS environments;
+        ///	it is the pixel units used by the desktop environment to manage screen
+        ///	real estate and window positioning, which may correspond to (per-screen)
+        ///	device pixels, or may be a virtual coordinate space that covers a multi-
+        ///	monitor, mixed-dpi desktop space.)
+        ///	This is the value returned by DevicePixelsPerDesktopPixel() of the underlying
+        ///	widget.
+        ///	Note that this may change if the window is moved between screens with
+        ///	differing resolutions.
+        ///	 </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double GetDevicePixelsPerDesktopPixelAttribute();
+		
+		/// <summary>
         /// Give the window focus.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -261,14 +276,26 @@ namespace Gecko
 		/// <summary>
         ///Title of the window.
         ///	 </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTitleAttribute();
+		void GetTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTitle);
 		
 		/// <summary>
         ///Title of the window.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aTitle);
+		void SetTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTitle);
+	}
+	
+	/// <summary>nsIBaseWindowConsts </summary>
+	public class nsIBaseWindowConsts
+	{
+		
+		// <summary>
+        // The 'flags' argument to setPositionAndSize is a set of these bits.
+        //	 </summary>
+		public const ulong eRepaint = 1;
+		
+		// 
+		public const ulong eDelayResize = 2;
 	}
 }

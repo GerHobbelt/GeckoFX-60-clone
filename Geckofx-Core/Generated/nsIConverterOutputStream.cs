@@ -62,8 +62,6 @@ namespace Gecko
         /// finish the current byte sequence.
         ///
         /// It does NOT flush the underlying stream.
-        ///
-        /// @see nsIUnicodeEncoder::Finish
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void Flush();
@@ -86,20 +84,8 @@ namespace Gecko
         /// @param aCharset
         /// The character set to use for encoding the characters. A null
         /// charset will be interpreted as UTF-8.
-        /// @param aBufferSize
-        /// How many bytes to buffer. A value of 0 means that no bytes will be
-        /// buffered. Implementations not supporting buffering may ignore
-        /// this parameter.
-        /// @param aReplacementCharacter
-        /// The replacement character to use when an unsupported character is found.
-        /// The character must be encodable in the selected character
-        /// encoding; otherwise, attempts to write an unsupported character
-        /// will throw NS_ERROR_LOSS_OF_SIGNIFICANT_DATA.
-        ///
-        /// A value of 0x0000 will cause an exception to be thrown upon
-        /// attempts to write unsupported characters.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIOutputStream aOutStream, [MarshalAs(UnmanagedType.LPStr)] string aCharset, uint aBufferSize, char aReplacementCharacter);
+		void Init([MarshalAs(UnmanagedType.Interface)] nsIOutputStream aOutStream, [MarshalAs(UnmanagedType.LPStr)] string aCharset);
 	}
 }

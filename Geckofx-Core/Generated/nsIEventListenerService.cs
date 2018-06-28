@@ -27,8 +27,8 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// Contains an event target along with an array of nsIAtom in form "oneventname"
-    /// representing changed event listener names.
+    /// Contains an event target along with a count of event listener changes
+    /// affecting accessibility.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -37,16 +37,15 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Contains an event target along with an array of nsIAtom in form "oneventname"
-        /// representing changed event listener names.
+        /// Contains an event target along with a count of event listener changes
+        /// affecting accessibility.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMEventTarget GetTargetAttribute();
 		
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIArray GetChangedListenerNamesAttribute();
+		uint GetCountOfEventListenerChangesAffectingAccessibilityAttribute();
 	}
 	
 	/// <summary>nsIListenerChangeListener </summary>
@@ -130,7 +129,7 @@ namespace Gecko
         /// event target chain than what this methods returns.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetEventTargetChainFor([MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget aEventTarget, ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref nsIDOMEventTarget[] aOutArray);
+		void GetEventTargetChainFor([MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget aEventTarget, [MarshalAs(UnmanagedType.U1)] bool composed, ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref nsIDOMEventTarget[] aOutArray);
 		
 		/// <summary>
         /// Returns true if a event target has any listener for the given type.

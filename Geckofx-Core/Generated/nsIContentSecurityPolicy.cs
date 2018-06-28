@@ -67,6 +67,14 @@ namespace Gecko
 		void GetPolicy(uint index, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
+        /// Accessor method for a read-only pointer the policy object at a given
+        /// index. Returns a null pointer if the index is larger than the current
+        /// policy count.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		/* CSPPolicyPtr */ nsISupports GetPolicy(uint index);
+		
+		/// <summary>
         /// Returns the number of policies attached to this CSP instance.  Useful with
         /// getPolicy().
         /// </summary>
@@ -81,6 +89,24 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetUpgradeInsecureRequestsAttribute();
+		
+		/// <summary>
+        /// Returns whether this policy uses the directive block-all-mixed-content.
+        /// Please note that block-all-mixed-content takes presedence in case the
+        /// directive upgrade-insecure-requests is defined in the same policy and
+        /// will therefore block all mixed content without even trying to perform
+        /// an upgrade.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetBlockAllMixedContentAttribute();
+		
+		/// <summary>
+        /// Returns whether this policy enforces the frame-ancestors directive.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetEnforcesFrameAncestorsAttribute();
 		
 		/// <summary>
         /// Obtains the referrer policy (as integer) for this browsing context as
@@ -117,7 +143,9 @@ namespace Gecko
         /// Whether this policy allows inline script or style.
         /// @param aContentPolicyType Either TYPE_SCRIPT or TYPE_STYLESHEET
         /// @param aNonce The nonce string to check against the policy
-        /// @param aContent  The content of the inline resource to hash
+        /// @param aParserCreated If the script element was created by the HTML Parser
+        /// @param aElementOrContent The script element of the inline resource to hash
+        /// or the content of the psuedo-script to compare to hash
         /// (and compare to the hashes listed in the policy)
         /// @param aLineNumber The line number of the inline resource
         /// (used for reporting)
@@ -127,7 +155,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetAllowsInline(System.IntPtr aContentPolicyType, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNonce, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aContent, uint aLineNumber);
+		bool GetAllowsInline(System.IntPtr aContentPolicyType, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aNonce, [MarshalAs(UnmanagedType.U1)] bool aParserCreated, [MarshalAs(UnmanagedType.Interface)] nsISupports aElementOrContent, uint aLineNumber);
 		
 		/// <summary>
         /// whether this policy allows eval and eval-like functions
@@ -144,6 +172,18 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetAllowsEval([MarshalAs(UnmanagedType.U1)] ref bool shouldReportViolations);
+		
+		/// <summary>
+        /// Delegate method called by the service when the protected document is loaded.
+        /// Returns the union of all the sandbox flags contained in CSP policies. This is the most
+        /// restrictive interpretation of flags set in multiple policies.
+        /// See nsSandboxFlags.h for the possible flags.
+        ///
+        /// @return
+        /// sandbox flags or SANDBOXED_NONE if no sandbox directive exists
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetCSPSandboxFlags();
 		
 		/// <summary>
         /// For each violated policy (of type violationType), log policy violation on
@@ -179,6 +219,20 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetRequestContext([MarshalAs(UnmanagedType.Interface)] nsIDOMDocument aDocument, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+		
+		/// <summary>
+        /// Ensure we have a nsIEventTarget to use to label CSPReportSenderRunnable
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void EnsureEventTarget([MarshalAs(UnmanagedType.Interface)] nsIEventTarget aEventTarget);
+		
+		/// <summary>
+        /// Checks if a CSP requires Subresource Integrity (SRI)
+        /// for a given nsContentPolicyType.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool RequireSRIForType(System.IntPtr aContentType);
 		
 		/// <summary>
         /// Verifies ancestry as permitted by the policy.
@@ -310,6 +364,18 @@ namespace Gecko
 		public const ushort CHILD_SRC_DIRECTIVE = 18;
 		
 		// 
+		public const ushort BLOCK_ALL_MIXED_CONTENT = 19;
+		
+		// 
+		public const ushort REQUIRE_SRI_FOR = 20;
+		
+		// 
+		public const ushort SANDBOX_DIRECTIVE = 21;
+		
+		// 
+		public const ushort WORKER_SRC_DIRECTIVE = 22;
+		
+		// 
 		public const ushort VIOLATION_TYPE_INLINE_SCRIPT = 1;
 		
 		// 
@@ -329,5 +395,11 @@ namespace Gecko
 		
 		// 
 		public const ushort VIOLATION_TYPE_HASH_STYLE = 7;
+		
+		// 
+		public const ushort VIOLATION_TYPE_REQUIRE_SRI_FOR_STYLE = 8;
+		
+		// 
+		public const ushort VIOLATION_TYPE_REQUIRE_SRI_FOR_SCRIPT = 9;
 	}
 }

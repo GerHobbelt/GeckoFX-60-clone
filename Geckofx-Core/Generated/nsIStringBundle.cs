@@ -40,24 +40,38 @@ namespace Gecko
         ///This Source Code Form is subject to the terms of the Mozilla Public
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetStringFromID(int aID);
-		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetStringFromName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aName);
+		void GetStringFromID(int aID, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
-        /// this uses nsTextFormatter::smprintf to do the dirty work.
+        /// This method is mostly used from JS, where AUTF8String is appropriate.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string FormatStringFromID(int aID, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] @params, uint length);
+		void GetStringFromName([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
+		/// <summary>
+        /// u8"foo" literals will also work).
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string FormatStringFromName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aName, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] @params, uint length);
+		void GetStringFromNameCpp([MarshalAs(UnmanagedType.LPStr)] string aName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// this uses nsTextFormatter::ssprintf to do the dirty work.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void FormatStringFromID(int aID, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] @params, uint length, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// This method is mostly used from JS, where AUTF8String is appropriate.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void FormatStringFromName([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] @params, uint length, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// u8"foo" literals will also work).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void FormatStringFromNameCpp([MarshalAs(UnmanagedType.LPStr)] string aName, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] System.IntPtr[] @params, uint length, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         ///Implements nsISimpleEnumerator, replaces nsIEnumerator
@@ -65,6 +79,12 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISimpleEnumerator GetSimpleEnumeration();
+		
+		/// <summary>
+        /// Preloads string bundle data asynchronously
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AsyncPreload();
 	}
 	
 	/// <summary>nsIStringBundleService </summary>
@@ -96,9 +116,8 @@ namespace Gecko
         /// can be separated by newline ('\n') characters.
         /// @return the formatted message
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string FormatStatusMessage(int aStatus, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aStatusArg);
+		void FormatStatusMessage(int aStatus, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aStatusArg, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// flushes the string bundle cache - useful when the locale changes or

@@ -11,13 +11,13 @@ namespace Gecko
     public class GeckoHtmlElement
         : GeckoElement
     {
-        private nsIDOMHTMLElement _domHtmlElement;
+        private /* nsIDOMHTMLElement */nsISupports _domHtmlElement;
 
         //nsIDOMElement DomNSElement;
 
         #region ctor
 
-        internal GeckoHtmlElement(nsIDOMHTMLElement element)
+        internal GeckoHtmlElement(/* nsIDOMHTMLElement */nsISupports element)
             : base(element)
         {
             _domHtmlElement = element;
@@ -27,25 +27,25 @@ namespace Gecko
         internal GeckoHtmlElement(object element)
             : base(element)
         {
-            if (element is nsIDOMHTMLElement)
-                _domHtmlElement = (nsIDOMHTMLElement) element;
+            if (element is /* nsIDOMHTMLElement */nsISupports)
+                _domHtmlElement = (/* nsIDOMHTMLElement */nsISupports) element;
             else
-                throw new ArgumentException("element is not a nsIDOMHTMLElement");
+                throw new ArgumentException("element is not a /* nsIDOMHTMLElement */nsISupports");
         }
 
-        internal static GeckoHtmlElement Create(nsIDOMHTMLElement element)
+        internal static GeckoHtmlElement Create(/* nsIDOMHTMLElement */nsISupports element)
         {
             return (element == null) ? null : DOM.DOMSelector.GetClassFor(element);
         }
 
-        internal static T Create<T>(nsIDOMHTMLElement element) where T : GeckoHtmlElement
+        internal static T Create<T>(/* nsIDOMHTMLElement */nsISupports element) where T : GeckoHtmlElement
         {
             return (element == null) ? null : DOM.DOMSelector.GetClassFor<T>(element);
         }
 
         #endregion
 
-        public nsIDOMHTMLElement DOMHtmlElement
+        public /* nsIDOMHTMLElement */nsISupports DOMHtmlElement
         {
             get { return _domHtmlElement; }
         }
@@ -73,7 +73,7 @@ namespace Gecko
         {
             get
             {
-                nsIDOMCSSStyleDeclaration style;
+                /* nsIDOMCSSStyleDeclaration */ nsISupports style;
                 using (var element = new ComPtr<nsIDOMElement>(Xpcom.QueryInterface<nsIDOMElement>(this.DomObject)))
                 {
                     var window = new WebIDL.Window(OwnerDocument.DefaultView.DomWindow,
@@ -94,7 +94,7 @@ namespace Gecko
                 // note: the parent node could also be the document
                 return
                     GeckoHtmlElement.Create(
-                        Xpcom.QueryInterface<nsIDOMHTMLElement>(_domHtmlElement.GetParentNodeAttribute()));
+                        Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(_domHtmlElement.GetParentNodeAttribute()));
             }
         }
 
@@ -208,7 +208,7 @@ namespace Gecko
 
         public GeckoHtmlElement OffsetParent
         {
-            get { return GeckoHtmlElement.Create((nsIDOMHTMLElement) _domHtmlElement.GetOffsetParentAttribute()); }
+            get { return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) _domHtmlElement.GetOffsetParentAttribute()); }
         }
 
         public void ScrollIntoView(bool top)

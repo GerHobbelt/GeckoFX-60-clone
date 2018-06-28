@@ -45,7 +45,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("bd0efb3b-1c81-4fb0-b16d-576a2be48a95")]
+	[Guid("c4d64640-b332-4db6-a2a5-e08566000dc9")]
 	public interface nsIWebProgress
 	{
 		
@@ -86,12 +86,14 @@ namespace Gecko
         /// @throw NS_ERROR_FAILURE
         /// Indicates that there is no associated DOM window.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetDOMWindowAttribute();
+		mozIDOMWindowProxy GetDOMWindowAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ulong GetDOMWindowIDAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetInnerDOMWindowIDAttribute();
 		
 		/// <summary>
         /// Indicates whether DOMWindow.top == DOMWindow.
@@ -114,6 +116,23 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetLoadTypeAttribute();
+		
+		/// <summary>
+        /// Main thread event target to which progress updates should be
+        /// dispatched. This typically will be a SchedulerEventTarget
+        /// corresponding to the tab requesting updates.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIEventTarget GetTargetAttribute();
+		
+		/// <summary>
+        /// Main thread event target to which progress updates should be
+        /// dispatched. This typically will be a SchedulerEventTarget
+        /// corresponding to the tab requesting updates.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTargetAttribute([MarshalAs(UnmanagedType.Interface)] nsIEventTarget aTarget);
 	}
 	
 	/// <summary>nsIWebProgressConsts </summary>

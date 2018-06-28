@@ -113,6 +113,18 @@ namespace Gecko
 		void GetPermissionStringForType([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase mimeType, uint excludeFlags, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
+        /// Get the "permission string" for the plugin.  This is a string that can be
+        /// passed to the permission manager to see whether the plugin is allowed to
+        /// run, for example.  This will typically be based on the plugin's "nice name"
+        /// and its blocklist state.
+        ///
+        /// @tag The tage we're interested in
+        /// @excludeFlags Set of the EXCLUDE_* flags above, defaulting to EXCLUDE_NONE.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetPermissionStringForTag([MarshalAs(UnmanagedType.Interface)] nsIPluginTag tag, uint excludeFlags, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
         /// Get the nsIPluginTag for this MIME type. This method works with both
         /// enabled and disabled/blocklisted plugins, but an enabled plugin will
         /// always be returned if available.

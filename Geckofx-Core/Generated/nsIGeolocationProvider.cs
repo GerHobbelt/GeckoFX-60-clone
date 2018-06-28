@@ -45,14 +45,6 @@ namespace Gecko
 		void Update([MarshalAs(UnmanagedType.Interface)] nsIDOMGeoPosition position);
 		
 		/// <summary>
-        /// Notify the geolocation service that the location has
-        /// potentially changed, and thus a new position is in the
-        /// process of being acquired.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LocationUpdatePending();
-		
-		/// <summary>
         /// Notify the geolocation service of an error.
         /// This must be called on the main thread.
         /// The parameter refers to one of the constants in the

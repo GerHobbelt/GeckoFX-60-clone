@@ -58,7 +58,7 @@ namespace Gecko
 
             var nativeElement = nsString.Pass<nsIDOMElement>(_domDocument.CreateElement, tagName);
 
-            return GeckoHtmlElement.Create((nsIDOMHTMLElement) nativeElement);
+            return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) nativeElement);
         }
 
         public GeckoElement CreateElement(string tagName)
@@ -100,7 +100,7 @@ namespace Gecko
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("name");
-            return nsString.Pass<nsIDOMAttr>(_domDocument.CreateAttribute, name)
+            return nsString.Pass</* nsIDOMAttr */nsISupports>(_domDocument.CreateAttribute, name)
                 .Wrap(GeckoAttribute.CreateAttributeWrapper);
         }
 
@@ -137,7 +137,7 @@ namespace Gecko
 
             var native = nsString.Pass<nsIDOMElement>(_domDocument.CreateElementNS, namespaceUri, qualifiedName);
 
-            return GeckoHtmlElement.Create((nsIDOMHTMLElement) native);
+            return GeckoHtmlElement.Create((/* nsIDOMHTMLElement **/nsISupports) native);
         }
 
         public GeckoAttribute CreateAttribute(string namespaceUri, string qualifiedName)
@@ -147,7 +147,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(qualifiedName))
                 throw new ArgumentException("qualifiedName");
 
-            return nsString.Pass<nsIDOMAttr>(_domDocument.CreateAttributeNS, namespaceUri, qualifiedName)
+            return nsString.Pass</* nsIDOMAttr */nsISupports>(_domDocument.CreateAttributeNS, namespaceUri, qualifiedName)
                 .Wrap(GeckoAttribute.CreateAttributeWrapper);
         }
 
@@ -484,7 +484,7 @@ namespace Gecko
         ///// </summary>
         //[return: MarshalAs(UnmanagedType.Interface)]
         //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMHTMLElement GetMozFullScreenElementAttribute();
+        ///* /* nsIDOMHTMLElement*/nsISupports GetMozFullScreenElementAttribute();
 
         /// <summary>
         /// Causes the document to leave DOM full-screen mode, if it's in

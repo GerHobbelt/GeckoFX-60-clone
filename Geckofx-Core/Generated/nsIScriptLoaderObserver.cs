@@ -45,14 +45,15 @@ namespace Gecko
         /// a script. If this is a failure code, script evaluation
         /// will not occur.
         /// @param aElement The element being processed.
-        /// @param aIsInline Is this an inline script or externally loaded?
+        /// @param aIsInline Is this an inline classic script (as opposed to an
+        /// externally loaded classic script or module script)?
         /// @param aURI What is the URI of the script (the document URI if
         /// it is inline).
         /// @param aLineNo At what line does the script appear (generally 1
         /// if it is a loaded script).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ScriptAvailable(int aResult, System.IntPtr aElement, [MarshalAs(UnmanagedType.U1)] bool aIsInline, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, int aLineNo);
+		void ScriptAvailable(int aResult, System.IntPtr aElement, [MarshalAs(UnmanagedType.U1)] bool aIsInlineClassicScript, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, int aLineNo);
 		
 		/// <summary>
         /// The script has been evaluated.

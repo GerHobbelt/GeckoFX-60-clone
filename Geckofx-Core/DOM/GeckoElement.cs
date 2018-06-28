@@ -42,6 +42,7 @@ using System.Diagnostics;
 using Gecko.Collections;
 using Gecko.DOM;
 using Gecko.Interop;
+using Gecko.Extensions;
 
 namespace Gecko
 {
@@ -152,7 +153,7 @@ namespace Gecko
 
         public GeckoAttribute GetAttributeNode(string name)
         {
-            var ret = nsString.Pass<nsIDOMAttr>(_domElement.GetAttributeNode, name);
+            var ret = nsString.Pass</*nsIDOMAttr*/ nsISupports>(_domElement.GetAttributeNode, name);
             return (ret == null) ? null : new GeckoAttribute(ret);
         }
 
@@ -235,7 +236,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(namespaceUri))
                 return GetAttributeNode(localName);
 
-            var ret = nsString.Pass<nsIDOMAttr>(_domElement.GetAttributeNodeNS, namespaceUri, localName);
+            var ret = nsString.Pass</*nsIDOMAttr*/ nsISupports>(_domElement.GetAttributeNodeNS, namespaceUri, localName);
             return (ret == null) ? null : new GeckoAttribute(ret);
         }
 
@@ -290,8 +291,8 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 return null;
             //return new GeckoHtmlElementCollection(_domElement.GetElementsByTagName(new nsAString(tagName)));
-            return nsString.Pass<nsIDOMHTMLCollection>(_domElement.GetElementsByTagName, tagName)
-                .Wrap(x => new DomHtmlCollection<GeckoElement, nsIDOMHTMLElement>(x, CreateDomElementWrapper));
+            return nsString.Pass</*nsIDOMHTMLCollection*/nsISupports>(_domElement.GetElementsByTagName, tagName)
+                .Wrap(x => new DomHtmlCollection<GeckoElement, /* nsIDOMHTMLElement */nsISupports>(x, CreateDomElementWrapper));
         }
 
         public IDomHtmlCollection<GeckoElement> GetElementsByTagNameNS(string namespaceURI, string localName)
@@ -304,7 +305,7 @@ namespace Gecko
             //var ret = nsString.Pass<nsIDOMHTMLCollection>(_domElement.GetElementsByTagNameNS, namespaceURI, localName);
             //return ret == null ? null : new GeckoHtmlElementCollection(ret);
             return nsString.Pass<nsIDOMHTMLCollection>(_domElement.GetElementsByTagNameNS, namespaceURI, localName)
-                .Wrap(x => new DomHtmlCollection<GeckoElement, nsIDOMHTMLElement>(x, CreateDomElementWrapper));
+                .Wrap(x => new DomHtmlCollection<GeckoElement, /* nsIDOMHTMLElement */nsISupports>(x, CreateDomElementWrapper));
         }
 
 
@@ -313,17 +314,17 @@ namespace Gecko
             if (element == null)
                 return null;
 
-            var htmlElement = Xpcom.QueryInterface<nsIDOMHTMLElement>(element);
+            var htmlElement = Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(element);
             if (htmlElement != null)
             {
                 Marshal.ReleaseComObject(htmlElement);
-                return GeckoHtmlElement.Create((nsIDOMHTMLElement) element);
+                return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) element);
             }
-            var svgElement = Xpcom.QueryInterface<nsIDOMSVGElement>(element);
+            var svgElement = Xpcom.QueryInterface</* nsIDOMSVGElement */ nsISupports>(element);
             if (svgElement != null)
             {
                 Marshal.ReleaseComObject(svgElement);
-                return DOM.Svg.SvgElement.CreateSvgElementWrapper((nsIDOMSVGElement) element);
+                return DOM.Svg.SvgElement.CreateSvgElementWrapper((/* nsIDOMSVGElement */ nsISupports) element);
             }
             var xulElement = Xpcom.QueryInterface<nsIDOMXULElement>(element);
             if (xulElement != null)

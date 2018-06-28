@@ -83,7 +83,7 @@ namespace Gecko
 		new void OnDataAvailable([MarshalAs(UnmanagedType.Interface)] nsIRequest aRequest, [MarshalAs(UnmanagedType.Interface)] nsISupports aContext, [MarshalAs(UnmanagedType.Interface)] nsIInputStream aInputStream, ulong aOffset, uint aCount);
 		
 		/// <summary>
-        /// Called to set the HttpChannelParentListener object (optional).
+        /// Called to set the /* HttpChannelParent */ nsISupportsListener object (optional).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetParentListener(System.IntPtr listener);
@@ -94,6 +94,25 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void NotifyTrackingProtectionDisabled();
+		
+		/// <summary>
+        /// Called to set matched information when URL matches SafeBrowsing list.
+        /// @param aList
+        /// Name of the list that matched
+        /// @param aProvider
+        /// Name of provider that matched
+        /// @param aFullHash
+        /// String represents full hash that matched
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetClassifierMatchedInfo([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aList, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aProvider, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFullHash);
+		
+		/// <summary>
+        /// Called to notify the HttpChannelChild that the resource being loaded
+        /// is on the tracking protection list.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyTrackingResource();
 		
 		/// <summary>
         /// Called to invoke deletion of the IPC protocol.

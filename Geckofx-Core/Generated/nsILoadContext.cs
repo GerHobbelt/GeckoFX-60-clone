@@ -33,7 +33,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c71ef717-8fb9-425e-98ef-aef5894890f8")]
+	[Guid("2813a7a3-d084-4d00-acd0-f76620315c02")]
 	public interface nsILoadContext
 	{
 		
@@ -44,9 +44,8 @@ namespace Gecko
         /// not be same-origin with the document in associatedWindow.  This attribute
         /// may be null if there is no associated window.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetAssociatedWindowAttribute();
+		mozIDOMWindowProxy GetAssociatedWindowAttribute();
 		
 		/// <summary>
         /// topWindow is the top window which is of same type as associatedWindow.
@@ -54,9 +53,8 @@ namespace Gecko
         /// convenience.  All the same caveats as associatedWindow of apply, of
         /// course.  This attribute may be null if there is no associated window.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetTopWindowAttribute();
+		mozIDOMWindowProxy GetTopWindowAttribute();
 		
 		/// <summary>
         /// topFrameElement is the <iframe>, <frame>, or <browser> element which
@@ -82,19 +80,6 @@ namespace Gecko
 		ulong GetNestedFrameIdAttribute();
 		
 		/// <summary>
-        /// Check whether the load is happening in a particular type of application.
-        ///
-        /// @param an application type.  For now, the constants to be passed here are
-        /// the nsIDocShell APP_TYPE_* constants.
-        ///
-        /// @return whether there is some ancestor of the associatedWindow that is of
-        /// the given app type.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsAppOfType(uint appType);
-		
-		/// <summary>
         /// True if the load context is content (as opposed to chrome).  This is
         /// determined based on the type of window the load is performed in, NOT based
         /// on any URIs that might be around.
@@ -104,14 +89,16 @@ namespace Gecko
 		bool GetIsContentAttribute();
 		
 		/// <summary>
-        /// Attribute that determines if private browsing should be used.
+        /// Attribute that determines if private browsing should be used. May not be
+        /// changed after a document has been loaded in this context.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetUsePrivateBrowsingAttribute();
 		
 		/// <summary>
-        /// Attribute that determines if private browsing should be used.
+        /// Attribute that determines if private browsing should be used. May not be
+        /// changed after a document has been loaded in this context.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetUsePrivateBrowsingAttribute([MarshalAs(UnmanagedType.U1)] bool aUsePrivateBrowsing);
@@ -122,6 +109,21 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetUseRemoteTabsAttribute();
+		
+		/// <summary>
+        /// Attribute that determines if tracking protection should be used. May not be
+        /// changed after a document has been loaded in this context.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetUseTrackingProtectionAttribute();
+		
+		/// <summary>
+        /// Attribute that determines if tracking protection should be used. May not be
+        /// changed after a document has been loaded in this context.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetUseTrackingProtectionAttribute([MarshalAs(UnmanagedType.U1)] bool aUseTrackingProtection);
 		
 		/// <summary>
         /// Set the private browsing state of the load context, meant to be used internally.
@@ -136,18 +138,15 @@ namespace Gecko
 		void SetRemoteTabs([MarshalAs(UnmanagedType.U1)] bool aUseRemoteTabs);
 		
 		/// <summary>
-        /// Returns true iff the load is occurring inside a browser element.
+        /// Returns true iff the load is occurring inside an isolated mozbrowser
+        /// element. <xul:browser> is not considered to be a mozbrowser element.
+        /// <iframe mozbrowser noisolation> does not count as isolated since
+        /// isolation is disabled.  Isolation can only be disabled if the
+        /// containing document is chrome.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsInBrowserElementAttribute();
-		
-		/// <summary>
-        /// Returns the app id of the app the load is occurring is in. Returns
-        /// nsIScriptSecurityManager::NO_APP_ID if the load is not part of an app.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetAppIdAttribute();
+		bool GetIsInIsolatedMozBrowserElementAttribute();
 		
 		/// <summary>
         /// A dictionary of the non-default origin attributes associated with this
@@ -155,5 +154,11 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOriginAttributesAttribute();
+		
+		/// <summary>
+        /// The C++ getter for origin attributes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetOriginAttributes(ref nsISupports aAttrs);
 	}
 }

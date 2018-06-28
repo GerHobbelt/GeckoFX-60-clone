@@ -43,7 +43,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray GetInputDataFlavors();
+		nsIArray GetInputDataFlavors();
 		
 		/// <summary>
         /// Get the list of the "output" data flavors (mime types as nsISupportsCString),
@@ -54,7 +54,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray GetOutputDataFlavors();
+		nsIArray GetOutputDataFlavors();
 		
 		/// <summary>
         /// Determines whether a conversion from one flavor to another is supported

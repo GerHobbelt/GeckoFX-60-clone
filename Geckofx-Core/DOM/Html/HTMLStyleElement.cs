@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoStyleElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLStyleElement DOMHTMLElement;
+        private /* nsIDOMHTMLStyleElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoStyleElement(nsIDOMHTMLStyleElement element) : base(element)
+        internal GeckoStyleElement(/* nsIDOMHTMLStyleElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoStyleElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoStyleElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLStyleElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLStyleElement */ nsISupports;
         }
 
         public bool Disabled

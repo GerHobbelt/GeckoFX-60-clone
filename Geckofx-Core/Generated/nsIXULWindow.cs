@@ -27,10 +27,7 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// The nsIXULWindow
-    ///
-    /// When the window is destroyed, it will fire a "xul-window-destroyed"
-    /// notification through the global observer service.
+    ///native LiveResizeListenerArray(nsTArray<RefPtr<mozilla::LiveResizeListener>>);
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -84,17 +81,8 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void TabParentRemoved([MarshalAs(UnmanagedType.Interface)] nsITabParent aTab);
 		
-		/// <summary>
-        /// The content shell specified by the supplied id.
-        ///
-        /// Note that this is a docshell tree item and therefore can not be assured of
-        /// what object it is.  It could be an editor, a docshell, or a browser object.
-        /// Or down the road any other object that supports being a DocShellTreeItem
-        /// Query accordingly to determine the capabilities.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDocShellTreeItem GetContentShellById([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string ID);
+        IntPtr GetLiveResizeListeners();
 		
 		/// <summary>
         /// Tell this window that it has picked up a child XUL window
@@ -140,18 +128,6 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetZLevelAttribute(uint aZLevel);
 		
-		/// <summary>
-        /// contextFlags are from nsIWindowCreator2
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetContextFlagsAttribute();
-		
-		/// <summary>
-        /// contextFlags are from nsIWindowCreator2
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetContextFlagsAttribute(uint aContextFlags);
-		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetChromeFlagsAttribute();
 		
@@ -170,11 +146,14 @@ namespace Gecko
         /// @param aChromeFlags see nsIWebBrowserChrome
         /// @param aOpeningTab the TabParent that requested this new window be opened.
         /// Can be left null.
+        /// @param aOpener The window which is requesting that this new window be opened.
+        /// @param aNextTabParentId The integer ID of the next tab parent actor to use.
+        /// 0 means there is no next tab parent actor to use.
         /// @return the newly minted window
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIXULWindow CreateNewWindow(int aChromeFlags, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab);
+		nsIXULWindow CreateNewWindow(int aChromeFlags, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab, IntPtr aOpener, ulong aNextTabParentId);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -191,6 +170,39 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ApplyChromeFlags();
+		
+		/// <summary>
+        /// Given the dimensions of some content area held within this
+        /// XUL window, and assuming that that content area will change
+        /// its dimensions in linear proportion to the dimensions of this
+        /// XUL window, changes the size of the XUL window so that the
+        /// content area reaches a particular size.
+        ///
+        /// We need to supply the content area dimensions because sometimes
+        /// the child's nsDocShellTreeOwner needs to propagate a SizeShellTo
+        /// call to the parent. But the shellItem argument of the call will
+        /// not be available on the parent side.
+        ///
+        /// Note: this is an internal method, other consumers should never call this.
+        ///
+        /// @param aDesiredWidth
+        /// The desired width of the content area in device pixels.
+        /// @param aDesiredHeight
+        /// The desired height of the content area in device pixels.
+        /// @param shellItemWidth
+        /// The current width of the content area.
+        /// @param shellItemHeight
+        /// The current height of the content area.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SizeShellToWithLimit(int aDesiredWidth, int aDesiredHeight, int shellItemWidth, int shellItemHeight);
+		
+		/// <summary>
+        /// If the window was opened as a content window by script, this will return the
+        /// integer ID of the next TabParent actor to use.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetNextTabParentIdAttribute();
 	}
 	
 	/// <summary>nsIXULWindowConsts </summary>

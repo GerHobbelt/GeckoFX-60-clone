@@ -32,6 +32,21 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("5131a62a-e99f-4631-9138-751f8aad1ae4")]
+	public interface nsIJumpListCommittedCallback
+	{
+		
+		/// <summary>
+        ///This Source Code Form is subject to the terms of the Mozilla Public
+        /// License, v. 2.0. If a copy of the MPL was not distributed with this
+        /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Done([MarshalAs(UnmanagedType.U1)] bool result);
+	}
+	
+	/// <summary>nsIJumpListBuilder </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("1FE6A9CD-2B18-4dd5-A176-C2B32FA4F683")]
 	public interface nsIJumpListBuilder
 	{
@@ -101,11 +116,12 @@ namespace Gecko
 		/// <summary>
         /// Commits the current jump list build to the Taskbar.
         ///
-        /// @returns true if the operation completed successfully.
+        /// @param callback
+        /// Receives one argument, which is true if the operation completed
+        /// successfully, otherwise it is false.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool CommitListBuild();
+		void CommitListBuild([MarshalAs(UnmanagedType.Interface)] nsIJumpListCommittedCallback callback);
 		
 		/// <summary>
         /// Deletes any currently applied taskbar jump list for this application.

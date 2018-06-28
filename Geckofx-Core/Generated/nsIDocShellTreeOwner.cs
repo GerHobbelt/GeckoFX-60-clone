@@ -36,36 +36,15 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        ///Return the child DocShellTreeItem with the specified name.
-        ///	name - This is the name of the item that is trying to be found.
-        ///	aRequestor - This is the docshellTreeItem that is requesting the find.  This
-        ///	parameter is used to identify when the child is asking its parent to find
-        ///	a child with the specific name.  The parent uses this parameter to ensure
-        ///	a resursive state does not occur by not again asking the requestor for find
-        ///	a shell by the specified name.  Inversely the child uses it to ensure it
-        ///	does not ask its parent to do the search if its parent is the one that
-        ///	asked it to search.
-        ///	aOriginalRequestor - The original treeitem that made the request, if any.
-        ///	This is used to ensure that we don't run into cross-site issues.
-        ///	 </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDocShellTreeItem FindItemWithName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string name, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aRequestor, [MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aOriginalRequestor);
-		
-		/// <summary>
         /// Called when a content shell is added to the docshell tree.  This is
         /// _only_ called for "root" content shells (that is, ones whose parent is a
         /// chrome shell).
         ///
         /// @param aContentShell the shell being added.
         /// @param aPrimary whether the shell is primary.
-        /// @param aTargetable whether the shell can be a target for named window
-        /// targeting.
-        /// @param aID the "id" of the shell.  What this actually means is
-        /// undefined. Don't rely on this for anything.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ContentShellAdded([MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aContentShell, [MarshalAs(UnmanagedType.U1)] bool aPrimary, [MarshalAs(UnmanagedType.U1)] bool aTargetable, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aID);
+		void ContentShellAdded([MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem aContentShell, [MarshalAs(UnmanagedType.U1)] bool aPrimary);
 		
 		/// <summary>
         /// Called when a content shell is removed from the docshell tree.  This is
@@ -107,6 +86,32 @@ namespace Gecko
 		void SizeShellTo([MarshalAs(UnmanagedType.Interface)] nsIDocShellTreeItem shell, int cx, int cy);
 		
 		/// <summary>
+        ///Gets the size of the primary content area in CSS pixels. This should work
+        ///	for both in-process and out-of-process content areas.
+        ///	 </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetPrimaryContentSize(ref int width, ref int height);
+		
+		/// <summary>
+        ///Sets the size of the primary content area in CSS pixels. This should work
+        ///	for both in-process and out-of-process content areas.
+        ///	 </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetPrimaryContentSize(int width, int height);
+		
+		/// <summary>
+        ///Gets the size of the root docshell in CSS pixels.
+        ///	 </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetRootShellSize(ref int width, ref int height);
+		
+		/// <summary>
+        ///Sets the size of the root docshell in CSS pixels.
+        ///	 </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRootShellSize(int width, int height);
+		
+		/// <summary>
         ///Sets the persistence of different attributes of the window.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -119,9 +124,18 @@ namespace Gecko
 		void GetPersistence([MarshalAs(UnmanagedType.U1)] ref bool aPersistPosition, [MarshalAs(UnmanagedType.U1)] ref bool aPersistSize, [MarshalAs(UnmanagedType.U1)] ref bool aPersistSizeMode);
 		
 		/// <summary>
-        ///Gets the number of targettable docshells.
+        ///Gets the number of tabs currently open in our window, assuming
+        ///	this tree owner has such a concept.
         ///	 </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetTargetableShellCountAttribute();
+		uint GetTabCountAttribute();
+		
+		/// <summary>
+        ///Returns true if there is a primary content shell or a primary
+        ///	tab parent.
+        ///	 </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetHasPrimaryContentAttribute();
 	}
 }

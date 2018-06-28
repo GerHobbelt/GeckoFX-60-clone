@@ -37,15 +37,4 @@ namespace Gecko
 	public interface nsIDOMWindow
 	{
 	}
-	
-	/// <summary>
-    /// Empty interface for compatibility with older versions.
-    /// @deprecated Use nsIDOMWindow instead
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8c589e65-3237-4cd1-8bad-c5c47135e79b")]
-	public interface nsIDOMWindowInternal : nsIDOMWindow
-	{
-	}
 }

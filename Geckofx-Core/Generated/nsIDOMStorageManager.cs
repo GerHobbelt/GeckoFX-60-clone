@@ -33,16 +33,24 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a15f7ebd-4f35-4e73-a2d8-255d27fd14ee")]
+	[Guid("a20c742e-3ed1-44fb-b897-4080a75b1662")]
 	public interface nsIDOMStorageManager
 	{
 		
 		/// <summary>
         /// This starts async preloading of a storage cache for scope
         /// defined by the principal.
+        ///
+        /// Because of how multi-e10s support was implemented in bug 1285898, the
+        /// StorageCache instance can no longer use a timer to keep itself alive.  So a
+        /// Storage instance is returned if precaching believes the principal may have
+        /// localStorage data.  (Previously the StorageCache would be brought into
+        /// existence and kept alive by the timer so that it could be returned if a
+        /// call to createStorage was made due to a request by the page.)
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void PrecacheStorage([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+		nsIDOMStorage PrecacheStorage([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
 		
 		/// <summary>
         /// Returns instance of DOM storage object for given principal.
@@ -60,7 +68,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMStorage CreateStorage([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDocumentURI, [MarshalAs(UnmanagedType.U1)] bool aPrivate);
+		nsIDOMStorage CreateStorage(mozIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDocumentURI, [MarshalAs(UnmanagedType.U1)] bool aPrivate);
 		
 		/// <summary>
         /// Returns instance of DOM storage object for given principal.
@@ -77,7 +85,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMStorage GetStorage([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.U1)] bool aPrivate);
+		nsIDOMStorage GetStorage(mozIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.U1)] bool aPrivate);
 		
 		/// <summary>
         /// Clones given storage into this storage manager.
@@ -108,22 +116,5 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool CheckStorage([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIDOMStorage aStorage);
-		
-		/// <summary>
-        /// @deprecated
-        ///
-        /// Returns instance of localStorage object for aURI's origin.
-        /// This method ensures there is always only a single instance
-        /// for a single origin.
-        ///
-        /// Currently just forwards to the createStorage method of this
-        /// interface.
-        ///
-        /// Extension developers are strongly encouraged to use getStorage
-        /// or createStorage method instead.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMStorage GetLocalStorageForPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDocumentURI, [MarshalAs(UnmanagedType.U1)] bool aPrivate);
 	}
 }

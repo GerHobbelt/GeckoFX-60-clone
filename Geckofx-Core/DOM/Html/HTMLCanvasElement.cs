@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoCanvasElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLCanvasElement DOMHTMLElement;
+        private /* nsIDOMHTMLCanvasElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoCanvasElement(nsIDOMHTMLCanvasElement element) : base(element)
+        internal GeckoCanvasElement(/* nsIDOMHTMLCanvasElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoCanvasElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoCanvasElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLCanvasElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLCanvasElement */ nsISupports;
         }
 
         public uint Width

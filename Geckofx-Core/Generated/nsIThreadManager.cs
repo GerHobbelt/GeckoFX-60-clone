@@ -27,6 +27,24 @@ namespace Gecko
 	
 	
 	/// <summary>
+    ///This Source Code Form is subject to the terms of the Mozilla Public
+    /// License, v. 2.0. If a copy of the MPL was not distributed with this
+    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("039a227d-0cb7-44a5-a8f9-dbb7071979f2")]
+	public interface nsINestedEventLoopCondition
+	{
+		
+		/// <summary>
+        /// Returns true if the current nested event loop should stop spinning.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsDone();
+	}
+	
+	/// <summary>
     /// An interface for creating and locating nsIThread instances.
     /// </summary>
 	[ComImport()]
@@ -49,6 +67,22 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIThread NewThread(uint creationFlags, uint stackSize);
+		
+		/// <summary>
+        /// Create a new thread (a global, user PRThread) with the specified name.
+        ///
+        /// @param name
+        /// The name of the thread. Passing an empty name is equivalent to
+        /// calling newThread(0, stackSize), i.e. the thread will not be named.
+        /// @param stackSize
+        /// Number of bytes to reserve for the thread's stack.
+        ///
+        /// @returns
+        /// The newly created nsIThread object.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIThread NewNamedThread([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase name, uint stackSize);
 		
 		/// <summary>
         /// Get the nsIThread object (if any) corresponding to the given PRThread.
@@ -82,12 +116,67 @@ namespace Gecko
 		nsIThread GetCurrentThreadAttribute();
 		
 		/// <summary>
-        /// This attribute is true if the calling thread is the main thread of the
-        /// application process.
+        /// This queues a runnable to the main thread. It's a shortcut for JS callers
+        /// to be used instead of
+        /// .mainThread.dispatch(runnable, Ci.nsIEventTarget.DISPATCH_NORMAL);
+        /// or
+        /// .currentThread.dispatch(runnable, Ci.nsIEventTarget.DISPATCH_NORMAL);
+        /// C++ callers should instead use NS_DispatchToMainThread.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsMainThreadAttribute();
+		void DispatchToMainThread([MarshalAs(UnmanagedType.Interface)] nsIRunnable @event, uint priority);
+		
+		/// <summary>
+        /// This queues a runnable to the main thread's idle queue.
+        ///
+        /// @param event
+        /// The event to dispatch.
+        /// @param timeout
+        /// The time in milliseconds until this event should be moved from the idle
+        /// queue to the regular queue if it hasn't been executed by then.  If not
+        /// passed or a zero value is specified, the event will never be moved to
+        /// the regular queue.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void IdleDispatchToMainThread([MarshalAs(UnmanagedType.Interface)] nsIRunnable @event, uint timeout);
+		
+		/// <summary>
+        /// Enter a nested event loop on the current thread, waiting on, and
+        /// processing events until condition.isDone() returns true.
+        ///
+        /// If condition.isDone() throws, this function will throw as well.
+        ///
+        /// C++ code should not use this function, instead preferring
+        /// mozilla::SpinEventLoopUntil.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SpinEventLoopUntil([MarshalAs(UnmanagedType.Interface)] nsINestedEventLoopCondition condition);
+		
+		/// <summary>
+        /// Similar to the previous method, but the spinning of the event loop
+        /// terminates when the shutting down starts.
+        ///
+        /// C++ code should not use this function, instead preferring
+        /// mozilla::SpinEventLoopUntil.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SpinEventLoopUntilOrShutdown([MarshalAs(UnmanagedType.Interface)] nsINestedEventLoopCondition condition);
+		
+		/// <summary>
+        /// Spin the current thread's event loop until there are no more pending
+        /// events.  This could be done with spinEventLoopUntil, but that would
+        /// require access to the current thread from JavaScript, which we are
+        /// moving away from.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SpinEventLoopUntilEmpty();
+		
+		/// <summary>
+        /// Return the SchedulerEventTarget for the SystemGroup.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIEventTarget GetSystemGroupEventTargetAttribute();
 	}
 	
 	/// <summary>nsIThreadManagerConsts </summary>

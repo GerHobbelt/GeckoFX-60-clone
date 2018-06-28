@@ -1225,6 +1225,7 @@ namespace Gecko
 
         private ContextMenu menu = null;
 
+#if PORT
         void nsIContextMenuListener2.OnShowContextMenu(uint aContextFlags, nsIContextMenuInfo info)
         {
             // if we don't have a target node, we can't do anything by default.  this happens in XUL forms (i.e. about:config)
@@ -1388,6 +1389,7 @@ namespace Gecko
                 }
             }
         }
+#endif
 
         private void ViewInSystemBrowser(string url)
         {
@@ -1448,9 +1450,9 @@ namespace Gecko
             new PropertiesDialog((nsIDOMDocument) document.DomObject).ShowDialog(this);
         }
 
-        #endregion
+#endregion
 
-        #region nsIInterfaceRequestor Members
+#region nsIInterfaceRequestor Members
 
         IntPtr nsIInterfaceRequestor.GetInterface(ref Guid uuid)
         {
@@ -1481,9 +1483,9 @@ namespace Gecko
             return ppv;
         }
 
-        #endregion
+#endregion
 
-        #region nsIEmbeddingSiteWindow Members
+#region nsIEmbeddingSiteWindow Members
 
         void nsIEmbeddingSiteWindow.SetDimensions(uint flags, int x, int y, int cx, int cy)
         {
@@ -1571,14 +1573,14 @@ namespace Gecko
             Visible = aVisibility;
         }
 
-        string nsIEmbeddingSiteWindow.GetTitleAttribute()
+        void nsIEmbeddingSiteWindow.GetTitleAttribute(nsAStringBase aTitle)
         {
-            return DocumentTitle;
+            aTitle.SetData(DocumentTitle);
         }
 
-        void nsIEmbeddingSiteWindow.SetTitleAttribute(string aTitle)
+        void nsIEmbeddingSiteWindow.SetTitleAttribute(nsAStringBase aTitle)
         {
-            DocumentTitle = aTitle;
+            DocumentTitle = aTitle.ToString();
         }
 
         void nsIEmbeddingSiteWindow.Blur()
@@ -1586,16 +1588,16 @@ namespace Gecko
             // TODO: implement.
         }
 
-        #endregion
+#endregion
 
-        #region nsIWebProgressListener Members
+#region nsIWebProgressListener Members
 
         void nsIWebProgressListener.OnStateChange(nsIWebProgress aWebProgress, nsIRequest aRequest, uint aStateFlags,
             int aStatus)
         {
             const int NS_BINDING_ABORTED = unchecked((int) 0x804B0002);
 
-            #region validity checks
+#region validity checks
 
             // The request parametere may be null
             if (aRequest == null)
@@ -1612,11 +1614,11 @@ namespace Gecko
                 }
             }
 
-            #endregion validity checks
+#endregion validity checks
 
             using (var request = Gecko.Net.Request.CreateRequest(aRequest))
             {
-                #region request parameters
+#region request parameters
 
                 Uri destUri = null;
                 Uri.TryCreate(request.Name, UriKind.Absolute, out destUri);
@@ -1656,9 +1658,9 @@ namespace Gecko
 				 */
                 bool stateIsWindow = ((aStateFlags & nsIWebProgressListenerConstants.STATE_IS_WINDOW) != 0);
 
-                #endregion request parameters
+#endregion request parameters
 
-                #region STATE_START
+#region STATE_START
 
                 /* This flag indicates the start of a request.
 				 * This flag is set when a request is initiated.
@@ -1701,9 +1703,9 @@ namespace Gecko
                         }
                     }
                 }
-                    #endregion STATE_START
+#endregion STATE_START
 
-                    #region STATE_REDIRECTING
+#region STATE_REDIRECTING
                     /* This flag indicates that a request is being redirected.
 				 * The request passed to onStateChange() is the request that is being redirected.
 				 * When a redirect occurs, a new request is generated automatically to process the new request.
@@ -1720,18 +1722,18 @@ namespace Gecko
                         aRequest.Cancel(NS_BINDING_ABORTED);
                     }
                 }
-                    #endregion STATE_REDIRECTING
+#endregion STATE_REDIRECTING
 
-                    #region STATE_TRANSFERRING
+#region STATE_TRANSFERRING
                     /* This flag indicates that data for a request is being transferred to an end consumer.
 				 * This flag indicates that the request has been targeted, and that the user may start seeing content corresponding to the request.
 				 */
                 else if ((aStateFlags & nsIWebProgressListenerConstants.STATE_TRANSFERRING) != 0)
                 {
                 }
-                    #endregion STATE_TRANSFERRING
+#endregion STATE_TRANSFERRING
 
-                    #region STATE_STOP
+#region STATE_STOP
                     /* This flag indicates the completion of a request.
 				 * The aStatus parameter to onStateChange() indicates the final status of the request.
 				 */
@@ -1819,7 +1821,7 @@ namespace Gecko
                     }
                 }
 
-                #endregion STATE_STOP
+#endregion STATE_STOP
 
                 if (domWindow != null)
                 {
@@ -1892,7 +1894,7 @@ namespace Gecko
 
         private GeckoSecurityState _SecurityState;
 
-        #region public event EventHandler SecurityStateChanged
+#region public event EventHandler SecurityStateChanged
 
         /// <summary>
         /// Occurs when the value of the <see cref="SecurityState"/> property is changed.
@@ -1914,13 +1916,13 @@ namespace Gecko
                 ((EventHandler) this.Events[SecurityStateChangedEvent])(this, e);
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region nsIWebProgressListener2 Members
+#region nsIWebProgressListener2 Members
 
-        #region implemented in nsIWebProgressListener
+#region implemented in nsIWebProgressListener
 
         void nsIWebProgressListener2.OnStateChange(nsIWebProgress aWebProgress, nsIRequest aRequest, uint aStateFlags,
             int aStatus)
@@ -1951,7 +1953,7 @@ namespace Gecko
             throw new NotImplementedException("implemented in nsIWebProgressListener");
         }
 
-        #endregion implemented in nsIWebProgressListener
+#endregion implemented in nsIWebProgressListener
 
         void nsIWebProgressListener2.OnProgressChange64(nsIWebProgress aWebProgress, nsIRequest aRequest,
             long aCurSelfProgress, long aMaxSelfProgress, long aCurTotalProgress, long aMaxTotalProgress)
@@ -1979,9 +1981,9 @@ namespace Gecko
             return !cancel;
         }
 
-        #endregion
+#endregion
 
-        #region nsIDOMEventListener Members
+#region nsIDOMEventListener Members
 
         void nsIDOMEventListener.HandleEvent(nsIDOMEvent e)
         {
@@ -2099,9 +2101,9 @@ namespace Gecko
                 e.PreventDefault();
         }
 
-        #endregion
+#endregion
 
-        #region nsIWindowProvider Members
+#region nsIWindowProvider Members
 
         //int nsIWindowProvider.provideWindow(nsIDOMWindow aParent, uint aChromeFlags, bool aPositionSpecified, bool aSizeSpecified, nsIURI aURI, nsAString aName, nsAString aFeatures, out bool aWindowIsNew, out nsIDOMWindow ret)
         //{
@@ -2127,11 +2129,10 @@ namespace Gecko
         //      return -1;
         //}
 
-        #endregion
+#endregion
 
-        #region nsISHistoryListener Members
-
-        void nsISHistoryListener.OnHistoryNewEntry(nsIURI aNewURI)
+#region nsISHistoryListener Members
+        void nsISHistoryListener.OnHistoryNewEntry(nsIURI aNewURI, int aOldIndex)
         {
             OnHistoryNewEntry(new GeckoHistoryEventArgs(new Uri(nsString.Get(aNewURI.GetSpecAttribute))));
         }
@@ -2177,11 +2178,11 @@ namespace Gecko
             OnHistoryReplaceEntry(new GeckoHistoryRepalaceEntryEventArgs(aIndex));
         }
 
-        #endregion
+#endregion
 
-        #region nsITooltipListener Members
+#region nsITooltipListener Members
 
-        void nsITooltipListener.OnShowTooltip(int aXCoords, int aYCoords, string aTipText)
+        void nsITooltipListener.OnShowTooltip(int aXCoords, int aYCoords, string aTipText, string aTipDir)
         {
             if (true.Equals(GeckoPreferences.User["browser.chrome.toolbar_tips"]))
             {
@@ -2202,7 +2203,7 @@ namespace Gecko
             }
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Register a listener for a custom jscrip-initiated MessageEvent
@@ -2295,7 +2296,7 @@ namespace Gecko
                     byte[] reqBody = null;
                     bool? reqBodyContainsHeaders = null;
 
-                    #region POST data
+#region POST data
 
                     var uploadChannel = Xpcom.QueryInterface<nsIUploadChannel>(aSubject);
                     var uploadChannel2 = Xpcom.QueryInterface<nsIUploadChannel2>(aSubject);
@@ -2335,7 +2336,7 @@ namespace Gecko
                         }
                     }
 
-                    #endregion POST data
+#endregion POST data
 
                     var evt = new GeckoObserveHttpModifyRequestEventArgs(uri, uriRef, reqMethod, reqBody, reqHeaders,
                         httpChannel, reqBodyContainsHeaders);
@@ -2350,7 +2351,7 @@ namespace Gecko
             }
         }
 
-        #region nsIHttpActivityObserver members
+#region nsIHttpActivityObserver members
 
         public Dictionary<nsIHttpChannel, GeckoJavaScriptHttpChannelWrapper> origJavaScriptHttpChannels =
             new Dictionary<nsIHttpChannel, GeckoJavaScriptHttpChannelWrapper>();
@@ -2483,7 +2484,7 @@ namespace Gecko
             return true;
         }
 
-        #endregion nsIHttpActivityObserver members
+#endregion nsIHttpActivityObserver members
 
         private GeckoWebBrowserWeakRef _weakRef;
 
@@ -2493,9 +2494,40 @@ namespace Gecko
                 return _weakRef = new GeckoWebBrowserWeakRef(this);
             return _weakRef;
         }
+
+        void nsISHistoryListener.OnLengthChanged(int aCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        void nsISHistoryListener.OnIndexChanged(int aIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        IntPtr nsIXULWindow.GetLiveResizeListeners()
+        {
+            throw new NotImplementedException();
+        }
+
+        nsIXULWindow nsIXULWindow.CreateNewWindow(int aChromeFlags, nsITabParent aOpeningTab, IntPtr aOpener,
+            ulong aNextTabParentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        void nsIXULWindow.SizeShellToWithLimit(int aDesiredWidth, int aDesiredHeight, int shellItemWidth, int shellItemHeight)
+        {
+            throw new NotImplementedException();
+        }
+
+        ulong nsIXULWindow.GetNextTabParentIdAttribute()
+        {
+            throw new NotImplementedException();
+        }
     }
 
-    #region public enum GeckoSecurityState
+#region public enum GeckoSecurityState
 
     public enum GeckoSecurityState
     {
@@ -2517,9 +2549,9 @@ namespace Gecko
         Secure = unchecked((int) nsIWebProgressListenerConstants.STATE_IS_SECURE),
     }
 
-    #endregion
+#endregion
 
-    #region GeckoJavaScriptHttpChannelWrapper
+#region GeckoJavaScriptHttpChannelWrapper
 
     public class GeckoJavaScriptHttpChannelWrapper : nsIDOMEventListener
     {
@@ -2551,5 +2583,5 @@ namespace Gecko
         }
     }
 
-    #endregion GeckoJavaScriptHttpChannelWrapper
+#endregion GeckoJavaScriptHttpChannelWrapper
 }

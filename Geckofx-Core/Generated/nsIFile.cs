@@ -330,7 +330,7 @@ namespace Gecko
 		void GetPathAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPath);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetNativePathAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aNativePath);
+        nsISupports NativePath();
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -502,7 +502,8 @@ namespace Gecko
 		
 		/// <summary>
         /// Return the result of PR_Open on the file.  The caller is
-        /// responsible for calling PR_Close on the result.
+        /// responsible for calling PR_Close on the result.  On success, the
+        /// returned PRFileDescr must be non-null.
         ///
         /// @param flags the PR_Open flags from prio.h, plus optionally
         /// OS_READAHEAD or DELETE_ON_CLOSE. OS_READAHEAD is a hint to the
@@ -516,7 +517,8 @@ namespace Gecko
 		
 		/// <summary>
         /// Return the result of fopen on the file.  The caller is
-        /// responsible for calling fclose on the result.
+        /// responsible for calling fclose on the result.  On success, the
+        /// returned FILE pointer must be non-null.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr OpenANSIFileDesc([MarshalAs(UnmanagedType.LPStr)] string mode);

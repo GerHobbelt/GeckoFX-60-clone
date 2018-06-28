@@ -102,6 +102,15 @@ namespace Gecko
 		nsISHEntry GetEntryAtIndex(int index, [MarshalAs(UnmanagedType.U1)] bool modifyIndex);
 		
 		/// <summary>
+        /// Load the entry at given index to root docshell directly in order to
+        /// restore to an entry in grouped session history navigation or session
+        /// restore case. This function will not notify nsISHistoryListener, as it's
+        /// not considered a normal history navigation.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RestoreToEntryAtIndex(int index);
+		
+		/// <summary>
         /// Called to purge older documents from history.
         /// Documents can be removed from session history for various
         /// reasons. For example to  control memory usage of the browser, to
@@ -191,5 +200,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetIndexOfEntry([MarshalAs(UnmanagedType.Interface)] nsISHEntry aEntry);
+	}
+	
+	/// <summary>nsISHistoryConsts </summary>
+	public class nsISHistoryConsts
+	{
+		
+		// <summary>
+        // The size of the window of SHEntries which can have alive viewers in the
+        // bfcache around the currently active SHEntry.
+        //
+        // We try to keep viewers for SHEntries between index - VIEWER_WINDOW and
+        // index + VIEWER_WINDOW alive.
+        // </summary>
+		public const long VIEWER_WINDOW = 3;
 	}
 }

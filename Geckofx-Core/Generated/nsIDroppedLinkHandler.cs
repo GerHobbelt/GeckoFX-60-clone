@@ -32,7 +32,33 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6B58A5A7-76D0-4E93-AB2E-4DE108683FF8")]
+	[Guid("69E14F91-2E09-4CA6-A511-A715C99A2804")]
+	public interface nsIDroppedLinkItem
+	{
+		
+		/// <summary>
+        /// Returns the URL of the link.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetUrlAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aUrl);
+		
+		/// <summary>
+        /// Returns the link name.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName);
+		
+		/// <summary>
+        /// Returns the MIME-Type.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetTypeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aType);
+	}
+	
+	/// <summary>nsIDroppedLinkHandler </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("21B5C25A-28A9-47BD-8431-FA9116305DED")]
 	public interface nsIDroppedLinkHandler
 	{
 		
@@ -68,5 +94,47 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DropLink([MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aEvent, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, [MarshalAs(UnmanagedType.U1)] bool aDisallowInherit, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		
+		/// <summary>
+        /// Given a drop event aEvent, determines links being dragged and returns
+        /// them. If links are returned the caller can, for instance, load them. If
+        /// the count of links is 0, there is no valid link to be dropped.
+        ///
+        /// A NS_ERROR_DOM_SECURITY_ERR error will be thrown and the event cancelled if
+        /// the receiving target should not load the uri for security reasons. This
+        /// will occur if any of the following conditions are true:
+        /// - the source of the drag initiated a link for dragging that
+        /// it itself cannot access. This prevents a source document from tricking
+        /// the user into a dragging a chrome url, for example.
+        /// - aDisallowInherit is true, and the URI being dropped would inherit the
+        /// current document's security context (URI_INHERITS_SECURITY_CONTEXT).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DropLinks([MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aEvent, [MarshalAs(UnmanagedType.U1)] bool aDisallowInherit, ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] ref nsIDroppedLinkItem[] aLinks);
+		
+		/// <summary>
+        /// Given a drop event aEvent, validate the extra URIs for the event,
+        /// this is used when the caller extracts yet another URIs from the dropped
+        /// text, like home button that splits the text with "|".
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ValidateURIsForDrop([MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aEvent, uint aURIsCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] System.IntPtr[] aURIs, [MarshalAs(UnmanagedType.U1)] bool aDisallowInherit);
+		
+		/// <summary>
+        /// Given a dataTransfer, allows caller to determine and verify links being
+        /// dragged. Since drag/drop performs a roundtrip of parent, child, parent,
+        /// it allows the parent to verify that the child did not modify links
+        /// being dropped.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void QueryLinks([MarshalAs(UnmanagedType.Interface)] nsIDOMDataTransfer aDataTransfer, ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref nsIDroppedLinkItem[] aLinks);
+		
+		/// <summary>
+        /// Given a drop event aEvent, determines the triggering principal for the
+        /// event and returns it.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPrincipal GetTriggeringPrincipal([MarshalAs(UnmanagedType.Interface)] nsIDOMDragEvent aEvent);
 	}
 }

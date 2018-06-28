@@ -45,9 +45,12 @@ namespace Gecko
         /// One of the CRASH_TYPE constants defined below.
         /// @param id
         /// Crash ID. Likely a UUID.
+        ///
+        /// @return {Promise} A promise that resolves after the crash has been stored
         /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddCrash(int processType, int crashType, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase id);
+		nsISupports AddCrash(int processType, int crashType, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase id);
 	}
 	
 	/// <summary>nsICrashServiceConsts </summary>
@@ -65,6 +68,9 @@ namespace Gecko
 		
 		// 
 		public const long PROCESS_TYPE_GMPLUGIN = 3;
+		
+		// 
+		public const long PROCESS_TYPE_GPU = 4;
 		
 		// 
 		public const long CRASH_TYPE_CRASH = 0;

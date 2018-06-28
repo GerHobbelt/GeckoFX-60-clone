@@ -270,6 +270,11 @@ namespace Gecko
         // set as well -- see above for a description of when the STATE_IS_NETWORK
         // flag may be set).  This second STATE_STOP event may be useful as a way
         // to partition the work that occurs when a document request completes.
+        //
+        // STATE_IS_REDIRECTED_DOCUMENT
+        // Same as STATE_IS_DOCUMENT, but sent only after a redirect has occured.
+        // Introduced in order not to confuse existing code with extra state change
+        // events. See |nsDocLoader::OnStartRequest| for more info.
         // </summary>
 		public const ulong STATE_IS_REQUEST = 0x00010000;
 		
@@ -281,6 +286,9 @@ namespace Gecko
 		
 		// 
 		public const ulong STATE_IS_WINDOW = 0x00080000;
+		
+		// 
+		public const ulong STATE_IS_REDIRECTED_DOCUMENT = 0x00100000;
 		
 		// <summary>
         // State Modifier Flags
@@ -361,21 +369,39 @@ namespace Gecko
 		public const ulong STATE_LOADED_MIXED_DISPLAY_CONTENT = 0x00000200;
 		
 		// <summary>
-        // Tracking content flags
+        // Safe Browsing blocking content flags
         //
         // May be set in addition to the State security Flags, to indicate that
-        // tracking content has been encountered.
+        // tracking or unsafe content has been encountered.
         //
         // STATE_BLOCKED_TRACKING_CONTENT
         // Tracking content has been blocked from loading.
         //
         // STATE_LOADED_TRACKING_CONTENT
         // Tracking content has been loaded.
+        //
+        // STATE_BLOCKED_UNSAFE_CONTENT
+        // Content which againts SafeBrowsing list has been blocked from loading.
         // </summary>
 		public const ulong STATE_BLOCKED_TRACKING_CONTENT = 0x00001000;
 		
 		// 
 		public const ulong STATE_LOADED_TRACKING_CONTENT = 0x00002000;
+		
+		// 
+		public const ulong STATE_BLOCKED_UNSAFE_CONTENT = 0x00004000;
+		
+		// <summary>
+        // Diagnostic flags
+        //
+        // May be set in addition to other security state flags to indicate that
+        // some state is countered that deserves a warning or error, but does not
+        // change the top level security state of the connection.
+        //
+        // STATE_CERT_DISTRUST_IMMINENT
+        // The certificate in use will be distrusted in the near future.
+        // </summary>
+		public const ulong STATE_CERT_DISTRUST_IMMINENT = 0x00008000;
 		
 		// <summary>
         // Security Strength Flags
@@ -428,11 +454,17 @@ namespace Gecko
         //
         // STATE_USES_WEAK_CRYPTO
         // The topmost document uses a weak cipher suite such as RC4.
+        //
+        // STATE_CERT_USER_OVERRIDDEN
+        // The user has added a security exception for the site.
         // </summary>
 		public const ulong STATE_USES_SSL_3 = 0x01000000;
 		
 		// 
 		public const ulong STATE_USES_WEAK_CRYPTO = 0x02000000;
+		
+		// 
+		public const ulong STATE_CERT_USER_OVERRIDDEN = 0x04000000;
 		
 		// <summary>
         // Flags for onLocationChange

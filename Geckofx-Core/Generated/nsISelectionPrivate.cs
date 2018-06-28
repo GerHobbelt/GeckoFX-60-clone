@@ -33,168 +33,8 @@ namespace Gecko
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("0c9f4f74-ee7e-4fe9-be6b-0ba856368178")]
-	public interface nsISelectionPrivate : nsISelection
+	public interface nsISelectionPrivate
 	{
-		
-		/// <summary>
-        /// Returns the node in which the selection begins.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMNode GetAnchorNodeAttribute();
-		
-		/// <summary>
-        /// The offset within the (text) node where the selection begins.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new int GetAnchorOffsetAttribute();
-		
-		/// <summary>
-        /// Returns the node in which the selection ends.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMNode GetFocusNodeAttribute();
-		
-		/// <summary>
-        /// The offset within the (text) node where the selection ends.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new int GetFocusOffsetAttribute();
-		
-		/// <summary>
-        /// Indicates if the selection is collapsed or not.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool GetIsCollapsedAttribute();
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool Collapsed();
-		
-		/// <summary>
-        /// Returns the number of ranges in the selection.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new int GetRangeCountAttribute();
-		
-		/// <summary>
-        /// Returns the range at the specified index.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsIDOMRange GetRangeAt(int index);
-		
-		/// <summary>
-        /// Collapses the selection to a single point, at the specified offset
-        /// in the given DOM node. When the selection is collapsed, and the content
-        /// is focused and editable, the caret will blink there.
-        /// @param parentNode      The given dom node where the selection will be set
-        /// @param offset          Where in given dom node to place the selection (the offset into the given node)
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Collapse([MarshalAs(UnmanagedType.Interface)] nsIDOMNode parentNode, int offset);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CollapseNative(System.IntPtr parentNode, int offset);
-		
-		/// <summary>
-        /// Extends the selection by moving the selection end to the specified node and offset,
-        /// preserving the selection begin position. The new selection end result will always
-        /// be from the anchorNode to the new focusNode, regardless of direction.
-        /// @param parentNode      The node where the selection will be extended to
-        /// @param offset          Where in node to place the offset in the new selection end
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Extend([MarshalAs(UnmanagedType.Interface)] nsIDOMNode parentNode, int offset);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ExtendNative(System.IntPtr parentNode, int offset);
-		
-		/// <summary>
-        /// Collapses the whole selection to a single point at the start
-        /// of the current selection (irrespective of direction).  If content
-        /// is focused and editable, the caret will blink there.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CollapseToStart();
-		
-		/// <summary>
-        /// Collapses the whole selection to a single point at the end
-        /// of the current selection (irrespective of direction).  If content
-        /// is focused and editable, the caret will blink there.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void CollapseToEnd();
-		
-		/// <summary>
-        /// Indicates whether the node is part of the selection. If partlyContained
-        /// is set to PR_TRUE, the function returns true when some part of the node
-        /// is part of the selection. If partlyContained is set to PR_FALSE, the
-        /// function only returns true when the entire node is part of the selection.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new bool ContainsNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode node, [MarshalAs(UnmanagedType.U1)] bool partlyContained);
-		
-		/// <summary>
-        /// Adds all children of the specified node to the selection.
-        /// @param parentNode  the parent of the children to be added to the selection.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SelectAllChildren([MarshalAs(UnmanagedType.Interface)] nsIDOMNode parentNode);
-		
-		/// <summary>
-        /// Adds a range to the current selection.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void AddRange([MarshalAs(UnmanagedType.Interface)] nsIDOMRange range);
-		
-		/// <summary>
-        /// Removes a range from the current selection.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void RemoveRange([MarshalAs(UnmanagedType.Interface)] nsIDOMRange range);
-		
-		/// <summary>
-        /// Removes all ranges from the current selection.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void RemoveAllRanges();
-		
-		/// <summary>
-        /// Deletes this selection from document the nodes belong to.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void DeleteFromDocument();
-		
-		/// <summary>
-        /// Returns the whole selection into a plain text string.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ToString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
-		
-		/// <summary>
-        /// Modifies the selection.  Note that the parameters are case-insensitive.
-        ///
-        /// @param alter can be one of { "move", "extend" }
-        /// - "move" collapses the selection to the end of the selection and
-        /// applies the movement direction/granularity to the collapsed
-        /// selection.
-        /// - "extend" leaves the start of the selection unchanged, and applies
-        /// movement direction/granularity to the end of the selection.
-        /// @param direction can be one of { "forward", "backward", "left", "right" }
-        /// @param granularity can be one of { "character", "word",
-        /// "line", "lineboundary" }
-        ///
-        /// @returns NS_ERROR_NOT_IMPLEMENTED if the granularity is "sentence",
-        /// "sentenceboundary", "paragraph", "paragraphboundary", or
-        /// "documentboundary".  Returns NS_ERROR_INVALID_ARG if alter, direction,
-        /// or granularity has an unrecognized value.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Modify([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase alter, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase direction, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase granularity);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -208,20 +48,6 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetAncestorLimiterAttribute(System.IntPtr aAncestorLimiter);
-		
-		/// <summary>
-        ///startBatchChanges
-        ///       match this up with endbatchChanges. will stop ui updates while multiple selection methods are called
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void StartBatchChanges();
-		
-		/// <summary>
-        ///endBatchChanges
-        ///       match this up with startBatchChanges
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void EndBatchChanges();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ToStringWithFormat([MarshalAs(UnmanagedType.LPStr)] string formatType, uint flags, int wrapColumn, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
@@ -267,14 +93,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetCachedFrameOffset(System.IntPtr aFrame, int inOffset, System.IntPtr aPoint);
-		
-		/// <summary>
-        /// Set the painting style for the range. The range must be a range in
-        /// the selection. The textRangeStyle will be used by text frame
-        /// when it is painting the selection.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetTextRangeStyle([MarshalAs(UnmanagedType.Interface)] nsIDOMRange range, System.IntPtr textRangeStyle);
 		
 		/// <summary>
         /// Get the direction of the selection.
@@ -342,6 +160,35 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SelectionLanguageChange([MarshalAs(UnmanagedType.U1)] bool langRTL);
+		
+		/// <summary>
+        /// setColors() sets custom colors for the selection.
+        /// Currently, this is supported only when the selection type is SELECTION_FIND.
+        /// Otherwise, throws an exception.
+        ///
+        /// @param aForegroundColor     The foreground color of the selection.
+        /// If this is "currentColor", foreground color
+        /// isn't changed by this selection.
+        /// @param aBackgroundColor     The background color of the selection.
+        /// If this is "transparent", background color is
+        /// never painted.
+        /// @param aAltForegroundColor  The alternative foreground color of the
+        /// selection.
+        /// If aBackgroundColor doesn't have sufficient
+        /// contrast with its around or foreground color
+        /// if "currentColor" is specified, alternative
+        /// colors are used if it have higher contrast.
+        /// @param aAltBackgroundColor  The alternative background color of the
+        /// selection.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetColors([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aForegroundColor, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aBackgroundColor, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAltForegroundColor, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAltBackgroundColor);
+		
+		/// <summary>
+        /// resetColors() forget the customized colors which were set by setColors().
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ResetColors();
 	}
 	
 	/// <summary>nsISelectionPrivateConsts </summary>

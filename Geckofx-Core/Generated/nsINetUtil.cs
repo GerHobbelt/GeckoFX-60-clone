@@ -109,15 +109,6 @@ namespace Gecko
 		nsIURI ToImmutableURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
 		
 		/// <summary>
-        /// Create a simple nested URI using the result of
-        /// toImmutableURI on the passed-in aURI which may not be null.
-        /// Note: The return URI will not have had its spec set yet.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIURI NewSimpleNestedURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
-		
-		/// <summary>
         /// escape a string with %00-style escaping
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -185,6 +176,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint ParseAttributePolicyString([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPolicyString);
+		
+		/// <summary>
+        /// This is a void method that is C++ implemented and always
+        /// returns NS_ERROR_NOT_IMPLEMENTED. To be used for testing.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotImplemented();
 	}
 	
 	/// <summary>nsINetUtilConsts </summary>

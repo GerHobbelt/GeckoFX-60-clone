@@ -82,20 +82,7 @@ namespace Gecko
 		
 		/// <summary>
         /// Initialize a timer to fire after the given millisecond interval.
-        /// This version takes a function to call and a closure to pass to
-        /// that function.
-        ///
-        /// @param aFunc      The function to invoke
-        /// @param aClosure   An opaque pointer to pass to that function
-        /// @param aDelay     The millisecond interval
-        /// @param aType      Timer type per TYPE* consts defined above
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitWithFuncCallback(System.IntPtr aCallback, System.IntPtr aClosure, uint aDelay, uint aType);
-		
-		/// <summary>
-        /// Initialize a timer to fire after the given millisecond interval.
-        /// This version takes a function to call.
+        /// This version takes a callback object.
         ///
         /// @param aFunc      nsITimerCallback interface to call when timer expires
         /// @param aDelay     The millisecond interval
@@ -103,6 +90,17 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void InitWithCallback([MarshalAs(UnmanagedType.Interface)] nsITimerCallback aCallback, uint aDelay, uint aType);
+		
+		/// <summary>
+        /// Initialize a timer to fire after the high resolution TimeDuration.
+        /// This version takes a callback object.
+        ///
+        /// @param aFunc      nsITimerCallback interface to call when timer expires
+        /// @param aDelay     The high resolution interval
+        /// @param aType      Timer type per TYPE* consts defined above
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void InitHighResolutionWithCallback([MarshalAs(UnmanagedType.Interface)] nsITimerCallback aCallback, nsISupports aDelay, uint aType);
 		
 		/// <summary>
         /// Cancel the timer.  This method works on all types, not just on repeating
@@ -203,6 +201,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetTargetAttribute([MarshalAs(UnmanagedType.Interface)] nsIEventTarget aTarget);
+		
+		/// <summary>
+        /// The number of microseconds this nsITimer implementation can possibly
+        /// fire early.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetAllowedEarlyFiringMicrosecondsAttribute();
 	}
 	
 	/// <summary>nsITimerConsts </summary>
@@ -242,5 +247,21 @@ namespace Gecko
         // afterward, but only once.  This is the only non-slack timer available.
         // </summary>
 		public const short TYPE_REPEATING_PRECISE_CAN_SKIP = 3;
+		
+		// <summary>
+        // Same as TYPE_REPEATING_SLACK with the exception that idle events
+        // won't yield to timers with this type.  Use this when you want an
+        // idle callback to be scheduled to run even though this timer is
+        // about to fire.
+        // </summary>
+		public const short TYPE_REPEATING_SLACK_LOW_PRIORITY = 4;
+		
+		// <summary>
+        // Same as TYPE_ONE_SHOT with the exception that idle events won't
+        // yield to timers with this type.  Use this when you want an idle
+        // callback to be scheduled to run even though this timer is about
+        // to fire.
+        // </summary>
+		public const short TYPE_ONE_SHOT_LOW_PRIORITY = 5;
 	}
 }

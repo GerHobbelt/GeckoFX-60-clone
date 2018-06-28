@@ -56,29 +56,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetMutableAttribute([MarshalAs(UnmanagedType.U1)] bool aMutable);
-		
-		/// <summary>
-        /// Initialize a standard URL.
-        ///
-        /// @param aUrlType       - one of the URLTYPE_ flags listed above.
-        /// @param aDefaultPort   - if the port parsed from the URL string matches
-        /// this port, then the port will be removed from the
-        /// canonical form of the URL.
-        /// @param aSpec          - URL string.
-        /// @param aOriginCharset - the charset from which this URI string
-        /// originated.  this corresponds to the charset
-        /// that should be used when communicating this
-        /// URI to an origin server, for example.  if
-        /// null, then provide aBaseURI implements this
-        /// interface, the origin charset of aBaseURI will
-        /// be assumed, otherwise defaulting to UTF-8 (i.e.,
-        /// no charset transformation from aSpec).
-        /// @param aBaseURI       - if null, aSpec must specify an absolute URI.
-        /// otherwise, aSpec will be resolved relative
-        /// to aBaseURI.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init(uint aUrlType, int aDefaultPort, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSpec, [MarshalAs(UnmanagedType.LPStr)] string aOriginCharset, [MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
 	}
 	
 	/// <summary>nsIStandardURLConsts </summary>
@@ -108,5 +85,51 @@ namespace Gecko
         // blah:///foo/bar => blah:///foo/bar
         // </summary>
 		public const ulong URLTYPE_NO_AUTHORITY = 3;
+	}
+	
+	/// <summary>nsIStandardURLMutator </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("fc894e98-23a1-43cd-a7fe-72876f8ea2ee")]
+	public interface nsIStandardURLMutator
+	{
+		
+		/// <summary>
+        /// Initialize a standard URL.
+        ///
+        /// @param aUrlType       - one of the URLTYPE_ flags listed above.
+        /// @param aDefaultPort   - if the port parsed from the URL string matches
+        /// this port, then the port will be removed from the
+        /// canonical form of the URL.
+        /// @param aSpec          - URL string.
+        /// @param aOriginCharset - the charset from which this URI string
+        /// originated.  this corresponds to the charset
+        /// that should be used when communicating this
+        /// URI to an origin server, for example.  if
+        /// null, then provide aBaseURI implements this
+        /// interface, the origin charset of aBaseURI will
+        /// be assumed, otherwise defaulting to UTF-8 (i.e.,
+        /// no charset transformation from aSpec).
+        /// @param aBaseURI       - if null, aSpec must specify an absolute URI.
+        /// otherwise, aSpec will be resolved relative
+        /// to aBaseURI.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURIMutator Init(uint aUrlType, int aDefaultPort, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSpec, [MarshalAs(UnmanagedType.LPStr)] string aOriginCharset, [MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
+		
+		/// <summary>
+        /// Set the default port.
+        ///
+        /// Note: If this object is already using its default port (i.e. if it has
+        /// mPort == -1), then it will now implicitly be using the new default port.
+        ///
+        /// @param aNewDefaultPort - if the URI has (or is later given) a port that
+        /// matches this default, then we won't include a
+        /// port number in the canonical form of the URL.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURIMutator SetDefaultPort(int aNewDefaultPort);
 	}
 }

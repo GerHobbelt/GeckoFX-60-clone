@@ -31,7 +31,33 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("18bdefde-e57b-11e4-832a-000c29a57fff")]
+	[Guid("e8933fc9-c302-4e12-a55b-4f88611d9c6c")]
+	public interface nsIScriptErrorNote
+	{
+		
+		/// <summary>
+        /// nsIConsoleMessage subclass for representing JavaScript errors and warnings.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetErrorMessageAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aErrorMessage);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetSourceNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSourceName);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetLineNumberAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetColumnNumberAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ToString([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
+	}
+	
+	/// <summary>nsIScriptError </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("63eb4d3e-7d99-4150-b4f3-11314f9d82a9")]
 	public interface nsIScriptError : nsIConsoleMessage
 	{
 		
@@ -50,10 +76,14 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new long GetTimeStampAttribute();
 		
+		/// <summary>Member GetMessageAttribute </summary>
+		/// <returns>A System.String</returns>
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new string GetMessageAttribute();
 		
+		/// <summary>Member ToString </summary>
+		/// <param name='retval'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void ToString([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
 		
@@ -66,18 +96,28 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetErrorMessageAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aErrorMessage);
 		
+		/// <summary>Member GetSourceNameAttribute </summary>
+		/// <param name='aSourceName'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetSourceNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSourceName);
 		
+		/// <summary>Member GetSourceLineAttribute </summary>
+		/// <param name='aSourceLine'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetSourceLineAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSourceLine);
 		
+		/// <summary>Member GetLineNumberAttribute </summary>
+		/// <returns>A System.UInt32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetLineNumberAttribute();
 		
+		/// <summary>Member GetColumnNumberAttribute </summary>
+		/// <returns>A System.UInt32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetColumnNumberAttribute();
 		
+		/// <summary>Member GetFlagsAttribute </summary>
+		/// <returns>A System.UInt32</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetFlagsAttribute();
 		
@@ -103,25 +143,82 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ulong GetInnerWindowIDAttribute();
 		
+		/// <summary>Member GetIsFromPrivateWindowAttribute </summary>
+		/// <returns>A System.Boolean</returns>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsFromPrivateWindowAttribute();
 		
+		/// <summary>Member GetStackAttribute </summary>
+		/// <returns>A Gecko.JsVal</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetStackAttribute();
 		
+		/// <summary>Member SetStackAttribute </summary>
+		/// <param name='aStack'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetStackAttribute(Gecko.JsVal aStack);
 		
+		/// <summary>
+        /// The name of a template string, as found in js.msg, associated with the
+        /// error message.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetErrorMessageNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aErrorMessageName);
+		
+		/// <summary>
+        /// The name of a template string, as found in js.msg, associated with the
+        /// error message.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetErrorMessageNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aErrorMessageName);
+		
+		/// <summary>Member GetNotesAttribute </summary>
+		/// <returns>A nsIArray</returns>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIArray GetNotesAttribute();
+		
+		/// <summary>Member Init </summary>
+		/// <param name='message'> </param>
+		/// <param name='sourceName'> </param>
+		/// <param name='sourceLine'> </param>
+		/// <param name='lineNumber'> </param>
+		/// <param name='columnNumber'> </param>
+		/// <param name='flags'> </param>
+		/// <param name='category'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase message, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceLine, uint lineNumber, uint columnNumber, uint flags, [MarshalAs(UnmanagedType.LPStr)] string category);
 		
 		/// <summary>
         ///This should be called instead of nsIScriptError.init to
-        ///       initialize with a window id.  The window id should be for the
-        ///       inner window associated with this error. </summary>
+        /// initialize with a window id.  The window id should be for the
+        /// inner window associated with this error.
+        ///
+        /// This function will check whether sourceName is a uri and sanitize it if
+        /// needed. If you know the source name is sanitized already, use
+        /// initWithSanitizedSource.
+        /// A "sanitized" source name means that passwords are not shown. It will
+        /// use the sensitiveInfoHiddenSpec function of nsIURI interface, that is
+        /// replacing paswords with ***
+        /// (e.g. https://USERNAME:****@example.com/some/path).
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void InitWithWindowID([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase message, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceLine, uint lineNumber, uint columnNumber, uint flags, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase category, ulong innerWindowID);
+		
+		/// <summary>
+        ///This is the same function as initWithWindowID, but it expects an already
+        /// sanitized sourceName.
+        /// Please use it only if sourceName string is already sanitized.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void InitWithSanitizedSource([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase message, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceLine, uint lineNumber, uint columnNumber, uint flags, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase category, ulong innerWindowID);
+		
+		/// <summary>
+        ///This is the same function as initWithWindowID with an uri as a source parameter.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void InitWithSourceURI([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase message, [MarshalAs(UnmanagedType.Interface)] nsIURI sourceURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sourceLine, uint lineNumber, uint columnNumber, uint flags, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase category, ulong innerWindowID);
 	}
 	
 	/// <summary>nsIScriptErrorConsts </summary>

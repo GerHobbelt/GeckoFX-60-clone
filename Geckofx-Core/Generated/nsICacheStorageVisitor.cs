@@ -42,7 +42,7 @@ namespace Gecko
 		
 		/// <summary> </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnCacheEntryInfo([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aIdEnhance, long aDataSize, int aFetchCount, uint aLastModifiedTime, uint aExpirationTime, [MarshalAs(UnmanagedType.U1)] bool aPinned);
+		void OnCacheEntryInfo([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aIdEnhance, long aDataSize, int aFetchCount, uint aLastModifiedTime, uint aExpirationTime, [MarshalAs(UnmanagedType.U1)] bool aPinned, [MarshalAs(UnmanagedType.Interface)] nsILoadContextInfo aInfo);
 		
 		/// <summary> </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

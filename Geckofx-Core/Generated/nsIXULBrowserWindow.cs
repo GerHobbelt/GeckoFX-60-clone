@@ -57,14 +57,15 @@ namespace Gecko
 		void OnBeforeLinkTraversal([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase originalTarget, [MarshalAs(UnmanagedType.Interface)] nsIURI linkURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode linkNode, [MarshalAs(UnmanagedType.U1)] bool isAppTab, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
-        /// Find the initial browser of the window and set its remote attribute.
-        /// This can be used to ensure that there is a remote browser in a new
-        /// window when it first spawns.
-        ///
+        /// Find the initial browser of the window and set its remote attributes.
+        /// This can be used to ensure that there is a browser in a new window of the
+        /// correct type when it first spawns.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsITabParent ForceInitialBrowserRemote();
+		void ForceInitialBrowserRemote([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aRemoteType);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ForceInitialBrowserNonRemote(mozIDOMWindowProxy openerWindow);
 		
 		/// <summary>
         /// Determines whether a load should continue.
@@ -75,18 +76,39 @@ namespace Gecko
         /// The URI being loaded.
         /// @param aReferrer
         /// The referrer of the load.
+        /// @param aHasPostData
+        /// True if the load which is being asked about has associated post data
+        /// which would be discarded if the load was redirected across process
+        /// boundaries.
+        /// @param aTriggeringPrincipal
+        /// The principal that initiated the load of aURI.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool ShouldLoadURI([MarshalAs(UnmanagedType.Interface)] nsIDocShell aDocShell, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer);
+		bool ShouldLoadURI([MarshalAs(UnmanagedType.Interface)] nsIDocShell aDocShell, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.U1)] bool aHasPostData, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
 		
 		/// <summary>
         /// Show/hide a tooltip (when the user mouses over a link, say).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ShowTooltip(int x, int y, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase tooltip);
+		void ShowTooltip(int x, int y, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase tooltip, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase direction, System.IntPtr browser);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void HideTooltip();
+		
+		/// <summary>
+        /// Return the number of tabs in this window.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetTabCount();
+		
+		/// <summary>
+        /// Navigate the browser to the given history index after restoring the full history
+        /// from SessionStore. If the browser is currently in GroupedSHistory mode, it will
+        /// be reverted to a non-grouped history mode. If a process change is required to
+        /// perform the load, this will also occur.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NavigateAndRestoreByIndex([MarshalAs(UnmanagedType.Interface)] nsIBrowser aBrowser, int aIndex);
 	}
 }

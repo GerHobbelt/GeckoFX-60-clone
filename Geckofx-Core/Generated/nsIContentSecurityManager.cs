@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("ec955006-747d-4151-aeec-70bd0edc3341")]
+	[Guid("3a9a1818-2ae8-4ec5-a340-8b29d31fca3b")]
 	public interface nsIContentSecurityManager
 	{
 		
@@ -66,13 +66,14 @@ namespace Gecko
         /// Implementation of
         /// https://w3c.github.io/webappsec-secure-contexts/#is-origin-trustworthy
         ///
-        /// This method should only be used when the context of the URI isn't available
-        /// since isSecureContext is preferred as it handles parent contexts.
+        /// The value returned by this method feeds into the the Secure Context
+        /// algorithm that determins the value of Window.isSecureContext and
+        /// WorkerGlobalScope.isSecureContext.
         ///
         /// This method returns false instead of throwing upon errors.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsURIPotentiallyTrustworthy([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		bool IsOriginPotentiallyTrustworthy([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
 	}
 }

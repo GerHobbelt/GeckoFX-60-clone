@@ -38,7 +38,7 @@ namespace Gecko
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIXULWindow CreateTopLevelWindow([MarshalAs(UnmanagedType.Interface)] nsIXULWindow aParent, [MarshalAs(UnmanagedType.Interface)] nsIURI aUrl, uint aChromeMask, int aInitialWidth, int aInitialHeight, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab);
+		nsIXULWindow CreateTopLevelWindow([MarshalAs(UnmanagedType.Interface)] nsIXULWindow aParent, [MarshalAs(UnmanagedType.Interface)] nsIURI aUrl, uint aChromeMask, int aInitialWidth, int aInitialHeight, [MarshalAs(UnmanagedType.Interface)] nsITabParent aOpeningTab, mozIDOMWindowProxy aOpenerWindow);
 		
 		/// <summary>
         /// This is the constructor for creating an invisible DocShell.
@@ -48,7 +48,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIWebNavigation CreateWindowlessBrowser([MarshalAs(UnmanagedType.U1)] bool aIsChrome);
+		nsIWindowlessBrowser CreateWindowlessBrowser([MarshalAs(UnmanagedType.U1)] bool aIsChrome);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void CreateHiddenWindow();
@@ -82,9 +82,8 @@ namespace Gecko
         /// @param aResult the hidden window.  Do not unhide hidden window.
         /// Do not taunt hidden window.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetHiddenDOMWindowAttribute();
+		mozIDOMWindowProxy GetHiddenDOMWindowAttribute();
 		
 		/// <summary>
         /// Return the (singleton) application hidden private window, automatically
@@ -104,19 +103,8 @@ namespace Gecko
         /// @param aResult the hidden private window.  Do not unhide hidden window.
         /// Do not taunt hidden window.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetHiddenPrivateDOMWindowAttribute();
-		
-		/// <summary>
-        /// Return the (singleton) application hidden window as an nsIDOMWindow,
-        /// and, the corresponding JavaScript context pointer.  This is useful
-        /// if you'd like to subsequently call OpenDialog on the hidden window.
-        /// @aHiddenDOMWindow the hidden window QI'd to type nsIDOMWindow
-        /// @aJSContext       the corresponding JavaScript context
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetHiddenWindowAndJSContext([MarshalAs(UnmanagedType.Interface)] ref nsIDOMWindow aHiddenDOMWindow, ref System.IntPtr aJSContext);
+		mozIDOMWindowProxy GetHiddenPrivateDOMWindowAttribute();
 		
 		/// <summary>
         /// Return true if the application hidden window was provided by the
@@ -189,6 +177,8 @@ namespace Gecko
         // the window to wrap to its contents.
         // @param aInitialHeight like aInitialWidth, but subtly different.
         // @param aOpeningTab The TabParent that requested that this window be opened.
+        // Can be left null.
+        // @param aOpenerWindow The Window Proxy which requested that this window be opened.
         // Can be left null.
         // </summary>
 		public const long SIZE_TO_CONTENT = -1;

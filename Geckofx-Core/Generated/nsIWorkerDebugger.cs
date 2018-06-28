@@ -53,7 +53,7 @@ namespace Gecko
 	/// <summary>nsIWorkerDebugger </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2b8d801c-973d-425b-a6d5-1a2505dd8b78")]
+	[Guid("22f93aa3-8a05-46be-87e0-fa93bf8a8eff")]
 	public interface nsIWorkerDebugger
 	{
 		
@@ -92,22 +92,30 @@ namespace Gecko
 		void GetUrlAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aUrl);
 		
 		/// <summary>Member GetWindowAttribute </summary>
-		/// <returns>A nsIDOMWindow</returns>
+		/// <returns>A mozIDOMWindow</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		mozIDOMWindow GetWindowAttribute();
+		
+		/// <summary>Member GetPrincipalAttribute </summary>
+		/// <returns>A nsIPrincipal</returns>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetWindowAttribute();
+		nsIPrincipal GetPrincipalAttribute();
+		
+		/// <summary>Member GetServiceWorkerIDAttribute </summary>
+		/// <returns>A System.UInt32</returns>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetServiceWorkerIDAttribute();
 		
 		/// <summary>Member Initialize </summary>
 		/// <param name='url'> </param>
-		/// <param name='jsContext'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Initialize([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, System.IntPtr jsContext);
+		void Initialize([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url);
 		
 		/// <summary>Member PostMessage </summary>
 		/// <param name='message'> </param>
-		/// <param name='jsContext'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void PostMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase message, System.IntPtr jsContext);
+		void PostMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase message);
 		
 		/// <summary>Member AddListener </summary>
 		/// <param name='listener'> </param>

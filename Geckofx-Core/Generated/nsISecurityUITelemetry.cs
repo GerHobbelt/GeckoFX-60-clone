@@ -72,60 +72,6 @@ namespace Gecko
 		public const long WARNING_CONFIRM_POST_TO_INSECURE_FROM_SECURE_CLICK_THROUGH = 10;
 		
 		// <summary>
-        // Phishing / Malware page warnings
-        // deprecated: we use the _TOP and _FRAME versions below
-        // </summary>
-		public const long WARNING_MALWARE_PAGE = 13;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_WHY_BLOCKED = 14;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_GET_ME_OUT_OF_HERE = 15;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_IGNORE_WARNING = 16;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE = 17;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_WHY_BLOCKED = 18;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_GET_ME_OUT_OF_HERE = 19;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_IGNORE_WARNING = 20;
-		
-		// <summary>
-        // SSL Error dialogs
-        // deprecated: we use the _TOP versions below
-        // </summary>
-		public const long WARNING_BAD_CERT = 21;
-		
-		// 
-		public const long WARNING_BAD_CERT_STS = 22;
-		
-		// 
-		public const long WARNING_BAD_CERT_CLICK_ADD_EXCEPTION = 23;
-		
-		// 
-		public const long WARNING_BAD_CERT_CLICK_VIEW_CERT = 24;
-		
-		// 
-		public const long WARNING_BAD_CERT_DONT_REMEMBER_EXCEPTION = 25;
-		
-		// 
-		public const long WARNING_BAD_CERT_GET_ME_OUT_OF_HERE = 27;
-		
-		// 
-		public const long WARNING_BAD_CERT_UNDERSTAND_RISKS = 28;
-		
-		// 
-		public const long WARNING_BAD_CERT_TECHINICAL_DETAILS = 29;
-		
-		// <summary>
         // Note that if we add more possibilities in the warning dialogs,
         // it is a new experiment and we shouldn't reuse these buckets.
         // </summary>
@@ -167,63 +113,8 @@ namespace Gecko
 		public const long WARNING_GEOLOCATION_REQUEST_NEVER_SHARE = 49;
 		
 		// <summary>
-        // Firefox Update Errors: UI is only thrown after
-        // repeated errors. We only measure when the UI is shown.
+        // const uint32_t WARNING_PHISHING_PAGE_FRAME_IGNORE_WARNING = 67;
         // </summary>
-		public const long WARNING_INSECURE_UPDATE = 50;
-		
-		// 
-		public const long WARNING_NO_SECURE_UPDATE = 51;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_TOP = 52;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_TOP_WHY_BLOCKED = 53;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_TOP_GET_ME_OUT_OF_HERE = 54;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_TOP_IGNORE_WARNING = 55;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_TOP = 56;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_TOP_WHY_BLOCKED = 57;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_TOP_GET_ME_OUT_OF_HERE = 58;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_TOP_IGNORE_WARNING = 59;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_FRAME = 60;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_FRAME_WHY_BLOCKED = 61;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_FRAME_GET_ME_OUT_OF_HERE = 62;
-		
-		// 
-		public const long WARNING_MALWARE_PAGE_FRAME_IGNORE_WARNING = 63;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_FRAME = 64;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_FRAME_WHY_BLOCKED = 65;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_FRAME_GET_ME_OUT_OF_HERE = 66;
-		
-		// 
-		public const long WARNING_PHISHING_PAGE_FRAME_IGNORE_WARNING = 67;
-		
-		// 
 		public const long WARNING_BAD_CERT_TOP = 68;
 		
 		// 
@@ -269,31 +160,5 @@ namespace Gecko
 		
 		// 
 		public const long WARNING_BAD_CERT_TOP_CONFIRM_ADD_EXCEPTION_FLAG_TIME = 4;
-		
-		// <summary>
-        // Another Safe Browsing list (like malware & phishing above)
-        // </summary>
-		public const long WARNING_UNWANTED_PAGE_TOP = 92;
-		
-		// 
-		public const long WARNING_UNWANTED_PAGE_TOP_WHY_BLOCKED = 93;
-		
-		// 
-		public const long WARNING_UNWANTED_PAGE_TOP_GET_ME_OUT_OF_HERE = 94;
-		
-		// 
-		public const long WARNING_UNWANTED_PAGE_TOP_IGNORE_WARNING = 95;
-		
-		// 
-		public const long WARNING_UNWANTED_PAGE_FRAME = 96;
-		
-		// 
-		public const long WARNING_UNWANTED_PAGE_FRAME_WHY_BLOCKED = 97;
-		
-		// 
-		public const long WARNING_UNWANTED_PAGE_FRAME_GET_ME_OUT_OF_HERE = 98;
-		
-		// 
-		public const long WARNING_UNWANTED_PAGE_FRAME_IGNORE_WARNING = 99;
 	}
 }

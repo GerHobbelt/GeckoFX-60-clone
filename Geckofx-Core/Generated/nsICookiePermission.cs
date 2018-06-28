@@ -56,17 +56,15 @@ namespace Gecko
         /// this method is called to test whether or not the given URI/channel may
         /// access the cookie database, either to set or get cookies.
         ///
-        /// @param aURI
-        /// the URI trying to access cookies
-        /// @param aChannel
-        /// the channel corresponding to aURI
+        /// @param aPrincipal
+        /// the principal trying to access cookies.
         ///
         /// @return one of the following nsCookieAccess values:
         /// ACCESS_DEFAULT, ACCESS_ALLOW, ACCESS_DENY, or
         /// ACCESS_ALLOW_FIRST_PARTY_ONLY
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr CanAccess([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel);
+		System.IntPtr CanAccess([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
 		
 		/// <summary>
         /// canSetCookie

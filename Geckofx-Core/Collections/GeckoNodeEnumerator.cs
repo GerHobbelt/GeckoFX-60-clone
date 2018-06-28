@@ -7,8 +7,8 @@ using System.Text;
 namespace Gecko.Collections
 {
     /// <summary>
-    /// Generic wrapper for Enumerator to classes nsIDOMNodeList/nsIDOMHTMLCollection
-    /// It looks like nsIDOMHTMLCollection MUST BE subclass of nsIDOMNodeList - but :-(
+    /// Generic wrapper for Enumerator to classes nsIDOMNodeList//* nsIDOMHTMLCollection */nsISupports
+    /// It looks like /* nsIDOMHTMLCollection */nsISupports MUST BE subclass of nsIDOMNodeList - but :-(
     /// </summary>
     /// <typeparam name="TWrapper"></typeparam>
     /// <typeparam name="TGeckoObject"></typeparam>
@@ -28,7 +28,7 @@ namespace Gecko.Collections
         }
 
 
-        public GeckoNodeEnumerator(nsIDOMHTMLCollection collection, Func<TGeckoNode, TWrapper> translator)
+        public GeckoNodeEnumerator(/* nsIDOMHTMLCollection */nsISupports collection, Func<TGeckoNode, TWrapper> translator)
             : this(new Wrapper2(collection), translator)
         {
         }
@@ -116,10 +116,10 @@ namespace Gecko.Collections
         private sealed class Wrapper2
             : Wrapper
         {
-            private nsIDOMHTMLCollection _collection;
+            private /* nsIDOMHTMLCollection */nsISupports _collection;
             private int _length;
 
-            public Wrapper2(nsIDOMHTMLCollection collection)
+            public Wrapper2(/* nsIDOMHTMLCollection */nsISupports collection)
             {
                 _collection = collection;
                 _length = (int) collection.GetLengthAttribute();

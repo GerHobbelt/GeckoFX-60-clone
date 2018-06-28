@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("75125d55-37ee-4575-b9b5-f33bfa68c2a1")]
+	[Guid("40aba110-2a56-4678-be90-e2c17a9ae7d7")]
 	public interface nsIFind
 	{
 		
@@ -58,19 +58,12 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetCaseSensitiveAttribute([MarshalAs(UnmanagedType.U1)] bool aCaseSensitive);
 		
-		/// <summary>
-        /// Use "find entire words" mode by setting to a word breaker
-        /// or null, to disable "entire words" mode.
-        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetWordBreakerAttribute();
+		bool GetEntireWordAttribute();
 		
-		/// <summary>
-        /// Use "find entire words" mode by setting to a word breaker
-        /// or null, to disable "entire words" mode.
-        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetWordBreakerAttribute(System.IntPtr aWordBreaker);
+		void SetEntireWordAttribute([MarshalAs(UnmanagedType.U1)] bool aEntireWord);
 		
 		/// <summary>
         /// Find some text in the current context. The implementation is

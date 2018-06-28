@@ -212,9 +212,8 @@ namespace Gecko
         ///
         /// @see nsIDOMWindow
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetContentDOMWindowAttribute();
+		mozIDOMWindowProxy GetContentDOMWindowAttribute();
 		
 		/// <summary>
         /// Whether this web browser is active. Active means that it's visible
@@ -240,5 +239,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsActiveAttribute([MarshalAs(UnmanagedType.U1)] bool aIsActive);
+		
+		/// <summary>
+        /// Set Origin Attributes on the nsIWebBrowser.
+        /// The Origin Attributes will be passed to the docshell once it has been
+        /// created
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BinarySetOriginAttributes(System.IntPtr aOriginAttrs);
 	}
 }

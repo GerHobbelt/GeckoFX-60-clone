@@ -44,20 +44,6 @@ namespace Gecko
 		int GetTextLengthAttribute();
 		
 		/// <summary>
-        /// The maximum number of characters allowed.
-        /// default: -1 (unlimited).
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetMaxTextLengthAttribute();
-		
-		/// <summary>
-        /// The maximum number of characters allowed.
-        /// default: -1 (unlimited).
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetMaxTextLengthAttribute(int aMaxTextLength);
-		
-		/// <summary>
         ///Get and set the body wrap width.
         ///
         /// Special values:

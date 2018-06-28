@@ -81,13 +81,15 @@ namespace Gecko
 		
 		/// <summary>
         /// The pipe's input end, which also implements nsISearchableInputStream.
+        /// Getting fails if the pipe hasn't been initialized.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIAsyncInputStream GetInputStreamAttribute();
 		
 		/// <summary>
-        /// The pipe's output end.
+        /// The pipe's output end. Getting fails if the pipe hasn't been
+        /// initialized.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

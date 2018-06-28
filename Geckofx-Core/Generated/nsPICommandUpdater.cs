@@ -35,7 +35,7 @@ namespace Gecko
     ///	from an nsICommandManager. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("B135F602-0BFE-11D5-A73C-F0E420E8293C")]
+	[Guid("35e474ae-8016-4c34-9644-edc11f8b0ce1")]
 	public interface nsPICommandUpdater
 	{
 		
@@ -45,7 +45,7 @@ namespace Gecko
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		void Init(mozIDOMWindowProxy aWindow);
 		
 		/// <summary>
         /// Notify the command manager that the status of a command

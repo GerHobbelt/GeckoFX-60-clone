@@ -41,16 +41,14 @@ namespace Gecko
 		/// <summary>
         /// Get the client id associated with this cache entry.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new string GetClientIDAttribute();
+		new void GetClientIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aClientID);
 		
 		/// <summary>
         /// Get the id for the device that stores this cache entry.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new string GetDeviceIDAttribute();
+		new void GetDeviceIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aDeviceID);
 		
 		/// <summary>
         /// Get the key identifying the cache entry.

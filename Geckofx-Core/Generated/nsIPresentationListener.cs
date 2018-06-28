@@ -40,7 +40,7 @@ namespace Gecko
         /// Called when device availability changes.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyAvailableChange([MarshalAs(UnmanagedType.U1)] bool available);
+		void NotifyAvailableChange(nsISupports urls, [MarshalAs(UnmanagedType.U1)] bool available);
 	}
 	
 	/// <summary>nsIPresentationSessionListener </summary>
@@ -54,13 +54,13 @@ namespace Gecko
         /// Called when session state changes.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyStateChange([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, ushort state);
+		void NotifyStateChange([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, ushort state, int reason);
 		
 		/// <summary>
         /// Called when receive messages.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase data);
+		void NotifyMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase data, [MarshalAs(UnmanagedType.U1)] bool isBinary);
 	}
 	
 	/// <summary>nsIPresentationSessionListenerConsts </summary>
@@ -68,13 +68,16 @@ namespace Gecko
 	{
 		
 		// 
-		public const ushort STATE_CONNECTED = 0;
+		public const ushort STATE_CONNECTING = 0;
 		
 		// 
-		public const ushort STATE_CLOSED = 1;
+		public const ushort STATE_CONNECTED = 1;
 		
 		// 
-		public const ushort STATE_TERMINATED = 2;
+		public const ushort STATE_CLOSED = 2;
+		
+		// 
+		public const ushort STATE_TERMINATED = 3;
 	}
 	
 	/// <summary>nsIPresentationRespondingListener </summary>

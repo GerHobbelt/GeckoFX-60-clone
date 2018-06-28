@@ -116,6 +116,22 @@ namespace Gecko
 		nsIDOMNode GetSourceNodeAttribute();
 		
 		/// <summary>
+        /// The URI spec of the triggering principal.  This may be different than
+        /// sourceNode's principal when sourceNode is xul:browser and the drag is
+        /// triggered in a browsing context inside it.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetTriggeringPrincipalURISpecAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTriggeringPrincipalURISpec);
+		
+		/// <summary>
+        /// The URI spec of the triggering principal.  This may be different than
+        /// sourceNode's principal when sourceNode is xul:browser and the drag is
+        /// triggered in a browsing context inside it.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTriggeringPrincipalURISpecAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTriggeringPrincipalURISpec);
+		
+		/// <summary>
         /// The data transfer object for the current drag.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -156,5 +172,11 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void UpdateDragEffect();
+		
+		/// <summary>
+        /// nsIDragService::InvokeDragSessionWithImage.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void UpdateDragImage([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aImage, int aImageX, int aImageY);
 	}
 }

@@ -35,7 +35,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b2596105-3d0d-4e6a-824f-0539713bb879")]
+	[Guid("c5a4a073-4539-49c7-a3f2-cec3f0619c6c")]
 	public interface nsIHttpChannel : nsIChannel
 	{
 		
@@ -515,21 +515,41 @@ namespace Gecko
 		new void GetContentDispositionHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentDispositionHeader);
 		
 		/// <summary>
-        /// The nsILoadInfo for this load.  This is immutable for the
-        /// lifetime of the load and should be passed through across
-        /// redirects and the like.
+        /// The LoadInfo object contains information about a network load, why it
+        /// was started, and how we plan on using the resulting response.
+        /// If a network request is redirected, the new channel will receive a new
+        /// LoadInfo object. The new object will contain mostly the same
+        /// information as the pre-redirect one, but updated as appropriate.
+        /// For detailed information about what parts of LoadInfo are updated on
+        /// redirect, see documentation on individual properties.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsILoadInfo GetLoadInfoAttribute();
 		
 		/// <summary>
-        /// The nsILoadInfo for this load.  This is immutable for the
-        /// lifetime of the load and should be passed through across
-        /// redirects and the like.
+        /// The LoadInfo object contains information about a network load, why it
+        /// was started, and how we plan on using the resulting response.
+        /// If a network request is redirected, the new channel will receive a new
+        /// LoadInfo object. The new object will contain mostly the same
+        /// information as the pre-redirect one, but updated as appropriate.
+        /// For detailed information about what parts of LoadInfo are updated on
+        /// redirect, see documentation on individual properties.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetLoadInfoAttribute([MarshalAs(UnmanagedType.Interface)] nsILoadInfo aLoadInfo);
+		
+		/// <summary>
+        /// Returns true if the channel is used to create a document.
+        /// It returns true if the loadFlags have LOAD_DOCUMENT_URI set, or if
+        /// LOAD_HTML_OBJECT_DATA is set and the channel has the appropriate
+        /// MIME type.
+        /// Note: May have the wrong value if called before OnStartRequest as we
+        /// don't know the MIME type yet.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetIsDocumentAttribute();
 		
 		/// <summary>
         /// Set/get the HTTP request method (default is "GET").  Both setter and
@@ -577,6 +597,8 @@ namespace Gecko
         /// URI is rejected.
         ///
         /// @throws NS_ERROR_IN_PROGRESS if set after the channel has been opened.
+        /// @throws NS_ERROR_FAILURE if used for setting referrer during
+        /// visitRequestHeaders. Getting the value will not throw.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -596,6 +618,8 @@ namespace Gecko
         /// URI is rejected.
         ///
         /// @throws NS_ERROR_IN_PROGRESS if set after the channel has been opened.
+        /// @throws NS_ERROR_FAILURE if used for setting referrer during
+        /// visitRequestHeaders. Getting the value will not throw.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetReferrerAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer);
@@ -610,6 +634,7 @@ namespace Gecko
 		
 		/// <summary>
         /// Set the HTTP referrer URI with a referrer policy.
+        /// @throws NS_ERROR_FAILURE if called during visitRequestHeaders.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetReferrerWithPolicy([MarshalAs(UnmanagedType.Interface)] nsIURI referrer, uint referrerPolicy);
@@ -682,6 +707,7 @@ namespace Gecko
         ///
         /// @throws NS_ERROR_IN_PROGRESS if called after the channel has been
         /// opened.
+        /// @throws NS_ERROR_FAILURE if called during visitRequestHeaders.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetRequestHeader([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHeader, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aValue, [MarshalAs(UnmanagedType.U1)] bool aMerge);
@@ -700,6 +726,7 @@ namespace Gecko
         ///
         /// @throws NS_ERROR_IN_PROGRESS if called after the channel has been
         /// opened.
+        /// @throws NS_ERROR_FAILURE if called during visitRequestHeaders.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetEmptyRequestHeader([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHeader);
@@ -726,16 +753,7 @@ namespace Gecko
 		void VisitNonDefaultRequestHeaders([MarshalAs(UnmanagedType.Interface)] nsIHttpHeaderVisitor aVisitor);
 		
 		/// <summary>
-        /// This attribute is a hint to the channel to indicate whether or not
-        /// the underlying HTTP transaction should be allowed to be pipelined
-        /// with other transactions.  This should be set to FALSE, for example,
-        /// if the application knows that the corresponding document is likely
-        /// to be very large.
-        ///
-        /// This attribute is true by default, though other factors may prevent
-        /// pipelining.
-        ///
-        /// This attribute may only be set before the channel is opened.
+        /// This attribute no longer has any effect, it remains for backwards compat
         ///
         /// @throws NS_ERROR_FAILURE if set after the channel has been opened.
         /// </summary>
@@ -744,16 +762,7 @@ namespace Gecko
 		bool GetAllowPipeliningAttribute();
 		
 		/// <summary>
-        /// This attribute is a hint to the channel to indicate whether or not
-        /// the underlying HTTP transaction should be allowed to be pipelined
-        /// with other transactions.  This should be set to FALSE, for example,
-        /// if the application knows that the corresponding document is likely
-        /// to be very large.
-        ///
-        /// This attribute is true by default, though other factors may prevent
-        /// pipelining.
-        ///
-        /// This attribute may only be set before the channel is opened.
+        /// This attribute no longer has any effect, it remains for backwards compat
         ///
         /// @throws NS_ERROR_FAILURE if set after the channel has been opened.
         /// </summary>
@@ -863,7 +872,7 @@ namespace Gecko
 		/// <summary>
         ///Indicates whether channel should be treated as the main one for the
         /// current document.  If manually set to true, will always remain true.  Otherwise,
-        /// will be true iff LOAD_DOCUMENT_URI is set in the channel's loadflags.
+        /// will be true if LOAD_DOCUMENT_URI is set in the channel's loadflags.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -872,7 +881,7 @@ namespace Gecko
 		/// <summary>
         ///Indicates whether channel should be treated as the main one for the
         /// current document.  If manually set to true, will always remain true.  Otherwise,
-        /// will be true iff LOAD_DOCUMENT_URI is set in the channel's loadflags.
+        /// will be true if LOAD_DOCUMENT_URI is set in the channel's loadflags.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsMainDocumentChannelAttribute([MarshalAs(UnmanagedType.U1)] bool aIsMainDocumentChannel);
@@ -919,6 +928,8 @@ namespace Gecko
         /// has been received (before onStartRequest).
         /// @throws NS_ERROR_ILLEGAL_VALUE if changing the value of this response
         /// header is not allowed.
+        /// @throws NS_ERROR_FAILURE if called during visitResponseHeaders,
+        /// VisitOriginalResponseHeaders or getOriginalResponseHeader.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetResponseHeader([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase header, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase value, [MarshalAs(UnmanagedType.U1)] bool merge);
@@ -936,6 +947,40 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void VisitResponseHeaders([MarshalAs(UnmanagedType.Interface)] nsIHttpHeaderVisitor aVisitor);
+		
+		/// <summary>
+        /// Get the value(s) of a particular response header in the form and order
+        /// it has been received from the remote peer. There can be multiple headers
+        /// with the same name.
+        ///
+        /// @param aHeader
+        /// The case-insensitive name of the response header to query (e.g.,
+        /// "Set-Cookie").
+        ///
+        /// @param aVisitor
+        /// the header visitor instance.
+        ///
+        /// @throws NS_ERROR_NOT_AVAILABLE if called before the response
+        /// has been received (before onStartRequest) or if the header is
+        /// not set in the response.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetOriginalResponseHeader([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHeader, [MarshalAs(UnmanagedType.Interface)] nsIHttpHeaderVisitor aVisitor);
+		
+		/// <summary>
+        /// Call this method to visit all response headers in the form and order as
+        /// they have been received from the remote peer.
+        /// Calling setResponseHeader while visiting response headers has undefined
+        /// behavior.  Don't do it!
+        ///
+        /// @param aVisitor
+        /// the header visitor instance.
+        ///
+        /// @throws NS_ERROR_NOT_AVAILABLE if called before the response
+        /// has been received (before onStartRequest).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void VisitOriginalResponseHeaders([MarshalAs(UnmanagedType.Interface)] nsIHttpHeaderVisitor aVisitor);
 		
 		/// <summary>
         /// Returns true if the server sent a "Cache-Control: no-store" response
@@ -974,28 +1019,130 @@ namespace Gecko
 		
 		/// <summary>
         /// Instructs the channel to immediately redirect to a new destination.
-        /// Can only be called on channels not yet opened.
+        /// Can only be called on channels that have not yet called their
+        /// listener's OnStartRequest(). Generally that means the latest time
+        /// this can be used is one of:
+        /// "http-on-examine-response"
+        /// "http-on-examine-merged-response"
+        /// "http-on-examine-cached-response"
+        ///
+        /// When non-null URL is set before AsyncOpen:
+        /// we attempt to redirect to the targetURI before we even start building
+        /// and sending the request to the cache or the origin server.
+        /// If the redirect is vetoed, we fail the channel.
+        ///
+        /// When set between AsyncOpen and first call to OnStartRequest being called:
+        /// we attempt to redirect before we start delivery of network or cached
+        /// response to the listener.  If vetoed, we continue with delivery of
+        /// the original content to the channel listener.
+        ///
+        /// When passed aTargetURI is null the channel behaves normally (can be
+        /// rewritten).
         ///
         /// This method provides no explicit conflict resolution. The last
         /// caller to call it wins.
         ///
-        /// @throws NS_ERROR_ALREADY_OPENED if called after the channel
-        /// has been opened.
+        /// @throws NS_ERROR_NOT_AVAILABLE if called after the channel has already
+        /// started to deliver the content to its listener.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RedirectTo([MarshalAs(UnmanagedType.Interface)] nsIURI aNewURI);
+		void RedirectTo([MarshalAs(UnmanagedType.Interface)] nsIURI aTargetURI);
 		
 		/// <summary>
-        /// Identifies the scheduling context for this load.
+        /// Flags a channel to be upgraded to HTTPS.
+        ///
+        /// Upgrading to a secure channel must happen before or during
+        /// "http-on-modify-request". If redirectTo is called early as well, it
+        /// will win and upgradeToSecure will be a no-op.
+        ///
+        /// @throws NS_ERROR_NOT_AVAILABLE if called after the channel has already
+        /// started to deliver the content to its listener.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetSchedulingContextIDAttribute();
+		void UpgradeToSecure();
 		
 		/// <summary>
-        /// Identifies the scheduling context for this load.
+        /// Identifies the request context for this load.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetSchedulingContextIDAttribute(System.IntPtr aSchedulingContextID);
+		ulong GetRequestContextIDAttribute();
+		
+		/// <summary>
+        /// Identifies the request context for this load.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetRequestContextIDAttribute(ulong aRequestContextID);
+		
+		/// <summary>
+        /// Unique ID of the channel, shared between parent and child. Needed if
+        /// the channel activity needs to be monitored across process boundaries,
+        /// like in devtools net monitor. See bug 1274556.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetChannelIdAttribute();
+		
+		/// <summary>
+        /// Unique ID of the channel, shared between parent and child. Needed if
+        /// the channel activity needs to be monitored across process boundaries,
+        /// like in devtools net monitor. See bug 1274556.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetChannelIdAttribute(ulong aChannelId);
+		
+		/// <summary>
+        /// ID of the top-level document's inner window.  Identifies the content
+        /// this channels is being load in.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetTopLevelContentWindowIdAttribute();
+		
+		/// <summary>
+        /// ID of the top-level document's inner window.  Identifies the content
+        /// this channels is being load in.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTopLevelContentWindowIdAttribute(ulong aTopLevelContentWindowId);
+		
+		/// <summary>
+        /// Returns true if the channel has loaded a resource that is on the tracking
+        /// protection list.  This is only available if the
+        /// privacy.trackingprotection.annotate_channels pref is set and its value
+        /// should only be relied on after the channel has established a connection.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsTrackingResourceAttribute();
+		
+		/// <summary>
+        /// ID of the top-level outer content window. Identifies this channel's
+        /// top-level window it comes from.
+        ///
+        /// NOTE: The setter of this attribute is currently for xpcshell test only.
+        /// Don't alter it otherwise.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetTopLevelOuterContentWindowIdAttribute();
+		
+		/// <summary>
+        /// ID of the top-level outer content window. Identifies this channel's
+        /// top-level window it comes from.
+        ///
+        /// NOTE: The setter of this attribute is currently for xpcshell test only.
+        /// Don't alter it otherwise.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTopLevelOuterContentWindowIdAttribute(ulong aTopLevelOuterContentWindowId);
+		
+		/// <summary>
+        /// In e10s, the information that the CORS response blocks the load is in the
+        /// parent, which doesn't know the true window id of the request, so we may
+        /// need to proxy the request to the child.
+        ///
+        /// @param aMessage
+        /// The message to print in the console.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void LogBlockedCORSRequest([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMessage);
 	}
 	
 	/// <summary>nsIHttpChannelConsts </summary>
@@ -1003,27 +1150,43 @@ namespace Gecko
 	{
 		
 		// <summary>
-        //default state, a shorter name for no-referrer-when-downgrade </summary>
-		public const ulong REFERRER_POLICY_DEFAULT = 0;
+        //The undefined state, or no referrer policy, usually causing a fallback
+        //         to a referrer policy definded elsewhere </summary>
+		public const ulong REFERRER_POLICY_UNSET = 0;
 		
 		// <summary>
         //default state, doesn't send referrer from https->http </summary>
-		public const ulong REFERRER_POLICY_NO_REFERRER_WHEN_DOWNGRADE = 0;
+		public const ulong REFERRER_POLICY_NO_REFERRER_WHEN_DOWNGRADE = 1;
 		
 		// <summary>
         //sends no referrer </summary>
-		public const ulong REFERRER_POLICY_NO_REFERRER = 1;
+		public const ulong REFERRER_POLICY_NO_REFERRER = 2;
 		
 		// <summary>
         //only sends the origin of the referring URL </summary>
-		public const ulong REFERRER_POLICY_ORIGIN = 2;
+		public const ulong REFERRER_POLICY_ORIGIN = 3;
 		
 		// <summary>
         //same as default, but reduced to ORIGIN when cross-origin. </summary>
-		public const ulong REFERRER_POLICY_ORIGIN_WHEN_XORIGIN = 3;
+		public const ulong REFERRER_POLICY_ORIGIN_WHEN_XORIGIN = 4;
 		
 		// <summary>
         //always sends the referrer, even on downgrade. </summary>
-		public const ulong REFERRER_POLICY_UNSAFE_URL = 4;
+		public const ulong REFERRER_POLICY_UNSAFE_URL = 5;
+		
+		// <summary>
+        //send referrer when same-origin, no referrer when cross-origin </summary>
+		public const ulong REFERRER_POLICY_SAME_ORIGIN = 6;
+		
+		// <summary>
+        //send origin when request from https->https or http->http(s)
+        //         No referrer when request from https->http. </summary>
+		public const ulong REFERRER_POLICY_STRICT_ORIGIN = 7;
+		
+		// <summary>
+        //send referrer when same-origin,
+        //         Send origin when cross-origin from https->https or http->http(s)
+        //         No referrer when request from https->http. </summary>
+		public const ulong REFERRER_POLICY_STRICT_ORIGIN_WHEN_XORIGIN = 8;
 	}
 }

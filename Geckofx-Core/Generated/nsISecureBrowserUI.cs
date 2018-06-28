@@ -34,7 +34,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("62f6c5be-ea8c-4fab-8e5c-d1580b50ec3f")]
+	[Guid("718c662a-f810-4a80-a6c9-0b1810ecade2")]
 	public interface nsISecureBrowserUI
 	{
 		
@@ -45,7 +45,7 @@ namespace Gecko
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		void Init(mozIDOMWindowProxy window);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDocShell([MarshalAs(UnmanagedType.Interface)] nsIDocShell docShell);

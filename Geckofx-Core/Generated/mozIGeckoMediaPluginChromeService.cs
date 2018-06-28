@@ -59,10 +59,11 @@ namespace Gecko
 		void RemoveAndDeletePluginDirectory([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase directory, [MarshalAs(UnmanagedType.U1)] bool defer);
 		
 		/// <summary>
-        /// Clears storage data associated with the site.
+        /// Clears storage data associated with the site and the OriginAttributes
+        /// pattern in JSON format.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ForgetThisSite([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase site);
+		void ForgetThisSite([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase site, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPattern);
 		
 		/// <summary>
         /// Returns true if the given node id is allowed to store things

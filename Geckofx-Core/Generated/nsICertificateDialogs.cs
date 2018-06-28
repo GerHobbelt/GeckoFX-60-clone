@@ -42,8 +42,8 @@ namespace Gecko
         ///
         /// @param ctx A user interface context.
         /// @param cert The certificate that is about to get installed.
-        /// @param trust a bit mask of trust flags,
-        /// see nsIX509CertDB for possible values.
+        /// @param trust A bit mask of trust flags.
+        /// See nsIX509CertDB for possible values.
         ///
         /// @return true if the user allows to import the certificate.
         /// </summary>
@@ -52,23 +52,12 @@ namespace Gecko
 		bool ConfirmDownloadCACert([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx, [MarshalAs(UnmanagedType.Interface)] nsIX509Cert cert, ref uint trust);
 		
 		/// <summary>
-        /// UI shown when a web site has delivered a CA certificate to
-        /// be imported, but the certificate is already contained in the
-        /// user's storage.
-        ///
-        /// @param ctx A user interface context.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyCACertExists([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx);
-		
-		/// <summary>
         /// UI shown when a user's personal certificate is going to be
         /// exported to a backup file.
-        /// The implementation of this dialog should make sure
-        /// to prompt the user to type the password twice in order to
-        /// confirm correct input.
-        /// The wording in the dialog should also motivate the user
-        /// to enter a strong password.
+        /// The implementation of this dialog should make sure to prompt the user to
+        /// type the password twice in order to confirm correct input.
+        /// The wording in the dialog should also motivate the user to enter a strong
+        /// password.
         ///
         /// @param ctx A user interface context.
         /// @param password The password provided by the user.

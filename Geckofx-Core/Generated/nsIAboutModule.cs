@@ -53,14 +53,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetURIFlags([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
-		
-		/// <summary>
-        /// Returns the Indexed DB origin's postfix used for the given about: URI.
-        /// If the postfix returned is null then the URI's path (e.g. "home" for
-        /// about:home) will be used to construct the origin.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetIndexedDBOriginPostfix([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 	}
 	
 	/// <summary>nsIAboutModuleConsts </summary>
@@ -68,13 +60,13 @@ namespace Gecko
 	{
 		
 		// <summary>
-        // A flag that indicates whether a URI is safe for untrusted
-        // content.  If it is, web pages and so forth will be allowed to
-        // link to this about: URI (unless MAKE_UNLINKABLE is also specified),
-        // and the about: protocol handler will enforce that the principal
-        // of channels created for it be based on their originalURI or URI
-        // (depending on the channel flags), by setting their "owner" to null.
-        // Otherwise, only chrome will be able to link to it.
+        // A flag that indicates whether a URI should be run with content
+        // privileges. If it is, the about: protocol handler will enforce that
+        // the principal of channels created for it be based on their
+        // originalURI or URI (depending on the channel flags), by setting
+        // their "owner" to null.
+        // If content needs to be able to link to this URI, specify
+        // URI_CONTENT_LINKABLE as well.
         // </summary>
 		public const ulong URI_SAFE_FOR_UNTRUSTED_CONTENT = (1<<0);
 		
@@ -106,9 +98,14 @@ namespace Gecko
 		public const ulong URI_MUST_LOAD_IN_CHILD = (1<<5);
 		
 		// <summary>
-        // A flag that indicates that this URI should be unlinkable despite being
-        // safe for untrusted content.
+        // Obsolete. This flag no longer has any effect and will be removed in future.
         // </summary>
 		public const ulong MAKE_UNLINKABLE = (1<<6);
+		
+		// <summary>
+        // A flag that indicates that this URI should be linkable from content.
+        // Ignored unless URI_SAFE_FOR_UNTRUSTED_CONTENT is also specified.
+        // </summary>
+		public const ulong MAKE_LINKABLE = (1<<7);
 	}
 }

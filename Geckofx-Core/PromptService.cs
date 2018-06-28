@@ -135,6 +135,11 @@ namespace Gecko
             Marshal.Release(iUnknownForObject);
             return result;
         }
+
+        public IntPtr GetPrompt(mozIDOMWindowProxy aParent, ref Guid iid)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class PromptService : nsIPrompt, nsIAuthPrompt2, nsIAuthPrompt

@@ -45,36 +45,10 @@ namespace Gecko
 		nsIScreen ScreenForRect(int left, int top, int width, int height);
 		
 		/// <summary>
-        /// interface.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIScreen ScreenForId(uint id);
-		
-		/// <summary>
         /// often.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIScreen GetPrimaryScreenAttribute();
-		
-		/// <summary>
-        /// Holds the number of screens that are available
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetNumberOfScreensAttribute();
-		
-		/// <summary>
-        /// honor these settings. See bug 798362 and bug 712898.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		float GetSystemDefaultScaleAttribute();
-		
-		/// <summary>
-        /// and is generally of the same type that NS_NATIVE_WINDOW is.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIScreen ScreenForNativeWidget(System.IntPtr nativeWidget);
 	}
 }

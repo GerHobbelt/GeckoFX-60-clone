@@ -43,19 +43,15 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AddCert([MarshalAs(UnmanagedType.Interface)] nsIX509Cert cert);
 		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DeleteCert([MarshalAs(UnmanagedType.Interface)] nsIX509Cert cert);
-		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISimpleEnumerator GetEnumerator();
 		
 		/// <summary>
-        ///getRawCertList MUST be called only from functions where
-        /// the nssShutdownPreventionLock has been adquired.
+        /// Returns the raw, backing cert list.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetRawCertList();
+        nsISupports GetRawCertList();
 		
 		/// <summary>
         /// Test whether two certificate list instances represent the same
@@ -66,5 +62,11 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool Equals([MarshalAs(UnmanagedType.Interface)] nsIX509CertList other);
+		
+		/// <summary>
+        /// Retrieves the PSM helper class that wraps the NSS certificate list
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports GetCertList();
 	}
 }

@@ -220,6 +220,12 @@ namespace Gecko
             return Instance.IsCertUsedForOverrides(aCert, aCheckTemporaries, aCheckPermanents);
         }
 
+        public void RememberTemporaryValidityOverrideUsingFingerprint(nsACStringBase aHostName, int aPort,
+            nsACStringBase aCertFingerprint, uint aOverrideBits)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

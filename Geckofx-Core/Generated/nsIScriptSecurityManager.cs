@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("b7ae2310-576e-11e5-a837-0800200c9a66")]
+	[Guid("51daad87-3a0c-44cc-b620-7356801c9022")]
 	public interface nsIScriptSecurityManager
 	{
 		
@@ -90,11 +90,13 @@ namespace Gecko
 		void CheckLoadURIStrWithPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase uri, uint flags);
 		
 		/// <summary>
-        /// Return true if scripts may be executed in the scope of the given global.
+        /// Returns true if the URI is from a domain that is white-listed through
+        /// prefs to be allowed to use file:// URIs.
+        /// @param aUri the URI to be tested
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool ScriptAllowed(System.IntPtr aGlobal);
+		bool InFileURIWhitelist([MarshalAs(UnmanagedType.Interface)] nsIURI aUri);
 		
 		/// <summary>
         /// Return the all-powerful system principal.
@@ -104,72 +106,29 @@ namespace Gecko
 		nsIPrincipal GetSystemPrincipal();
 		
 		/// <summary>
-        /// Return a principal that has the same origin as aURI.
-        /// This principals should not be used for any data/permission check, it will
-        /// have appId = UNKNOWN_APP_ID.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal GetSimpleCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
-		
-		/// <summary>
-        /// Returns a principal that has the given information.
-        /// @param appId is the app id of the principal. It can't be UNKNOWN_APP_ID.
-        /// @param inMozBrowser is true if the principal has to be considered as
-        /// inside a mozbrowser frame.
-        ///
-        /// @deprecated use createCodebasePrincipal instead.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal GetAppCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri, uint appId, [MarshalAs(UnmanagedType.U1)] bool inMozBrowser);
-		
-		/// <summary>
-        /// Returns a principal that has the appId and inMozBrowser of the load
-        /// context.
-        /// @param loadContext to get appId/inMozBrowser from.
+        /// Returns a principal that has the OriginAttributes of the load context.
+        /// @param loadContext to get the OriginAttributes from.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPrincipal GetLoadContextCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.Interface)] nsILoadContext loadContext);
 		
 		/// <summary>
-        /// Returns a principal that has the appId and inMozBrowser of the docshell
-        /// inside a mozbrowser frame.
-        /// @param docShell to get appId/inMozBrowser from.
+        /// Returns a principal that has the OriginAttributes of the docshell.
+        /// @param docShell to get the OriginAttributes from.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPrincipal GetDocShellCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri, [MarshalAs(UnmanagedType.Interface)] nsIDocShell docShell);
 		
 		/// <summary>
-        /// Returns a principal with that has the same origin as uri and is not part
-        /// of an appliction.
-        /// The returned principal will have appId = NO_APP_ID.
-        ///
-        /// @deprecated use createCodebasePrincipal instead.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal GetNoAppCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri);
-		
-		/// <summary>
-        /// Legacy method for getting a principal with no origin attributes.
-        ///
-        /// @deprecated use createCodebasePrincipal instead.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal GetCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri);
-		
-		/// <summary>
-        /// Returns a principal whose origin is composed of |uri| and |originAttributes|.
+        /// Returns a principal whose origin is composed of |uri| and |OriginAttributes|.
         /// See nsIPrincipal.idl for a description of origin attributes, and
         /// ChromeUtils.webidl for a list of origin attributes and their defaults.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal CreateCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri, ref Gecko.JsVal originAttributes, System.IntPtr jsContext);
+		nsIPrincipal CreateCodebasePrincipal([MarshalAs(UnmanagedType.Interface)] nsIURI uri, ref Gecko.JsVal OriginAttributes, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Returns a principal whose origin is the one we pass in.
@@ -181,28 +140,13 @@ namespace Gecko
 		nsIPrincipal CreateCodebasePrincipalFromOrigin([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase origin);
 		
 		/// <summary>
-        /// Returns a unique nonce principal with |originAttributes|.
+        /// Returns a unique nonce principal with |OriginAttributes|.
         /// See nsIPrincipal.idl for a description of origin attributes, and
         /// ChromeUtils.webidl for a list of origin attributes and their defaults.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal CreateNullPrincipal(ref Gecko.JsVal originAttributes, System.IntPtr jsContext);
-		
-		/// <summary>
-        /// Creates an expanded principal whose capabilities are the union of the
-        /// given principals. An expanded principal has an asymmetric privilege
-        /// relationship with its sub-principals (that is to say, it subsumes the
-        /// sub-principals, but the sub-principals do not subsume it), even if
-        /// there's only one. This presents a legitimate use-case for making an
-        /// expanded principal around a single sub-principal, which we do frequently.
-        ///
-        /// Expanded principals cannot have origin attributes themselves, but rather
-        /// have them through their sub-principals - so we don't accept them here.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIPrincipal CreateExpandedPrincipal([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] nsIPrincipal[] aPrincipalArray, uint aLength);
+		nsIPrincipal CreateNullPrincipal(ref Gecko.JsVal OriginAttributes, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Returns OK if aSourceURI and target have the same "origin"
@@ -223,6 +167,25 @@ namespace Gecko
 		nsIPrincipal GetChannelResultPrincipal([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel);
 		
 		/// <summary>
+        /// Temporary API until bug 1220687 is fixed.
+        ///
+        /// Returns the same value as getChannelResultPrincipal, but ignoring
+        /// sandboxing.  Specifically, if sandboxing would have prevented the
+        /// channel's triggering principal from being returned by
+        /// getChannelResultPrincipal, the triggering principal will be returned
+        /// by this method.
+        ///
+        /// Note that this method only ignores sandboxing of the channel in
+        /// question, it does not ignore sandboxing of any channels further up a
+        /// document chain.  The triggering principal itself may still be the null
+        /// principal due to sandboxing further up a document chain.  In that regard
+        /// the ignoring of sandboxing is limited.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPrincipal GetChannelResultPrincipalIfNotSandboxed([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel);
+		
+		/// <summary>
         /// Get the codebase principal for the channel's URI.
         /// aChannel must not be null.
         /// </summary>
@@ -238,15 +201,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool IsSystemPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
-		
-		/// <summary>
-        /// Returns the jar prefix for the app.
-        /// appId can be NO_APP_ID or a valid app id. appId should not be
-        /// UNKNOWN_APP_ID.
-        /// inMozBrowser has to be true if the app is inside a mozbrowser iframe.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetJarPrefix(uint appId, [MarshalAs(UnmanagedType.U1)] bool inMozBrowser, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
 		
 		/// <summary>
         /// Per-domain controls to enable and disable script. This system is designed
@@ -345,11 +299,6 @@ namespace Gecko
 		
 		// <summary>
         // UINT32_MAX
-        // </summary>
-		public const ulong SAFEBROWSING_APP_ID = 4294967294;
-		
-		// <summary>
-        // UINT32_MAX - 1
         // </summary>
 		public const ulong DEFAULT_USER_CONTEXT_ID = 0;
 	}

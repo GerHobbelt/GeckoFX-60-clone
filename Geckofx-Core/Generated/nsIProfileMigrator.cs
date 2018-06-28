@@ -85,10 +85,11 @@ namespace Gecko
         ///
         /// @param  aStartup nsIProfileStartup object to use during migration.
         /// @param  aKey     optional key of a migrator to use to skip source selection.
+        /// @param  aProfileName optional name of the profile to use for migration.
         ///
         /// @note The startup code ignores COM exceptions thrown from this method.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Migrate([MarshalAs(UnmanagedType.Interface)] nsIProfileStartup aStartup, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aKey);
+		void Migrate([MarshalAs(UnmanagedType.Interface)] nsIProfileStartup aStartup, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aKey, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aProfileName);
 	}
 }

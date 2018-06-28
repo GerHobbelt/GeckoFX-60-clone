@@ -50,7 +50,7 @@ namespace Gecko
         /// is true.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddItemFor([MarshalAs(UnmanagedType.Interface)] nsIDOMHTMLMenuItemElement aElement, [MarshalAs(UnmanagedType.U1)] bool aCanLoadIcon);
+		void AddItemFor([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.U1)] bool aCanLoadIcon);
 		
 		/// <summary>
         /// Create a new separator.

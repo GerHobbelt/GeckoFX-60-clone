@@ -27,9 +27,126 @@ namespace Gecko
 	
 	
 	/// <summary>
-    ///This Source Code Form is subject to the terms of the Mozilla Public
-    /// License, v. 2.0. If a copy of the MPL was not distributed with this
-    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+    /// [infallible] attributes are only allowed on [builtinclass]
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("31313372-842c-4110-bdf1-6aea17c845ad")]
+	public interface nsISiteSecurityState
+	{
+		
+		/// <summary>
+        /// [infallible] attributes are only allowed on [builtinclass]
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetHostnameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostname);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetExpireTimeAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		short GetSecurityPropertyStateAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIncludeSubdomainsAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetOriginAttributesAttribute(System.IntPtr jsContext);
+	}
+	
+	/// <summary>nsISiteSecurityStateConsts </summary>
+	public class nsISiteSecurityStateConsts
+	{
+		
+		// <summary>
+        // SECURITY_PROPERTY_SET and SECURITY_PROPERTY_UNSET correspond to indicating
+        // a site has or does not have the security property in question,
+        // respectively.
+        // SECURITY_PROPERTY_KNOCKOUT indicates a value on a preloaded
+        // list is being overridden, and the associated site does not have the
+        // security property in question.
+        // SECURITY_PROPERTY_NEGATIVE is used when we've gotten a negative result from
+        // HSTS priming.
+        // </summary>
+		public const short SECURITY_PROPERTY_UNSET = 0;
+		
+		// 
+		public const short SECURITY_PROPERTY_SET = 1;
+		
+		// 
+		public const short SECURITY_PROPERTY_KNOCKOUT = 2;
+		
+		// 
+		public const short SECURITY_PROPERTY_NEGATIVE = 3;
+	}
+	
+	/// <summary>
+    /// This has to be a builtinclass because it derives from a builtinclass.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("9ff16e40-1029-496c-95c2-bc819872b216")]
+	public interface nsISiteHSTSState : nsISiteSecurityState
+	{
+		
+		/// <summary>
+        /// [infallible] attributes are only allowed on [builtinclass]
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetHostnameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostname);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new long GetExpireTimeAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new short GetSecurityPropertyStateAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetIncludeSubdomainsAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new Gecko.JsVal GetOriginAttributesAttribute(System.IntPtr jsContext);
+	}
+	
+	/// <summary>
+    /// This has to be a builtinclass because it derives from a builtinclass.
+    /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("ae395078-c7d0-474d-b147-f4aa203a9b2c")]
+	public interface nsISiteHPKPState : nsISiteSecurityState
+	{
+		
+		/// <summary>
+        /// [infallible] attributes are only allowed on [builtinclass]
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetHostnameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostname);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new long GetExpireTimeAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new short GetSecurityPropertyStateAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetIncludeSubdomainsAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new Gecko.JsVal GetOriginAttributesAttribute(System.IntPtr jsContext);
+		
+		/// <summary>
+        /// This has to be a builtinclass because it derives from a builtinclass.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISimpleEnumerator GetSha256KeysAttribute();
+	}
+	
+	/// <summary>nsISiteSecurityService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("275127f8-dbd7-4681-afbf-6df0c6587a01")]
@@ -50,10 +167,17 @@ namespace Gecko
         ///
         /// @param aType the type of security header in question.
         /// @param aSourceURI the URI of the resource with the HTTP header.
-        /// @param aSSLStatus the SSLStatus of the current channel
         /// @param aHeader the HTTP response header specifying security data.
+        /// @param aSSLStatus the SSLStatus of the current channel.
         /// @param aFlags  options for this request as defined in nsISocketProvider:
         /// NO_PERMANENT_STORAGE
+        /// @param aOriginAttributes the origin attributes that isolate this origin,
+        /// (note that this implementation does not isolate
+        /// by userContextId because of the risk of man-in-
+        /// the-middle attacks before trust-on-second-use
+        /// happens).
+        /// @param aSource the source of the header, whether it was from the preload
+        /// list, an organic header, or HSTS priming, or unknown.
         /// @param aMaxAge the parsed max-age directive of the header.
         /// @param aIncludeSubdomains the parsed includeSubdomains directive.
         /// @param aFailureResult a more specific failure result if NS_ERROR_FAILURE
@@ -64,14 +188,23 @@ namespace Gecko
         /// if there are unrecognized tokens in the header.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ProcessHeader(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aSourceURI, [MarshalAs(UnmanagedType.LPStr)] string aHeader, [MarshalAs(UnmanagedType.Interface)] nsISSLStatus aSSLStatus, uint aFlags, ref ulong aMaxAge, [MarshalAs(UnmanagedType.U1)] ref bool aIncludeSubdomains, ref uint aFailureResult);
+		void ProcessHeaderNative(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aSourceURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHeader, [MarshalAs(UnmanagedType.Interface)] nsISSLStatus aSSLStatus, uint aFlags, uint aSource, System.IntPtr aOriginAttributes, ref ulong aMaxAge, [MarshalAs(UnmanagedType.U1)] ref bool aIncludeSubdomains, ref uint aFailureResult);
 		
-		/// <summary>
-        /// Same as processHeader but without checking for the security properties
-        /// of the connection. Use ONLY for testing.
-        /// </summary>
+		/// <summary>Member ProcessHeader </summary>
+		/// <param name='aType'> </param>
+		/// <param name='aSourceURI'> </param>
+		/// <param name='aHeader'> </param>
+		/// <param name='aSSLStatus'> </param>
+		/// <param name='aFlags'> </param>
+		/// <param name='aSource'> </param>
+		/// <param name='aOriginAttributes'> </param>
+		/// <param name='aMaxAge'> </param>
+		/// <param name='aIncludeSubdomains'> </param>
+		/// <param name='aFailureResult'> </param>
+		/// <param name='jsContext'> </param>
+		/// <param name='argc'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnsafeProcessHeader(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aSourceURI, [MarshalAs(UnmanagedType.LPStr)] string aHeader, uint aFlags, ref ulong aMaxAge, [MarshalAs(UnmanagedType.U1)] ref bool aIncludeSubdomains, ref uint aFailureResult);
+		void ProcessHeader(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aSourceURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHeader, [MarshalAs(UnmanagedType.Interface)] nsISSLStatus aSSLStatus, uint aFlags, uint aSource, ref Gecko.JsVal aOriginAttributes, ref ulong aMaxAge, [MarshalAs(UnmanagedType.U1)] ref bool aIncludeSubdomains, ref uint aFailureResult, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
         /// Given a header type, removes state relating to that header of a host,
@@ -82,21 +215,14 @@ namespace Gecko
         /// @param aURI    the URI of the target host
         /// @param aFlags  options for this request as defined in nsISocketProvider:
         /// NO_PERMANENT_STORAGE
+        /// @param aOriginAttributes the origin attributes that isolate this origin,
+        /// (note that this implementation does not isolate
+        /// by userContextId because of the risk of man-in-
+        /// the-middle attacks before trust-on-second-use
+        /// happens).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveState(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aFlags);
-		
-		/// <summary>
-        /// See isSecureURI
-        ///
-        /// @param aType the type of security state in question.
-        /// @param aHost the hostname (punycode) to query for state.
-        /// @param aFlags  options for this request as defined in nsISocketProvider:
-        /// NO_PERMANENT_STORAGE
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsSecureHost(uint aType, [MarshalAs(UnmanagedType.LPStr)] string aHost, uint aFlags);
+		void RemoveState(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aFlags, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
         /// Checks whether or not the URI's hostname has a given security state set.
@@ -111,16 +237,47 @@ namespace Gecko
         /// @param aURI the URI to query for STS state.
         /// @param aFlags  options for this request as defined in nsISocketProvider:
         /// NO_PERMANENT_STORAGE
+        /// @param aOriginAttributes the origin attributes that isolate this origin,
+        /// (note that this implementation does not isolate
+        /// by userContextId because of the risk of man-in-
+        /// the-middle attacks before trust-on-second-use
+        /// happens).
+        /// @param aCached true if we have cached information about this host, even
+        /// if the security state is false.
+        /// @param aSource the source of the HSTS entry. One of SOURCE_PRELOAD_LIST,
+        /// SOURCE_ORGANIC_REQUEST, SOURCE_HSTS_PRIMING, or
+        /// SOURCE_UNKNOWN. Not implemented for HPKP.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsSecureURI(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aFlags);
+		bool IsSecureURINative(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aFlags, System.IntPtr aOriginAttributes, [MarshalAs(UnmanagedType.U1)] ref bool aCached, ref uint aSource);
+		
+		/// <summary>Member IsSecureURI </summary>
+		/// <param name='aType'> </param>
+		/// <param name='aURI'> </param>
+		/// <param name='aFlags'> </param>
+		/// <param name='aOriginAttributes'> </param>
+		/// <param name='aCached'> </param>
+		/// <param name='aSource'> </param>
+		/// <param name='jsContext'> </param>
+		/// <param name='argc'> </param>
+		/// <returns>A System.Boolean</returns>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool IsSecureURI(uint aType, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, uint aFlags, ref Gecko.JsVal aOriginAttributes, [MarshalAs(UnmanagedType.U1)] ref bool aCached, ref uint aSource, System.IntPtr jsContext, int argc);
 		
 		/// <summary>
-        /// Removes all security state by resetting to factory-original settings.
+        /// Removes all non-preloaded security state by resetting to factory-original
+        /// settings.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ClearAll();
+		
+		/// <summary>
+        /// Removes all preloaded security state.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ClearPreloads();
 		
 		/// <summary>
         /// Returns an array of sha256-hashed key pins for the given domain, if any.
@@ -128,16 +285,21 @@ namespace Gecko
         /// aIncludeSubdomains will be true. Pins returned are only for non-built-in
         /// pin entries.
         ///
-        /// @param aHostname the hosname (punycode) to be queried about
-        /// @param the time at which the pins should be valid. This is in
+        /// @param aHostname the hostname (punycode) to be queried about
+        /// @param evalTime the time at which the pins should be valid. This is in
         ///              mozilla::pkix::Time which uses internally seconds since 0 AD.
+        /// @param aOriginAttributes the origin attributes that isolate this origin,
+        /// (note that this implementation does not isolate
+        /// by userContextId because of the risk of man-in-
+        /// the-middle attacks before trust-on-second-use
+        /// happens).
         /// @param aPinArray the set of sha256-hashed key pins for the given domain
         /// @param aIncludeSubdomains true if the pins apply to subdomains of the
         /// given domain
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetKeyPinsForHostname([MarshalAs(UnmanagedType.LPStr)] string aHostname, mozillaPkixTime evalTime, ref System.IntPtr aPinArray, [MarshalAs(UnmanagedType.U1)] ref bool aIncludeSubdomains);
+		bool GetKeyPinsForHostname([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHostname, nsISupports evalTime, System.IntPtr aOriginAttributes, ref System.IntPtr aPinArray, [MarshalAs(UnmanagedType.U1)] ref bool aIncludeSubdomains);
 		
 		/// <summary>
         /// Set public-key pins for a host. The resulting pins will be permanent
@@ -146,23 +308,54 @@ namespace Gecko
         ///
         /// @param aHost the hostname (punycode) that pins will apply to
         /// @param aIncludeSubdomains whether these pins also apply to subdomains
-        /// @param aMaxAge lifetime (in seconds) of this pin set
+        /// @param aExpires the time this pin should expire (millis since epoch)
         /// @param aPinCount number of keys being pinnned
         /// @param aSha256Pins array of hashed key fingerprints (SHA-256, base64)
+        /// @param aIsPreload are these key pins for a preload entry? (false by
+        /// default)
+        /// @param aOriginAttributes the origin attributes that isolate this origin,
+        /// (note that this implementation does not isolate
+        /// by userContextId because of the risk of man-in-
+        /// the-middle attacks before trust-on-second-use
+        /// happens).
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool SetKeyPins([MarshalAs(UnmanagedType.LPStr)] string aHost, [MarshalAs(UnmanagedType.U1)] bool aIncludeSubdomains, uint aMaxAge, uint aPinCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] string[] aSha256Pins);
+		bool SetKeyPins([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHost, [MarshalAs(UnmanagedType.U1)] bool aIncludeSubdomains, long aExpires, uint aPinCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] string[] aSha256Pins, [MarshalAs(UnmanagedType.U1)] bool aIsPreload, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		/// <summary>
+        /// Set an HSTS preload entry for a host. The resulting entries will be
+        /// permanent and visible from private and non-private contexts. These
+        /// entries replace any already set by this mechanism or those built-in to
+        /// Gecko.
+        ///
+        /// @param aHost the hostname (punycode) that the entry applies to
+        /// @param aIncludeSubdomains whether this entry also applies to subdomains
+        /// @param aExpires the time this entry should expire (millis since epoch)
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool SetHSTSPreload([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aHost, [MarshalAs(UnmanagedType.U1)] bool aIncludesSubdomains, long aExpires);
+		
+		/// <summary>
+        /// Returns an enumerator of the nsISiteSecurityService storage. Each item in
+        /// the enumeration is a nsISiteSecurityState that can be QueryInterfaced to
+        /// the appropriate nsISiteHSTSState or nsISiteHPKPState, depending on the
+        /// provided type. Doesn't include preloaded entries (either the hard-coded
+        /// ones or the preloaded-delivered-by-kinto ones).
+        ///
+        /// @param aType the type of security state in question.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISimpleEnumerator Enumerate(uint aType);
 	}
 	
 	/// <summary>nsISiteSecurityServiceConsts </summary>
 	public class nsISiteSecurityServiceConsts
 	{
 		
-		// <summary>
-        //This Source Code Form is subject to the terms of the Mozilla Public
-        // License, v. 2.0. If a copy of the MPL was not distributed with this
-        // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+		// 
 		public const long HEADER_HSTS = 0;
 		
 		// 
@@ -215,5 +408,18 @@ namespace Gecko
 		
 		// 
 		public const long ERROR_ROOT_NOT_BUILT_IN = 14;
+		
+		// <summary>
+        // nsISiteSecurityService::IsSecureURI can optionally return a flag
+        // indicating the source of the HSTS cache entry, if it comes from the
+        // preload list, was seen naturally, or is a result of HSTS priming.
+        // </summary>
+		public const long SOURCE_UNKNOWN = 0;
+		
+		// 
+		public const long SOURCE_PRELOAD_LIST = 1;
+		
+		// 
+		public const long SOURCE_ORGANIC_REQUEST = 2;
 	}
 }

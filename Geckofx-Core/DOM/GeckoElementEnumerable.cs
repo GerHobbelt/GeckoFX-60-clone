@@ -7,9 +7,9 @@ namespace Gecko
     /// </summary>
     internal class GeckoElementEnumerable : IEnumerable<GeckoHtmlElement>
     {
-        private nsIDOMXPathResult xpathResult = null;
+        private /* nsIDOMXPathResult */nsISupports xpathResult = null;
 
-        internal GeckoElementEnumerable(nsIDOMXPathResult xpathResult)
+        internal GeckoElementEnumerable(/* nsIDOMXPathResult */nsISupports xpathResult)
         {
             this.xpathResult = xpathResult;
         }
@@ -24,8 +24,8 @@ namespace Gecko
             nsIDOMNode node;
 #if NEED_WEBIDL
 			while ((node = xpathResult.IterateNext()) != null)
-				if (node is nsIDOMHTMLElement)
-					yield return GeckoHtmlElement.Create((nsIDOMHTMLElement)node);
+				if (node is /* nsIDOMHTMLElement */nsISupports)
+					yield return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports)node);
 #else
             return null;
 #endif

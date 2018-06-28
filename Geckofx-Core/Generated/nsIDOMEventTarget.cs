@@ -176,7 +176,7 @@ namespace Gecko
         /// @note Only EventDispatcher should call this method.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void PreHandleEvent(System.IntPtr aVisitor);
+		void GetEventTargetParent(System.IntPtr aVisitor);
 		
 		/// <summary>
         /// If EventChainPreVisitor.mWantsWillHandleEvent is set PR_TRUE,
@@ -197,38 +197,11 @@ namespace Gecko
 		void PostHandleEvent(System.IntPtr aVisitor);
 		
 		/// <summary>
-        /// Dispatch an event.
-        /// @param aEvent the event that is being dispatched.
-        /// @param aDOMEvent the event that is being dispatched, use if you want to
-        /// dispatch nsIDOMEvent, not only WidgetEvent.
-        /// @param aPresContext the current presentation context, can be nullptr.
-        /// @param aEventStatus the status returned from the function, can be nullptr.
-        ///
-        /// @note If both aEvent and aDOMEvent are used, aEvent must be the internal
-        /// event of the aDOMEvent.
-        ///
-        /// If aDOMEvent is not nullptr (in which case aEvent can be nullptr) it is used
-        /// for dispatching, otherwise aEvent is used.
-        ///
-        /// @deprecated This method is here just until all the callers outside Gecko
-        /// have been converted to use nsIDOMEventTarget::dispatchEvent.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DispatchDOMEvent(System.IntPtr aEvent, [MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aDOMEvent, System.IntPtr aPresContext, System.IntPtr aEventStatus);
-		
-		/// <summary>
         /// Get the script context in which the event handlers should be run.
         /// May return null.
         /// @note Caller *must* check the value of aRv.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetContextForEventHandlers(ref int aRv);
-		
-		/// <summary>
-        /// If the method above returns null, but a success code, this method
-        /// is called.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetJSContextForEventHandlers();
 	}
 }

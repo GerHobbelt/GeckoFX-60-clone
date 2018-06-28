@@ -44,7 +44,7 @@ namespace Gecko
 		void OnPageAnnotationSet([MarshalAs(UnmanagedType.Interface)] nsIURI aPage, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnItemAnnotationSet(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
+		void OnItemAnnotationSet(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, ushort aSource, [MarshalAs(UnmanagedType.U1)] bool aDontUpdateLastModified);
 		
 		/// <summary>
         /// Called when an annotation is deleted. If aName is empty, then ALL
@@ -55,7 +55,7 @@ namespace Gecko
 		void OnPageAnnotationRemoved([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnItemAnnotationRemoved(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
+		void OnItemAnnotationRemoved(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, ushort aSource);
 	}
 	
 	/// <summary>nsIAnnotationService </summary>
@@ -90,6 +90,11 @@ namespace Gecko
         /// removed by the user.
         /// See EXPIRE_* constants above for further information.
         ///
+        /// For item annotations, aSource should be a change source constant from
+        /// nsINavBookmarksService::SOURCE_*, and defaults to SOURCE_DEFAULT if
+        /// omitted. Setting an item annotation also notifies
+        /// `nsINavBookmarkObserver::onItemChanged` for the affected item.
+        ///
         /// The annotation "favicon" is special. Favicons are stored in the favicon
         /// service, but are special cased in the protocol handler so they look like
         /// annotations. Do not set favicons using this service, it will not work.
@@ -107,8 +112,10 @@ namespace Gecko
 		/// <param name='aValue'> </param>
 		/// <param name='aFlags'> </param>
 		/// <param name='aExpiration'> </param>
+		/// <param name='aSource'> </param>
+		/// <param name='aDontUpdateLastModified'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetItemAnnotation(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.Interface)] nsIVariant aValue, int aFlags, ushort aExpiration);
+		void SetItemAnnotation(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.Interface)] nsIVariant aValue, int aFlags, ushort aExpiration, ushort aSource, [MarshalAs(UnmanagedType.U1)] bool aDontUpdateLastModified);
 		
 		/// <summary>
         /// @throws NS_ERROR_ILLEGAL_VALUE if the page or the bookmark doesn't exist.
@@ -122,8 +129,10 @@ namespace Gecko
 		/// <param name='aValue'> </param>
 		/// <param name='aFlags'> </param>
 		/// <param name='aExpiration'> </param>
+		/// <param name='aSource'> </param>
+		/// <param name='aDontUpdateLastModified'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetItemAnnotationString(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, int aFlags, ushort aExpiration);
+		void SetItemAnnotationString(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, int aFlags, ushort aExpiration, ushort aSource, [MarshalAs(UnmanagedType.U1)] bool aDontUpdateLastModified);
 		
 		/// <summary>
         /// Sets an annotation just like setAnnotationString, but takes an Int32 as
@@ -140,8 +149,10 @@ namespace Gecko
 		/// <param name='aValue'> </param>
 		/// <param name='aFlags'> </param>
 		/// <param name='aExpiration'> </param>
+		/// <param name='aSource'> </param>
+		/// <param name='aDontUpdateLastModified'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetItemAnnotationInt32(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, int aValue, int aFlags, ushort aExpiration);
+		void SetItemAnnotationInt32(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, int aValue, int aFlags, ushort aExpiration, ushort aSource, [MarshalAs(UnmanagedType.U1)] bool aDontUpdateLastModified);
 		
 		/// <summary>
         /// Sets an annotation just like setAnnotationString, but takes an Int64 as
@@ -158,8 +169,10 @@ namespace Gecko
 		/// <param name='aValue'> </param>
 		/// <param name='aFlags'> </param>
 		/// <param name='aExpiration'> </param>
+		/// <param name='aSource'> </param>
+		/// <param name='aDontUpdateLastModified'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetItemAnnotationInt64(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, long aValue, int aFlags, ushort aExpiration);
+		void SetItemAnnotationInt64(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, long aValue, int aFlags, ushort aExpiration, ushort aSource, [MarshalAs(UnmanagedType.U1)] bool aDontUpdateLastModified);
 		
 		/// <summary>
         /// Sets an annotation just like setAnnotationString, but takes a double as
@@ -176,8 +189,10 @@ namespace Gecko
 		/// <param name='aValue'> </param>
 		/// <param name='aFlags'> </param>
 		/// <param name='aExpiration'> </param>
+		/// <param name='aSource'> </param>
+		/// <param name='aDontUpdateLastModified'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetItemAnnotationDouble(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, double aValue, int aFlags, ushort aExpiration);
+		void SetItemAnnotationDouble(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, double aValue, int aFlags, ushort aExpiration, ushort aSource, [MarshalAs(UnmanagedType.U1)] bool aDontUpdateLastModified);
 		
 		/// <summary>
         /// Retrieves the value of a given annotation. Throws an error if the
@@ -351,6 +366,9 @@ namespace Gecko
 		/// <summary>
         /// Removes a specific annotation. Succeeds even if the annotation is
         /// not found.
+        ///
+        /// Removing an item annotation also notifies
+        /// `nsINavBookmarkObserver::onItemChanged` for the affected item.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RemovePageAnnotation([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
@@ -358,21 +376,26 @@ namespace Gecko
 		/// <summary>Member RemoveItemAnnotation </summary>
 		/// <param name='aItemId'> </param>
 		/// <param name='aName'> </param>
+		/// <param name='aSource'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveItemAnnotation(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName);
+		void RemoveItemAnnotation(long aItemId, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aName, ushort aSource);
 		
 		/// <summary>
         /// Removes all annotations for the given page/item.
         /// We may want some other similar functions to get annotations with given
         /// flags (once we have flags defined).
+        ///
+        /// Unlike the other item methods, `removeItemAnnotations` does *not* notify
+        /// `nsINavBookmarkObserver::onItemChanged` for the affected item.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RemovePageAnnotations([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
 		
 		/// <summary>Member RemoveItemAnnotations </summary>
 		/// <param name='aItemId'> </param>
+		/// <param name='aSource'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveItemAnnotations(long aItemId);
+		void RemoveItemAnnotations(long aItemId, ushort aSource);
 		
 		/// <summary>
         /// Copies all annotations from the source to the destination URI/item. If
@@ -390,8 +413,9 @@ namespace Gecko
 		/// <param name='aSourceItemId'> </param>
 		/// <param name='aDestItemId'> </param>
 		/// <param name='aOverwriteDest'> </param>
+		/// <param name='aSource'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CopyItemAnnotations(long aSourceItemId, long aDestItemId, [MarshalAs(UnmanagedType.U1)] bool aOverwriteDest);
+		void CopyItemAnnotations(long aSourceItemId, long aDestItemId, [MarshalAs(UnmanagedType.U1)] bool aOverwriteDest, ushort aSource);
 		
 		/// <summary>
         /// Adds an annotation observer. The annotation service will keep an owning
@@ -405,6 +429,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RemoveObserver([MarshalAs(UnmanagedType.Interface)] nsIAnnotationObserver aObserver);
+		
+		/// <summary>
+        /// Gets an array of registered nsIAnnotationObserver objects.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetObservers(ref uint count, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref nsIAnnotationObserver[] observers);
 	}
 	
 	/// <summary>nsIAnnotationServiceConsts </summary>

@@ -29,13 +29,13 @@ namespace Gecko
 	/// <summary>
     /// Memory reporters measure Firefox's memory usage.  They are primarily used to
     /// generate the about:memory page.  You should read
-    /// https://wiki.mozilla.org/Memory_Reporting before writing a memory
-    /// reporter.
+    /// https://developer.mozilla.org/en-US/docs/Mozilla/Performance/Memory_reporting
+    /// before writing a memory reporter.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("62ef0e1c-dbd6-11e3-aa75-3c970e9f4238")]
-	public interface nsIMemoryReporterCallback
+	public interface nsIHandleReportCallback
 	{
 		
 		/// <summary>
@@ -196,7 +196,7 @@ namespace Gecko
         /// - Information about installed extensions.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CollectReports([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback callback, [MarshalAs(UnmanagedType.Interface)] nsISupports data, [MarshalAs(UnmanagedType.U1)] bool anonymize);
+		void CollectReports([MarshalAs(UnmanagedType.Interface)] nsIHandleReportCallback callback, [MarshalAs(UnmanagedType.Interface)] nsISupports data, [MarshalAs(UnmanagedType.U1)] bool anonymize);
 	}
 	
 	/// <summary>nsIMemoryReporterConsts </summary>
@@ -204,7 +204,7 @@ namespace Gecko
 	{
 		
 		// <summary>
-        // Kinds. See the |kind| comment in nsIMemoryReporterCallback.
+        // Kinds. See the |kind| comment in nsIHandleReportCallback.
         // </summary>
 		public const long KIND_NONHEAP = 0;
 		
@@ -215,7 +215,7 @@ namespace Gecko
 		public const long KIND_OTHER = 2;
 		
 		// <summary>
-        // Units. See the |units| comment in nsIMemoryReporterCallback.
+        // Units. See the |units| comment in nsIHandleReportCallback.
         // </summary>
 		public const long UNITS_BYTES = 0;
 		
@@ -242,10 +242,23 @@ namespace Gecko
 		void Callback([MarshalAs(UnmanagedType.Interface)] nsISupports data);
 	}
 	
+	/// <summary>nsIHeapAllocatedCallback </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("1a80cd0f-0d9e-4397-be69-68ad28fe5175")]
+	public interface nsIHeapAllocatedCallback
+	{
+		
+		/// <summary>Member Callback </summary>
+		/// <param name='bytesAllocated'> </param>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Callback(long bytesAllocated);
+	}
+	
 	/// <summary>nsIMemoryReporterManager </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("61de6dc7-ed11-4104-a577-79941f22f434")]
+	[Guid("2998574d-8993-407a-b1a5-8ad7417653e1")]
 	public interface nsIMemoryReporterManager
 	{
 		
@@ -332,7 +345,7 @@ namespace Gecko
         /// anonymize any privacy-sensitive data (see above).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetReports([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData, [MarshalAs(UnmanagedType.U1)] bool anonymize);
+		void GetReports([MarshalAs(UnmanagedType.Interface)] nsIHandleReportCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData, [MarshalAs(UnmanagedType.U1)] bool anonymize);
 		
 		/// <summary>
         /// As above, but: If |minimizeMemoryUsage| is true, then each process will
@@ -342,14 +355,14 @@ namespace Gecko
         /// |dumpMemoryInfoToTempDir| in |nsIMemoryInfoDumper|.)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetReportsExtended([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData, [MarshalAs(UnmanagedType.U1)] bool anonymize, [MarshalAs(UnmanagedType.U1)] bool minimizeMemoryUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase DMDDumpIdent);
+		void GetReportsExtended([MarshalAs(UnmanagedType.Interface)] nsIHandleReportCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData, [MarshalAs(UnmanagedType.U1)] bool anonymize, [MarshalAs(UnmanagedType.U1)] bool minimizeMemoryUsage, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase DMDDumpIdent);
 		
 		/// <summary>
         /// As above, but if DMD is enabled and |DMDFile| is non-null then
         /// write a DMD report to that file and close it.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetReportsForThisProcessExtended([MarshalAs(UnmanagedType.Interface)] nsIMemoryReporterCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.U1)] bool anonymize, System.IntPtr DMDFile, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData);
+		void GetReportsForThisProcessExtended([MarshalAs(UnmanagedType.Interface)] nsIHandleReportCallback handleReport, [MarshalAs(UnmanagedType.Interface)] nsISupports handleReportData, [MarshalAs(UnmanagedType.U1)] bool anonymize, System.IntPtr DMDFile, [MarshalAs(UnmanagedType.Interface)] nsIFinishReportingCallback finishReporting, [MarshalAs(UnmanagedType.Interface)] nsISupports finishReportingData);
 		
 		/// <summary>
         /// Called by an asynchronous memory reporter upon completion.
@@ -394,8 +407,8 @@ namespace Gecko
         ///
         /// |heapAllocated| (UNITS_BYTES)  Memory mapped by the heap allocator.
         ///
-        /// |heapOverheadRatio| (UNITS_PERCENTAGE)  In the heap allocator, this is the
-        /// ratio of committed, unused bytes to allocated bytes.  Like all
+        /// |heapOverheadFraction| (UNITS_PERCENTAGE)  In the heap allocator, this is
+        /// the fraction of committed heap bytes that are overhead. Like all
         /// UNITS_PERCENTAGE measurements, its amount is multiplied by 100x so it can
         /// be represented by an int64_t.
         ///
@@ -417,7 +430,8 @@ namespace Gecko
         /// of low-{virtual,physical}-memory events that have occurred since the
         /// process started.
         ///
-        /// |ghostWindows| (UNITS_COUNT)  The number of ghost windows.
+        /// |ghostWindows| (UNITS_COUNT)  A cached value of the number of ghost
+        /// windows. This should have been updated within the past 60s.
         ///
         /// |pageFaultsHard| (UNITS_COUNT_CUMULATIVE)  The number of hard (a.k.a.
         /// major) page faults that have occurred since the process started.
@@ -455,10 +469,10 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		long GetHeapAllocatedAttribute();
 		
-		/// <summary>Member GetHeapOverheadRatioAttribute </summary>
+		/// <summary>Member GetHeapOverheadFractionAttribute </summary>
 		/// <returns>A System.Int64</returns>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		long GetHeapOverheadRatioAttribute();
+		long GetHeapOverheadFractionAttribute();
 		
 		/// <summary>Member GetJSMainRuntimeGCHeapAttribute </summary>
 		/// <returns>A System.Int64</returns>
@@ -532,6 +546,13 @@ namespace Gecko
 		bool GetIsDMDRunningAttribute();
 		
 		/// <summary>
+        /// Asynchronously gets attribute 'heapAllocated'. The value is returned in
+        /// the callback argument.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetHeapAllocatedAsync([MarshalAs(UnmanagedType.Interface)] nsIHeapAllocatedCallback callback);
+		
+		/// <summary>
         /// Run a series of GC/CC's in an attempt to minimize the application's memory
         /// usage.  When we're finished, we invoke the given runnable if it's not
         /// null.
@@ -550,6 +571,6 @@ namespace Gecko
         /// also returned.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SizeOfTab([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, ref long jsObjectsSize, ref long jsStringsSize, ref long jsOtherSize, ref long domSize, ref long styleSize, ref long otherSize, ref long totalSize, ref double jsMilliseconds, ref double nonJSMilliseconds);
+		void SizeOfTab(mozIDOMWindowProxy window, ref long jsObjectsSize, ref long jsStringsSize, ref long jsOtherSize, ref long domSize, ref long styleSize, ref long otherSize, ref long totalSize, ref double jsMilliseconds, ref double nonJSMilliseconds);
 	}
 }

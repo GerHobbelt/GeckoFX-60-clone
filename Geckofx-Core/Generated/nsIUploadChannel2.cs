@@ -85,9 +85,11 @@ namespace Gecko
         /// Clones the upload stream.  May return failure if the upload stream
         /// is not cloneable.  If this is not acceptable, use the
         /// ensureUploadStreamIsCloneable() method first.
+        /// aContentLength could be -1 in case the size of the stream is unknown,
+        /// otherwise it will contain the known size of the stream.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIInputStream CloneUploadStream();
+		nsIInputStream CloneUploadStream(ref long aContentLength);
 	}
 }

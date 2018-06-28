@@ -70,7 +70,15 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMStyleSheet PreloadSheet([MarshalAs(UnmanagedType.Interface)] nsIURI sheetURI, uint type);
+		nsIPreloadedStyleSheet PreloadSheet([MarshalAs(UnmanagedType.Interface)] nsIURI sheetURI, uint type);
+		
+		/// <summary>
+        /// Asynchronously loads a style sheet from |sheetURI| and returns a Promise
+        /// which resolves to the new style sheet object, which can be used with
+        /// nsIDOMWindowUtils.addSheet, when it has completed loading.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal PreloadSheetAsync([MarshalAs(UnmanagedType.Interface)] nsIURI sheetURI, uint type, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Remove the style sheet at |sheetURI| from the list of style sheets

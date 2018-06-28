@@ -38,7 +38,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("2be938df-0210-4609-9ece-26b197a517e5")]
+	[Guid("5cad5f91-fcce-40e7-913e-4671701d19b4")]
 	public interface nsIAccessibleDocument
 	{
 		
@@ -76,9 +76,8 @@ namespace Gecko
 		/// <summary>
         /// The nsIDOMWindow that the document resides in.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetWindowAttribute();
+		mozIDOMWindowProxy GetWindowAttribute();
 		
 		/// <summary>
         /// Return the parent document accessible.

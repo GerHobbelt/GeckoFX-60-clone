@@ -59,14 +59,17 @@ namespace Gecko
         /// is being loaded and sourceURI should be null.
         /// In the case of PREDICT_STARTUP, both targetURI and sourceURI should be
         /// null.
-        /// @param loadContext - The nsILoadContext of the page load we are predicting
-        /// about.
+        /// @param OriginAttributes - The OriginAttributes of the page load we are
+        /// predicting about.
         /// @param verifier - An nsINetworkPredictorVerifier used in testing to ensure
         /// we're predicting the way we expect to. Not necessary (or desired) for
         /// normal operation.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Predict([MarshalAs(UnmanagedType.Interface)] nsIURI targetURI, [MarshalAs(UnmanagedType.Interface)] nsIURI sourceURI, PredictorPredictReason reason, [MarshalAs(UnmanagedType.Interface)] nsILoadContext loadContext, [MarshalAs(UnmanagedType.Interface)] nsINetworkPredictorVerifier verifier);
+		void Predict([MarshalAs(UnmanagedType.Interface)] nsIURI targetURI, [MarshalAs(UnmanagedType.Interface)] nsIURI sourceURI, nsISupports reason, ref Gecko.JsVal OriginAttributes, [MarshalAs(UnmanagedType.Interface)] nsINetworkPredictorVerifier verifier, System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int PredictNative([MarshalAs(UnmanagedType.Interface)] nsIURI targetURI, [MarshalAs(UnmanagedType.Interface)] nsIURI sourceURI, nsISupports reason, nsISupports OriginAttributes, [MarshalAs(UnmanagedType.Interface)] nsINetworkPredictorVerifier verifier);
 		
 		/// <summary>
         /// Add to our compendium of knowledge
@@ -87,11 +90,14 @@ namespace Gecko
         /// In the case of LEARN_STARTUP, targetURI should be the URI of a page
         /// that was loaded immediately after browser startup, and sourceURI should
         /// be null.
-        /// @param loadContext - The nsILoadContext for the page load that we are
-        /// learning about.
+        /// @param OriginAttributes - The OriginAttributes for the page load that we
+        /// are learning about.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Learn([MarshalAs(UnmanagedType.Interface)] nsIURI targetURI, [MarshalAs(UnmanagedType.Interface)] nsIURI sourceURI, PredictorLearnReason reason, [MarshalAs(UnmanagedType.Interface)] nsILoadContext loadContext);
+		void Learn([MarshalAs(UnmanagedType.Interface)] nsIURI targetURI, [MarshalAs(UnmanagedType.Interface)] nsIURI sourceURI, nsISupports reason, ref Gecko.JsVal OriginAttributes, System.IntPtr jsContext);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int LearnNative([MarshalAs(UnmanagedType.Interface)] nsIURI targetURI, [MarshalAs(UnmanagedType.Interface)] nsIURI sourceURI, nsISupports reason, nsISupports OriginAttributes);
 		
 		/// <summary>
         /// Clear out all our learned knowledge

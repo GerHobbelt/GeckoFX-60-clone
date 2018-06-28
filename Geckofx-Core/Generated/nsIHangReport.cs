@@ -57,7 +57,7 @@ namespace Gecko
 		void GetScriptFileNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aScriptFileName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetScriptLineNoAttribute();
+		void GetAddonIdAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAddonId);
 		
 		/// <summary>
         /// Only valid for PLUGIN_HANG reports.
@@ -76,6 +76,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void TerminateScript();
+		
+		/// <summary>
+        /// Only valid for SLOW_SCRIPT reports.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void TerminateGlobal();
 		
 		/// <summary>
         /// Only valid for PLUGIN_HANG reports.

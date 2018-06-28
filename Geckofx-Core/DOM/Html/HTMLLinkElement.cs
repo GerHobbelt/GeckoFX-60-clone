@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoLinkElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLLinkElement DOMHTMLElement;
+        private /* nsIDOMHTMLLinkElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoLinkElement(nsIDOMHTMLLinkElement element) : base(element)
+        internal GeckoLinkElement(/* nsIDOMHTMLLinkElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoLinkElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoLinkElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLLinkElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLLinkElement */ nsISupports;
         }
 
         public bool Disabled

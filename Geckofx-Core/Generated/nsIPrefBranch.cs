@@ -51,9 +51,8 @@ namespace Gecko
         /// Called to get the root on which this branch is based, such as
         /// "browser.startup."
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetRootAttribute();
+		void GetRootAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRoot);
 		
 		/// <summary>
         /// Called to determine the type of a specific preference.
@@ -70,6 +69,7 @@ namespace Gecko
         /// Called to get the state of an individual boolean preference.
         ///
         /// @param aPrefName The boolean preference to get the state of.
+        /// @param aDefaultValue The value to return if the preference is not set.
         ///
         /// @return boolean  The value of the requested boolean preference.
         ///
@@ -77,13 +77,13 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetBoolPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, bool def);
-
-        [return: MarshalAs(UnmanagedType.U1)]
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        bool GetBoolPrefXPCom([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
-
-        /// <summary>
+		bool GetBoolPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.U1)] bool aDefaultValue, int argc);
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetBoolPrefXPCOM([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
+		
+		/// <summary>
         /// Called to set the state of an individual boolean preference.
         ///
         /// @param aPrefName The boolean preference to set the state of.
@@ -94,7 +94,7 @@ namespace Gecko
         ///
         /// @see getBoolPref
         /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetBoolPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.U1)] bool aValue);
 		
 		/// <summary>
@@ -103,29 +103,36 @@ namespace Gecko
         /// are converted to floating point numbers.
         ///
         /// @param aPrefName The floating point preference to get the state of.
+        /// @param aDefaultValue The value to return if the preference is not set.
         ///
         /// @return float  The value of the requested floating point preference.
         ///
         /// @see setCharPref
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		float GetFloatPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
+		float GetFloatPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, float aDefaultValue, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		float GetFloatPrefXPCOM([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
 		
 		/// <summary>
-        /// Called to get the state of an individual string preference.
+        /// Called to get the state of an individual ascii string preference.
         ///
         /// @param aPrefName The string preference to retrieve.
+        /// @param aDefaultValue The string to return if the preference is not set.
         ///
-        /// @return string   The value of the requested string preference.
+        /// @return ACString   The value of the requested string preference.
         ///
         /// @see setCharPref
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.StringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetCharPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
+		void GetCharPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aDefaultValue, int argc, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetCharPrefXPCOM([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
-        /// Called to set the state of an individual string preference.
+        /// Called to set the state of an individual ascii string preference.
         ///
         /// @param aPrefName The string preference to set.
         /// @param aValue    The string value to set the preference to.
@@ -136,19 +143,50 @@ namespace Gecko
         /// @see getCharPref
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCharPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.LPStr)] string aValue);
+		void SetCharPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aValue);
+		
+		/// <summary>
+        /// Called to get the state of an individual unicode string preference.
+        ///
+        /// @param aPrefName The string preference to retrieve.
+        /// @param aDefaultValue The string to return if the preference is not set.
+        ///
+        /// @return AUTF8String   The value of the requested string preference.
+        ///
+        /// @see setStringPref
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetStringPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aDefaultValue, int argc, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
+		
+		/// <summary>
+        /// Called to set the state of an individual unicode string preference.
+        ///
+        /// @param aPrefName The string preference to set.
+        /// @param aValue    The string value to set the preference to.
+        ///
+        /// @throws Error if setting failed or the preference has a default
+        ///             value of a type other than string.
+        ///
+        /// @see getStringPref
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetStringPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aValue);
 		
 		/// <summary>
         /// Called to get the state of an individual integer preference.
         ///
         /// @param aPrefName The integer preference to get the value of.
+        /// @param aDefaultValue The value to return if the preference is not set.
         ///
         /// @return long     The value of the requested integer preference.
         ///
         /// @see setIntPref
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetIntPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
+		int GetIntPref([MarshalAs(UnmanagedType.LPStr)] string aPrefName, int aDefaultValue, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetIntPrefXPCOM([MarshalAs(UnmanagedType.LPStr)] string aPrefName);
 		
 		/// <summary>
         /// Called to set the state of an individual integer preference.
@@ -173,7 +211,6 @@ namespace Gecko
         /// @param aType     The XPCOM interface that this complex preference
         /// represents. Interfaces currently supported are:
         /// - nsIFile
-        /// - nsISupportsString (UniChar)
         /// - nsIPrefLocalizedString (Localized UniChar)
         /// @param aValue    The XPCOM object into which to the complex preference
         /// value should be retrieved.
@@ -195,6 +232,7 @@ namespace Gecko
         /// represents. Interfaces currently supported are:
         /// - nsIFile
         /// - nsISupportsString (UniChar)
+        /// (deprecated; see setStringPref)
         /// - nsIPrefLocalizedString (Localized UniChar)
         /// @param aValue    The XPCOM object from which to set the complex preference
         /// value.

@@ -141,7 +141,7 @@ namespace Gecko
             return value.GetDataAttribute();
         }
 
-        public static IntPtr GetVoid(nsISupportsVoid value)
+        public static IntPtr GetVoid(nsISupports value)
         {
             return value.GetDataAttribute();
         }

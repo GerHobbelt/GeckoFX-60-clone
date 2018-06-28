@@ -27,7 +27,6 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// nsITokenPasswordDialogs
     /// This is the interface for setting and changing password
     /// on a PKCS11 token.
     /// </summary>
@@ -38,11 +37,14 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// setPassword - sets the password/PIN on the named token.
-        /// The canceled output value should be set to TRUE when
-        /// the user (or implementation) cancels the operation.
+        /// Brings up a dialog to set the password on a token.
+        ///
+        /// @param ctx A user interface context.
+        /// @param tokenName Name of the token.
+        /// @return true if the user canceled the dialog, false otherwise.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPassword([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string tokenName, [MarshalAs(UnmanagedType.U1)] ref bool canceled);
+		bool SetPassword([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase tokenName);
 	}
 }

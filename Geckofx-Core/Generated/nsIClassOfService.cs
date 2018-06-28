@@ -135,5 +135,29 @@ namespace Gecko
 		
 		// 
 		public const ulong Unblocked = 1<<4;
+		
+		// 
+		public const ulong Throttleable = 1<<5;
+		
+		// 
+		public const ulong UrgentStart = 1<<6;
+		
+		// 
+		public const ulong DontThrottle = 1<<7;
+		
+		// <summary>
+        // overrule this flag (disable tailing.)
+        // </summary>
+		public const ulong Tail = 1<<8;
+		
+		// <summary>
+        // a tracker.
+        // </summary>
+		public const ulong TailAllowed = 1<<9;
+		
+		// <summary>
+        // Tailing not allowed under any circumstances or combination of flags.
+        // </summary>
+		public const ulong TailForbidden = 1<<10;
 	}
 }

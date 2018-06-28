@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("1b9d7d8a-6dd0-11dc-8314-0800200c9a66")]
+	[Guid("bd3c2662-a988-41ab-8c94-c15ed0e6ac7d")]
 	public interface nsIAutoCompletePopup
 	{
 		
@@ -87,9 +87,12 @@ namespace Gecko
 		/// <summary>
         /// Instruct the result view to repaint itself to reflect the most current
         /// underlying data
+        ///
+        /// @param reason - The reason the popup needs to be invalidated, one of the
+        /// INVALIDATE_REASON consts.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Invalidate();
+		void Invalidate(ushort reason);
 		
 		/// <summary>
         /// Change the selection relative to the current selection and make sure
@@ -101,5 +104,18 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SelectBy([MarshalAs(UnmanagedType.U1)] bool reverse, [MarshalAs(UnmanagedType.U1)] bool page);
+	}
+	
+	/// <summary>nsIAutoCompletePopupConsts </summary>
+	public class nsIAutoCompletePopupConsts
+	{
+		
+		// <summary>
+        // Possible values of invalidate()'s 'reason' argument.
+        // </summary>
+		public const ushort INVALIDATE_REASON_NEW_RESULT = 0;
+		
+		// 
+		public const ushort INVALIDATE_REASON_DELETE = 1;
 	}
 }

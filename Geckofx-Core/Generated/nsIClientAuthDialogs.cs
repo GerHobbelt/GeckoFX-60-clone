@@ -27,7 +27,6 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// nsIClientAuthDialog
     /// Provides UI for SSL client-auth dialogs.
     /// </summary>
 	[ComImport()]
@@ -37,11 +36,22 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// display
-        /// UI shown when a user is asked to do SSL client auth.
+        /// Called when a user is asked to choose a certificate for client auth.
+        ///
+        /// @param ctx Context that allows at least nsIClientAuthUserDecision to be
+        /// queried.
+        /// @param hostname Hostname of the server.
+        /// @param port Port of the server.
+        /// @param organization Organization field of the server cert.
+        /// @param issuerOrg Organization field of the issuer cert of the server cert.
+        /// @param certList List of certificates the user can choose from.
+        /// @param selectedIndex Index of the cert in |certList| that the user chose.
+        /// Ignored if the return value is false.
+        /// @return true if a certificate was chosen. false if the user canceled.
         /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ChooseCertificate([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string cn, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string organization, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string issuer, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=6)] System.IntPtr[] certNickList, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=6)] System.IntPtr[] certDetailsList, uint count, ref int selectedIndex, [MarshalAs(UnmanagedType.U1)] ref bool canceled);
+		bool ChooseCertificate([MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor ctx, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase hostname, int port, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase organization, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase issuerOrg, [MarshalAs(UnmanagedType.Interface)] nsIArray certList, ref uint selectedIndex);
 	}
 	
 	/// <summary>nsIClientAuthUserDecision </summary>

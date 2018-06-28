@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("8684966b-1877-4f0f-8155-be4490b96bf7")]
+	[Guid("adf0db5e-211e-45a3-be14-4486ac430a58")]
 	public interface nsICookie
 	{
 		
@@ -89,6 +89,12 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		System.IntPtr GetPolicyAttribute();
+		
+		/// <summary>
+        /// The origin attributes for this cookie
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		Gecko.JsVal GetOriginAttributesAttribute(System.IntPtr jsContext);
 	}
 	
 	/// <summary>nsICookieConsts </summary>

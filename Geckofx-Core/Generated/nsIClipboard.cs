@@ -124,5 +124,10 @@ namespace Gecko
 		
 		// 
 		public const long kFindClipboard = 2;
+		
+		// <summary>
+        // Used to cache current selection on (nsClipboard) for macOS service menu.
+        // </summary>
+		public const long kSelectionCache = 3;
 	}
 }

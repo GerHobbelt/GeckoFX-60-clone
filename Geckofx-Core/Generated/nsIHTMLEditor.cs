@@ -37,41 +37,6 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// AddDefaultProperty() registers a default style property with the editor
-        ///
-        /// @param aProperty   the property to set by default
-        /// @param aAttribute  the attribute of the property, if applicable.
-        /// May be null.
-        /// Example: aProperty="font", aAttribute="color"
-        /// @param aValue      if aAttribute is not null, the value of the attribute.
-        /// Example: aProperty="font", aAttribute="color",
-        /// aValue="0x00FFFF"
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddDefaultProperty([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue);
-		
-		/// <summary>
-        /// RemoveDefaultProperty() unregisters a default style property with the editor
-        ///
-        /// @param aProperty   the property to remove from defaults
-        /// @param aAttribute  the attribute of the property, if applicable.
-        /// May be null.
-        /// Example: aProperty="font", aAttribute="color"
-        /// @param aValue      if aAttribute is not null, the value of the attribute.
-        /// Example: aProperty="font", aAttribute="color",
-        /// aValue="0x00FFFF"
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveDefaultProperty([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue);
-		
-		/// <summary>
-        /// RemoveAllDefaultProperties() unregisters all default style properties with the editor
-        ///
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveAllDefaultProperties();
-		
-		/// <summary>
         /// SetInlineProperty() sets the aggregate properties on the current selection
         ///
         /// @param aProperty   the property to set on the selection
@@ -84,7 +49,7 @@ namespace Gecko
         /// aValue="0x00FFFF"
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetInlineProperty([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue);
+		void SetInlineProperty([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue);
 		
 		/// <summary>
         /// getInlineProperty() gets aggregate properties of the current selection.
@@ -107,10 +72,10 @@ namespace Gecko
         /// selection have the property
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetInlineProperty([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, [MarshalAs(UnmanagedType.U1)] ref bool aFirst, [MarshalAs(UnmanagedType.U1)] ref bool aAny, [MarshalAs(UnmanagedType.U1)] ref bool aAll);
+		void GetInlineProperty([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, [MarshalAs(UnmanagedType.U1)] ref bool aFirst, [MarshalAs(UnmanagedType.U1)] ref bool aAny, [MarshalAs(UnmanagedType.U1)] ref bool aAll);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetInlinePropertyWithAttrValue([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, [MarshalAs(UnmanagedType.U1)] ref bool aFirst, [MarshalAs(UnmanagedType.U1)] ref bool aAny, [MarshalAs(UnmanagedType.U1)] ref bool aAll, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		void GetInlinePropertyWithAttrValue([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, [MarshalAs(UnmanagedType.U1)] ref bool aFirst, [MarshalAs(UnmanagedType.U1)] ref bool aAny, [MarshalAs(UnmanagedType.U1)] ref bool aAll, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// removeAllInlineProperties() deletes all the inline properties from all
@@ -137,7 +102,7 @@ namespace Gecko
         /// are to be removed from the selection.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveInlineProperty([MarshalAs(UnmanagedType.Interface)] nsIAtom aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute);
+		void RemoveInlineProperty([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aProperty, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAttribute);
 		
 		/// <summary>
         /// Increase font size for text in selection by 1 HTML unit
@@ -220,12 +185,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void InsertElementAtSelection([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aElement, [MarshalAs(UnmanagedType.U1)] bool aDeleteSelection);
-		
-		/// <summary>
-        /// Set the documents title.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDocumentTitle([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTitle);
 		
 		/// <summary>
         /// Set the BaseURL for the document to the current URL
@@ -402,8 +361,11 @@ namespace Gecko
 		nsIDOMElement GetElementOrParentByTagName([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTagName, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode);
 		
 		/// <summary>
-        /// Return an element only if it is the only node selected,
-        /// such as an image, horizontal rule, etc.
+        /// Return an Element only if it is the only node selected,
+        /// such as an image, horizontal rule, etc.  The return type is
+        /// nsISupports for implementation convenience; the returned object,
+        /// if not null, is always a DOM Element.
+        ///
         /// The exception is a link, which is more like a text attribute:
         /// The Anchor tag is returned if the selection is within the textnode(s)
         /// that are children of the "A" node.
@@ -417,18 +379,11 @@ namespace Gecko
         /// (an "A" tag with the "href" attribute set)
         /// Use "anchor" or "namedanchor" to get a named anchor node
         /// (an "A" tag with the "name" attribute set)
-        /// @return          NS_EDITOR_ELEMENT_NOT_FOUND if an element is not found
-        /// (passes NS_SUCCEEDED macro)
+        /// @return the element as described above
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement GetSelectedElement([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTagName);
-		
-		/// <summary>
-        /// Output the contents of the <HEAD> section as text/HTML format
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetHeadContentsAsHTML([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
+		nsISupports GetSelectedElement([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTagName);
 		
 		/// <summary>
         /// Replace all children of <HEAD> with string of HTML source
@@ -494,7 +449,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray GetLinkedObjects();
+		nsIArray GetLinkedObjects();
 		
 		/// <summary>
         /// A boolean which is true is the HTMLEditor has been instantiated
@@ -514,39 +469,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsCSSEnabledAttribute([MarshalAs(UnmanagedType.U1)] bool aIsCSSEnabled);
-		
-		/// <summary>
-        /// Add listener for insertion override
-        /// @param inFilter  function which callers want called during insertion
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddInsertionListener(System.IntPtr inFilter);
-		
-		/// <summary>
-        /// Remove listener for insertion override
-        /// @param inFilter  function which callers do not want called during insertion
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RemoveInsertionListener(System.IntPtr inFilter);
-		
-		/// <summary>
-        /// Returns an anonymous nsDOMElement of type aTag,
-        /// child of aParentNode. If aIsCreatedHidden is true, the class
-        /// "hidden" is added to the created element. If aAnonClass is not
-        /// the empty string, it becomes the value of the attribute "_moz_anonclass"
-        /// @return a DOM Element
-        /// @param aTag             [IN] a string representing the desired type of
-        /// the element to create
-        /// @param aParentNode      [IN] the parent node of the created anonymous
-        /// element
-        /// @param aAnonClass       [IN] contents of the _moz_anonclass attribute
-        /// @param aIsCreatedHidden [IN] a boolean specifying if the class "hidden"
-        /// is to be added to the created anonymous
-        /// element
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMElement CreateAnonymousElement([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTag, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aParentNode, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAnonClass, [MarshalAs(UnmanagedType.U1)] bool aIsCreatedHidden);
 		
 		/// <summary>
         /// returns the deepest container of the selection

@@ -61,8 +61,6 @@ namespace Gecko
         /// finish the current byte sequence.
         ///
         /// It does NOT flush the underlying stream.
-        ///
-        /// @see nsIUnicodeEncoder::Finish
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Flush();

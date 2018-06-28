@@ -27,9 +27,7 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// A callback is implemented by the service. For direct audio services, it is
-    /// required to implement these, although it could be helpful to use the
-    /// cancel method for shutting down the speech resources.
+    /// A callback is implemented by the service.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -57,7 +55,6 @@ namespace Gecko
 		
 		/// <summary>
         /// The user or application has changed the volume of this speech.
-        /// This is only used on indirect audio service type.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnVolumeChanged(float aVolume);
@@ -77,25 +74,9 @@ namespace Gecko
         /// Prepare browser for speech.
         ///
         /// @param aCallback callback object for mid-speech operations.
-        /// @param aChannels number of audio channels. Only required
-        /// in direct audio services
-        /// @param aRate     audio rate. Only required in direct audio services
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Setup([MarshalAs(UnmanagedType.Interface)] nsISpeechTaskCallback aCallback, uint aChannels, uint aRate, int argc);
-		
-		/// <summary>
-        /// Send audio data to browser.
-        ///
-        /// @param aData     an Int16Array with PCM-16 audio data.
-        /// @param aLandmarks an array of sample offset and landmark pairs.
-        /// Used for emiting boundary and mark events.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SendAudio(ref Gecko.JsVal aData, ref Gecko.JsVal aLandmarks, System.IntPtr jsContext);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SendAudioNative(@short aData, uint aDataLen);
+		void Setup([MarshalAs(UnmanagedType.Interface)] nsISpeechTaskCallback aCallback);
 		
 		/// <summary>
         /// Dispatch start event.
@@ -145,9 +126,10 @@ namespace Gecko
         /// @param aName        name of boundary, 'word' or 'sentence'
         /// @param aElapsedTime time in seconds since speech has started.
         /// @param aCharIndex   offset of spoken characters.
+        /// @param aCharLength  length of text in boundary event to be spoken.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DispatchBoundary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, float aElapsedTime, uint aCharIndex);
+		void DispatchBoundary([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, float aElapsedTime, uint aCharIndex, uint aCharLength, int argc);
 		
 		/// <summary>
         /// Dispatch mark event.
@@ -163,15 +145,11 @@ namespace Gecko
 	/// <summary>
     /// The main interface of a speech synthesis service.
     ///
-    /// A service's speak method could be implemented in two ways:
-    /// 1. Indirect audio - the service is responsible for outputting audio.
-    /// The service calls the nsISpeechTask.dispatch* methods directly. Starting
-    /// with dispatchStart() and ending with dispatchEnd or dispatchError().
-    ///
-    /// 2. Direct audio - the service provides us with PCM-16 data, and we output it.
-    /// The service does not call the dispatch task methods directly. Instead,
-    /// audio information is provided at setup(), and audio data is sent with
-    /// sendAudio(). The utterance is terminated with an empty sendAudio().
+    /// A service is responsible for outputting audio.
+    /// The service dispatches events, starting with dispatchStart() and ending with
+    /// dispatchEnd or dispatchError().
+    /// A service must also respond with the currect actions and events in response
+    /// to implemented callback methods.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -194,19 +172,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Speak([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aText, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aUri, float aVolume, float aRate, float aPitch, [MarshalAs(UnmanagedType.Interface)] nsISpeechTask aTask);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		SpeechServiceType GetServiceTypeAttribute();
-	}
-	
-	/// <summary>nsISpeechServiceConsts </summary>
-	public class nsISpeechServiceConsts
-	{
-		
-		// 
-		public const long SERVICETYPE_DIRECT_AUDIO = 1;
-		
-		// 
-		public const long SERVICETYPE_INDIRECT_AUDIO = 2;
 	}
 }

@@ -340,14 +340,6 @@ namespace Gecko
 		public const ulong ENCODE_FLAGS_ABSOLUTE_LINKS = 128;
 		
 		// <summary>
-        // Attempt to encode entities standardized at W3C (HTML, MathML, etc).
-        // This is a catch-all flag for documents with mixed contents. Beware of
-        // interoperability issues. See below for other flags which might likely
-        // do what you want.
-        // </summary>
-		public const ulong ENCODE_FLAGS_ENCODE_W3C_ENTITIES = 256;
-		
-		// <summary>
         // Output with carriage return line breaks. May also be combined with
         // ENCODE_FLAGS_LF_LINEBREAKS and if neither is specified, the platform
         // default format is used.
@@ -375,17 +367,5 @@ namespace Gecko
         // with older products that don't support &alpha; and friends.
         // </summary>
 		public const ulong ENCODE_FLAGS_ENCODE_BASIC_ENTITIES = 8192;
-		
-		// <summary>
-        // Encode Latin1 entities. This includes the basic set and
-        // accented letters between 128 and 255.
-        // </summary>
-		public const ulong ENCODE_FLAGS_ENCODE_LATIN1_ENTITIES = 16384;
-		
-		// <summary>
-        // Encode HTML4 entities. This includes the basic set, accented
-        // letters, greek letters and certain special markup symbols.
-        // </summary>
-		public const ulong ENCODE_FLAGS_ENCODE_HTML_ENTITIES = 32768;
 	}
 }

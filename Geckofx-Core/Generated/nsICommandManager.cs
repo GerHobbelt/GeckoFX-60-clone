@@ -37,7 +37,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("080D2001-F91E-11D4-A73C-F9242928207C")]
+	[Guid("bb5a1730-d83b-4fa2-831b-35b9d5842e84")]
 	public interface nsICommandManager
 	{
 		
@@ -69,7 +69,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsCommandSupported([MarshalAs(UnmanagedType.LPStr)] string aCommandName, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aTargetWindow);
+		bool IsCommandSupported([MarshalAs(UnmanagedType.LPStr)] string aCommandName, mozIDOMWindowProxy aTargetWindow);
 		
 		/// <summary>
         /// Ask the command manager if the specified command is currently.
@@ -78,12 +78,12 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsCommandEnabled([MarshalAs(UnmanagedType.LPStr)] string aCommandName, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aTargetWindow);
+		bool IsCommandEnabled([MarshalAs(UnmanagedType.LPStr)] string aCommandName, mozIDOMWindowProxy aTargetWindow);
 		
 		/// <summary>
         ///inout </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetCommandState([MarshalAs(UnmanagedType.LPStr)] string aCommandName, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aTargetWindow, [MarshalAs(UnmanagedType.Interface)] nsICommandParams aCommandParams);
+		void GetCommandState([MarshalAs(UnmanagedType.LPStr)] string aCommandName, mozIDOMWindowProxy aTargetWindow, [MarshalAs(UnmanagedType.Interface)] nsICommandParams aCommandParams);
 		
 		/// <summary>
         /// Execute the specified command.
@@ -95,6 +95,6 @@ namespace Gecko
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void DoCommand([MarshalAs(UnmanagedType.LPStr)] string aCommandName, [MarshalAs(UnmanagedType.Interface)] nsICommandParams aCommandParams, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aTargetWindow);
+		void DoCommand([MarshalAs(UnmanagedType.LPStr)] string aCommandName, [MarshalAs(UnmanagedType.Interface)] nsICommandParams aCommandParams, mozIDOMWindowProxy aTargetWindow);
 	}
 }

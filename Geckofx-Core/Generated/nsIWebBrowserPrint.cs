@@ -32,7 +32,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9A7CA4B0-FBBA-11d4-A869-00105A183419")]
+	[Guid("c9a934ed-fff1-4971-bfba-6c25ad70e1e6")]
 	public interface nsIWebBrowserPrint
 	{
 		
@@ -58,20 +58,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIPrintSettings GetCurrentPrintSettingsAttribute();
-		
-		/// <summary>
-        /// Returns a pointer to the current child DOMWindow
-        /// that is being print previewed. (FrameSet Frames)
-        ///
-        /// Returns null if parent document is not a frameset or the entire FrameSet
-        /// document is being print previewed
-        ///
-        /// This enables any consumers of the interface to have access
-        /// to the "current" child DOMWindow at later points in the execution
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetCurrentChildDOMWindowAttribute();
 		
 		/// <summary>
         /// Returns whether it is in Print mode
@@ -142,7 +128,7 @@ namespace Gecko
         /// @return void
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void PrintPreview([MarshalAs(UnmanagedType.Interface)] nsIPrintSettings aThePrintSettings, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aChildDOMWin, [MarshalAs(UnmanagedType.Interface)] nsIWebProgressListener aWPListener);
+		void PrintPreview([MarshalAs(UnmanagedType.Interface)] nsIPrintSettings aThePrintSettings, mozIDOMWindowProxy aChildDOMWin, [MarshalAs(UnmanagedType.Interface)] nsIWebProgressListener aWPListener);
 		
 		/// <summary>
         /// Print Preview - Navigates within the window

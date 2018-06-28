@@ -7,9 +7,9 @@ namespace Gecko.DOM
 {
     public sealed class DomNavigator
     {
-        private nsIDOMNavigator _navigator;
+        private /*nsIDOMNavigator x*/nsISupports _navigator;
 
-        internal DomNavigator(nsIDOMNavigator navigator)
+        internal DomNavigator(/*nsIDOMNavigator */nsISupports navigator)
         {
             _navigator = navigator;
         }

@@ -188,17 +188,16 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMEventTarget GetExplicitOriginalTargetAttribute();
 		
-		/// <summary>
-        /// @deprecated Use nsIDOMEvent::defaultPrevented.
-        /// To be removed in bug 691151.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetPreventDefault();
-		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsTrustedAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCancelBubbleAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetCancelBubbleAttribute([MarshalAs(UnmanagedType.U1)] bool aCancelBubble);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void DuplicatePrivateData();
@@ -211,7 +210,7 @@ namespace Gecko
 		bool IsDispatchStopped();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		System.IntPtr GetInternalNSEvent();
+		nsISupports WidgetEventPtr();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetTrusted([MarshalAs(UnmanagedType.U1)] bool aTrusted);
@@ -221,7 +220,7 @@ namespace Gecko
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool Deserialize(System.IntPtr aMsg, ref System.IntPtr aIter);
+		bool Deserialize(System.IntPtr aMsg, nsISupports aIter);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOwner(nsIDOMEventTarget aOwner);

@@ -37,19 +37,22 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Create the collation for a given locale.
+        /// Create a new collation for the current application locale.
         ///
-        /// Use NULL as the locale parameter to use the user's locale preference
-        /// from the operating system.
-        ///
-        /// @param locale
-        /// The locale for which to create the collation or null to use
-        /// user preference.
-        /// @return A collation for the given locale.
+        /// @return A new collation.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsICollation CreateCollation([MarshalAs(UnmanagedType.Interface)] nsILocale locale);
+		nsICollation CreateCollation();
+		
+		/// <summary>
+        /// Create a new collation for a given locale.
+        ///
+        /// @return A new collation.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsICollation CreateCollationForLocale([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase locale);
 	}
 	
 	/// <summary>nsICollation </summary>
@@ -63,7 +66,7 @@ namespace Gecko
         /// init this interface to a specified locale (should only be called by collation factory)
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Initialize([MarshalAs(UnmanagedType.Interface)] nsILocale locale);
+		void Initialize([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase locale);
 		
 		/// <summary>
         /// result is same as strcmp

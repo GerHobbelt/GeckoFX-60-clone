@@ -50,12 +50,19 @@ namespace Gecko
         /// listener's onLookupComplete should be called.  however, if this
         /// parameter is null, then onLookupComplete will be called on an
         /// unspecified thread (possibly recursively).
+        /// @param aOriginAttributes
+        /// the originAttribute for this resolving, the DNS cache will be
+        /// separated according to this originAttributes. This attribute is
+        /// optional to avoid breaking add-ons.
         ///
         /// @return An object that can be used to cancel the host lookup.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsICancelable AsyncResolve([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aListenerTarget);
+		nsICancelable AsyncResolve([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aListenerTarget, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int AsyncResolveNative([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aListenerTarget, nsISupports aOriginAttributes, [MarshalAs(UnmanagedType.Interface)] ref nsICancelable aResult);
 		
 		/// <summary>
         /// Attempts to cancel a previously requested async DNS lookup
@@ -69,28 +76,43 @@ namespace Gecko
         /// result - used to match request information to requestor.
         /// @param aReason
         /// nsresult reason for the cancellation
+        /// @param aOriginAttributes
+        /// the originAttribute for this resolving. This attribute is optional
+        /// to avoid breaking add-ons.
         ///
         /// @return An object that can be used to cancel the host lookup.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CancelAsyncResolve([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, int aReason);
+		void CancelAsyncResolve([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, int aReason, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int CancelAsyncResolveNative([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, int aReason, nsISupports aOriginAttributes);
 		
 		/// <summary>
-        /// called to synchronously resolve a hostname.  warning this method may
-        /// block the calling thread for a long period of time.  it is extremely
-        /// unwise to call this function on the UI thread of an application.
+        /// called to synchronously resolve a hostname.
+        ///
+        /// Since this method may block the calling thread for a long period of
+        /// time, it may not be accessed from the main thread.
         ///
         /// @param aHostName
         /// the hostname or IP-address-literal to resolve.
         /// @param aFlags
         /// a bitwise OR of the RESOLVE_ prefixed constants defined below.
+        /// @param aOriginAttributes
+        /// the originAttribute for this resolving, the DNS cache will be
+        /// separated according to this originAttributes. This attribute is
+        /// optional to avoid breaking add-ons.
         ///
         /// @return DNS record corresponding to the given hostname.
         /// @throws NS_ERROR_UNKNOWN_HOST if host could not be resolved.
+        /// @throws NS_ERROR_NOT_AVAILABLE if accessed from the main thread.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDNSRecord Resolve([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags);
+		nsIDNSRecord Resolve([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int ResolveNative([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, nsISupports aOriginAttributes, [MarshalAs(UnmanagedType.Interface)] ref nsIDNSRecord aResult);
 		
 		/// <summary>
         /// kicks off an asynchronous host lookup.
@@ -98,19 +120,24 @@ namespace Gecko
         /// This function is identical to asyncResolve except an additional
         /// parameter aNetwortInterface. If parameter aNetworkInterface is an empty
         /// string function will return the same result as asyncResolve.
-        /// Setting aNetworkInterface value make only sense for gonk,because it
-        /// an per networking interface query is possible.
+        /// Setting aNetworkInterface is deprecated.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsICancelable AsyncResolveExtended([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNetworkInterface, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aListenerTarget);
+		nsICancelable AsyncResolveExtended([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNetworkInterface, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aListenerTarget, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int AsyncResolveExtendedNative([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNetworkInterface, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aListenerTarget, nsISupports aOriginAttributes, [MarshalAs(UnmanagedType.Interface)] ref nsICancelable aResult);
 		
 		/// <summary>
         /// Attempts to cancel a previously requested async DNS lookup
         /// This is an extended versin with a additional parameter aNetworkInterface
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CancelAsyncResolveExtended([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNetworkInterface, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, int aReason);
+		void CancelAsyncResolveExtended([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNetworkInterface, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, int aReason, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext, int argc);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int CancelAsyncResolveExtendedNative([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aHostName, uint aFlags, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNetworkInterface, [MarshalAs(UnmanagedType.Interface)] nsIDNSListener aListener, int aReason, nsISupports aOriginAttributes);
 		
 		/// <summary>
         /// The method takes a pointer to an nsTArray
@@ -176,5 +203,16 @@ namespace Gecko
         // If set, allow name collision results (127.0.53.53) which are normally filtered.
         // </summary>
 		public const ulong RESOLVE_ALLOW_NAME_COLLISION = (1<<8);
+		
+		// <summary>
+        // If set, do not use TRR for resolving the host name.
+        // </summary>
+		public const ulong RESOLVE_DISABLE_TRR = (1<<9);
+		
+		// <summary>
+        // if set (together with RESOLVE_BYPASS_CACHE), invalidate the DNS
+        // existing cache entry first (if existing) then make a new resolve.
+        // </summary>
+		public const ulong RESOLVE_REFRESH_CACHE = (1<<10);
 	}
 }

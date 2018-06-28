@@ -53,7 +53,7 @@ namespace Gecko
 		bool GetIsAnonymousAttribute();
 		
 		/// <summary>
-        /// NeckoOriginAttributes hiding all the security context attributes
+        /// OriginAttributes hiding all the security context attributes
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		Gecko.JsVal GetOriginAttributesAttribute(System.IntPtr jsContext);
@@ -79,7 +79,7 @@ namespace Gecko
 	}
 	
 	/// <summary>
-    /// Since NeckoOriginAttributes struct limits the implementation of
+    /// Since OriginAttributes struct limits the implementation of
     /// nsILoadContextInfo (that needs to be thread safe) to C++,
     /// we need a scriptable factory to create instances of that
     /// interface from JS.
@@ -91,7 +91,7 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// Since NeckoOriginAttributes struct limits the implementation of
+        /// Since OriginAttributes struct limits the implementation of
         /// nsILoadContextInfo (that needs to be thread safe) to C++,
         /// we need a scriptable factory to create instances of that
         /// interface from JS.
@@ -110,7 +110,7 @@ namespace Gecko
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsILoadContextInfo Custom([MarshalAs(UnmanagedType.U1)] bool aPrivate, [MarshalAs(UnmanagedType.U1)] bool aAnonymous, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext);
+		nsILoadContextInfo Custom([MarshalAs(UnmanagedType.U1)] bool aAnonymous, ref Gecko.JsVal aOriginAttributes, System.IntPtr jsContext);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

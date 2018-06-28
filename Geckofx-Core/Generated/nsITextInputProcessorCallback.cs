@@ -65,9 +65,158 @@ namespace Gecko
         /// "notify-blur" (optional)
         /// This is notified when an editable editor loses focus and Gecko stops
         /// observing the changes in the content.
+        ///
+        /// "notify-text-change" (optional)
+        /// This is notified when text in the focused editor is modified.
+        /// Some attributes below are available to retrieve the detail.
+        /// IME shouldn't change DOM tree, focus nor something when this is notified.
+        /// Note that when there is no chance to notify you of some text changes
+        /// safely, this represents all changes as a change.
+        ///
+        /// "notify-selection-change" (optional)
+        /// This is notified when selection in the focused editor is changed.
+        /// Some attributes below are available to retrieve the detail.
+        /// IME shouldn't change DOM tree, focus nor something when this is notified.
+        /// Note that when there was no chance to notify you of this safely, this
+        /// represents the latest selection change.
+        ///
+        /// "notify-position-change" (optional)
+        /// This is notified when layout is changed in the editor or the window
+        /// is moved.
+        /// IME shouldn't change DOM tree, focus nor something when this is notified.
+        /// Note that when there was no chance to notify you of this safely, this
+        /// represents the latest layout change.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetTypeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aType);
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-text-change" or
+        /// "notify-selection-change".
+        /// This is offset of the start of modified text range if type is
+        /// "notify-text-change".  Or offset of start of selection if type is
+        /// "notify-selection-change".
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetOffsetAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-selection-change".
+        /// This is selected text.  I.e., the length is selected length and
+        /// it's empty if the selection is collapsed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetTextAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aText);
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-selection-change".
+        /// This is set to true when the selection is collapsed.  Otherwise, false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCollapsedAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-selection-change".
+        /// This is selected length.  I.e., if this is 0, collapsed is set to true.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetLengthAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-selection-change".
+        /// When selection is created from latter point to former point, this is
+        /// set to true.  Otherwise, false.
+        /// I.e., if this is true, offset + length is the anchor of selection.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetReversedAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-selection-change".
+        /// This indicates the start of the selection's writing mode.
+        /// The value can be "horizontal-tb", "vertical-rl" or "vertical-lr".
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetWritingModeAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aWritingMode);
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-selection-change".
+        /// If the selection change was caused by composition, this is set to true.
+        /// Otherwise, false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCausedByCompositionAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-selection-change".
+        /// If the selection change was caused by selection event, this is set to true.
+        /// Otherwise, false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCausedBySelectionEventAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-selection-change".
+        /// If the selection change occurred during composition, this is set to true.
+        /// Otherwise, false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetOccurredDuringCompositionAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-text-change".
+        /// This is removed text length by the change(s).  If this is empty, new text
+        /// was just inserted.  Otherwise, the text is replaced with new text.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetRemovedLengthAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-text-change".
+        /// This is added text length by the change(s).  If this is empty, old text
+        /// was just deleted.  Otherwise, the text replaces the old text.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetAddedLengthAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-text-change".
+        /// If the text change(s) was caused only by composition, this is set to true.
+        /// Otherwise, false.  I.e., if one of text changes are caused by JS or
+        /// modifying without composition, this is set to false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetCausedOnlyByCompositionAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-text-change".
+        /// If at least one text change not caused by composition occurred during
+        /// composition, this is set to true.  Otherwise, false.
+        /// Note that this is set to false when new change is caused by neither
+        /// composition nor occurred during composition because it's outdated for
+        /// new composition.
+        /// In other words, when text changes not caused by composition occurred
+        /// during composition and it may cause committing composition, this is
+        /// set to true.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIncludingChangesDuringCompositionAttribute();
+		
+		/// <summary>
+        /// This attribute has a valid value when type is "notify-text-change".
+        /// If at least one text change occurred when there was no composition, this
+        /// is set to true.  Otherwise, false.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIncludingChangesWithoutCompositionAttribute();
 	}
 	
 	/// <summary>

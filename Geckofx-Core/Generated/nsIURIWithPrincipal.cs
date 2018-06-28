@@ -51,4 +51,20 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIURI GetPrincipalUriAttribute();
 	}
+	
+	/// <summary>nsIPrincipalURIMutator </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("fa138a89-c76e-4b7f-95ec-c7b56ded5ef5")]
+	public interface nsIPrincipalURIMutator
+	{
+		
+		/// <summary>
+        /// Associates a principal to the mutated URI.
+        /// Would normally return nsIURIMutator, but since it only gets called
+        /// from C++, there is no need for that.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetPrincipal([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+	}
 }

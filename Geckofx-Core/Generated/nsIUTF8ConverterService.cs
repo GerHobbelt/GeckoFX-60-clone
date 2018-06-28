@@ -56,7 +56,7 @@ namespace Gecko
         /// true)
         /// @return the converted string in UTF-8.
         /// @throws NS_ERROR_UCONV_NOCONV when there is no decoder for aCharset
-        /// or error code of nsIUnicodeDecoder in case of conversion failure
+        /// or NS_ERROR_UDEC_ILLEGALINPUT in case of conversion failure
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ConvertStringToUTF8([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aString, [MarshalAs(UnmanagedType.LPStr)] string aCharset, [MarshalAs(UnmanagedType.U1)] bool aSkipCheck, [MarshalAs(UnmanagedType.U1)] bool aAllowSubstitution, int argc, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);
@@ -79,7 +79,7 @@ namespace Gecko
         /// @param aCharset the charset to convert from if |aSpec| is not in UTF-8
         /// @return the converted spec in UTF-8.
         /// @throws NS_ERROR_UCONV_NOCONV when there is no decoder for aCharset
-        /// or error code of nsIUnicodeDecoder in case of conversion failure
+        /// or NS_ERROR_UDEC_ILLEGALINPUT in case of conversion failure
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ConvertURISpecToUTF8([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSpec, [MarshalAs(UnmanagedType.LPStr)] string aCharset, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase retval);

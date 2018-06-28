@@ -41,7 +41,7 @@ namespace Gecko
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GrammarCompilationEnd(SpeechGrammarPtr grammarObject, [MarshalAs(UnmanagedType.U1)] bool success);
+		void GrammarCompilationEnd(nsISupports grammarObject, [MarshalAs(UnmanagedType.U1)] bool success);
 	}
 	
 	/// <summary>nsISpeechRecognitionService </summary>
@@ -54,19 +54,19 @@ namespace Gecko
 		/// <summary>Member Initialize </summary>
 		/// <param name='aSpeechRecognition'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Initialize(SpeechRecognitionWeakPtr aSpeechRecognition);
+		void Initialize(nsISupports aSpeechRecognition);
 		
 		/// <summary>Member ProcessAudioSegment </summary>
 		/// <param name='aAudioSegment'> </param>
 		/// <param name='aSampleRate'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ProcessAudioSegment(AudioSegmentPtr aAudioSegment, int aSampleRate);
+		void ProcessAudioSegment(nsISupports aAudioSegment, int aSampleRate);
 		
 		/// <summary>Member ValidateAndSetGrammarList </summary>
 		/// <param name='aSpeechGrammar'> </param>
 		/// <param name='aCallback'> </param>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ValidateAndSetGrammarList(SpeechGrammarPtr aSpeechGrammar, [MarshalAs(UnmanagedType.Interface)] nsISpeechGrammarCompilationCallback aCallback);
+		void ValidateAndSetGrammarList(nsISupports aSpeechGrammar, [MarshalAs(UnmanagedType.Interface)] nsISpeechGrammarCompilationCallback aCallback);
 		
 		/// <summary>Member SoundEnd </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

@@ -27,22 +27,8 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// Interface for JS function callbacks
+    /// Interface for a class that manages updates of the url classifier database.
     /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("fa4caf12-d057-4e7e-81e9-ce066ceee90b")]
-	public interface nsIUrlListManagerCallback
-	{
-		
-		/// <summary>
-        /// Interface for JS function callbacks
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void HandleEvent([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase value);
-	}
-	
-	/// <summary>nsIUrlListManager </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("d60a08ee-5c83-4eb6-bdfb-79fd0716501e")]
@@ -54,6 +40,12 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetGethashUrl([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Get the update url for this table
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetUpdateUrl([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
         /// Add a table to the list of tables we are managing. The name is a
@@ -68,6 +60,12 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool RegisterTable([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase providerName, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase updateUrl, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase gethashUrl);
+		
+		/// <summary>
+        /// Unregister table from the list
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void UnregisterTable([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableName);
 		
 		/// <summary>
         /// Turn on update checking for a table. I.e., during the next server
@@ -89,11 +87,29 @@ namespace Gecko
 		void MaybeToggleUpdateChecking();
 		
 		/// <summary>
-        /// Lookup a key.  Should not raise exceptions.  Calls the callback
-        /// function with a comma-separated list of tables to which the key
-        /// belongs.
+        /// This is currently used by about:url-classifier to force an update
+        /// for the update url. Update may still fail because of backoff algorithm.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool CheckForUpdates([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase updateUrl);
+		
+		/// <summary>
+        /// Force updates for the given tables, updates are still restricted to
+        /// backoff algorithm.
+        /// @param tables  A string lists all the tables that we want to trigger updates.
+        /// table names are separated with ','.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool ForceUpdates([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase tableNames);
+		
+		/// <summary>
+        /// This is currently used by about:url-classifier to get back-off time
+        /// (in millisecond since epoch) for the given provider. Return 0 if we
+        /// are not in back-off mode.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SafeLookup([MarshalAs(UnmanagedType.Interface)] nsIPrincipal key, [MarshalAs(UnmanagedType.Interface)] nsIUrlListManagerCallback cb);
+		ulong GetBackOffTime([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase provider);
 	}
 }

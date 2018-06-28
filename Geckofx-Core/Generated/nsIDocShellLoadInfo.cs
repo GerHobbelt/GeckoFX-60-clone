@@ -61,6 +61,34 @@ namespace Gecko
 		void SetOriginalURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aOriginalURI);
 		
 		/// <summary>
+        /// Result principal URL from nsILoadInfo, may be null.  Valid only if
+        /// the "IsSome" part is true (has the same meaning as isSome()
+        /// on mozilla::Maybe.)
+        ///
+        /// In C++ please use Get/SetMaybeResultPrincipalURI helper functions.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetResultPrincipalURIAttribute();
+		
+		/// <summary>
+        /// Result principal URL from nsILoadInfo, may be null.  Valid only if
+        /// the "IsSome" part is true (has the same meaning as isSome()
+        /// on mozilla::Maybe.)
+        ///
+        /// In C++ please use Get/SetMaybeResultPrincipalURI helper functions.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetResultPrincipalURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aResultPrincipalURI);
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetResultPrincipalURIIsSomeAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetResultPrincipalURIIsSomeAttribute([MarshalAs(UnmanagedType.U1)] bool aResultPrincipalURIIsSome);
+		
+		/// <summary>
         /// loadReplace flag to be passed to nsIDocShell.internalLoad.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
@@ -74,55 +102,87 @@ namespace Gecko
 		void SetLoadReplaceAttribute([MarshalAs(UnmanagedType.U1)] bool aLoadReplace);
 		
 		/// <summary>
-        ///The owner of the load, that is, the entity responsible for
-        /// causing the load to occur. This should be a nsIPrincipal typically.
+        ///The principal of the load, that is, the entity responsible for
+        /// causing the load to occur. In most cases the referrer and
+        /// the triggeringPrincipal's URI will be identical.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports GetOwnerAttribute();
+		nsIPrincipal GetTriggeringPrincipalAttribute();
 		
 		/// <summary>
-        ///The owner of the load, that is, the entity responsible for
-        /// causing the load to occur. This should be a nsIPrincipal typically.
+        ///The principal of the load, that is, the entity responsible for
+        /// causing the load to occur. In most cases the referrer and
+        /// the triggeringPrincipal's URI will be identical.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOwnerAttribute([MarshalAs(UnmanagedType.Interface)] nsISupports aOwner);
+		void SetTriggeringPrincipalAttribute([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
 		
 		/// <summary>
-        ///If this attribute is true and no owner is specified, copy
-        /// the owner from the referring document.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetInheritOwnerAttribute();
-		
-		/// <summary>
-        ///If this attribute is true and no owner is specified, copy
-        /// the owner from the referring document.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetInheritOwnerAttribute([MarshalAs(UnmanagedType.U1)] bool aInheritOwner);
-		
-		/// <summary>
-        ///If this attribute is true only ever use the owner specify by
-        /// the owner and inheritOwner attributes.
-        /// If there are security reasons for why this is unsafe, such
-        /// as trying to use a systemprincipal owner for a content docshell
-        /// the load fails.
+        ///If this attribute is true and no triggeringPrincipal is specified,
+        /// copy the principal from the referring document.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetOwnerIsExplicitAttribute();
+		bool GetInheritPrincipalAttribute();
 		
 		/// <summary>
-        ///If this attribute is true only ever use the owner specify by
-        /// the owner and inheritOwner attributes.
-        /// If there are security reasons for why this is unsafe, such
-        /// as trying to use a systemprincipal owner for a content docshell
-        /// the load fails.
+        ///If this attribute is true and no triggeringPrincipal is specified,
+        /// copy the principal from the referring document.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOwnerIsExplicitAttribute([MarshalAs(UnmanagedType.U1)] bool aOwnerIsExplicit);
+		void SetInheritPrincipalAttribute([MarshalAs(UnmanagedType.U1)] bool aInheritPrincipal);
+		
+		/// <summary>
+        ///If this attribute is true only ever use the principal specified
+        /// by the triggeringPrincipal and inheritPrincipal attributes.
+        /// If there are security reasons for why this is unsafe, such
+        /// as trying to use a systemprincipal as the triggeringPrincipal
+        /// for a content docshell the load fails.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetPrincipalIsExplicitAttribute();
+		
+		/// <summary>
+        ///If this attribute is true only ever use the principal specified
+        /// by the triggeringPrincipal and inheritPrincipal attributes.
+        /// If there are security reasons for why this is unsafe, such
+        /// as trying to use a systemprincipal as the triggeringPrincipal
+        /// for a content docshell the load fails.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetPrincipalIsExplicitAttribute([MarshalAs(UnmanagedType.U1)] bool aPrincipalIsExplicit);
+		
+		/// <summary>
+        /// If this attribute is true, then a top-level navigation
+        /// to a data URI will be allowed.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetForceAllowDataURIAttribute();
+		
+		/// <summary>
+        /// If this attribute is true, then a top-level navigation
+        /// to a data URI will be allowed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetForceAllowDataURIAttribute([MarshalAs(UnmanagedType.U1)] bool aForceAllowDataURI);
+		
+		/// <summary>
+        /// If this attribute is true, this load corresponds to a frame
+        /// element loading its original src (or srcdoc) attribute.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetOriginalFrameSrcAttribute();
+		
+		/// <summary>
+        /// If this attribute is true, this load corresponds to a frame
+        /// element loading its original src (or srcdoc) attribute.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetOriginalFrameSrcAttribute([MarshalAs(UnmanagedType.U1)] bool aOriginalFrameSrc);
 		
 		/// <summary>
         ///Contains a load type as specified by the load* constants </summary>
@@ -335,5 +395,11 @@ namespace Gecko
 		
 		// 
 		public const long loadNormalAllowMixedContent = 20;
+		
+		// 
+		public const long loadReloadCharsetChangeBypassCache = 21;
+		
+		// 
+		public const long loadReloadCharsetChangeBypassProxyAndCache = 22;
 	}
 }

@@ -27,8 +27,8 @@ namespace Gecko
 	
 	
 	/// <summary>
-    ///Interface to the Service for gwetting the Global PrintSettings object
-    ///   or a unique PrintSettings object </summary>
+    /// Native types
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("841387C8-72E6-484b-9296-BF6EEA80D58A")]
@@ -57,7 +57,8 @@ namespace Gecko
         /// If each browse window was to use the same PrintSettings object
         /// then it should use "globalPrintSettings"
         ///
-        /// Initializes the newPrintSettings from the default printer
+        /// Initializes the newPrintSettings from the unprefixed printer
+        /// (Note: this may not happen if there is an OS specific implementation.)
         ///
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -67,9 +68,8 @@ namespace Gecko
 		/// <summary>
         /// The name of the last printer used, or else the system default printer.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetDefaultPrinterNameAttribute();
+		void GetDefaultPrinterNameAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDefaultPrinterName);
 		
 		/// <summary>
         /// Initializes certain settings from the native printer into the PrintSettings
@@ -80,7 +80,7 @@ namespace Gecko
         /// Number of Copies
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitPrintSettingsFromPrinter([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string aPrinterName, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings aPrintSettings);
+		void InitPrintSettingsFromPrinter([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPrinterName, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings aPrintSettings);
 		
 		/// <summary>
         /// Reads PrintSettings values from Prefs,
@@ -126,5 +126,37 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SavePrintSettingsToPrefs([MarshalAs(UnmanagedType.Interface)] nsIPrintSettings aPrintSettings, [MarshalAs(UnmanagedType.U1)] bool aUsePrinterNamePrefix, uint aFlags);
+		
+		/// <summary>
+        /// Given some nsIPrintSettings and (optionally) an nsIWebBrowserPrint,
+        /// populates a PrintData representing them which can be sent over IPC. Values
+        /// are only ever read from aSettings and aWBP.
+        ///
+        /// @param aSettings
+        /// An nsIPrintSettings for a print job.
+        /// @param aWBP (optional)
+        /// The nsIWebBrowserPrint for the print job.
+        /// @param data
+        /// Pointer to a pre-existing PrintData to populate.
+        ///
+        /// @return nsresult
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SerializeToPrintData([MarshalAs(UnmanagedType.Interface)] nsIPrintSettings aPrintSettings, [MarshalAs(UnmanagedType.Interface)] nsIWebBrowserPrint aWebBrowserPrint, System.IntPtr data);
+		
+		/// <summary>
+        /// This function is the opposite of SerializeToPrintData, in that it takes
+        /// a PrintData, and populates a pre-existing nsIPrintSettings with the data
+        /// from PrintData.
+        ///
+        /// @param PrintData
+        /// Printing information sent through IPC.
+        /// @param settings
+        /// A pre-existing nsIPrintSettings to populate with the PrintData.
+        ///
+        /// @return nsresult
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DeserializeToPrintSettings(System.IntPtr data, [MarshalAs(UnmanagedType.Interface)] nsIPrintSettings aPrintSettings);
 	}
 }

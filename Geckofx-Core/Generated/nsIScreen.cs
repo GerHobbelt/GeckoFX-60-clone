@@ -39,13 +39,6 @@ namespace Gecko
 	{
 		
 		/// <summary>
-        /// A unique identifier for this device, useful for requerying
-        /// for it via nsIScreenManager.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetIdAttribute();
-		
-		/// <summary>
         /// These report screen dimensions in (screen-specific) device pixels
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -55,33 +48,13 @@ namespace Gecko
 		void GetAvailRect(ref int left, ref int top, ref int width, ref int height);
 		
 		/// <summary>
-        /// And these report in global display pixels
+        /// And these report in desktop pixels
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetRectDisplayPix(ref int left, ref int top, ref int width, ref int height);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetAvailRectDisplayPix(ref int left, ref int top, ref int width, ref int height);
-		
-		/// <summary>
-        /// Locks the minimum brightness of the screen, forcing it to be at
-        /// least as bright as a certain brightness level. Each call to this
-        /// function must eventually be followed by a corresponding call to
-        /// unlockMinimumBrightness, with the same brightness level.
-        ///
-        /// @param brightness A brightness level, one of the above constants.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LockMinimumBrightness(uint brightness);
-		
-		/// <summary>
-        /// Releases a lock on the screen brightness. This must be called
-        /// (eventually) after a corresponding call to lockMinimumBrightness.
-        ///
-        /// @param brightness A brightness level, one of the above constants.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnlockMinimumBrightness(uint brightness);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetPixelDepthAttribute();
@@ -90,58 +63,35 @@ namespace Gecko
 		int GetColorDepthAttribute();
 		
 		/// <summary>
-        /// Get/set the screen rotation, on platforms that support changing
-        /// screen rotation.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetRotationAttribute();
-		
-		/// <summary>
-        /// Get/set the screen rotation, on platforms that support changing
-        /// screen rotation.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetRotationAttribute(uint aRotation);
-		
-		/// <summary>
-        /// The number of device pixels per screen point in HiDPI mode.
-        /// Returns 1.0 if HiDPI mode is disabled or unsupported.
+        /// The number of device pixels per desktop pixel for this screen (for
+        /// hidpi configurations where there may be multiple device pixels per
+        /// desktop px and/or per CSS px).
+        ///
+        /// This seems poorly named (something like devicePixelsPerDesktopPixel
+        /// would be more accurate/explicit), but given that it is exposed to
+        /// front-end code and may also be used by add-ons, it's probably not
+        /// worth the disruption of changing it.
+        ///
+        /// Returns 1.0 if HiDPI mode is disabled or unsupported, or if the
+        /// host OS uses device pixels as its desktop pixel units (e.g. Windows 7 or
+        /// GTK/X11). Per-monitor DPI is available in Windows 8.1+, GTK/Wayland or
+        /// macOS.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		double GetContentsScaleFactorAttribute();
-	}
-	
-	/// <summary>nsIScreenConsts </summary>
-	public class nsIScreenConsts
-	{
 		
-		// <summary>
-        // Levels of brightness for the screen, from off to full brightness.
-        // </summary>
-		public const ulong BRIGHTNESS_DIM = 0;
+		/// <summary>
+        /// The default number of device pixels per unscaled CSS pixel for this
+        /// screen. This is probably what contentsScaleFactor originally meant
+        /// to be, prior to confusion between CSS pixels and desktop pixel units.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		double GetDefaultCSSScaleFactorAttribute();
 		
-		// 
-		public const ulong BRIGHTNESS_FULL = 1;
-		
-		// <summary>
-        //The number of different brightness levels </summary>
-		public const ulong BRIGHTNESS_LEVELS = 2;
-		
-		// <summary>
-        // Allowable screen rotations, when the underlying widget toolkit
-        // supports rotating the screen.
-        //
-        // ROTATION_0_DEG is the default, unrotated configuration.
-        // </summary>
-		public const ulong ROTATION_0_DEG = 0;
-		
-		// 
-		public const ulong ROTATION_90_DEG = 1;
-		
-		// 
-		public const ulong ROTATION_180_DEG = 2;
-		
-		// 
-		public const ulong ROTATION_270_DEG = 3;
+		/// <summary>
+        /// The DPI of the screen.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		float GetDpiAttribute();
 	}
 }

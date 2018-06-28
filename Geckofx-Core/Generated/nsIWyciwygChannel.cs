@@ -514,21 +514,41 @@ namespace Gecko
 		new void GetContentDispositionHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentDispositionHeader);
 		
 		/// <summary>
-        /// The nsILoadInfo for this load.  This is immutable for the
-        /// lifetime of the load and should be passed through across
-        /// redirects and the like.
+        /// The LoadInfo object contains information about a network load, why it
+        /// was started, and how we plan on using the resulting response.
+        /// If a network request is redirected, the new channel will receive a new
+        /// LoadInfo object. The new object will contain mostly the same
+        /// information as the pre-redirect one, but updated as appropriate.
+        /// For detailed information about what parts of LoadInfo are updated on
+        /// redirect, see documentation on individual properties.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsILoadInfo GetLoadInfoAttribute();
 		
 		/// <summary>
-        /// The nsILoadInfo for this load.  This is immutable for the
-        /// lifetime of the load and should be passed through across
-        /// redirects and the like.
+        /// The LoadInfo object contains information about a network load, why it
+        /// was started, and how we plan on using the resulting response.
+        /// If a network request is redirected, the new channel will receive a new
+        /// LoadInfo object. The new object will contain mostly the same
+        /// information as the pre-redirect one, but updated as appropriate.
+        /// For detailed information about what parts of LoadInfo are updated on
+        /// redirect, see documentation on individual properties.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetLoadInfoAttribute([MarshalAs(UnmanagedType.Interface)] nsILoadInfo aLoadInfo);
+		
+		/// <summary>
+        /// Returns true if the channel is used to create a document.
+        /// It returns true if the loadFlags have LOAD_DOCUMENT_URI set, or if
+        /// LOAD_HTML_OBJECT_DATA is set and the channel has the appropriate
+        /// MIME type.
+        /// Note: May have the wrong value if called before OnStartRequest as we
+        /// don't know the MIME type yet.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetIsDocumentAttribute();
 		
 		/// <summary>
         /// Append data to the cache entry; opens the cache entry if necessary.

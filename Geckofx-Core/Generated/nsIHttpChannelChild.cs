@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("893e29fb-2e84-454e-afc7-41fadbe93fd9")]
+	[Guid("d02b96ed-2789-4f42-a25c-7abe63de7c18")]
 	public interface nsIHttpChannelChild
 	{
 		
@@ -47,7 +47,7 @@ namespace Gecko
         /// to the corresponding parent channel when a redirect occurs.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ForceIntercepted();
+		void ForceIntercepted([MarshalAs(UnmanagedType.U1)] bool postRedirectChannelShouldIntercept, [MarshalAs(UnmanagedType.U1)] bool postRedirectChannelShouldUpgrade);
 		
 		/// <summary>
         /// Headers that the channel client has set via SetRequestHeader.

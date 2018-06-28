@@ -59,7 +59,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3232f40a-e94b-432d-9496-096abf1387bd")]
+	[Guid("11751471-9246-4c72-a80f-0c7df765d640")]
 	public interface nsIWinTaskbar
 	{
 		
@@ -153,7 +153,7 @@ namespace Gecko
         /// @throw NS_ERROR_UNEXPECTED for general failures.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetGroupIdForWindow([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aParent, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier);
+		void SetGroupIdForWindow(mozIDOMWindow aParent, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aIdentifier);
 		
 		/// <summary>
         /// Notify the taskbar that a window is about to enter full screen mode.
@@ -166,7 +166,7 @@ namespace Gecko
         /// @throw NS_ERROR_NOT_AVAILABLE if the taskbar cannot be obtained.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void PrepareFullScreen([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.U1)] bool aFullScreen);
+		void PrepareFullScreen(mozIDOMWindow aWindow, [MarshalAs(UnmanagedType.U1)] bool aFullScreen);
 		
 		/// <summary>
         /// Notify the taskbar that a window identified by its HWND is about to enter

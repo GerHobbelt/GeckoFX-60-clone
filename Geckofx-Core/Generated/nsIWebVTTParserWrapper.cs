@@ -31,7 +31,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("acf6e493-0092-4b26-b172-241e375c57ab")]
+	[Guid("8dfe016e-1701-4618-9f5e-9a6154e853f0")]
 	public interface nsIWebVTTParserWrapper
 	{
 		
@@ -45,7 +45,7 @@ namespace Gecko
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void LoadParser([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		void LoadParser(mozIDOMWindow window);
 		
 		/// <summary>
         /// Attempts to parse the stream's data as WebVTT format. When it successfully
@@ -86,7 +86,7 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMHTMLElement ConvertCueToDOMTree([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, [MarshalAs(UnmanagedType.Interface)] nsISupports cue);
+		nsIDOMDocumentFragment ConvertCueToDOMTree(mozIDOMWindow window, [MarshalAs(UnmanagedType.Interface)] nsISupports cue);
 		
 		/// <summary>
         /// Compute the display state of the VTTCues in cues along with any VTTRegions
@@ -101,8 +101,9 @@ namespace Gecko
         /// @param cues    An array of VTTCues who need there display state to be
         /// computed.
         /// @param overlay The HTMLElement that the cues will be displayed within.
+        /// @param controls The video control element that will affect cues position.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ProcessCues([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window, [MarshalAs(UnmanagedType.Interface)] nsIVariant cues, [MarshalAs(UnmanagedType.Interface)] nsISupports overlay);
+		void ProcessCues(mozIDOMWindow window, [MarshalAs(UnmanagedType.Interface)] nsIVariant cues, [MarshalAs(UnmanagedType.Interface)] nsISupports overlay, [MarshalAs(UnmanagedType.Interface)] nsISupports controls);
 	}
 }

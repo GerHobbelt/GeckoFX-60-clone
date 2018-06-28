@@ -70,15 +70,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void OnSearchResult([MarshalAs(UnmanagedType.Interface)] nsIAutoCompleteSearch search, [MarshalAs(UnmanagedType.Interface)] nsIAutoCompleteResult result);
-		
-		/// <summary>
-        /// Called to update with new results
-        ///
-        /// @param search - The search object that processed this search
-        /// @param result - The search result object
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnUpdateSearchResult([MarshalAs(UnmanagedType.Interface)] nsIAutoCompleteSearch search, [MarshalAs(UnmanagedType.Interface)] nsIAutoCompleteResult result);
 	}
 	
 	/// <summary>nsIAutoCompleteSearchDescriptor </summary>

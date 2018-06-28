@@ -159,9 +159,11 @@ namespace Gecko
         /// the same external entity so that the Locator provides useful
         /// information.
         ///
-        /// Note that some parsers will report whitespace in element
+        /// Note that some parsers would report whitespace in element
         /// content using the ignorableWhitespace method rather than this one
-        /// (validating parsers must do so).
+        /// (validating parsers must do so). But this interface no longer has an
+        /// ignorableWhitespace method, so in that case such whitespace is not
+        /// reported at all.
         ///
         /// @param value the characters from the XML document
         /// </summary>
@@ -186,70 +188,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ProcessingInstruction([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase target, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase data);
-		
-		/// <summary>
-        /// Receive notification of ignorable whitespace in element content.
-        ///
-        /// Validating Parsers must use this method to report each chunk of
-        /// whitespace in element content (see the W3C XML 1.0
-        /// recommendation, section 2.10): non-validating parsers may also
-        /// use this method if they are capable of parsing and using content
-        /// models.
-        ///
-        /// SAX parsers may return all contiguous whitespace in a single
-        /// chunk, or they may split it into several chunks; however, all of
-        /// the characters in any single event must come from the same
-        /// external entity, so that the Locator provides useful information.
-        ///
-        /// @param whitespace the characters from the XML document
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void IgnorableWhitespace([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase whitespace);
-		
-		/// <summary>
-        /// Begin the scope of a prefix-URI Namespace mapping.
-        ///
-        /// The information from this event is not necessary for normal
-        /// Namespace processing: the SAX XML reader will automatically
-        /// replace prefixes for element and attribute names when the
-        /// http://xml.org/sax/features/namespaces feature is
-        /// true (the default).
-        ///
-        /// There are cases, however, when applications need to use prefixes
-        /// in character data or in attribute values, where they cannot
-        /// safely be expanded automatically; the start/endPrefixMapping
-        /// event supplies the information to the application to expand
-        /// prefixes in those contexts itself, if necessary.
-        ///
-        /// Note that start/endPrefixMapping events are not guaranteed to be
-        /// properly nested relative to each other: all startPrefixMapping
-        /// events will occur immediately before the corresponding
-        /// startElement event, and all endPrefixMapping events will occur
-        /// immediately after the corresponding endElement event, but their
-        /// order is not otherwise guaranteed.
-        ///
-        /// There should never be start/endPrefixMapping events for the
-        /// "xml" prefix, since it is predeclared and immutable.
-        ///
-        /// @param prefix The Namespace prefix being declared. An empty
-        /// string is used for the default element namespace,
-        /// which has no prefix.
-        /// @param uri The Namespace URI the prefix is mapped to.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void StartPrefixMapping([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase prefix, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase uri);
-		
-		/// <summary>
-        /// End the scope of a prefix-URI mapping.
-        ///
-        /// See startPrefixMapping for details.  These events will always
-        /// occur immediately after the corresponding endElement event, but
-        /// the order of endPrefixMapping events is not otherwise guaranteed.
-        ///
-        /// @param prefix The prefix that was being mapped. This is the empty
-        /// string when a default mapping scope ends.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void EndPrefixMapping([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase prefix);
 	}
 }

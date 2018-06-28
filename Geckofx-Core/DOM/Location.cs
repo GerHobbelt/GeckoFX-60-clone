@@ -4,14 +4,14 @@ namespace Gecko.DOM
 {
     public sealed class Location
     {
-        private ComPtr<nsIDOMLocation> _location;
+        private ComPtr</* nsIDOMLocation */ nsISupports> _location;
 
-        private Location(nsIDOMLocation location)
+        private Location(/* nsIDOMLocation */ nsISupports location)
         {
-            _location = new ComPtr<nsIDOMLocation>(location);
+            _location = new ComPtr</* nsIDOMLocation */ nsISupports>(location);
         }
 
-        public static Location Create(nsIDOMLocation location)
+        public static Location Create(/* nsIDOMLocation */ nsISupports location)
         {
             return new Location(location);
         }

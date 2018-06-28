@@ -129,7 +129,7 @@ namespace Gecko
         /// @param aURI the namespace URI
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddNameSpace(System.IntPtr aPrefix, System.IntPtr aURI);
+		void AddNameSpace(nsISupports aPrefix, System.IntPtr aURI);
 		
 		/// <summary>
         /// Add an observer that will be notified as the RDF/XML load

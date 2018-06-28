@@ -46,7 +46,7 @@ namespace Gecko
         /// child process.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ConnectParent(uint id);
+		void ConnectParent(uint registrarId);
 		
 		/// <summary>
         /// As AsyncOpen is called on the chrome process for redirect target channels,

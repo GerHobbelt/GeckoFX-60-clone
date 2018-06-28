@@ -27,10 +27,82 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// Using Places services after quit-application is not reliable, so make
-    /// sure to do any shutdown work on quit-application, or history
-    /// synchronization could fail, losing latest changes.
+    /// This interface exists specifically for passing visit information
+    /// in bulk to onVisits below.
     /// </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("9d8df1ff-142f-4ca7-9f45-3c62a508c7e2")]
+	public interface nsIVisitData
+	{
+		
+		/// <summary>
+        /// URI of the visit that was just created.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetUriAttribute();
+		
+		/// <summary>
+        /// Id of the visit that was just created.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetVisitIdAttribute();
+		
+		/// <summary>
+        /// Time of the visit.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetTimeAttribute();
+		
+		/// <summary>
+        /// The id of the visit the user came from, defaults to 0 for no referrer.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetReferrerIdAttribute();
+		
+		/// <summary>
+        /// One of nsINavHistory.TRANSITION_*
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetTransitionTypeAttribute();
+		
+		/// <summary>
+        /// The unique id associated with the page.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetGuidAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aGuid);
+		
+		/// <summary>
+        /// Whether the visited page is marked as hidden.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetHiddenAttribute();
+		
+		/// <summary>
+        /// Number of visits (included this one) for this URI.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetVisitCountAttribute();
+		
+		/// <summary>
+        /// Whether the URI has been typed or not.
+        /// TODO (Bug 1271801): This will become a count, rather than a boolean.
+        /// For future compatibility, always compare it with "> 0".
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetTypedAttribute();
+		
+		/// <summary>
+        /// The last known title of the page. Might not be from the current visit,
+        /// and might be null if it is not known.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetLastKnownTitleAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aLastKnownTitle);
+	}
+	
+	/// <summary>nsINavHistoryResultNode </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("91d104bb-17ef-404b-9f9a-d9ed8de6824c")]
@@ -177,6 +249,28 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetBookmarkGuidAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aBookmarkGuid);
+		
+		/// <summary>
+        /// The unique ID associated with the history visit. For node types other than
+        /// history visit nodes, this value is -1.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetVisitIdAttribute();
+		
+		/// <summary>
+        /// The unique ID associated with visit node which was the referrer of this
+        /// history visit. For node types other than history visit nodes, or visits
+        /// without any known referrer, this value is -1.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetFromVisitIdAttribute();
+		
+		/// <summary>
+        /// The transition type associated with this visit. For node types other than
+        /// history visit nodes, this value is 0.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetVisitTypeAttribute();
 	}
 	
 	/// <summary>nsINavHistoryResultNodeConsts </summary>
@@ -363,6 +457,28 @@ namespace Gecko
 		new void GetBookmarkGuidAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aBookmarkGuid);
 		
 		/// <summary>
+        /// The unique ID associated with the history visit. For node types other than
+        /// history visit nodes, this value is -1.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new long GetVisitIdAttribute();
+		
+		/// <summary>
+        /// The unique ID associated with visit node which was the referrer of this
+        /// history visit. For node types other than history visit nodes, or visits
+        /// without any known referrer, this value is -1.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new long GetFromVisitIdAttribute();
+		
+		/// <summary>
+        /// The transition type associated with this visit. For node types other than
+        /// history visit nodes, this value is 0.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new uint GetVisitTypeAttribute();
+		
+		/// <summary>
         /// Set this to allow descent into the container. When closed, attempting
         /// to call getChildren or childCount will result in an error. You should
         /// set this to false when you are done reading.
@@ -437,27 +553,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetChildIndex([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode);
-		
-		/// <summary>
-        /// Look for a node in the container by some of its details.  Does not search
-        /// closed containers.
-        ///
-        /// @param aURI
-        /// the node's uri attribute value
-        /// @param aTime
-        /// the node's time attribute value.
-        /// @param aItemId
-        /// the node's itemId attribute value.
-        /// @param aRecursive
-        /// whether or not to search recursively.
-        ///
-        /// @throws NS_ERROR_NOT_AVAILABLE if this container is closed.
-        /// @return a result node that matches the given details if any, null
-        /// otherwise.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsINavHistoryResultNode FindNodeByDetails([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIString, long aTime, long aItemId, [MarshalAs(UnmanagedType.U1)] bool aRecursive);
 	}
 	
 	/// <summary>nsINavHistoryContainerResultNodeConsts </summary>
@@ -629,6 +724,28 @@ namespace Gecko
 		new void GetBookmarkGuidAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aBookmarkGuid);
 		
 		/// <summary>
+        /// The unique ID associated with the history visit. For node types other than
+        /// history visit nodes, this value is -1.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new long GetVisitIdAttribute();
+		
+		/// <summary>
+        /// The unique ID associated with visit node which was the referrer of this
+        /// history visit. For node types other than history visit nodes, or visits
+        /// without any known referrer, this value is -1.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new long GetFromVisitIdAttribute();
+		
+		/// <summary>
+        /// The transition type associated with this visit. For node types other than
+        /// history visit nodes, this value is 0.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new uint GetVisitTypeAttribute();
+		
+		/// <summary>
         /// Set this to allow descent into the container. When closed, attempting
         /// to call getChildren or childCount will result in an error. You should
         /// set this to false when you are done reading.
@@ -703,27 +820,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new uint GetChildIndex([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode);
-		
-		/// <summary>
-        /// Look for a node in the container by some of its details.  Does not search
-        /// closed containers.
-        ///
-        /// @param aURI
-        /// the node's uri attribute value
-        /// @param aTime
-        /// the node's time attribute value.
-        /// @param aItemId
-        /// the node's itemId attribute value.
-        /// @param aRecursive
-        /// whether or not to search recursively.
-        ///
-        /// @throws NS_ERROR_NOT_AVAILABLE if this container is closed.
-        /// @return a result node that matches the given details if any, null
-        /// otherwise.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsINavHistoryResultNode FindNodeByDetails([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aURIString, long aTime, long aItemId, [MarshalAs(UnmanagedType.U1)] bool aRecursive);
 		
 		/// <summary>
         /// Get the queries which build this node's children.
@@ -814,10 +910,10 @@ namespace Gecko
         /// @param aNode
         /// a result node
         /// @param aNewURI
-        /// the new uri
+        /// the old uri
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NodeURIChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNewURI);
+		void NodeURIChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aOldURI);
 		
 		/// <summary>
         /// Called right after aNode's icon property has changed.
@@ -836,13 +932,13 @@ namespace Gecko
         ///
         /// @param aNode
         /// a uri result node
-        /// @param aNewVisitDate
-        /// the new visit date
-        /// @param aNewAccessCount
-        /// the new access-count
+        /// @param aOldVisitDate
+        /// the old visit date
+        /// @param aOldAccessCount
+        /// the old access-count
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NodeHistoryDetailsChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, long aNewVisitDate, uint aNewAccessCount);
+		void NodeHistoryDetailsChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, long aOldVisitDate, uint aOldAccessCount);
 		
 		/// <summary>
         /// Called when the tags set on the uri represented by aNode have changed.
@@ -962,249 +1058,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetResultAttribute([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResult aResult);
-	}
-	
-	/// <summary>
-    /// TODO: Bug 517719.
-    ///
-    /// A predefined view adaptor for interfacing results with an nsITree. This
-    /// object will remove itself from its associated result when the tree has been
-    /// detached. This prevents circular references. Users should be aware of this,
-    /// if you want to re-use the same viewer, you will need to keep your own
-    /// reference to it and re-initialize it when the tree changes. If you use this
-    /// object, attach it to a result, never attach it to a tree, and forget about
-    /// it, it will leak!
-    /// </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f8b518c0-1faf-11df-8a39-0800200c9a66")]
-	public interface nsINavHistoryResultTreeViewer : nsINavHistoryResultObserver
-	{
-		
-		/// <summary>
-        /// Called when 'aItem' is inserted into 'aParent' at index 'aNewIndex'.
-        /// The item previously at index (if any) and everything below it will have
-        /// been shifted down by one. The item may be a container or a leaf.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeInserted([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aParent, [MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, uint aNewIndex);
-		
-		/// <summary>
-        /// Called whan 'aItem' is removed from 'aParent' at 'aOldIndex'. The item
-        /// may be a container or a leaf. This function will be called after the item
-        /// has been removed from its parent list, but before anything else (including
-        /// NULLing out the item's parent) has happened.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeRemoved([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aParent, [MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aItem, uint aOldIndex);
-		
-		/// <summary>
-        /// Called whan 'aItem' is moved from 'aOldParent' at 'aOldIndex' to
-        /// aNewParent at aNewIndex. The item may be a container or a leaf.
-        ///
-        /// XXX: at the moment, this method is called only when an item is moved
-        /// within the same container. When an item is moved between containers,
-        /// a new node is created for the item, and the itemRemoved/itemAdded methods
-        /// are used.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeMoved([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, [MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aOldParent, uint aOldIndex, [MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aNewParent, uint aNewIndex);
-		
-		/// <summary>
-        /// Called right after aNode's title has changed.
-        ///
-        /// @param aNode
-        /// a result node
-        /// @param aNewTitle
-        /// the new title
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeTitleChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNewTitle);
-		
-		/// <summary>
-        /// Called right after aNode's uri property has changed.
-        ///
-        /// @param aNode
-        /// a result node
-        /// @param aNewURI
-        /// the new uri
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeURIChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNewURI);
-		
-		/// <summary>
-        /// Called right after aNode's icon property has changed.
-        ///
-        /// @param aNode
-        /// a result node
-        ///
-        /// @note: The new icon is accessible through aNode.icon.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeIconChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode);
-		
-		/// <summary>
-        /// Called right after aNode's time property or accessCount property, or both,
-        /// have changed.
-        ///
-        /// @param aNode
-        /// a uri result node
-        /// @param aNewVisitDate
-        /// the new visit date
-        /// @param aNewAccessCount
-        /// the new access-count
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeHistoryDetailsChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, long aNewVisitDate, uint aNewAccessCount);
-		
-		/// <summary>
-        /// Called when the tags set on the uri represented by aNode have changed.
-        ///
-        /// @param aNode
-        /// a uri result node
-        ///
-        /// @note: The new tags list is accessible through aNode.tags.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeTagsChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode);
-		
-		/// <summary>
-        /// Called right after the aNode's keyword property has changed.
-        ///
-        /// @param aNode
-        /// a uri result node
-        /// @param aNewKeyword
-        /// the new keyword
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeKeywordChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aNewKeyword);
-		
-		/// <summary>
-        /// Called right after an annotation of aNode's has changed (set, altered, or
-        /// unset).
-        ///
-        /// @param aNode
-        /// a result node
-        /// @param aAnnoName
-        /// the name of the annotation that changed
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeAnnotationChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aAnnoName);
-		
-		/// <summary>
-        /// Called right after aNode's dateAdded property has changed.
-        ///
-        /// @param aNode
-        /// a result node
-        /// @param aNewValue
-        /// the new value of the dateAdded property
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeDateAddedChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, long aNewValue);
-		
-		/// <summary>
-        /// Called right after aNode's dateModified property has changed.
-        ///
-        /// @param aNode
-        /// a result node
-        /// @param aNewValue
-        /// the new value of the dateModified property
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void NodeLastModifiedChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode, long aNewValue);
-		
-		/// <summary>
-        /// Called after a container changes state.
-        ///
-        /// @param aContainerNode
-        /// The container that has changed state.
-        /// @param aOldState
-        /// The state that aContainerNode has transitioned out of.
-        /// @param aNewState
-        /// The state that aContainerNode has transitioned into.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void ContainerStateChanged([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aContainerNode, uint aOldState, uint aNewState);
-		
-		/// <summary>
-        /// Called when something significant has happened within the container. The
-        /// contents of the container should be re-built.
-        ///
-        /// @param aContainerNode
-        /// the container node to invalidate
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void InvalidateContainer([MarshalAs(UnmanagedType.Interface)] nsINavHistoryContainerResultNode aContainerNode);
-		
-		/// <summary>
-        /// This is called to indicate to the UI that the sort has changed to the
-        /// given mode. For trees, for example, this would update the column headers
-        /// to reflect the sorting. For many other types of views, this won't be
-        /// applicable.
-        ///
-        /// @param sortingMode  One of nsINavHistoryQueryOptions.SORT_BY_* that
-        /// indicates the new sorting mode.
-        ///
-        /// This only is expected to update the sorting UI. invalidateAll() will also
-        /// get called if the sorting changes to update everything.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SortingChanged(ushort sortingMode);
-		
-		/// <summary>
-        /// This is called to indicate that a batch operation is about to start or end.
-        /// The observer could want to disable some events or updates during batches,
-        /// since multiple operations are packed in a short time.
-        /// For example treeviews could temporarily suppress select notifications.
-        ///
-        /// @param aToggleMode
-        /// true if a batch is starting, false if it's ending.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void Batching([MarshalAs(UnmanagedType.U1)] bool aToggleMode);
-		
-		/// <summary>
-        /// Called by the result when this observer is added.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new nsINavHistoryResult GetResultAttribute();
-		
-		/// <summary>
-        /// Called by the result when this observer is added.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void SetResultAttribute([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResult aResult);
-		
-		/// <summary>
-        /// This allows you to get at the real node for a given row index. This is
-        /// only valid when a tree is attached.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsINavHistoryResultNode NodeForTreeIndex(uint aIndex);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint TreeIndexForNode([MarshalAs(UnmanagedType.Interface)] nsINavHistoryResultNode aNode);
-	}
-	
-	/// <summary>nsINavHistoryResultTreeViewerConsts </summary>
-	public class nsINavHistoryResultTreeViewerConsts
-	{
-		
-		// <summary>
-        // Reverse of nodeForFlatIndex, returns the row index for a given result node.
-        // Returns INDEX_INVISIBLE if the item is not visible (for example, its
-        // parent is collapsed). This is only valid when a tree is attached. The
-        // the result will always be INDEX_INVISIBLE if not.
-        //
-        // Note: This sounds sort of obvious, but it got me: aNode must be a node
-        // retrieved from the same result that this viewer is for. If you
-        // execute another query and get a node from a _different_ result, this
-        // function will always return the index of that node in the tree that
-        // is attached to that result.
-        // </summary>
-		public const ulong INDEX_INVISIBLE = 0xffffffff;
 	}
 	
 	/// <summary>
@@ -1340,24 +1193,16 @@ namespace Gecko
 		void OnEndUpdateBatch();
 		
 		/// <summary>
-        /// Called when a resource is visited. This is called the first time a
-        /// resource (page, image, etc.) is seen as well as every subsequent time.
+        /// Called everytime a URI is visited, or once for a batch of visits if visits were
+        /// added in bulk.
         ///
-        /// Normally, transition types of TRANSITION_EMBED (corresponding to images in
-        /// a page, for example) are not displayed in history results (unless
-        /// includeHidden is set). Many observers can ignore _EMBED notifications
-        /// (which will comprise the majority of visit notifications) to save work.
-        ///
-        /// @param aVisitID        ID of the visit that was just created.
-        /// @param aTime           Time of the visit
-        /// @param aSessionID      No longer supported (always set to 0).
-        /// @param aReferringID    The ID of the visit the user came from. 0 if empty.
-        /// @param aTransitionType One of nsINavHistory.TRANSITION_*
-        /// @param aGUID           The unique ID associated with the page.
-        /// @param aHidden         Whether the visited page is marked as hidden.
+        /// @note TRANSITION_EMBED visits (corresponding to images in a page, for
+        /// example) are not displayed in history results. Most observers can
+        /// ignore TRANSITION_EMBED visit notifications (which will comprise the
+        /// majority of visit notifications) to save work.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnVisit([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, long aVisitID, long aTime, long aSessionID, long aReferringID, uint aTransitionType, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aGUID, [MarshalAs(UnmanagedType.U1)] bool aHidden);
+		void OnVisits([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] nsIVisitData[] aVisits, uint aVisitsCount);
 		
 		/// <summary>
         /// Called whenever either the "real" title or the custom title of the page
@@ -1672,27 +1517,8 @@ namespace Gecko
 		bool GetHasDomainAttribute();
 		
 		/// <summary>
-        /// Controls the interpretation of 'uri'. When unset (default), the URI will
-        /// request an exact match of the specified URI. When set, any history entry
-        /// beginning in 'uri' will match. For example "http://bar.com/foo" will match
-        /// "http://bar.com/foo" as well as "http://bar.com/foo/baz.gif".
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetUriIsPrefixAttribute();
-		
-		/// <summary>
-        /// Controls the interpretation of 'uri'. When unset (default), the URI will
-        /// request an exact match of the specified URI. When set, any history entry
-        /// beginning in 'uri' will match. For example "http://bar.com/foo" will match
-        /// "http://bar.com/foo" as well as "http://bar.com/foo/baz.gif".
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetUriIsPrefixAttribute([MarshalAs(UnmanagedType.U1)] bool aUriIsPrefix);
-		
-		/// <summary>
         /// This is a URI to match, to, for example, find out every time you visited
-        /// a given URI. Use uriIsPrefix to control whether this is an exact match.
+        /// a given URI. This is an exact match.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -1700,7 +1526,7 @@ namespace Gecko
 		
 		/// <summary>
         /// This is a URI to match, to, for example, find out every time you visited
-        /// a given URI. Use uriIsPrefix to control whether this is an exact match.
+        /// a given URI. This is an exact match.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetUriAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aUri);
@@ -2122,12 +1948,6 @@ namespace Gecko
 		public const ushort SORT_BY_VISITCOUNT_DESCENDING = 8;
 		
 		// 
-		public const ushort SORT_BY_KEYWORD_ASCENDING = 9;
-		
-		// 
-		public const ushort SORT_BY_KEYWORD_DESCENDING = 10;
-		
-		// 
 		public const ushort SORT_BY_DATEADDED_ASCENDING = 11;
 		
 		// 
@@ -2171,17 +1991,6 @@ namespace Gecko
         // @note This result type is only supported by QUERY_TYPE_HISTORY.
         // </summary>
 		public const ushort RESULTS_AS_VISIT = 1;
-		
-		// <summary>
-        // This is identical to RESULT_TYPE_VISIT except that individual result nodes
-        // will have type "FullVisit".  This is used for the attributes that are not
-        // commonly accessed to save space in the common case (the lists can be very
-        // long).
-        //
-        // @note Not yet implemented. See bug 409662.
-        // @note This result type is only supported by QUERY_TYPE_HISTORY.
-        // </summary>
-		public const ushort RESULTS_AS_FULL_VISIT = 2;
 		
 		// <summary>
         // This returns query nodes for each predefined date range where we
@@ -2228,6 +2037,14 @@ namespace Gecko
         // </summary>
 		public const ushort RESULTS_AS_TAG_CONTENTS = 7;
 		
+		// <summary>
+        // This returns nsINavHistoryQueryResultNode nodes for each top-level bookmark
+        // root.
+        //
+        // @note Setting this resultType will force queryType to QUERY_TYPE_BOOKMARKS.
+        // </summary>
+		public const ushort RESULTS_AS_ROOTS_QUERY = 8;
+		
 		// 
 		public const ushort QUERY_TYPE_HISTORY = 0;
 		
@@ -2261,13 +2078,6 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetHasHistoryEntriesAttribute();
-		
-		/// <summary>
-        /// Gets the original title of the page.
-        /// @deprecated use mozIAsyncHistory.getPlacesInfo instead.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPageTitle([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
         /// This is just like markPageAsTyped (in nsIBrowserHistory, also implemented
@@ -2404,6 +2214,25 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ClearEmbedVisits();
+		
+		/// <summary>
+        /// Generate a guid.
+        /// Guids can be used for any places purposes (history, bookmarks, etc.)
+        /// Returns null if the generation of the guid failed.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void MakeGuid([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Returns a 48-bit hash for a URI spec.
+        ///
+        /// @param aSpec
+        /// The URI spec to hash.
+        /// @param aMode
+        /// The hash mode: `""` (default), `"prefix_lo"`, or `"prefix_hi"`.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint HashURL([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aSpec, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aMode);
 	}
 	
 	/// <summary>nsINavHistoryServiceConsts </summary>
@@ -2460,24 +2289,34 @@ namespace Gecko
 		public const ulong TRANSITION_FRAMED_LINK = 8;
 		
 		// <summary>
+        // This transition type means the page has been reloaded.
+        // </summary>
+		public const ulong TRANSITION_RELOAD = 9;
+		
+		// <summary>
         // Set when database is coherent
         // </summary>
 		public const ushort DATABASE_STATUS_OK = 0;
 		
 		// <summary>
-        // Set when database did not exist and we created a new one
+        // Set when database did not exist and we created a new one.
         // </summary>
 		public const ushort DATABASE_STATUS_CREATE = 1;
 		
 		// <summary>
-        // Set when database was corrupt and we replaced it
+        // Set when database was corrupt and we replaced it with a new one.
         // </summary>
 		public const ushort DATABASE_STATUS_CORRUPT = 2;
 		
 		// <summary>
-        // Set when database schema has been upgraded
+        // Set when database schema has been upgraded.
         // </summary>
 		public const ushort DATABASE_STATUS_UPGRADED = 3;
+		
+		// <summary>
+        // Set when database couldn't be opened.
+        // </summary>
+		public const ushort DATABASE_STATUS_LOCKED = 4;
 	}
 	
 	/// <summary>

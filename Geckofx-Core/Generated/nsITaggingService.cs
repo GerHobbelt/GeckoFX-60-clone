@@ -47,9 +47,12 @@ namespace Gecko
         /// Array of tags to set for the given URL.  Each element within the
         /// array can be either a tag name (non-empty string) or a concrete
         /// itemId of a tag container.
+        /// @param [optional] aSource
+        /// A change source constant from nsINavBookmarksService::SOURCE_*.
+        /// Defaults to SOURCE_DEFAULT if omitted.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void TagURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIVariant aTags);
+		void TagURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIVariant aTags, ushort aSource);
 		
 		/// <summary>
         /// Removes tags from a URL. Tags from aTags which are not set for the
@@ -61,9 +64,12 @@ namespace Gecko
         /// Array of tags to unset.  Pass null to remove all tags from the given
         /// url.  Each element within the array can be either a tag name
         /// (non-empty string) or a concrete itemId of a tag container.
+        /// @param [optional] aSource
+        /// A change source constant from nsINavBookmarksService::SOURCE_*.
+        /// Defaults to SOURCE_DEFAULT if omitted.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UntagURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIVariant aTags);
+		void UntagURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIVariant aTags, ushort aSource);
 		
 		/// <summary>
         /// Retrieves all URLs tagged with the given tag.

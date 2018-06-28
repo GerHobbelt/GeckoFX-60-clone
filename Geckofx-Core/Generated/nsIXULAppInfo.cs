@@ -33,37 +33,37 @@ namespace Gecko
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("ddea4f31-3c5e-4769-ac68-21ab4b3d7845")]
-	public interface nsIXULAppInfo
+	public interface nsIXULAppInfo : nsIPlatformInfo
 	{
-        /// <summary>
+		
+		/// <summary>
         /// The version of the XULRunner platform.
         /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        void GetPlatformVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPlatformVersion);
-
-        /// <summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetPlatformVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPlatformVersion);
+		
+		/// <summary>
         /// The build ID/date of gecko and the XULRunner platform.
         /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //void GetPlatformBuildIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPlatformBuildID);
-        void GetPlatformBuildIDAttribute(IntPtr aPlatformBuildID);
-
-        /// <summary>
-        /// @see nsXREAppData.vendor
-        /// @returns an empty string if nsXREAppData.vendor is not set.
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new void GetPlatformBuildIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aPlatformBuildID);
+		
+		/// <summary>
+        /// @see XREAppData.vendor
+        /// @returns an empty string if XREAppData.vendor is not set.
         /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetVendorAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aVendor);
 		
 		/// <summary>
-        /// @see nsXREAppData.name
+        /// @see XREAppData.name
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aName);
 		
 		/// <summary>
-        /// @see nsXREAppData.ID
-        /// @returns an empty string if nsXREAppData.ID is not set.
+        /// @see XREAppData.ID
+        /// @returns an empty string if XREAppData.ID is not set.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aID);
@@ -72,8 +72,8 @@ namespace Gecko
         /// The version of the XUL application. It is different than the
         /// version of the XULRunner platform. Be careful about which one you want.
         ///
-        /// @see nsXREAppData.version
-        /// @returns an empty string if nsXREAppData.version is not set.
+        /// @see XREAppData.version
+        /// @returns an empty string if XREAppData.version is not set.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aVersion);
@@ -87,8 +87,8 @@ namespace Gecko
 		void GetAppBuildIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aAppBuildID);
 		
 		/// <summary>
-        /// @see nsXREAppData.UAName
-        /// @returns an empty string if nsXREAppData.UAName is not set.
+        /// @see XREAppData.UAName
+        /// @returns an empty string if XREAppData.UAName is not set.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetUANameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUAName);

@@ -92,53 +92,12 @@ namespace Gecko
         /// @param aURI
         /// nsIURI from which to make a channel
         /// @param aLoadingNode
-        /// The loadingDocument of the channel.
-        /// The element or document where the result of this request will be
-        /// used. This is the document/element that will get access to the
-        /// result of this request. For example for an image load, it's the
-        /// document in which the image will be loaded. And for a CSS
-        /// stylesheet it's the document whose rendering will be affected by
-        /// the stylesheet.
-        /// If possible, pass in the element which is performing the load. But
-        /// if the load is coming from a JS API (such as XMLHttpRequest) or if
-        /// the load might be coalesced across multiple elements (such as
-        /// for <img>) then pass in the Document node instead.
-        /// For loads that are not related to any document, such as loads coming
-        /// from addons or internal browser features, use null here.
         /// @param aLoadingPrincipal
-        /// The loadingPrincipal of the channel.
-        /// The principal of the document where the result of this request will
-        /// be used.
-        /// This defaults to the principal of aLoadingNode, so when aLoadingNode
-        /// is passed this can be left as null. However for loads where
-        /// aLoadingNode is null this argument must be passed.
-        /// For example for loads from a WebWorker, pass the principal
-        /// of that worker. For loads from an addon or from internal browser
-        /// features, pass the system principal.
-        /// This principal should almost always be the system principal if
-        /// aLoadingNode is null. The only exception to this is for loads
-        /// from WebWorkers since they don't have any nodes to be passed as
-        /// aLoadingNode.
-        /// Please note, aLoadingPrincipal is *not* the principal of the
-        /// resource being loaded. But rather the principal of the context
-        /// where the resource will be used.
         /// @param aTriggeringPrincipal
-        /// The triggeringPrincipal of the load.
-        /// The triggeringPrincipal is the principal of the resource that caused
-        /// this particular URL to be loaded.
-        /// Most likely the triggeringPrincipal and the loadingPrincipal are
-        /// identical, in which case the triggeringPrincipal can be left out.
-        /// In some cases the loadingPrincipal and the triggeringPrincipal are
-        /// different however, e.g. a stylesheet may import a subresource. In
-        /// that case the principal of the stylesheet which contains the
-        /// import command is the triggeringPrincipal, and the principal of
-        /// the document whose rendering is affected is the loadingPrincipal.
         /// @param aSecurityFlags
-        /// The securityFlags of the channel.
-        /// Any of the securityflags defined in nsILoadInfo.idl
         /// @param aContentPolicyType
-        /// The contentPolicyType of the channel.
-        /// Any of the content types defined in nsIContentPolicy.idl
+        /// These will be used as values for the nsILoadInfo object on the
+        /// created channel. For details, see nsILoadInfo in nsILoadInfo.idl
         /// @return reference to the new nsIChannel object
         ///
         /// Please note, if you provide both a loadingNode and a loadingPrincipal,
@@ -152,6 +111,9 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIChannel NewChannelFromURI2([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aLoadingNode, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal, uint aSecurityFlags, uint aContentPolicyType);
 		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int NewChannelFromURIWithClientAndController([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aLoadingNode, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal, nsISupports aLoadingClientInfo, nsISupports aController, uint aSecurityFlags, uint aContentPolicyType, [MarshalAs(UnmanagedType.Interface)] ref nsIChannel aResult);
+		
 		/// <summary>
         /// Equivalent to newChannelFromURI2(aURI, aLoadingNode, ...)
         /// </summary>
@@ -160,6 +122,16 @@ namespace Gecko
 		nsIChannel NewChannelFromURIWithLoadInfo([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsILoadInfo aLoadInfo);
 		
 		/// <summary>
+        /// Equivalent to newChannelFromURI2(newURI(...))
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIChannel NewChannel2([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSpec, [MarshalAs(UnmanagedType.LPStr)] string aOriginCharset, [MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aLoadingNode, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal, uint aSecurityFlags, uint aContentPolicyType);
+		
+		/// <summary>
+        /// ***** DEPRECATED *****
+        /// Please use NewChannelFromURI2()
+        ///
         /// Creates a channel for a given URI.
         ///
         /// @param aURI nsIURI from which to make a channel
@@ -170,13 +142,9 @@ namespace Gecko
 		nsIChannel NewChannelFromURI([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
 		
 		/// <summary>
-        /// Equivalent to newChannelFromURI2(newURI(...))
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIChannel NewChannel2([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aSpec, [MarshalAs(UnmanagedType.LPStr)] string aOriginCharset, [MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aLoadingNode, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal, uint aSecurityFlags, uint aContentPolicyType);
-		
-		/// <summary>
+        /// ***** DEPRECATED *****
+        /// Please use newChannel2().
+        ///
         /// Equivalent to newChannelFromURI(newURI(...))
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
@@ -216,34 +184,6 @@ namespace Gecko
 		bool GetConnectivityAttribute();
 		
 		/// <summary>
-        /// Set whether network appears to be offline for network connections from
-        /// a given appID.
-        ///
-        /// Calling this function may fire the "network:app-offline-status-changed"
-        /// notification, which is also sent to child processes containing this appId.
-        /// 'state' must one of nsIAppOfflineInfo::{ONLINE|OFFLINE|WIFI_ONLY}.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAppOffline(uint appId, int state);
-		
-		/// <summary>
-        /// Returns true if given appId is currently not allowed to make network
-        /// connections. It will return true if the app is in the wifi-only state
-        /// and we are currently on a 3G connection.
-        /// The returned value does not depend on the offline state of the browser.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsAppOffline(uint appId);
-		
-		/// <summary>
-        /// Returns the state of the app with the given appId.
-        /// returns nsIAppOfflineInfo::{ONLINE,OFFLINE,WIFI_ONLY}
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetAppOfflineState(uint appId);
-		
-		/// <summary>
         /// Checks if a port number is banned. This involves consulting a list of
         /// unsafe ports, corresponding to network services that may be easily
         /// exploitable. If the given port is considered unsafe, then the protocol
@@ -267,44 +207,80 @@ namespace Gecko
         /// is provided purely as an optimization.
         ///
         /// @param aSpec the URL string to parse
-        /// @return URL scheme
+        /// @return URL scheme, lowercase
         ///
         /// @throws NS_ERROR_MALFORMED_URI if URL string is not of the right form.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ExtractScheme([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase urlString, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
-	}
-	
-	/// <summary>nsIAppOfflineInfo </summary>
-	[ComImport()]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("4ac296a0-ca1b-44f4-8787-117a88cb70fb")]
-	public interface nsIAppOfflineInfo
-	{
 		
-		/// <summary>Member GetAppIdAttribute </summary>
-		/// <returns>A System.UInt32</returns>
+		/// <summary>
+        /// Checks if a URI host is a local IPv4 or IPv6 address literal.
+        ///
+        /// @param nsIURI the URI that contains the hostname to check
+        /// @return true if the URI hostname is a local IP address
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		uint GetAppIdAttribute();
+		bool HostnameIsLocalIPAddress([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
 		
-		/// <summary>Member GetModeAttribute </summary>
-		/// <returns>A System.Int32</returns>
+		/// <summary>
+        /// While this is set, IOService will monitor an nsINetworkLinkService
+        /// (if available) and set its offline status to "true" whenever
+        /// isLinkUp is false.
+        ///
+        /// Applications that want to control changes to the IOService's offline
+        /// status should set this to false, watch for network:link-status-changed
+        /// broadcasts, and change nsIIOService::offline as they see fit. Note
+        /// that this means during application startup, IOService may be offline
+        /// if there is no link, until application code runs and can turn off
+        /// this management.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetModeAttribute();
-	}
-	
-	/// <summary>nsIAppOfflineInfoConsts </summary>
-	public class nsIAppOfflineInfoConsts
-	{
+		bool GetManageOfflineStatusAttribute();
 		
-		// 
-		public const long ONLINE = 1;
+		/// <summary>
+        /// While this is set, IOService will monitor an nsINetworkLinkService
+        /// (if available) and set its offline status to "true" whenever
+        /// isLinkUp is false.
+        ///
+        /// Applications that want to control changes to the IOService's offline
+        /// status should set this to false, watch for network:link-status-changed
+        /// broadcasts, and change nsIIOService::offline as they see fit. Note
+        /// that this means during application startup, IOService may be offline
+        /// if there is no link, until application code runs and can turn off
+        /// this management.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetManageOfflineStatusAttribute([MarshalAs(UnmanagedType.U1)] bool aManageOfflineStatus);
 		
-		// 
-		public const long OFFLINE = 2;
-		
-		// 
-		public const long WIFI_ONLY = 3;
+		/// <summary>
+        /// Creates a channel for a given URI.
+        ///
+        /// @param aURI
+        /// nsIURI from which to make a channel
+        /// @param aProxyURI
+        /// nsIURI to use for proxy resolution. Can be null in which
+        /// case aURI is used
+        /// @param aProxyFlags flags from nsIProtocolProxyService to use
+        /// when resolving proxies for this new channel
+        /// @param aLoadingNode
+        /// @param aLoadingPrincipal
+        /// @param aTriggeringPrincipal
+        /// @param aSecurityFlags
+        /// @param aContentPolicyType
+        /// These will be used as values for the nsILoadInfo object on the
+        /// created channel. For details, see nsILoadInfo in nsILoadInfo.idl
+        /// @return reference to the new nsIChannel object
+        ///
+        /// Please note, if you provide both a loadingNode and a loadingPrincipal,
+        /// then loadingPrincipal must be equal to loadingNode->NodePrincipal().
+        /// But less error prone is to just supply a loadingNode.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIChannel NewChannelFromURIWithProxyFlags2([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aProxyURI, uint aProxyFlags, [MarshalAs(UnmanagedType.Interface)] nsIDOMNode aLoadingNode, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal, uint aSecurityFlags, uint aContentPolicyType);
 	}
 	
 	/// <summary>nsIIOServiceInternal </summary>

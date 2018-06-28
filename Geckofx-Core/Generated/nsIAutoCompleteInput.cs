@@ -148,36 +148,6 @@ namespace Gecko
 		void SetMaxRowsAttribute(uint aMaxRows);
 		
 		/// <summary>
-        /// Option to show a second column in the popup which contains
-        /// the comment for each autocomplete result
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetShowCommentColumnAttribute();
-		
-		/// <summary>
-        /// Option to show a second column in the popup which contains
-        /// the comment for each autocomplete result
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetShowCommentColumnAttribute([MarshalAs(UnmanagedType.U1)] bool aShowCommentColumn);
-		
-		/// <summary>
-        /// Option to show a third column in the popup which contains
-        /// an additional image for each autocomplete result
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetShowImageColumnAttribute();
-		
-		/// <summary>
-        /// Option to show a third column in the popup which contains
-        /// an additional image for each autocomplete result
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetShowImageColumnAttribute([MarshalAs(UnmanagedType.U1)] bool aShowImageColumn);
-		
-		/// <summary>
         /// Number of milliseconds after a keystroke before a search begins
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -214,16 +184,31 @@ namespace Gecko
 		void GetSearchAt(uint index, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
-        /// The value of text in the autocomplete textbox
+        /// The value of text in the autocomplete textbox.
+        ///
+        /// @note when setting a new value, the controller always first tries to use
+        /// setTextboxValueWithReason, and only if that throws (unimplemented),
+        /// fallbacks to the textValue's setter.  If a reason is not provided,
+        /// the implementation should assume TEXTVALUE_REASON_UNKNOWN, but it
+        /// should only happen in testing code.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetTextValueAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTextValue);
 		
 		/// <summary>
-        /// The value of text in the autocomplete textbox
+        /// The value of text in the autocomplete textbox.
+        ///
+        /// @note when setting a new value, the controller always first tries to use
+        /// setTextboxValueWithReason, and only if that throws (unimplemented),
+        /// fallbacks to the textValue's setter.  If a reason is not provided,
+        /// the implementation should assume TEXTVALUE_REASON_UNKNOWN, but it
+        /// should only happen in testing code.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetTextValueAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aTextValue);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetTextValueWithReason([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aValue, ushort aReason);
 		
 		/// <summary>
         /// Report the starting index of the cursor in the textbox
@@ -258,11 +243,13 @@ namespace Gecko
 		/// <summary>
         /// Notification that the user selected and entered a result item
         ///
+        /// @param aEvent
+        /// The event that triggered the enter.
         /// @return True if the user wishes to prevent the enter
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool OnTextEntered();
+		bool OnTextEntered([MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aEvent);
 		
 		/// <summary>
         /// Notification that the user cancelled the autocomplete session
@@ -296,5 +283,34 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetNoRollupOnCaretMoveAttribute();
+		
+		/// <summary>
+        /// The userContextId of the current browser.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetUserContextIdAttribute();
+	}
+	
+	/// <summary>nsIAutoCompleteInputConsts </summary>
+	public class nsIAutoCompleteInputConsts
+	{
+		
+		// <summary>
+        // Set the value of text in the autocomplete textbox, providing a reason to
+        // the autocomplete view.
+        // </summary>
+		public const ushort TEXTVALUE_REASON_UNKNOWN = 0;
+		
+		// 
+		public const ushort TEXTVALUE_REASON_COMPLETEDEFAULT = 1;
+		
+		// 
+		public const ushort TEXTVALUE_REASON_COMPLETESELECTED = 2;
+		
+		// 
+		public const ushort TEXTVALUE_REASON_REVERT = 3;
+		
+		// 
+		public const ushort TEXTVALUE_REASON_ENTERMATCH = 4;
 	}
 }

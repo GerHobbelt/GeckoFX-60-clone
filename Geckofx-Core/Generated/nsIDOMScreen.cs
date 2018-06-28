@@ -173,7 +173,7 @@ namespace Gecko
         /// @note Only EventDispatcher should call this method.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void PreHandleEvent(System.IntPtr aVisitor);
+		new void GetEventTargetParent(System.IntPtr aVisitor);
 		
 		/// <summary>
         /// If EventChainPreVisitor.mWantsWillHandleEvent is set PR_TRUE,
@@ -194,26 +194,6 @@ namespace Gecko
 		new void PostHandleEvent(System.IntPtr aVisitor);
 		
 		/// <summary>
-        /// Dispatch an event.
-        /// @param aEvent the event that is being dispatched.
-        /// @param aDOMEvent the event that is being dispatched, use if you want to
-        /// dispatch nsIDOMEvent, not only WidgetEvent.
-        /// @param aPresContext the current presentation context, can be nullptr.
-        /// @param aEventStatus the status returned from the function, can be nullptr.
-        ///
-        /// @note If both aEvent and aDOMEvent are used, aEvent must be the internal
-        /// event of the aDOMEvent.
-        ///
-        /// If aDOMEvent is not nullptr (in which case aEvent can be nullptr) it is used
-        /// for dispatching, otherwise aEvent is used.
-        ///
-        /// @deprecated This method is here just until all the callers outside Gecko
-        /// have been converted to use nsIDOMEventTarget::dispatchEvent.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new void DispatchDOMEvent(System.IntPtr aEvent, [MarshalAs(UnmanagedType.Interface)] nsIDOMEvent aDOMEvent, System.IntPtr aPresContext, System.IntPtr aEventStatus);
-		
-		/// <summary>
         /// Get the script context in which the event handlers should be run.
         /// May return null.
         /// @note Caller *must* check the value of aRv.
@@ -222,33 +202,11 @@ namespace Gecko
 		new System.IntPtr GetContextForEventHandlers(ref int aRv);
 		
 		/// <summary>
-        /// If the method above returns null, but a success code, this method
-        /// is called.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		new System.IntPtr GetJSContextForEventHandlers();
-		
-		/// <summary>
         ///This Source Code Form is subject to the terms of the Mozilla Public
         /// License, v. 2.0. If a copy of the MPL was not distributed with this
         /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetTopAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetLeftAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetWidthAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetHeightAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetPixelDepthAttribute();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetColorDepthAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetAvailWidthAttribute();
@@ -261,13 +219,5 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetAvailTopAttribute();
-		
-		/// <summary>
-        /// Returns the current screen orientation.
-        /// Can be: landscape-primary, landscape-secondary,
-        /// portrait-primary or portrait-secondary.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetMozOrientationAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aMozOrientation);
 	}
 }

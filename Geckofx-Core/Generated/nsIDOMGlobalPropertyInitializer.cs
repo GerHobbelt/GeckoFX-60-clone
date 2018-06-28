@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6368a821-d3e2-4cbd-9699-5a8ba569e2f3")]
+	[Guid("5842e275-797f-4afb-b7e0-e29f0cb312ae")]
 	public interface nsIDOMGlobalPropertyInitializer
 	{
 		
@@ -44,6 +44,6 @@ namespace Gecko
         /// @returns a JS Object to use use as the property's value.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		Gecko.JsVal Init([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow window);
+		Gecko.JsVal Init(mozIDOMWindow window);
 	}
 }

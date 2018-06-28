@@ -72,5 +72,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RegisterTimer([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase id, [MarshalAs(UnmanagedType.Interface)] nsITimerCallback callback, uint interval);
+		
+		/// <summary>
+        /// Unregister an existing interval from the timer manager.
+        ///
+        /// @param   id
+        /// An id that identifies the interval.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void UnregisterTimer([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase id);
 	}
 }

@@ -44,9 +44,15 @@ namespace Gecko
         /// @param aErrorCode
         /// The error code with which the channel should be cancelled, or
         /// NS_OK if the load should continue normally.
+        /// @param aList
+        /// Name of the list that matched
+        /// @param aProvider
+        /// Name of provider that matched
+        /// @param aFullHash
+        /// Full hash of URL that matched
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnClassifyComplete(int aErrorCode);
+		void OnClassifyComplete(int aErrorCode, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aList, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aProvider, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFullHash);
 	}
 	
 	/// <summary>
@@ -64,6 +70,12 @@ namespace Gecko
         ///
         /// @param aPrincipal
         /// The principal that should be checked by the URI classifier.
+        ///
+        /// @param nsIEventTarget
+        /// Event target for constructing actor in content process.
+        /// The event target should be tied to Docgroup/Tabgroup by
+        /// using EventTargetFor
+        ///
         /// @param aTrackingProtectionEnabled
         /// Whether or not to classify the given URI against tracking
         /// protection lists
@@ -79,14 +91,47 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool Classify([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.U1)] bool aTrackingProtectionEnabled, [MarshalAs(UnmanagedType.Interface)] nsIURIClassifierCallback aCallback);
+		bool Classify([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIEventTarget aEventTarget, [MarshalAs(UnmanagedType.U1)] bool aTrackingProtectionEnabled, [MarshalAs(UnmanagedType.Interface)] nsIURIClassifierCallback aCallback);
 		
 		/// <summary>
         /// Synchronously classify a URI with a comma-separated string
         /// containing the given tables. This does not make network requests.
-        /// The result is a comma-separated string of tables that match.
+        /// The result is an array of table names that match.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ClassifyLocalWithTables([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aTables, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		System.IntPtr ClassifyLocalWithTables([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aTables);
+		
+		/// <summary>
+        /// Asynchronously classify a URI with a comma-separated string
+        /// containing the given tables. This does not make network requests.
+        /// The callback does NOT totally follow nsIURIClassifierCallback's
+        /// semantics described above. Only |aList| will be meaningful, which
+        /// is a comma separated list of table names. (same as what classifyLocal
+        /// returns.)
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AsyncClassifyLocalWithTables([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aTables, [MarshalAs(UnmanagedType.Interface)] nsIURIClassifierCallback aCallback);
+		
+		/// <summary>
+        /// Same as above, but returns a comma separated list of table names.
+        /// This is an internal interface used only for testing purposes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ClassifyLocal([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aTables, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
+		
+		/// <summary>
+        /// Report to the provider that a Safe Browsing warning was shown.
+        ///
+        /// @param aChannel
+        /// Channel for which the URL matched something on the threat list.
+        /// @param aProvider
+        /// Provider to notify.
+        /// @param aList
+        /// List where the full hash was found.
+        /// @param aFullHash
+        /// Full URL hash that triggered the warning.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SendThreatHitReport([MarshalAs(UnmanagedType.Interface)] nsIChannel aChannel, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aProvider, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aList, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aFullHash);
 	}
 }

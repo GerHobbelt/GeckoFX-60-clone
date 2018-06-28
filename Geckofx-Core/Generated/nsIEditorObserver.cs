@@ -27,11 +27,11 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// A generic editor observer interface.
-    /// <P>
-    /// nsIEditorObserver is the interface used by applications wishing to be notified
-    /// when the editor has completed a user action.
-    ///
+    /// nsIEditorObserver is the interface used by applications wishing to be
+    /// notified when the editor has completed a user action.
+    /// Note that when you want to use this from C++, please check if EditorBase
+    /// can treat your class directly since using this interface may make editor
+    /// slower.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -44,19 +44,5 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EditAction();
-		
-		/// <summary>
-        /// Called when editor starts to handle a user action.  I.e., This must be
-        /// called before the first DOM change.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void BeforeEditAction();
-		
-		/// <summary>
-        /// Called after BeforeEditAction() is called but EditorAction() won't be
-        /// called.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CancelEditAction();
 	}
 }

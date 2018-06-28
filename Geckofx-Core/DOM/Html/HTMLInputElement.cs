@@ -14,7 +14,7 @@ namespace Gecko.DOM
             this.DOMHTMLElement = element;
         }
 
-        public GeckoInputElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoInputElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
             this.DOMHTMLElement = element as nsIDOMHTMLInputElement;
         }

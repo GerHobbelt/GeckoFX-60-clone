@@ -41,29 +41,36 @@ namespace Gecko
 		/// <summary>
         /// The name of the token
         /// </summary>
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTokenNameAttribute();
+		void GetTokenNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTokenName);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTokenLabelAttribute();
+		void GetTokenLabelAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTokenLabel);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
+		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTokenManIDAttribute();
+		bool GetIsInternalKeyTokenAttribute();
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
+		/// <summary>
+        /// Manufacturer ID of the token.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTokenHWVersionAttribute();
+		void GetTokenManIDAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTokenManID);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
+		/// <summary>
+        /// Hardware version of the token.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTokenFWVersionAttribute();
+		void GetTokenHWVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTokenHWVersion);
 		
-		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")]
+		/// <summary>
+        /// Firmware version of the token.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetTokenSerialNumberAttribute();
+		void GetTokenFWVersionAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTokenFWVersion);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetTokenSerialNumberAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aTokenSerialNumber);
 		
 		/// <summary>
         /// Login information
@@ -81,6 +88,14 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void LogoutAndDropAuthenticatedResources();
 		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool NeedsLogin();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetNeedsUserInitAttribute();
+		
 		/// <summary>
         /// Reset password
         /// </summary>
@@ -88,68 +103,30 @@ namespace Gecko
 		void Reset();
 		
 		/// <summary>
-        /// Password information
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetMinimumPasswordLengthAttribute();
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetNeedsUserInitAttribute();
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool CheckPassword([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string password);
-		
-		/// <summary>
-        ///Logs out if check fails </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitPassword([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string initialPassword);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ChangePassword([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string oldPassword, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] string newPassword);
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetAskPasswordTimes();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		int GetAskPasswordTimeout();
-		
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAskPasswordDefaults(int askTimes, int timeout);
-		
-		/// <summary>
-        /// Other attributes
+        /// Checks whether the given password is correct. Logs the token out if an
+        /// incorrect password is given.
+        ///
+        /// @param password The password to check.
+        /// @return true if the password was correct, false otherwise.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsHardwareToken();
+		bool CheckPassword([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase password);
 		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void InitPassword([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase initialPassword);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ChangePassword([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase oldPassword, [MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase newPassword);
+		
+		/// <summary>
+        /// True if a password has been configured for this token, and false otherwise.
+        /// (Whether or not the user is currently logged in makes no difference.)
+        /// In particular, this can be used to determine if a user has set a master
+        /// password (if this is the internal key token).
+        /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool NeedsLogin();
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool IsFriendly();
-	}
-	
-	/// <summary>nsIPK11TokenConsts </summary>
-	public class nsIPK11TokenConsts
-	{
-		
-		// <summary>
-        //-*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
-        //
-        // This Source Code Form is subject to the terms of the Mozilla Public
-        // License, v. 2.0. If a copy of the MPL was not distributed with this
-        // file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
-		public const long ASK_EVERY_TIME = -1;
-		
-		// 
-		public const long ASK_FIRST_TIME = 0;
-		
-		// 
-		public const long ASK_EXPIRE_TIME = 1;
+		bool GetHasPasswordAttribute();
 	}
 }

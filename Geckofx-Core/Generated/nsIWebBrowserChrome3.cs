@@ -167,9 +167,30 @@ namespace Gecko
         /// The URI being loaded.
         /// @param aReferrer
         /// The referrer of the load.
+        /// @param aHasPostData
+        /// True if the load which is being asked about has associated post data
+        /// which would be discarded if the load was redirected across process
+        /// boundaries.
+        /// @param aTriggeringPrincipal
+        /// The principal that initiated the load of aURI.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool ShouldLoadURI([MarshalAs(UnmanagedType.Interface)] nsIDocShell aDocShell, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer);
+		bool ShouldLoadURI([MarshalAs(UnmanagedType.Interface)] nsIDocShell aDocShell, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.U1)] bool aHasPostData, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool ShouldLoadURIInThisProcess([MarshalAs(UnmanagedType.Interface)] nsIURI aURI);
+		
+		/// <summary>
+        /// Attempts to load the currently loaded page into a fresh process to increase
+        /// available memory.
+        ///
+        /// @param aDocShell
+        /// The docshell performing the load.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool ReloadInFreshProcess([MarshalAs(UnmanagedType.Interface)] nsIDocShell aDocShell, [MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aReferrer, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal, uint aLoadFlags);
 	}
 }

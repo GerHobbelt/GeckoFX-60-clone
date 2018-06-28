@@ -54,9 +54,24 @@ namespace Gecko
 		void SendRequestFocus([MarshalAs(UnmanagedType.U1)] bool canFocus);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SendGetTabCount(ref uint tabCount);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void EnableDisableCommands([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase action, System.IntPtr enabledCommands, System.IntPtr disabledCommands);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoteSizeShellTo(int width, int height, int shellItemWidth, int shellItemHeight);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoteDropLinks(uint linksCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] nsIDroppedLinkItem[] links);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		ulong GetTabIdAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BeforeUnloadAdded();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BeforeUnloadRemoved();
 	}
 }

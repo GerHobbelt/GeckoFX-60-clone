@@ -126,6 +126,17 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AsyncGetDiskConsumption([MarshalAs(UnmanagedType.Interface)] nsICacheStorageConsumptionObserver aObserver);
+		
+		/// <summary>
+        /// Asynchronously visits all storages of the disk cache and memory cache.
+        /// @see nsICacheStorageVisitor
+        /// @param aVisitor
+        /// A visitor callback.
+        /// @param aVisitEntries
+        /// A boolean indicates whether visits entries.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void AsyncVisitAllStorages([MarshalAs(UnmanagedType.Interface)] nsICacheStorageVisitor aVisitor, [MarshalAs(UnmanagedType.U1)] bool aVisitEntries);
 	}
 	
 	/// <summary>nsICacheStorageServiceConsts </summary>

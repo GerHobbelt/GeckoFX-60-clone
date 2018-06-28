@@ -110,7 +110,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("408c8fcd-1420-4aff-94d8-39bf74d79219")]
+	[Guid("875733da-0ac0-4a26-8c76-70a30876be46")]
 	public interface nsIContentPermissionRequest
 	{
 		
@@ -135,13 +135,16 @@ namespace Gecko
         /// in when using out of process content.  window or
         /// element can be null but not both.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetWindowAttribute();
+		mozIDOMWindow GetWindowAttribute();
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIDOMElement GetElementAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIsHandlingUserInputAttribute();
 		
 		/// <summary>
         /// The requester to get the required information of

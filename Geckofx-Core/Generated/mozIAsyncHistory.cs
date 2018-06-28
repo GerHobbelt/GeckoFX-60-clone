@@ -142,9 +142,24 @@ namespace Gecko
 		
 		/// <summary>
         /// Called when all records were processed.
+        /// @param aUpdatedItems
+        /// How many items were successfully updated.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void HandleCompletion();
+		void HandleCompletion(uint aUpdatedItems);
+		
+		/// <summary>
+        /// These two attributes govern whether we attempt to call
+        /// handleResult and handleError, respectively, if/once
+        /// results/errors occur.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIgnoreResultsAttribute();
+		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetIgnoreErrorsAttribute();
 	}
 	
 	/// <summary>mozIVisitedStatusCallback </summary>
@@ -166,39 +181,21 @@ namespace Gecko
 		void IsVisited([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.U1)] bool aVisitedStatus);
 	}
 	
-	/// <summary>mozIAsyncHistory </summary>
+	/// <summary>
+    /// This interface contains APIs for cpp consumers.
+    /// Javascript consumers should look at History.jsm instead,
+    /// that is exposed through PlacesUtils.history.
+    ///
+    /// If you're evaluating adding a new history API, it should
+    /// usually go to History.jsm, unless it needs to do long and
+    /// expensive work in a batch, then it could be worth doing
+    /// that in History.cpp.
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("1643EFD2-A329-4733-A39D-17069C8D3B2D")]
 	public interface mozIAsyncHistory
 	{
-		
-		/// <summary>
-        /// Gets the available information for the given array of places, each
-        /// identified by either nsIURI or places GUID (string).
-        ///
-        /// The retrieved places info objects DO NOT include the visits data (the
-        /// |visits| attribute is set to null).
-        ///
-        /// If a given place does not exist in the database, aCallback.handleError is
-        /// called for it with NS_ERROR_NOT_AVAILABLE result code.
-        ///
-        /// @param aPlaceIdentifiers
-        /// The place[s] for which to retrieve information, identified by either
-        /// a single place GUID, a single URI, or a JS array of URIs and/or GUIDs.
-        /// @param aCallback
-        /// A mozIVisitInfoCallback object which consists of callbacks to be
-        /// notified for successful or failed retrievals.
-        /// If there's no information available for a given place, aCallback
-        /// is called with a stub place info object, containing just the provided
-        /// data (GUID or URI).
-        ///
-        /// @throws NS_ERROR_INVALID_ARG
-        /// - Passing in NULL for aPlaceIdentifiers or aCallback.
-        /// - Not providing at least one valid GUID or URI.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPlacesInfo(ref Gecko.JsVal aPlaceIdentifiers, mozIVisitInfoCallback aCallback, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Adds a set of visits for one or more mozIPlaceInfo objects, and updates
@@ -212,6 +209,9 @@ namespace Gecko
         /// @param [optional] aCallback
         /// A mozIVisitInfoCallback object which consists of callbacks to be
         /// notified for successful and/or failed changes.
+        /// @param [optional] aGroupNotifications
+        /// If set to true, the implementation will attempt to avoid using
+        /// per-place/visit notifications as much as possible.
         ///
         /// @throws NS_ERROR_INVALID_ARG
         /// - Passing in NULL for aPlaceInfo.
@@ -224,7 +224,7 @@ namespace Gecko
         /// - Providing an invalid transitionType for a mozIVisitInfo.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UpdatePlaces(ref Gecko.JsVal aPlaceInfo, mozIVisitInfoCallback aCallback, System.IntPtr jsContext);
+		void UpdatePlaces(ref Gecko.JsVal aPlaceInfo, mozIVisitInfoCallback aCallback, [MarshalAs(UnmanagedType.U1)] bool aGroupNotifications, System.IntPtr jsContext);
 		
 		/// <summary>
         /// Checks if a given URI has been visited.

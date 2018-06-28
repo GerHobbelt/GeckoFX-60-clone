@@ -166,5 +166,8 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ShareData([MarshalAs(UnmanagedType.LPStr)] string data, int dataLen);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint SizeOfIncludingThis(nsISupports aMallocSizeOf);
 	}
 }

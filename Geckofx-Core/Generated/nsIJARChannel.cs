@@ -512,21 +512,41 @@ namespace Gecko
 		new void GetContentDispositionHeaderAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aContentDispositionHeader);
 		
 		/// <summary>
-        /// The nsILoadInfo for this load.  This is immutable for the
-        /// lifetime of the load and should be passed through across
-        /// redirects and the like.
+        /// The LoadInfo object contains information about a network load, why it
+        /// was started, and how we plan on using the resulting response.
+        /// If a network request is redirected, the new channel will receive a new
+        /// LoadInfo object. The new object will contain mostly the same
+        /// information as the pre-redirect one, but updated as appropriate.
+        /// For detailed information about what parts of LoadInfo are updated on
+        /// redirect, see documentation on individual properties.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new nsILoadInfo GetLoadInfoAttribute();
 		
 		/// <summary>
-        /// The nsILoadInfo for this load.  This is immutable for the
-        /// lifetime of the load and should be passed through across
-        /// redirects and the like.
+        /// The LoadInfo object contains information about a network load, why it
+        /// was started, and how we plan on using the resulting response.
+        /// If a network request is redirected, the new channel will receive a new
+        /// LoadInfo object. The new object will contain mostly the same
+        /// information as the pre-redirect one, but updated as appropriate.
+        /// For detailed information about what parts of LoadInfo are updated on
+        /// redirect, see documentation on individual properties.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new void SetLoadInfoAttribute([MarshalAs(UnmanagedType.Interface)] nsILoadInfo aLoadInfo);
+		
+		/// <summary>
+        /// Returns true if the channel is used to create a document.
+        /// It returns true if the loadFlags have LOAD_DOCUMENT_URI set, or if
+        /// LOAD_HTML_OBJECT_DATA is set and the channel has the appropriate
+        /// MIME type.
+        /// Note: May have the wrong value if called before OnStartRequest as we
+        /// don't know the MIME type yet.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetIsDocumentAttribute();
 		
 		/// <summary>
         /// Returns TRUE if the JAR file is not safe (if the content type reported
@@ -539,17 +559,23 @@ namespace Gecko
 		bool GetIsUnsafeAttribute();
 		
 		/// <summary>
-        /// Forces the uri to be a app:// uri.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetAppURI([MarshalAs(UnmanagedType.Interface)] nsIURI uri);
-		
-		/// <summary>
         /// Returns the JAR file.  May be null if the jar is remote.
+        /// Setting the JAR file is optional and overrides the JAR
+        /// file used for local file JARs. Setting the JAR file after
+        /// the channel has been opened is not permitted.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIFile GetJarFileAttribute();
+		
+		/// <summary>
+        /// Returns the JAR file.  May be null if the jar is remote.
+        /// Setting the JAR file is optional and overrides the JAR
+        /// file used for local file JARs. Setting the JAR file after
+        /// the channel has been opened is not permitted.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetJarFileAttribute([MarshalAs(UnmanagedType.Interface)] nsIFile aJarFile);
 		
 		/// <summary>
         /// Returns the zip entry if the file is synchronously accessible.
@@ -558,5 +584,18 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIZipEntry GetZipEntryAttribute();
+		
+		/// <summary>
+        /// If the JAR file is cached in the JAR cache, returns true and
+        /// holds a reference to the cached zip reader to be used when
+        /// the channel is read from, ensuring the cached reader will be used.
+        /// For a successful read from the cached reader, close() should not
+        /// be called on the reader--per nsIZipReader::getZip() documentation.
+        /// Returns false if the JAR file is not cached. Calling this method
+        /// after the channel has been opened is not permitted.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool EnsureCached();
 	}
 }

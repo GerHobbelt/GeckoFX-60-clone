@@ -78,8 +78,7 @@ namespace Gecko
 		/// <summary>
         /// Return the accessible attribute that changed.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIAtom GetChangedAttributeAttribute();
+		void GetChangedAttributeAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aChangedAttribute);
 	}
 }

@@ -38,33 +38,26 @@ namespace Gecko
 	public interface nsIXPCScriptable
 	{
 		
-		[return: MarshalAs(UnmanagedType.LPStr)]
+		/// <summary>
+        /// Note: This is not really an XPCOM interface.  For example, callers must
+        /// guarantee that they set the *_retval of the various methods that return a
+        /// boolean to PR_TRUE before making the call.  Implementations may skip writing
+        /// to *_retval unless they want to return PR_FALSE.
+        /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetClassNameAttribute();
+		void GetClassNameAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAUTF8StringBase aClassName);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetScriptableFlags();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports GetClass();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+        nsISupports GetJSClass();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void PreCreate([MarshalAs(UnmanagedType.Interface)] nsISupports nativeObj, System.IntPtr cx, System.IntPtr globalObj, ref System.IntPtr parentObj);
-		
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool AddProperty([MarshalAs(UnmanagedType.Interface)] nsIXPConnectWrappedNative wrapper, System.IntPtr cx, System.IntPtr obj, System.IntPtr id, ref Gecko.JsVal val);
-		
-		/// <summary>
-        /// this method does something.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetProperty([MarshalAs(UnmanagedType.Interface)] nsIXPConnectWrappedNative wrapper, System.IntPtr cx, System.IntPtr obj, System.IntPtr id, System.IntPtr vp);
-		
-		/// <summary>
-        /// this method does something.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool SetProperty([MarshalAs(UnmanagedType.Interface)] nsIXPConnectWrappedNative wrapper, System.IntPtr cx, System.IntPtr obj, System.IntPtr id, System.IntPtr vp);
 		
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -95,91 +88,5 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void PostCreatePrototype(System.IntPtr cx, System.IntPtr proto);
-	}
-	
-	/// <summary>nsIXPCScriptableConsts </summary>
-	public class nsIXPCScriptableConsts
-	{
-		
-		// <summary>
-        //bitflags used for 'flags' (only 32 bits available!) </summary>
-		public const long WANT_PRECREATE = 1<<0;
-		
-		// <summary>
-        // unused bit here
-        // </summary>
-		public const long WANT_ADDPROPERTY = 1<<3;
-		
-		// <summary>
-        // unused bit here
-        // </summary>
-		public const long WANT_GETPROPERTY = 1<<5;
-		
-		// 
-		public const long WANT_SETPROPERTY = 1<<6;
-		
-		// 
-		public const long WANT_ENUMERATE = 1<<7;
-		
-		// 
-		public const long WANT_NEWENUMERATE = 1<<8;
-		
-		// 
-		public const long WANT_RESOLVE = 1<<9;
-		
-		// <summary>
-        // unused bit here
-        // </summary>
-		public const long WANT_FINALIZE = 1<<11;
-		
-		// <summary>
-        // unused bit here!
-        // </summary>
-		public const long WANT_CALL = 1<<13;
-		
-		// 
-		public const long WANT_CONSTRUCT = 1<<14;
-		
-		// 
-		public const long WANT_HASINSTANCE = 1<<15;
-		
-		// <summary>
-        // Unused bit here!
-        // </summary>
-		public const long USE_JSSTUB_FOR_ADDPROPERTY = 1<<17;
-		
-		// 
-		public const long USE_JSSTUB_FOR_DELPROPERTY = 1<<18;
-		
-		// 
-		public const long USE_JSSTUB_FOR_SETPROPERTY = 1<<19;
-		
-		// <summary>
-        // Unused bit here!
-        // </summary>
-		public const long DONT_ENUM_QUERY_INTERFACE = 1<<21;
-		
-		// 
-		public const long DONT_ASK_INSTANCE_FOR_SCRIPTABLE = 1<<22;
-		
-		// 
-		public const long CLASSINFO_INTERFACES_ONLY = 1<<23;
-		
-		// 
-		public const long ALLOW_PROP_MODS_DURING_RESOLVE = 1<<24;
-		
-		// 
-		public const long ALLOW_PROP_MODS_TO_PROTOTYPE = 1<<25;
-		
-		// 
-		public const long IS_GLOBAL_OBJECT = 1<<26;
-		
-		// 
-		public const long DONT_REFLECT_INTERFACE_NAMES = 1<<27;
-		
-		// <summary>
-        // with this bit set.
-        // </summary>
-		public const long RESERVED = 1<<31;
 	}
 }

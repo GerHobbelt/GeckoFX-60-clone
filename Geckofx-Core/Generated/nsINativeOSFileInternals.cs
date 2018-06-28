@@ -119,5 +119,27 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Read([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase path, ref Gecko.JsVal options, [MarshalAs(UnmanagedType.Interface)] nsINativeOSFileSuccessCallback onSuccess, [MarshalAs(UnmanagedType.Interface)] nsINativeOSFileErrorCallback onError, System.IntPtr jsContext);
+		
+		/// <summary>
+        /// Implementation of OS.File.writeAtomic
+        ///
+        /// @param path the absolute path of the file to write to.
+        /// @param buffer the data as an array buffer to be written to the file.
+        /// @param options An object that may contain the following fields
+        /// - {number} bytes If provided, the number of bytes written is equal to this.
+        /// The default value is the size of the |buffer|.
+        /// - {string} tmpPath If provided and not null, first write to this path, and
+        /// move to |path| after writing.
+        /// - {string} backupPath if provided, backup file at |path| to this path
+        /// before overwriting it.
+        /// - {bool} flush if provided and true, flush the contents of the buffer after
+        /// writing. This is slower, but safer.
+        /// - {bool} noOverwrite if provided and true, do not write if a file already
+        /// exists at |path|.
+        /// @param onSuccess The success callback.
+        /// @param onError The error callback.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void WriteAtomic([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase path, ref Gecko.JsVal buffer, ref Gecko.JsVal options, [MarshalAs(UnmanagedType.Interface)] nsINativeOSFileSuccessCallback onSuccess, [MarshalAs(UnmanagedType.Interface)] nsINativeOSFileErrorCallback onError, System.IntPtr jsContext);
 	}
 }

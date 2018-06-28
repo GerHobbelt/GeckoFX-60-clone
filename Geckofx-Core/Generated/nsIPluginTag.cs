@@ -92,6 +92,10 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetClicktoplayAttribute();
 		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetLoadedAttribute();
+		
 		/// <summary>
         /// See the STATE_* values above.
         /// </summary>
@@ -200,6 +204,10 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		new bool GetClicktoplayAttribute();
 		
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		new bool GetLoadedAttribute();
+		
 		/// <summary>
         /// See the STATE_* values above.
         /// </summary>
@@ -225,10 +233,29 @@ namespace Gecko
 		new void GetExtensions(ref uint aCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref System.IntPtr[] aResults);
 		
 		/// <summary>
+        /// The URI that should be loaded into the tag (as a frame) to handle the
+        /// plugin. Note that the original data/src value for the plugin is not loaded
         /// and will need to be requested by the handler via XHR or similar if desired.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsIURI GetHandlerURIAttribute();
+		
+		/// <summary>
+        /// Optional script to run in a sandbox when instantiating a plugin. If this
+        /// value is an empty string then no such script will be run.
+        /// The script runs in a sandbox with system principal in the process that
+        /// contains the element that instantiates the plugin (ie the EMBED or OBJECT
+        /// element). The sandbox global has a 'pluginElement' property that the script
+        /// can use to access the element that instantiates the plugin.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetSandboxScriptAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aSandboxScript);
+		
+		/// <summary>
+        /// A unique id for this JS-implemented plugin. 0 is a valid id.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetIdAttribute();
 	}
 }

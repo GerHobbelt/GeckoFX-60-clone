@@ -43,7 +43,9 @@ namespace Gecko
         /// as well as in testing.
         /// @param aRequestTables Comma-separated list of tables included in this
         /// update.
-        /// @param aRequestBody The body for the request.
+        /// @param aRequestPayload The payload for the request.
+        /// @param aIsPostRequest Whether the request should be sent by POST method.
+        /// Should be 'true' for v2 usage.
         /// @param aUpdateUrl The plaintext url from which to request updates.
         /// @param aSuccessCallback Called after a successful update.
         /// @param aUpdateErrorCallback Called for problems applying the update
@@ -52,6 +54,6 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool DownloadUpdates([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestTables, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestBody, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUpdateUrl, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aSuccessCallback, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aUpdateErrorCallback, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aDownloadErrorCallback);
+		bool DownloadUpdates([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestTables, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aRequestPayload, [MarshalAs(UnmanagedType.U1)] bool aIsPostRequest, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aUpdateUrl, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aSuccessCallback, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aUpdateErrorCallback, [MarshalAs(UnmanagedType.Interface)] nsIUrlClassifierCallback aDownloadErrorCallback);
 	}
 }

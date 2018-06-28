@@ -47,5 +47,8 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ResumeCacheIOThread();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Flush([MarshalAs(UnmanagedType.Interface)] nsIObserver aObserver);
 	}
 }

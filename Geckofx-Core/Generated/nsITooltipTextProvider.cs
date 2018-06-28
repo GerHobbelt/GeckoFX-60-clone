@@ -54,8 +54,9 @@ namespace Gecko
 		/// <summary>
         /// Called to obtain the tooltip text for a node.
         ///
-        /// @arg aNode The node to obtain the text from.
-        /// @arg aText The tooltip text.
+        /// @arg aNode      The node to obtain the text from.
+        /// @arg aText      The tooltip text.
+        /// @arg aDirection The text direction (ltr or rtl) to use
         ///
         /// @return <CODE>PR_TRUE</CODE> if tooltip text is associated
         /// with the node and was returned in the aText argument;
@@ -63,6 +64,6 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetNodeText([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] ref string aText);
+		bool GetNodeText([MarshalAs(UnmanagedType.Interface)] nsIDOMNode aNode, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] ref string aText, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.WStringMarshaler")] ref string aDirection);
 	}
 }

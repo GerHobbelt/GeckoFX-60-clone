@@ -27,8 +27,9 @@ namespace Gecko
 	
 	
 	/// <summary>
-    /// *********************** REMOVE **********************
-    /// </summary>
+    ///This Source Code Form is subject to the terms of the Mozilla Public
+    /// License, v. 2.0. If a copy of the MPL was not distributed with this
+    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("607c2a2c-0a48-40b9-a956-8cf2bb9857cf")]
@@ -40,6 +41,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void GetKeyAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aKey);
+		
+		/// <summary>
+        /// The unique ID for every nsICacheEntry instance, which can be used to check
+        /// whether two pieces of information are from the same nsICacheEntry instance.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetCacheEntryIdAttribute();
 		
 		/// <summary>
         /// Whether the entry is memory/only or persisted to disk.
@@ -82,6 +90,23 @@ namespace Gecko
 		void SetExpirationTime(uint expirationTime);
 		
 		/// <summary>
+        /// Get the last network response times for onStartReqeust/onStopRequest (in ms).
+        /// @throws
+        /// - NS_ERROR_NOT_AVAILABLE if onStartTime/onStopTime does not exist.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetOnStartTimeAttribute();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		ulong GetOnStopTimeAttribute();
+		
+		/// <summary>
+        /// Set the network response times for onStartReqeust/onStopRequest (in ms).
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetNetworkTimes(ulong onStartTime, ulong onStopTime);
+		
+		/// <summary>
         /// This method is intended to override the per-spec cache validation
         /// decisions for a duration specified in seconds. The current state can
         /// be examined with isForcedValid (see below). This value is not persisted,
@@ -89,6 +114,10 @@ namespace Gecko
         /// will not be evicted from the cache for the duration of forced validity.
         /// This means that there is a potential problem if the number of forced valid
         /// entries grows to take up more space than the cache size allows.
+        ///
+        /// NOTE: entries that have been forced valid will STILL be ignored by HTTP
+        /// channels if they have expired AND the resource in question requires
+        /// validation after expiring. This is to avoid using known-stale content.
         ///
         /// @param aSecondsToTheFuture
         /// the number of seconds the default cache validation behavior will be
@@ -226,6 +255,25 @@ namespace Gecko
 		void SetValid();
 		
 		/// <summary>
+        /// Explicitly tell the cache backend this consumer is no longer going to modify
+        /// this cache entry data or metadata.  In case the consumer was responsible to
+        /// either of writing the cache entry or revalidating it, calling this method
+        /// reverts the state to initial (as never written) or as not-validated and
+        /// immediately notifies the next consumer in line waiting for this entry.
+        /// This is the way to prevent deadlocks when someone else than the responsible
+        /// channel references the cache entry being in a non-written or revalidating
+        /// state.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Dismiss();
+		
+		/// <summary>
+        /// Returns the size in kilobytes used to store the cache entry on disk.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetDiskStorageSizeInKBAttribute();
+		
+		/// <summary>
         /// Doom this entry and open a new, empty, entry for write.  Consumer has
         /// to exchange the entry this method is called on for the newly created.
         /// Used on 200 responses to conditional requests.
@@ -250,6 +298,50 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		long GetDataSizeAttribute();
+		
+		/// <summary>
+        /// Returns the length of data this entry holds.
+        /// @throws
+        /// - NS_ERROR_IN_PROGRESS when a write is still in progress (either real
+        ///                              content or alt data).
+        /// - NS_ERROR_NOT_AVAILABLE if alt data does not exist.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		long GetAltDataSizeAttribute();
+		
+		/// <summary>
+        /// Opens and returns an output stream that a consumer may use to save an
+        /// alternate representation of the data.
+        /// @throws
+        /// - NS_ERROR_NOT_AVAILABLE if the real data hasn't been written.
+        /// - NS_ERROR_IN_PROGRESS when the writing regular content or alt-data to
+        /// the cache entry is still in progress.
+        ///
+        /// If there is alt-data already saved, it will be overwritten.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIOutputStream OpenAlternativeOutputStream([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase type);
+		
+		/// <summary>
+        /// Opens and returns an input stream that can be used to read the alternative
+        /// representation previously saved in the cache.
+        /// If this call is made while writing alt-data is still in progress, it is
+        /// still possible to read content from the input stream as it's being written.
+        /// @throws
+        /// - NS_ERROR_NOT_AVAILABLE if the alt-data representation doesn't exist at
+        /// all or if alt-data of the given type doesn't exist.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIInputStream OpenAlternativeInputStream([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase type);
+		
+		/// <summary>
+        /// Get the nsILoadContextInfo of the cache entry
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsILoadContextInfo GetLoadContextInfoAttribute();
 		
 		/// <summary>
         /// @deprecated

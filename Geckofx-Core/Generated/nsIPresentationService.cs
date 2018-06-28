@@ -38,9 +38,11 @@ namespace Gecko
 		
 		/// <summary>
         /// Called when the operation succeeds.
+        ///
+        /// @param url: the selected request url used to start or reconnect a session.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifySuccess();
+		void NotifySuccess([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url);
 		
 		/// <summary>
         /// Called when the operation fails.
@@ -54,7 +56,7 @@ namespace Gecko
 	/// <summary>nsIPresentationService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("c177a13a-bf1a-48bf-8032-d415c3343c46")]
+	[Guid("de42b741-5619-4650-b961-c2cebb572c95")]
 	public interface nsIPresentationService
 	{
 		
@@ -62,73 +64,125 @@ namespace Gecko
         /// Start a new presentation session and display a prompt box which asks users
         /// to select a device.
         ///
-        /// @param url: The url of presenting page.
+        /// @param urls: The candidate Urls of presenting page. Only one url would be used.
         /// @param sessionId: An ID to identify presentation session.
         /// @param origin: The url of requesting page.
+        /// @param deviceId: The specified device of handling this request, null string
+        /// for prompt device selection dialog.
+        /// @param windowId: The inner window ID associated with the presentation
+        /// session. (0 implies no window ID since no actual window
+        /// uses 0 as its ID. Generally it's the case the window is
+        /// located in different process from this service)
+        /// @param eventTarget: The chrome event handler, in particular XUL browser
+        /// element in parent process, that the request was
+        /// originated in.
+        /// @param principal: The principal that initiated the session.
         /// @param callback: Invoke the callback when the operation is completed.
         /// NotifySuccess() is called with |id| if a session is
         /// established successfully with the selected device.
         /// Otherwise, NotifyError() is called with a error message.
+        /// @param constructor: The constructor for creating a transport builder.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void StartSession([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase origin, [MarshalAs(UnmanagedType.Interface)] nsIPresentationServiceCallback callback);
+		void StartSession(nsISupports urls, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase origin, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase deviceId, ulong windowId, [MarshalAs(UnmanagedType.Interface)] nsIDOMEventTarget eventTarget, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principal, [MarshalAs(UnmanagedType.Interface)] nsIPresentationServiceCallback callback, [MarshalAs(UnmanagedType.Interface)] nsIPresentationTransportBuilderConstructor constructor);
 		
 		/// <summary>
-        /// Send the message wrapped with an input stream to the session.
+        /// Send the message to the session.
         ///
         /// @param sessionId: An ID to identify presentation session.
-        /// @param stream: The message is converted to an input stream.
+        /// @param role: Identify the function called by controller or receiver.
+        /// @param data: the message being sent out.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SendSessionMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, [MarshalAs(UnmanagedType.Interface)] nsIInputStream stream);
+		void SendSessionMessage([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase data);
+		
+		/// <summary>
+        /// Send the binary message to the session.
+        ///
+        /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
+        /// @param data: the message being sent out.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SendSessionBinaryMsg([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase data);
+		
+		/// <summary>
+        /// Send the blob to the session.
+        ///
+        /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
+        /// @param blob: The input blob to be sent.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SendSessionBlob([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role, [MarshalAs(UnmanagedType.Interface)] nsIDOMBlob blob);
 		
 		/// <summary>
         /// Close the session.
         ///
         /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CloseSession([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId);
+		void CloseSession([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role, byte closedReason);
 		
 		/// <summary>
         /// Terminate the session.
         ///
         /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void TerminateSession([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId);
+		void TerminateSession([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role);
+		
+		/// <summary>
+        /// Reconnect the session.
+        ///
+        /// @param url: The request Urls.
+        /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
+        /// @param callback: NotifySuccess() is called when a control channel
+        /// is opened successfully.
+        /// Otherwise, NotifyError() is called with a error message.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ReconnectSession(nsISupports urls, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role, [MarshalAs(UnmanagedType.Interface)] nsIPresentationServiceCallback callback);
 		
 		/// <summary>
         /// Register an availability listener. Must be called from the main thread.
         ///
+        /// @param availabilityUrls: The Urls that this listener is interested in.
         /// @param listener: The listener to register.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RegisterAvailabilityListener([MarshalAs(UnmanagedType.Interface)] nsIPresentationAvailabilityListener listener);
+		void RegisterAvailabilityListener(nsISupports availabilityUrls, [MarshalAs(UnmanagedType.Interface)] nsIPresentationAvailabilityListener listener);
 		
 		/// <summary>
         /// Unregister an availability listener. Must be called from the main thread.
+        ///
+        /// @param availabilityUrls: The Urls that are registered before.
         /// @param listener: The listener to unregister.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnregisterAvailabilityListener([MarshalAs(UnmanagedType.Interface)] nsIPresentationAvailabilityListener listener);
+		void UnregisterAvailabilityListener(nsISupports availabilityUrls, [MarshalAs(UnmanagedType.Interface)] nsIPresentationAvailabilityListener listener);
 		
 		/// <summary>
         /// Register a session listener. Must be called from the main thread.
         ///
         /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
         /// @param listener: The listener to register.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void RegisterSessionListener([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, [MarshalAs(UnmanagedType.Interface)] nsIPresentationSessionListener listener);
+		void RegisterSessionListener([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role, [MarshalAs(UnmanagedType.Interface)] nsIPresentationSessionListener listener);
 		
 		/// <summary>
         /// Unregister a session listener. Must be called from the main thread.
         ///
         /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UnregisterSessionListener([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId);
+		void UnregisterSessionListener([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role);
 		
 		/// <summary>
         /// Register a responding listener. Must be called from the main thread.
@@ -147,33 +201,84 @@ namespace Gecko
 		void UnregisterRespondingListener(ulong windowId);
 		
 		/// <summary>
-        /// Check if the presentation instance has an existent session ID at launch.
-        /// An empty string is always returned at sender side. Whereas at receiver side
-        /// the associated session ID is returned if the window ID and URI are matched;
-        /// otherwise an empty string is returned.
-        ///
-        /// @param windowId: The inner window ID used to look up the session ID.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetExistentSessionIdAtLaunch(ulong windowId, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
-		
-		/// <summary>
         /// Notify the receiver page is ready for presentation use.
         ///
-        /// @param sessionId: An ID to identify presentation session.
-        /// @param windowId: The inner window ID associated with the presentation
-        /// session. (0 implies no window ID since no actual window
-        /// uses 0 as its ID.)
+        /// @param sessionId An ID to identify presentation session.
+        /// @param windowId  The inner window ID associated with the presentation
+        /// session.
+        /// @param isLoading true if receiver page is loading successfully.
+        /// @param constructor: The constructor for creating a transport builder.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void NotifyReceiverReady([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, ulong windowId);
+		void NotifyReceiverReady([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, ulong windowId, [MarshalAs(UnmanagedType.U1)] bool isLoading, [MarshalAs(UnmanagedType.Interface)] nsIPresentationTransportBuilderConstructor constructor);
+		
+		/// <summary>
+        /// Notify the transport is closed
+        ///
+        /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
+        /// @param reason: the error message. NS_OK indicates it is closed normally.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void NotifyTransportClosed([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role, int reason);
 		
 		/// <summary>
         /// Untrack the relevant info about the presentation session if there's any.
         ///
         /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void UntrackSessionInfo([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId);
+		void UntrackSessionInfo([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role);
+		
+		/// <summary>
+        /// The windowId for building RTCDataChannel session transport
+        ///
+        /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		uint GetWindowIdBySessionId([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role);
+		
+		/// <summary>
+        /// Update the mapping of the session ID and window ID.
+        ///
+        /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
+        /// @param windowId: The inner window ID associated with the presentation
+        /// session.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void UpdateWindowIdBySessionId([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role, ulong windowId);
+		
+		/// <summary>
+        /// To build the session transport.
+        /// NOTE: This function should be only called at controller side.
+        ///
+        /// @param sessionId: An ID to identify presentation session.
+        /// @param role: Identify the function called by controller or receiver.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void BuildTransport([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase sessionId, byte role);
+	}
+	
+	/// <summary>nsIPresentationServiceConsts </summary>
+	public class nsIPresentationServiceConsts
+	{
+		
+		// 
+		public const ushort ROLE_CONTROLLER = 0x1;
+		
+		// 
+		public const ushort ROLE_RECEIVER = 0x2;
+		
+		// 
+		public const ushort CLOSED_REASON_ERROR = 0x1;
+		
+		// 
+		public const ushort CLOSED_REASON_CLOSED = 0x2;
+		
+		// 
+		public const ushort CLOSED_REASON_WENTAWAY = 0x3;
 	}
 }

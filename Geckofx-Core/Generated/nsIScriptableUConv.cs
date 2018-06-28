@@ -88,9 +88,8 @@ namespace Gecko
         /// @throw NS_ERROR_UCONV_NOCONV
         /// The requested charset is not supported.
         /// </summary>
-		[return: MarshalAs(UnmanagedType.LPStr)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		string GetCharsetAttribute();
+		void GetCharsetAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCharset);
 		
 		/// <summary>
         /// Current character set.
@@ -99,29 +98,17 @@ namespace Gecko
         /// The requested charset is not supported.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetCharsetAttribute([MarshalAs(UnmanagedType.LPStr)] string aCharset);
+		void SetCharsetAttribute([MarshalAs(UnmanagedType.LPStruct)] nsACStringBase aCharset);
 		
 		/// <summary>
-        /// Internal use
-        ///
-        /// When this attribute is set, all encodings may be accessed. Alias
-        /// resolution is not performed for non-Encoding Standard encodings.
-        /// MailNews callers should perform alias resolution first (e.g. using
-        /// nsICharsetConverterManager::getCharsetAlias()) and use the result
-        /// with this API.
+        /// Meaningless
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetIsInternalAttribute();
 		
 		/// <summary>
-        /// Internal use
-        ///
-        /// When this attribute is set, all encodings may be accessed. Alias
-        /// resolution is not performed for non-Encoding Standard encodings.
-        /// MailNews callers should perform alias resolution first (e.g. using
-        /// nsICharsetConverterManager::getCharsetAlias()) and use the result
-        /// with this API.
+        /// Meaningless
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetIsInternalAttribute([MarshalAs(UnmanagedType.U1)] bool aIsInternal);

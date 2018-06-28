@@ -32,7 +32,7 @@ namespace Gecko
     /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f3c50361-14fe-11d3-bf87-00105a1b0627")]
+	[Guid("a9fa9fd3-8d62-4f94-9ed8-3ea9c3cf0773")]
 	public interface nsIDOMXULCommandDispatcher
 	{
 		
@@ -51,12 +51,11 @@ namespace Gecko
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetFocusedElementAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMElement aFocusedElement);
 		
-		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIDOMWindow GetFocusedWindowAttribute();
+		mozIDOMWindowProxy GetFocusedWindowAttribute();
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetFocusedWindowAttribute([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aFocusedWindow);
+		void SetFocusedWindowAttribute(mozIDOMWindowProxy aFocusedWindow);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void AddCommandUpdater([MarshalAs(UnmanagedType.Interface)] nsIDOMElement updater, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase events, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase targets);
@@ -90,5 +89,14 @@ namespace Gecko
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetSuppressFocusScrollAttribute([MarshalAs(UnmanagedType.U1)] bool aSuppressFocusScroll);
+		
+		/// <summary>
+        /// lock and unlock is called in a pair.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Lock();
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void Unlock();
 	}
 }

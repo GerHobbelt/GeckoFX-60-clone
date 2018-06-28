@@ -27,9 +27,8 @@ namespace Gecko
 	
 	
 	/// <summary>
-    ///This Source Code Form is subject to the terms of the Mozilla Public
-    /// License, v. 2.0. If a copy of the MPL was not distributed with this
-    /// file, You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+    /// This interface cannot become builtinclass until bug 1438525 is fixed.
+    /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	[Guid("f3da0c5e-51f5-45f0-b2cd-6be3ab6847ae")]
@@ -263,5 +262,14 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ClearStyleAndImageCaches();
+		
+		/// <summary>
+        /// Remove an image source from the image cache to allow its invalidation.
+        ///
+        /// @note This only affects images supplied by the view, not the ones supplied
+        /// through the styling context, like twisties or checkboxes.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void RemoveImageCacheEntry(int row, [MarshalAs(UnmanagedType.Interface)] nsITreeColumn col);
 	}
 }

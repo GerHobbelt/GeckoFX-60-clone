@@ -105,7 +105,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("e9029838-3553-4192-a00b-f0f11073a6eb")]
+	[Guid("6e3e26ea-45b2-4db7-9e4a-93b965679298")]
 	public interface nsIOfflineCacheUpdate
 	{
 		
@@ -164,7 +164,7 @@ namespace Gecko
         /// The principal of the page that is requesting the update.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIDOMDocument aDocument, [MarshalAs(UnmanagedType.Interface)] nsIFile aCustomProfileDir, uint aAppId, [MarshalAs(UnmanagedType.U1)] bool aInBrowser);
+		void Init([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIDOMDocument aDocument, [MarshalAs(UnmanagedType.Interface)] nsIFile aCustomProfileDir);
 		
 		/// <summary>
         /// Initialize the update for partial processing.
@@ -188,10 +188,6 @@ namespace Gecko
         ///
         /// @param aManifestURI
         /// The manifest URI of the related cache.
-        /// @param aAppID
-        /// Local ID of an app (optional) to check the cache update for.
-        /// @param aInBrowser
-        /// Whether to check for a cache populated from browser element.
         /// @param aObserver
         /// nsIObserver implementation that receives the result.
         /// When aTopic == "offline-cache-update-available" there is an update to
@@ -201,7 +197,7 @@ namespace Gecko
         /// update available (the manifest has not changed on the server).
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void InitForUpdateCheck([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, uint aAppID, [MarshalAs(UnmanagedType.U1)] bool aInBrowser, [MarshalAs(UnmanagedType.Interface)] nsIObserver aObserver);
+		void InitForUpdateCheck([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIObserver aObserver);
 		
 		/// <summary>
         /// Add a dynamic URI to the offline cache as part of the update.
@@ -258,7 +254,7 @@ namespace Gecko
 	/// <summary>nsIOfflineCacheUpdateService </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("a297a334-bcae-4779-a564-555593edc96b")]
+	[Guid("44971e74-37e4-4140-8677-a4cf213a3f4b")]
 	public interface nsIOfflineCacheUpdateService
 	{
 		
@@ -282,17 +278,17 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIOfflineCacheUpdate ScheduleUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow);
+		nsIOfflineCacheUpdate ScheduleUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, mozIDOMWindow aWindow);
 		
 		/// <summary>
         /// Schedule a cache update for a given offline manifest using app cache
-        /// bound to the given appID+inBrowser flag.  If an existing update is
-        /// scheduled or running, that update will be returned. Otherwise a new
+        /// bound to the given appID+inIsolatedMozBrowser flag.  If an existing update
+        /// is scheduled or running, that update will be returned. Otherwise a new
         /// update will be scheduled.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIOfflineCacheUpdate ScheduleAppUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, uint aAppID, [MarshalAs(UnmanagedType.U1)] bool aInBrowser, [MarshalAs(UnmanagedType.Interface)] nsIFile aProfileDir);
+		nsIOfflineCacheUpdate ScheduleAppUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIURI aDocumentURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIFile aProfileDir);
 		
 		/// <summary>
         /// Schedule a cache update for a manifest when the document finishes
@@ -313,7 +309,7 @@ namespace Gecko
         /// description.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void CheckForUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, uint aAppID, [MarshalAs(UnmanagedType.U1)] bool aInBrowser, [MarshalAs(UnmanagedType.Interface)] nsIObserver aObserver);
+		void CheckForUpdate([MarshalAs(UnmanagedType.Interface)] nsIURI aManifestURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aLoadingPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIObserver aObserver);
 		
 		/// <summary>
         /// Checks whether a principal should have access to the offline
@@ -349,7 +345,7 @@ namespace Gecko
         /// In the multi process model dispatches to the parent process.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AllowOfflineApp([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow aWindow, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
+		void AllowOfflineApp([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal);
 	}
 	
 	/// <summary>nsIOfflineCacheUpdateServiceConsts </summary>

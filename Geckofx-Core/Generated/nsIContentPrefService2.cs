@@ -27,6 +27,42 @@ namespace Gecko
 	
 	
 	/// <summary>
+    ///This Source Code Form is subject to the terms of the Mozilla Public
+    /// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+    /// You can obtain one at http://mozilla.org/MPL/2.0/. </summary>
+	[ComImport()]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("43635c53-b445-4c4e-8cc5-562697299b55")]
+	public interface nsIContentPrefObserver
+	{
+		
+		/// <summary>
+        /// Called when a content pref is set to a different value.
+        ///
+        /// @param    aGroup      the group to which the pref belongs, or null
+        /// if it's a global pref (applies to all sites)
+        /// @param    aName       the name of the pref that was set
+        /// @param    aValue      the new value of the pref
+        /// @param    aIsPrivate  an optional flag determining whether the
+        /// original context is private or not
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnContentPrefSet([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aGroup, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, [MarshalAs(UnmanagedType.Interface)] nsIVariant aValue, [MarshalAs(UnmanagedType.U1)] bool aIsPrivate);
+		
+		/// <summary>
+        /// Called when a content pref is removed.
+        ///
+        /// @param    aGroup      the group to which the pref belongs, or null
+        /// if it's a global pref (applies to all sites)
+        /// @param    aName       the name of the pref that was removed
+        /// @param    aIsPrivate  an optional flag determining whether the
+        /// original context is private or not
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnContentPrefRemoved([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aGroup, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aName, [MarshalAs(UnmanagedType.U1)] bool aIsPrivate);
+	}
+	
+	/// <summary>
     /// Content Preferences
     ///
     /// Content preferences allow the application to associate arbitrary data, or

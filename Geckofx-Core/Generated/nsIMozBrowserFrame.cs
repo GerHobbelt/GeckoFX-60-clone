@@ -70,7 +70,7 @@ namespace Gecko
 		new void SetMozbrowserAttribute([MarshalAs(UnmanagedType.U1)] bool aMozbrowser);
 		
 		/// <summary>
-        /// Gets whether this frame really is a browser or app frame.
+        /// Gets whether this frame really is a browser frame.
         ///
         /// In order to really be a browser frame, this frame's
         /// nsIDOMMozBrowserFrame::mozbrowser attribute must be true, and the frame
@@ -78,55 +78,23 @@ namespace Gecko
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetReallyIsBrowserOrAppAttribute();
+		bool GetReallyIsBrowserAttribute();
 		
 		/// <summary>
-        /// Gets whether this frame really is an app frame.
+        /// Gets whether this frame is an isolated frame.
         ///
-        /// In order to really be an app frame, this frame must really be a browser
-        /// frame (this requirement will go away eventually), and must satisfy one
-        /// and only one of the following conditions:
-        /// 1. the frame's mozapp attribute must point to the manifest of a valid app
-        /// 2. the frame's mozwidget attribute must point to the manifest of a valid
-        /// app, and the src should be in the |widgetPages| specified by the manifest.
+        /// By default, browser frames are isolated, meaning they have a principal
+        /// where OriginAttributes.mIsInIsolatedMozBrowser == true.  This isolates
+        /// storage and other origin related items from non-browser apps, xul:browsers,
+        /// etc.
+        ///
+        /// Isolation can be disabled by setting the frame's isolated attribute to
+        /// false.  Disabling isolation is only allowed if the containing document has
+        /// browser permission (or equivalent access).
         /// </summary>
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetReallyIsAppAttribute();
-		
-		/// <summary>
-        /// Gets whether this frame really is a widget frame.
-        ///
-        /// In order to really be a frame, this frame must really be a browser
-        /// frame (this requirement will go away eventually), the frame's mozwidget
-        /// attribute must point to the manifest of a valid app, and the src should
-        /// be in the |widgetPages| specified by the manifest.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetReallyIsWidgetAttribute();
-		
-		/// <summary>
-        /// This corresponds to the expecting-system-message attribute, which tells us
-        /// whether we should expect that this frame will receive a system message once
-        /// it starts up.
-        ///
-        /// It's the embedder's job to set this attribute on a frame.  Its presence
-        /// might cause us to increase the priority of the frame's process.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsExpectingSystemMessageAttribute();
-		
-		/// <summary>
-        /// Gets this frame's app manifest URL or widget manifest URL, if the frame
-        /// really is an app frame.
-        /// Otherwise, returns the empty string.
-        ///
-        /// This method is guaranteed not to fail.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetAppManifestURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAppManifestURL);
+		bool GetIsolatedAttribute();
 		
 		/// <summary>
         /// Normally, a frame tries to create its frame loader when its src is
@@ -157,10 +125,16 @@ namespace Gecko
 		void CreateRemoteFrameLoader([MarshalAs(UnmanagedType.Interface)] nsITabParent aTabParent);
 		
 		/// <summary>
-        /// Initialize the API, and add frame message listener to listen to API
+        /// Initialize the API, and add frame message listener that supports API
         /// invocations.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void InitializeBrowserAPI();
+		
+		/// <summary>
+        /// Notify frame scripts that support the API to destroy.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void DestroyBrowserFrameScripts();
 	}
 }

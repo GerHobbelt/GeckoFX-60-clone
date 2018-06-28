@@ -34,7 +34,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3a5e5fa0-5364-4fbb-a87a-3f12a6b51903")]
+	[Guid("0dad26b8-a259-42c7-93f1-2fa7fc076e45")]
 	public interface nsISHEntry
 	{
 		
@@ -63,6 +63,21 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetOriginalURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aOriginalURI);
+		
+		/// <summary>
+        /// URL as stored from nsILoadInfo.resultPrincipalURI.  See nsILoadInfo
+        /// for more details.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIURI GetResultPrincipalURIAttribute();
+		
+		/// <summary>
+        /// URL as stored from nsILoadInfo.resultPrincipalURI.  See nsILoadInfo
+        /// for more details.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetResultPrincipalURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aResultPrincipalURI);
 		
 		/// <summary>
         /// This flag remembers whether channel has LOAD_REPLACE set.
@@ -195,12 +210,12 @@ namespace Gecko
         ///Saved refresh URI list for the content viewer </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupportsArray GetRefreshURIListAttribute();
+		nsIMutableArray GetRefreshURIListAttribute();
 		
 		/// <summary>
         ///Saved refresh URI list for the content viewer </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetRefreshURIListAttribute([MarshalAs(UnmanagedType.Interface)] nsISupportsArray aRefreshURIList);
+		void SetRefreshURIListAttribute([MarshalAs(UnmanagedType.Interface)] nsIMutableArray aRefreshURIList);
 		
 		/// <summary>
         /// Ensure that the cached presentation members are self-consistent.
@@ -237,6 +252,13 @@ namespace Gecko
         ///LayoutHistoryState for scroll position and form values </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetLayoutHistoryStateAttribute(System.IntPtr aLayoutHistoryState);
+		
+		/// <summary>
+        /// Initialises the LayoutHistoryState if it doesn't already exist
+        /// and returns a reference to it.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr InitLayoutHistoryState();
 		
 		/// <summary>
         ///parent of this entry </summary>
@@ -364,7 +386,7 @@ namespace Gecko
 		/// <summary>
         ///Additional ways to create an entry </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Create([MarshalAs(UnmanagedType.Interface)] nsIURI URI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase title, [MarshalAs(UnmanagedType.Interface)] nsIInputStream inputStream, System.IntPtr layoutHistoryState, [MarshalAs(UnmanagedType.Interface)] nsISupports cacheKey, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase contentType, [MarshalAs(UnmanagedType.Interface)] nsISupports owner, ulong docshellID, [MarshalAs(UnmanagedType.U1)] bool dynamicCreation);
+		void Create([MarshalAs(UnmanagedType.Interface)] nsIURI URI, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase title, [MarshalAs(UnmanagedType.Interface)] nsIInputStream inputStream, System.IntPtr layoutHistoryState, [MarshalAs(UnmanagedType.Interface)] nsISupports cacheKey, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase contentType, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal triggeringPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal principalToInherit, System.IntPtr docshellID, [MarshalAs(UnmanagedType.U1)] bool dynamicCreation);
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -384,21 +406,36 @@ namespace Gecko
 		nsIContentViewer GetAnyContentViewer([MarshalAs(UnmanagedType.Interface)] ref nsISHEntry ownerEntry);
 		
 		/// <summary>
-        /// Get the owner, if any, that was associated with the channel
+        /// Get the principal, if any, that was associated with the channel
         /// that the document that was loaded to create this history entry
         /// came from.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsISupports GetOwnerAttribute();
+		nsIPrincipal GetTriggeringPrincipalAttribute();
 		
 		/// <summary>
-        /// Get the owner, if any, that was associated with the channel
+        /// Get the principal, if any, that was associated with the channel
         /// that the document that was loaded to create this history entry
         /// came from.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetOwnerAttribute([MarshalAs(UnmanagedType.Interface)] nsISupports aOwner);
+		void SetTriggeringPrincipalAttribute([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aTriggeringPrincipal);
+		
+		/// <summary>
+        /// Get the principal, if any, that is used when the inherit flag
+        /// is set.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsIPrincipal GetPrincipalToInheritAttribute();
+		
+		/// <summary>
+        /// Get the principal, if any, that is used when the inherit flag
+        /// is set.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetPrincipalToInheritAttribute([MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipalToInherit);
 		
 		/// <summary>
         /// Get/set data associated with this history state via a pushState() call,
@@ -457,13 +494,19 @@ namespace Gecko
         /// The history ID of the docshell.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		ulong GetDocshellIDAttribute();
+		System.IntPtr GetDocshellIDAttribute();
 		
 		/// <summary>
         /// The history ID of the docshell.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetDocshellIDAttribute(ulong aDocshellID);
+		void SetDocshellIDAttribute(System.IntPtr aDocshellID);
+		
+		/// <summary>
+        /// Helper method for accessing this value from C++
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		System.IntPtr DocshellID();
 		
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -544,6 +587,46 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetBaseURIAttribute([MarshalAs(UnmanagedType.Interface)] nsIURI aBaseURI);
+		
+		/// <summary>
+        /// Sets/gets the current scroll restoration state,
+        /// if true == "manual", false == "auto".
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetScrollRestorationIsManualAttribute();
+		
+		/// <summary>
+        /// Sets/gets the current scroll restoration state,
+        /// if true == "manual", false == "auto".
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetScrollRestorationIsManualAttribute([MarshalAs(UnmanagedType.U1)] bool aScrollRestorationIsManual);
+		
+		/// <summary>
+        /// Flag to indicate that the history entry was originally loaded in the
+        /// current process. This flag does not survive a browser process switch.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetLoadedInThisProcessAttribute();
+		
+		/// <summary>
+        /// The session history it belongs to. It's usually only set on root entries.
+        /// SHEntry is strictly bound to the SHistory it belongs to; it should not be
+        /// changed once set to a non-null value.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISHistory GetSHistoryAttribute();
+		
+		/// <summary>
+        /// The session history it belongs to. It's usually only set on root entries.
+        /// SHEntry is strictly bound to the SHistory it belongs to; it should not be
+        /// changed once set to a non-null value.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetSHistoryAttribute([MarshalAs(UnmanagedType.Interface)] nsISHistory aSHistory);
 	}
 	
 	/// <summary>nsISHEntryInternal </summary>

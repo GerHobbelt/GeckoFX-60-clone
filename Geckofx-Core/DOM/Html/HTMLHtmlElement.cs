@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoHtmlHtmlElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLHtmlElement DOMHTMLElement;
+        private /* nsIDOMHTMLHtmlElement */ nsISupports DOMHTMLElement;
 
-        internal GeckoHtmlHtmlElement(nsIDOMHTMLHtmlElement element) : base(element)
+        internal GeckoHtmlHtmlElement(/* nsIDOMHTMLHtmlElement */ nsISupports element) : base(element)
         {
             this.DOMHTMLElement = element;
         }
 
-        public GeckoHtmlHtmlElement(object element) : base(element as nsIDOMHTMLElement)
+        public GeckoHtmlHtmlElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as nsIDOMHTMLHtmlElement;
+            this.DOMHTMLElement = element as /* nsIDOMHTMLHtmlElement */ nsISupports;
         }
 
         public string Version

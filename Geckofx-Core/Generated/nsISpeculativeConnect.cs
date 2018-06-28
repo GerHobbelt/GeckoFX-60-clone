@@ -46,6 +46,8 @@ namespace Gecko
         /// to actually open the new channel.
         ///
         /// @param aURI the URI of the hinted transaction
+        /// @param aPrincipal the principal that will be used for opening the
+        /// channel of the hinted transaction.
         /// @param aCallbacks any security callbacks for use with SSL for interfaces
         /// such as nsIBadCertListener. May be null.
         ///
@@ -54,7 +56,13 @@ namespace Gecko
 		void SpeculativeConnect([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor aCallbacks);
 		
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SpeculativeConnect2([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor aCallbacks);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SpeculativeAnonymousConnect([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor aCallbacks);
+		
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SpeculativeAnonymousConnect2([MarshalAs(UnmanagedType.Interface)] nsIURI aURI, [MarshalAs(UnmanagedType.Interface)] nsIPrincipal aPrincipal, [MarshalAs(UnmanagedType.Interface)] nsIInterfaceRequestor aCallbacks);
 	}
 	
 	/// <summary>
@@ -64,7 +72,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f6a0d1e5-369f-4abc-81ae-d370d36e4006")]
+	[Guid("1040ebe3-6ed1-45a6-8587-995e082518d7")]
 	public interface nsISpeculativeConnectionOverrider
 	{
 		
@@ -74,15 +82,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		uint GetParallelSpeculativeConnectLimitAttribute();
-		
-		/// <summary>
-        /// Used to loosen the restrictions nsHttpConnectionMgr::RestrictConnections
-        /// to allow more speculative connections when we're unsure if a host will
-        /// connect via SPDY or not.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIgnorePossibleSpdyConnectionsAttribute();
 		
 		/// <summary>
         /// Used to determine if we will ignore the existence of any currently idle

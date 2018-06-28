@@ -64,12 +64,14 @@ namespace Gecko
 		void ForceDiscovery();
 		
 		/// <summary>
-        /// Retrieve all available devices, return a list of nsIPresentationDevice.
+        /// Retrieve all available devices or all available devices that supports
+        /// designated presentation URLs, return a list of nsIPresentationDevice.
         /// The returned list is a cached device list and could be out-of-date.
         /// Observe device change events to get following updates.
+        /// @param presentationUrls the target presentation URLs for device filtering
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		nsIArray GetAvailableDevices();
+		nsIArray GetAvailableDevices([MarshalAs(UnmanagedType.Interface)] nsIArray presentationUrls);
 	}
 }

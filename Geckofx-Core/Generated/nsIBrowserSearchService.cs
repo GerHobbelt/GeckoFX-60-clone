@@ -148,6 +148,7 @@ namespace Gecko
         /// @param  options
         /// An object that must contain the following fields:
         /// {window} the content window for the window performing the search
+        /// {OriginAttributes} the OriginAttributes for performing the search
         ///
         /// @throws NS_ERROR_INVALID_ARG if options is omitted or lacks required
         /// elemeents
@@ -367,6 +368,25 @@ namespace Gecko
 		void ResetToOriginalDefaultEngine();
 		
 		/// <summary>
+        /// Checks if an EngineURL of type URLTYPE_SEARCH_HTML exists for
+        /// any engine, with a matching method, template URL, and query params.
+        ///
+        /// @param method
+        /// The HTTP request method used when submitting a search query.
+        /// Must be a case insensitive value of either "get" or "post".
+        ///
+        /// @param url
+        /// The URL to which search queries should be sent.
+        /// Must not be null.
+        ///
+        /// @param formData
+        /// The un-sorted form data used as query params.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool HasEngineWithURL([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase method, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, ref Gecko.JsVal formData);
+		
+		/// <summary>
         /// Adds a new search engine from the file at the supplied URI, optionally
         /// asking the user for confirmation first.  If a confirmation dialog is
         /// shown, it will offer the option to begin using the newly added engine
@@ -394,11 +414,14 @@ namespace Gecko
         /// addition is complete, or if the addition fails. It will not be
         /// called if addEngine throws an exception.
         ///
+        /// @param extensionID [optional]
+        /// Optional: The correct extensionID if called by an add-on.
+        ///
         /// @throws NS_ERROR_FAILURE if the description file cannot be successfully
         /// loaded.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddEngine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase engineURL, int dataType, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase iconURL, [MarshalAs(UnmanagedType.U1)] bool confirm, [MarshalAs(UnmanagedType.Interface)] nsISearchInstallCallback callback);
+		void AddEngine([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase engineURL, int dataType, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase iconURL, [MarshalAs(UnmanagedType.U1)] bool confirm, [MarshalAs(UnmanagedType.Interface)] nsISearchInstallCallback callback, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase extensionID);
 		
 		/// <summary>
         /// Adds a new search engine, without asking the user for confirmation and
@@ -410,6 +433,8 @@ namespace Gecko
         /// @param iconURL
         /// Optional: A URL string pointing to the icon to be used to represent
         /// the engine.
+        /// This is a jsval so that an object can be passed to replace the
+        /// parameters below.
         ///
         /// @param alias
         /// Optional: A unique shortcut that can be used to retrieve the
@@ -419,23 +444,40 @@ namespace Gecko
         /// Optional: a description of the search engine.
         ///
         /// @param method
-        /// The HTTP request method used when submitting a search query.
-        /// Must be a case insensitive value of either "get" or "post".
+        /// Optional: The HTTP request method used when submitting a search query.
+        /// Case insensitive value of either "get" or "post".
+        /// Defaults to "get".
         ///
-        /// @param url
-        /// The URL to which search queries should be sent.
+        /// @param template
+        /// The template for the URL to which search queries should be sent. The
+        /// template will be subjected to OpenSearch parameter substitution.
+        /// See http://www.opensearch.org/Specifications/OpenSearch
         /// Must not be null.
         ///
         /// @param extensionID [optional]
         /// Optional: The correct extensionID if called by an add-on.
+        ///
+        /// Alternatively, all of these parameters except for name can be
+        /// passed as an object in place of parameter two.
+        ///
+        /// Services.search.addEngineWithDetails("Example engine", {
+        /// template: "http://example.com/?search={searchTerms}",
+        /// description: "Example search engine description",
+        /// suggestURL: http://example.com/?suggest={searchTerms},
+        /// });
+        ///
+        /// Using this method, you can use a new parameter, suggestURL:
+        ///
+        /// @param suggestURL [optional]
+        /// Optional: The URL to which search suggestion requests
+        /// should be sent.
+        ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void AddEngineWithDetails([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase iconURL, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase alias, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase description, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase method, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase extensionID);
+		void AddEngineWithDetails([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase name, ref Gecko.JsVal iconURL, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase alias, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase description, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase method, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase url, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase extensionID);
 		
 		/// <summary>
-        /// Un-hides all engines installed in the directory corresponding to
-        /// the directory service's NS_APP_SEARCH_DIR key. (i.e. the set of
-        /// engines returned by getDefaultEngines)
+        /// Un-hides all engines in the set of engines returned by getDefaultEngines.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RestoreDefaultEngines();
@@ -492,6 +534,14 @@ namespace Gecko
 		void GetDefaultEngines(ref uint engineCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] ref nsISearchEngine[] engines);
 		
 		/// <summary>
+        /// Returns an array of search engines installed by a given extension.
+        ///
+        /// @returns an array of nsISearchEngine objects.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void GetEnginesByExtensionID([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase extensionID, ref uint engineCount, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] ref nsISearchEngine[] engines);
+		
+		/// <summary>
         /// Moves a visible search engine.
         ///
         /// @param  engine
@@ -517,31 +567,45 @@ namespace Gecko
 		void RemoveEngine([MarshalAs(UnmanagedType.Interface)] nsISearchEngine engine);
 		
 		/// <summary>
-        /// The default search engine. Returns the first visible engine if the default
-        /// engine is hidden. May be null if there are no visible search engines.
+        /// The original Engine object that is the default for this region,
+        /// ignoring changes the user may have subsequently made.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.Interface)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		nsISearchEngine GetOriginalDefaultEngineAttribute();
+		
+		/// <summary>
+        /// Alias for the currentEngine attribute, kept for add-on compatibility.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISearchEngine GetDefaultEngineAttribute();
 		
 		/// <summary>
-        /// The default search engine. Returns the first visible engine if the default
-        /// engine is hidden. May be null if there are no visible search engines.
+        /// Alias for the currentEngine attribute, kept for add-on compatibility.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetDefaultEngineAttribute([MarshalAs(UnmanagedType.Interface)] nsISearchEngine aDefaultEngine);
 		
 		/// <summary>
-        /// The currently active search engine. May be null if there are no visible
-        /// search engines.
+        /// The currently active search engine.
+        /// Unless the application doesn't ship any search plugin, this should never
+        /// be null. If the currently active engine is removed, this attribute will
+        /// fallback first to the original default engine if it's not hidden, then to
+        /// the first visible engine, and as a last resort it will unhide the original
+        /// default engine.
         /// </summary>
 		[return: MarshalAs(UnmanagedType.Interface)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		nsISearchEngine GetCurrentEngineAttribute();
 		
 		/// <summary>
-        /// The currently active search engine. May be null if there are no visible
-        /// search engines.
+        /// The currently active search engine.
+        /// Unless the application doesn't ship any search plugin, this should never
+        /// be null. If the currently active engine is removed, this attribute will
+        /// fallback first to the original default engine if it's not hidden, then to
+        /// the first visible engine, and as a last resort it will unhide the original
+        /// default engine.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetCurrentEngineAttribute([MarshalAs(UnmanagedType.Interface)] nsISearchEngine aCurrentEngine);

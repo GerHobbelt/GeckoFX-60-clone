@@ -80,32 +80,6 @@ namespace Gecko
 		void SetFinalURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aFinalURL);
 		
 		/// <summary>
-        /// The hash function to use when determining this file's integrity
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetHashFunctionAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aHashFunction);
-		
-		/// <summary>
-        /// The hash function to use when determining this file's integrity
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetHashFunctionAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aHashFunction);
-		
-		/// <summary>
-        /// The value of the hash function named above that should be computed if
-        /// this file is not corrupt.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetHashValueAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aHashValue);
-		
-		/// <summary>
-        /// The value of the hash function named above that should be computed if
-        /// this file is not corrupt.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetHashValueAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aHashValue);
-		
-		/// <summary>
         /// The size of this file, in bytes.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -128,6 +102,24 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetStateAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aState);
+		
+		/// <summary>
+        /// A numeric error code that conveys additional information about the state of
+        /// a failed update. If the update is not in the "failed" state the value is
+        /// zero. The possible values are located in common/errors.h and values between
+        /// 80 and 99 are in nsUpdateService.js.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		int GetErrorCodeAttribute();
+		
+		/// <summary>
+        /// A numeric error code that conveys additional information about the state of
+        /// a failed update. If the update is not in the "failed" state the value is
+        /// zero. The possible values are located in common/errors.h and values between
+        /// 80 and 99 are in nsUpdateService.js.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetErrorCodeAttribute(int aErrorCode);
 		
 		/// <summary>
         /// true if this patch is currently selected as the patch to be downloaded and
@@ -169,7 +161,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("6b0b7721-6746-443d-8cb0-c6199d7f28a6")]
+	[Guid("e094c045-f4ff-41fd-92da-cd2effd2c7c9")]
 	public interface nsIUpdate
 	{
 		
@@ -228,18 +220,6 @@ namespace Gecko
 		void SetAppVersionAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aAppVersion);
 		
 		/// <summary>
-        /// The Toolkit version of this update.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetPlatformVersionAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPlatformVersion);
-		
-		/// <summary>
-        /// The Toolkit version of this update.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetPlatformVersionAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aPlatformVersion);
-		
-		/// <summary>
         /// The Application version prior to the application being updated.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -288,38 +268,6 @@ namespace Gecko
 		void SetDetailsURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aDetailsURL);
 		
 		/// <summary>
-        /// The URL to a page that is typically localized to display in the update
-        /// prompt.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetBillboardURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aBillboardURL);
-		
-		/// <summary>
-        /// The URL to a page that is typically localized to display in the update
-        /// prompt.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetBillboardURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aBillboardURL);
-		
-		/// <summary>
-        /// The URL to a HTML fragment that contains a license for this update. If
-        /// this is specified, the user is shown the license file after they choose
-        /// to install the update and they must agree to it before the download
-        /// commences.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void GetLicenseURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aLicenseURL);
-		
-		/// <summary>
-        /// The URL to a HTML fragment that contains a license for this update. If
-        /// this is specified, the user is shown the license file after they choose
-        /// to install the update and they must agree to it before the download
-        /// commences.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetLicenseURLAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aLicenseURL);
-		
-		/// <summary>
         /// The URL to the Update Service that supplied this update.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -342,40 +290,6 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetChannelAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aChannel);
-		
-		/// <summary>
-        /// Whether to show the update prompt which requires user confirmation when an
-        /// update is found during a background update check. This overrides the
-        /// default setting to download the update in the background.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetShowPromptAttribute();
-		
-		/// <summary>
-        /// Whether to show the update prompt which requires user confirmation when an
-        /// update is found during a background update check. This overrides the
-        /// default setting to download the update in the background.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetShowPromptAttribute([MarshalAs(UnmanagedType.U1)] bool aShowPrompt);
-		
-		/// <summary>
-        /// Whether to show the "No Thanks" button in the update prompt. This allows
-        /// the user to never receive a notification for that specific update version
-        /// again.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetShowNeverForVersionAttribute();
-		
-		/// <summary>
-        /// Whether to show the "No Thanks" button in the update prompt. This allows
-        /// the user to never receive a notification for that specific update version
-        /// again.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetShowNeverForVersionAttribute([MarshalAs(UnmanagedType.U1)] bool aShowNeverForVersion);
 		
 		/// <summary>
         /// Whether the update is no longer supported on this system.
@@ -424,38 +338,6 @@ namespace Gecko
 		void SetIsCompleteUpdateAttribute([MarshalAs(UnmanagedType.U1)] bool aIsCompleteUpdate);
 		
 		/// <summary>
-        /// Whether or not the update is a security update or not. If this is true,
-        /// then we present more serious sounding user interface messages to the
-        /// user.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsSecurityUpdateAttribute();
-		
-		/// <summary>
-        /// Whether or not the update is a security update or not. If this is true,
-        /// then we present more serious sounding user interface messages to the
-        /// user.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsSecurityUpdateAttribute([MarshalAs(UnmanagedType.U1)] bool aIsSecurityUpdate);
-		
-		/// <summary>
-        /// Whether or not the update being downloaded is an OS update. This is
-        /// generally only possible in Gonk right now.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetIsOSUpdateAttribute();
-		
-		/// <summary>
-        /// Whether or not the update being downloaded is an OS update. This is
-        /// generally only possible in Gonk right now.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void SetIsOSUpdateAttribute([MarshalAs(UnmanagedType.U1)] bool aIsOSUpdate);
-		
-		/// <summary>
         /// When the update was installed.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
@@ -491,6 +373,7 @@ namespace Gecko
         /// "downloading"        The update is being downloaded.
         /// "pending"            The update is ready to be applied.
         /// "pending-service"    The update is ready to be applied with the service.
+        /// "pending-elevate"    The update is ready to be applied but requires elevation.
         /// "applying"           The update is being applied.
         /// "applied"            The update is ready to be switched to.
         /// "applied-os"         The update is OS update and to be installed.
@@ -507,6 +390,7 @@ namespace Gecko
         /// "downloading"        The update is being downloaded.
         /// "pending"            The update is ready to be applied.
         /// "pending-service"    The update is ready to be applied with the service.
+        /// "pending-elevate"    The update is ready to be applied but requires elevation.
         /// "applying"           The update is being applied.
         /// "applied"            The update is ready to be switched to.
         /// "applied-os"         The update is OS update and to be installed.
@@ -519,28 +403,35 @@ namespace Gecko
 		void SetStateAttribute([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase aState);
 		
 		/// <summary>
-        /// A numeric error code that conveys additional information about the state
-        /// of a failed update or failed certificate attribute check during an update
-        /// check. If the update is not in the "failed" state or the certificate
-        /// attribute check has not failed the value is zero.
-        ///
-        /// TODO: Define typical error codes (for now, see updater/errors.h and the
-        /// CERT_ATTR_CHECK_FAILED_* values in nsUpdateService.js)
+        /// A numeric error code that conveys additional information about the state of
+        /// a failed update. If the update is not in the "failed" state the value is
+        /// zero. The possible values are located in common/errors.h and values between
+        /// 80 and 99 are in nsUpdateService.js.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		int GetErrorCodeAttribute();
 		
 		/// <summary>
-        /// A numeric error code that conveys additional information about the state
-        /// of a failed update or failed certificate attribute check during an update
-        /// check. If the update is not in the "failed" state or the certificate
-        /// attribute check has not failed the value is zero.
-        ///
-        /// TODO: Define typical error codes (for now, see updater/errors.h and the
-        /// CERT_ATTR_CHECK_FAILED_* values in nsUpdateService.js)
+        /// A numeric error code that conveys additional information about the state of
+        /// a failed update. If the update is not in the "failed" state the value is
+        /// zero. The possible values are located in common/errors.h and values between
+        /// 80 and 99 are in nsUpdateService.js.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void SetErrorCodeAttribute(int aErrorCode);
+		
+		/// <summary>
+        /// Whether an elevation failure has been encountered for this update.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetElevationFailureAttribute();
+		
+		/// <summary>
+        /// Whether an elevation failure has been encountered for this update.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void SetElevationFailureAttribute([MarshalAs(UnmanagedType.U1)] bool aElevationFailure);
 		
 		/// <summary>
         /// The number of patches supplied by this update.
@@ -583,25 +474,25 @@ namespace Gecko
 		/// <summary>
         /// The update check was completed.
         /// @param   request
-        /// The nsIXMLHttpRequest handling the update check.
+        /// The XMLHttpRequest handling the update check.
         /// @param   updates
         /// An array of nsIUpdate objects listing available updates.
         /// @param   updateCount
         /// The size of the |updates| array.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnCheckComplete([MarshalAs(UnmanagedType.Interface)] nsIXMLHttpRequest request, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] nsIUpdate[] updates, uint updateCount);
+		void OnCheckComplete(ref Gecko.JsVal request, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] nsIUpdate[] updates, uint updateCount);
 		
 		/// <summary>
         /// An error occurred while loading the remote update service file.
         /// @param   request
-        /// The nsIXMLHttpRequest handling the update check.
+        /// The XMLHttpRequest handling the update check.
         /// @param   update
         /// A nsIUpdate object that contains details about the
         /// error in its |statusText| property.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void OnError([MarshalAs(UnmanagedType.Interface)] nsIXMLHttpRequest request, [MarshalAs(UnmanagedType.Interface)] nsIUpdate update);
+		void OnError(ref Gecko.JsVal request, [MarshalAs(UnmanagedType.Interface)] nsIUpdate update);
 	}
 	
 	/// <summary>
@@ -667,7 +558,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("9f9b51f5-340e-47ce-85ae-9eb077c6cd39")]
+	[Guid("1107d207-a263-403a-b268-05772ec10757")]
 	public interface nsIApplicationUpdateService
 	{
 		
@@ -724,15 +615,6 @@ namespace Gecko
 		void DownloadUpdate([MarshalAs(UnmanagedType.Interface)] nsIUpdate update, [MarshalAs(UnmanagedType.U1)] bool background, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase retval);
 		
 		/// <summary>
-        /// Apply the OS update which has been downloaded and staged as applied.
-        /// @param   update
-        /// The update has been downloaded and staged as applied.
-        /// @throws  if the update object is not an OS update.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ApplyOsUpdate([MarshalAs(UnmanagedType.Interface)] nsIUpdate update);
-		
-		/// <summary>
         /// Get the Active Updates directory
         /// @returns An nsIFile for the active updates directory.
         /// </summary>
@@ -761,6 +643,14 @@ namespace Gecko
 		[return: MarshalAs(UnmanagedType.U1)]
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		bool GetCanCheckForUpdatesAttribute();
+		
+		/// <summary>
+        /// Whether or not the installation requires elevation. Currently only
+        /// implemented on OSX, returns false on other platforms.
+        /// </summary>
+		[return: MarshalAs(UnmanagedType.U1)]
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		bool GetElevationRequiredAttribute();
 		
 		/// <summary>
         /// Whether or not the Update Service can download and install updates.
@@ -807,7 +697,7 @@ namespace Gecko
         /// On Windows, this can also be used for switching to an applied
         /// update request.
         /// @param update The update being applied, or null if this is a switch
-        /// to updated application request.  Must be non-null on GONK.
+        /// to updated application request.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ProcessUpdate([MarshalAs(UnmanagedType.Interface)] nsIUpdate update);
@@ -819,7 +709,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("f8371237-10a6-46a5-b23f-f6f7684e9d71")]
+	[Guid("0f1098e9-a447-4af9-b030-6f8f35c85f89")]
 	public interface nsIUpdateManager
 	{
 		
@@ -863,6 +753,19 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RefreshUpdateStatus();
+		
+		/// <summary>
+        /// The user agreed to proceed with an elevated update and we are now
+        /// permitted to show an elevation prompt.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ElevationOptedIn();
+		
+		/// <summary>
+        /// Clean up and remove the active update without applying it.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void CleanupActiveUpdate();
 	}
 	
 	/// <summary>
@@ -871,7 +774,7 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("599fd3c6-ec68-4499-ada5-2997739c97a6")]
+	[Guid("cee3bd60-c564-42ff-a2bf-d442cb15f75c")]
 	public interface nsIUpdatePrompt
 	{
 		
@@ -907,15 +810,6 @@ namespace Gecko
 		void ShowUpdateDownloaded([MarshalAs(UnmanagedType.Interface)] nsIUpdate update, [MarshalAs(UnmanagedType.U1)] bool background);
 		
 		/// <summary>
-        /// Shows the application update installed user interface advising that an
-        /// update was installed successfully. If the app.update.silent preference is
-        /// true, the app.update.showInstalledUI preference is false, or the user
-        /// interface is already displayed the call will be a no-op.
-        /// </summary>
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void ShowUpdateInstalled();
-		
-		/// <summary>
         /// Shows the application update error user interface advising that an error
         /// occurred while checking for or applying an update. If the app.update.silent
         /// preference is true the call will be a no-op.
@@ -935,5 +829,13 @@ namespace Gecko
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void ShowUpdateHistory([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow parent);
+		
+		/// <summary>
+        /// Shows the application update downloaded user interface advising that an
+        /// update, which requires elevation, has now been downloaded and a restart is
+        /// necessary to complete the update.
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void ShowUpdateElevationRequired();
 	}
 }

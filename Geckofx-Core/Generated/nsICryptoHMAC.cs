@@ -55,8 +55,8 @@ namespace Gecko
         /// @throws NS_ERROR_INVALID_ARG if an unsupported algorithm
         /// type is passed.
         ///
-        /// NOTE: This method must be called before any other method
-        /// on this interface is called.
+        /// NOTE: This method must be called before any other method on this
+        /// interface is called.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Init(uint aAlgorithm, [MarshalAs(UnmanagedType.Interface)] nsIKeyObject aKeyObject);
@@ -66,8 +66,7 @@ namespace Gecko
         ///
         /// @param aLen the length of the buffer |aData|
         ///
-        /// @throws NS_ERROR_NOT_INITIALIZED if |init| has not been
-        /// called.
+        /// @throws NS_ERROR_NOT_INITIALIZED If |init| has not been called.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Update([MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte[] aData, uint aLen);
@@ -77,32 +76,28 @@ namespace Gecko
         ///
         /// @param aStream an input stream to read from.
         ///
-        /// @param aLen how much to read from the given |aStream|.  Passing
-        /// UINT32_MAX indicates that all data available will be used
-        /// to update the hash.
+        /// @param aLen How much to read from the given |aStream|. Passing UINT32_MAX
+        /// indicates that all data available will be used to update the hash.
         ///
-        /// @throws NS_ERROR_NOT_INITIALIZED if |init| has not been
-        /// called.
+        /// @throws NS_ERROR_NOT_INITIALIZED If |init| has not been called.
         ///
-        /// @throws NS_ERROR_NOT_AVAILABLE if the requested amount of
-        /// data to be calculated into the hash is not available.
+        /// @throws NS_ERROR_NOT_AVAILABLE If the requested amount of data to be
+        /// calculated into the hash is not available.
         ///
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void UpdateFromStream([MarshalAs(UnmanagedType.Interface)] nsIInputStream aStream, uint aLen);
 		
 		/// <summary>
-        /// Completes this HMAC object and produces the actual HMAC diegest data.
+        /// Completes this HMAC object and produces the actual HMAC digest data.
         ///
-        /// @param aASCII if true then the returned value is a base-64
-        /// encoded string.  if false, then the returned value is
-        /// binary data.
+        /// @param aASCII If true then the returned value is a base64 encoded string.
+        /// If false, then the returned value is binary data.
         ///
         /// @return a hash of the data that was read by this object.  This can
         /// be either binary data or base 64 encoded.
         ///
-        /// @throws NS_ERROR_NOT_INITIALIZED if |init| has not been
-        /// called.
+        /// @throws NS_ERROR_NOT_INITIALIZED If |init| has not been called.
         ///
         /// NOTE: This method may be called any time after |init|
         /// is called.  This call resets the object to its
@@ -112,9 +107,8 @@ namespace Gecko
 		void Finish([MarshalAs(UnmanagedType.U1)] bool aASCII, [MarshalAs(UnmanagedType.LPStruct)] nsACStringBase retval);
 		
 		/// <summary>
-        /// Reinitialize HMAC context to be reused with the same
-        /// settings (the key and hash algorithm) but on different
-        /// set of data.
+        /// Reinitialize HMAC context to be reused with the same settings (the key
+        /// and hash algorithm) but on a different set of data.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void Reset();
@@ -125,15 +119,8 @@ namespace Gecko
 	{
 		
 		// <summary>
-        // Hashing Algorithms.  These values are to be used by the
-        // |init| method to indicate which hashing function to
-        // use.  These values map onto the values defined in
-        // mozilla/security/nss/lib/softoken/pkcs11t.h and are
-        // switched to CKM_*_HMAC constant.
+        // 1 used to mean MD2.
         // </summary>
-		public const short MD2 = 1;
-		
-		// 
 		public const short MD5 = 2;
 		
 		// 

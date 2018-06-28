@@ -32,9 +32,19 @@ namespace Gecko
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("00360c7d-a046-4f8d-a1fc-8bdc0f0fb444")]
+	[Guid("2e43bb32-dabf-4494-9f90-2b3195b1c73d")]
 	public interface nsINetworkPredictorVerifier
 	{
+		
+		/// <summary>
+        /// Callback for when we do a predictive prefetch
+        ///
+        /// @param uri - The URI that was prefetched
+        /// @param status - The request status code returned by the
+        /// prefetch attempt e.g. 200 (OK):w
+        /// </summary>
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
+		void OnPredictPrefetch([MarshalAs(UnmanagedType.Interface)] nsIURI uri, uint status);
 		
 		/// <summary>
         /// Callback for when we do a predictive preconnect

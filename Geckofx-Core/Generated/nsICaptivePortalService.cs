@@ -45,6 +45,9 @@ namespace Gecko
 	
 	/// <summary>
     /// Service used for captive portal detection.
+    /// The service is only active in the main process. It is also available in the
+    /// content process, but only to mirror the captive portal state from the main
+    /// process.
     /// </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -56,6 +59,7 @@ namespace Gecko
         /// Called from XPCOM to trigger a captive portal recheck.
         /// A network request will only be performed if no other checks are currently
         /// ongoing.
+        /// Will not do anything if called in the content process.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
 		void RecheckCaptivePortal();
@@ -80,6 +84,9 @@ namespace Gecko
 		
 		// <summary>
         // Service used for captive portal detection.
+        // The service is only active in the main process. It is also available in the
+        // content process, but only to mirror the captive portal state from the main
+        // process.
         // </summary>
 		public const long UNKNOWN = 0;
 		

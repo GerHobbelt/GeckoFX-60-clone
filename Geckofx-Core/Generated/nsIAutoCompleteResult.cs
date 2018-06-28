@@ -67,15 +67,6 @@ namespace Gecko
 		uint GetMatchCountAttribute();
 		
 		/// <summary>
-        /// If true, the results will not be displayed in the popup. However,
-        /// if a default index is specified, the default item will still be
-        /// completed in the input.
-        /// </summary>
-		[return: MarshalAs(UnmanagedType.U1)]
-		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		bool GetTypeAheadResultAttribute();
-		
-		/// <summary>
         /// Get the value of the result at the given index
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]

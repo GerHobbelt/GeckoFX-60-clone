@@ -67,7 +67,7 @@ namespace Gecko
 	/// <summary>nsIColorPicker </summary>
 	[ComImport()]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[Guid("3c3bdcce-54b1-4ae2-8647-1a8d4712ef2e")]
+	[Guid("de229d37-a8a6-46f1-969a-0c1de33d0ad7")]
 	public interface nsIColorPicker
 	{
 		
@@ -89,7 +89,7 @@ namespace Gecko
         /// of this file.
         /// </summary>
 		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType=MethodCodeType.Runtime)]
-		void Init([MarshalAs(UnmanagedType.Interface)] nsIDOMWindow parent, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase title, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase initialColor);
+		void Init(mozIDOMWindowProxy parent, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase title, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "Gecko.CustomMarshalers.AStringMarshaler")] nsAStringBase initialColor);
 		
 		/// <summary>
         /// Opens the color dialog asynchrounously.
