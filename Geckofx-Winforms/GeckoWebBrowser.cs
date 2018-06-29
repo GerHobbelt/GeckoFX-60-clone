@@ -59,7 +59,8 @@ namespace Gecko
     public partial class GeckoWebBrowser :
         IGeckoWebBrowser,
         nsIWebBrowserChrome,
-        nsIContextMenuListener2,
+        //MISSING in FF 60
+        //nsIContextMenuListener2,
         nsIWebProgressListener,
         nsIWebProgressListener2,
         //nsIWebBrowserChromeFocus, -- TODO
@@ -180,9 +181,10 @@ namespace Gecko
             get
             {
                 var editingSession = Xpcom.CreateInstance<nsIEditingSession>("@mozilla.org/editor/editingsession;1");
-                var returnValue = editingSession.GetEditorForWindow((nsIDOMWindow) Window.DomWindow);
-                Marshal.ReleaseComObject(editingSession);
-                return returnValue;
+                //var returnValue = editingSession.GetEditorForWindow((nsIDOMWindow) Window.DomWindow);
+                //Marshal.ReleaseComObject(editingSession);
+                //return returnValue;
+                throw new NotImplementedException();
             }
         }
 
@@ -292,6 +294,12 @@ namespace Gecko
             public void SetScreenId(uint aScreenId)
             {
                 Debug.WriteLine("SetScreenId called");
+            }
+
+            public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags, nsITabParent aOpeningTab,
+                mozIDOMWindowProxy aOpener, ulong aNextTabParentId, ref bool cancel)
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -1014,7 +1022,8 @@ namespace Gecko
                         return _Window;
                     _Window.Dispose();
                 }
-                _Window = WebBrowser.GetContentDOMWindowAttribute().Wrap(x => new GeckoWindow(x));
+                //_Window = WebBrowser.GetContentDOMWindowAttribute().Wrap(x => new GeckoWindow(x));
+                throw new NotImplementedException();
                 return _Window;
             }
         }
@@ -1468,9 +1477,10 @@ namespace Gecko
                 }
                 else if (uuid == typeof (nsIDOMDocument).GUID)
                 {
-                    obj =
-                        new WebIDL.Window(this.WebBrowser.GetContentDOMWindowAttribute(),
-                            (nsISupports) this.WebBrowser.GetContentDOMWindowAttribute()).Document;
+                    //obj =
+                    //    new WebIDL.Window(this.WebBrowser.GetContentDOMWindowAttribute(),
+                    //        (nsISupports) this.WebBrowser.GetContentDOMWindowAttribute()).Document;
+                    throw new NotImplementedException();
                 }
             }
 
@@ -2424,11 +2434,13 @@ namespace Gecko
 
                                 if (callbacks != null)
                                 {
+#if PORTFF60
+
                                     var httpChannelXHR = Xpcom.QueryInterface<nsIXMLHttpRequest>(callbacks);
 
                                     if (httpChannelXHR != null)
                                     {
-                                        nsIXMLHttpRequestEventTarget mXMLRequestEvent =
+                                            nsIXMLHttpRequestEventTarget mXMLRequestEvent =
                                             Xpcom.QueryInterface<nsIXMLHttpRequestEventTarget>(httpChannelXHR);
 
                                         if (mXMLRequestEvent != null)
@@ -2459,8 +2471,11 @@ namespace Gecko
                                     }
 
                                     Marshal.ReleaseComObject(callbacks);
+#endif
+                                    throw new NotImplementedException();
                                 }
-                            }
+
+                                }
                                 break;
                             case nsIHttpActivityObserverConstants.ACTIVITY_SUBTYPE_REQUEST_BODY_SENT:
                                 break;
@@ -2557,15 +2572,16 @@ namespace Gecko
     {
         private readonly GeckoWebBrowser m_browser;
         private readonly nsIHttpChannel m_httpChannel;
-        private readonly nsIXMLHttpRequest m_notificationCallsbacks;
+        private readonly /*nsIXMLHttpRequest*/nsISupports m_notificationCallsbacks;
 
         public GeckoJavaScriptHttpChannelWrapper(GeckoWebBrowser p_browser, nsIHttpChannel p_httpChannel)
         {
             m_browser = p_browser;
             m_httpChannel = p_httpChannel;
 
-            m_notificationCallsbacks =
-                Xpcom.QueryInterface<nsIXMLHttpRequest>(m_httpChannel.GetNotificationCallbacksAttribute());
+            //m_notificationCallsbacks =
+            //    Xpcom.QueryInterface<nsIXMLHttpRequest>(m_httpChannel.GetNotificationCallbacksAttribute());
+            throw new NotImplementedException();
         }
 
         public void HandleEvent(nsIDOMEvent @event)

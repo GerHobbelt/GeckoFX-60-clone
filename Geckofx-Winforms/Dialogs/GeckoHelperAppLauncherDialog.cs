@@ -70,7 +70,7 @@ namespace Gecko
         private static extern int NS_NewNativeLocalFile(nsACString path, bool followLinks,
             [MarshalAs(UnmanagedType.IUnknown)] out object result);
 
-        public nsILocalFile PromptForSaveToFile(nsIHelperAppLauncher aLauncher, nsISupports aWindowContext,
+        public /*nsILocalFile*/nsISupports PromptForSaveToFile(nsIHelperAppLauncher aLauncher, nsISupports aWindowContext,
             string aDefaultFileName, string aSuggestedFileExtension, bool aForcePrompt)
         {
             aLauncher.Cancel(nsIHelperAppLauncherConstants.NS_BINDING_ABORTED);

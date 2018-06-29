@@ -407,7 +407,7 @@ namespace Gecko
                 try
                 {
                     BaseWindow.SetPositionAndSize(0, 0, ClientSize.Width != 0 ? ClientSize.Width : 1,
-                        ClientSize.Height != 0 ? ClientSize.Height : 1, true);
+                        ClientSize.Height != 0 ? ClientSize.Height : 1, /*true*/1);
                 }
                 catch
                 {

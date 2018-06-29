@@ -21,6 +21,12 @@ namespace Gecko
             _domWindow = new ComPtr<nsIDOMWindow>(window, ownRCW);
         }
 
+        public GeckoWindow(Gecko.mozIDOMWindowProxy window, bool ownRCW = true)
+        {
+            // PORTFF60
+            throw new NotImplementedException();
+        }
+
         ~GeckoWindow()
         {
             Xpcom.DisposeObject(ref _domWindow);
