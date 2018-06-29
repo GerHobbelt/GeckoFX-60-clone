@@ -17,15 +17,16 @@ namespace Gecko.DOM
         /// <returns></returns>
         public static System.Drawing.Rectangle GetBoundingClientRect(this GeckoElement element)
         {
-            nsIDOMClientRect domRect = element.DOMElement.GetBoundingClientRect();
-            if (domRect == null) return Rectangle.Empty;
-            var r = new Rectangle(
-                (int) domRect.GetLeftAttribute(),
-                (int) domRect.GetTopAttribute(),
-                (int) domRect.GetWidthAttribute(),
-                (int) domRect.GetHeightAttribute());
-            Marshal.ReleaseComObject(domRect);
-            return r;
+            //nsIDOMClientRect domRect = element.DOMElement.GetBoundingClientRect();
+            //if (domRect == null) return Rectangle.Empty;
+            //var r = new Rectangle(
+            //    (int) domRect.GetLeftAttribute(),
+            //    (int) domRect.GetTopAttribute(),
+            //    (int) domRect.GetWidthAttribute(),
+            //    (int) domRect.GetHeightAttribute());
+            //Marshal.ReleaseComObject(domRect);
+            //return r;
+            throw new NotImplementedException();
         }
     }
 }

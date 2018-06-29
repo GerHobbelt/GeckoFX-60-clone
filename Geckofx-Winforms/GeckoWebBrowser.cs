@@ -2589,6 +2589,7 @@ namespace Gecko
             // This is how to get the fields, but we don't need them by default since sometimes they are undefined
             //var xhr_uri = (new Uri(nsString.Get(m_httpChannel.GetOriginalURIAttribute().GetSpecAttribute))).ToString();
             //var xhr_status = m_notificationCallsbacks.GetStatusAttribute();
+#if PORTFF60
             var xhr_readyState = m_notificationCallsbacks.GetReadyStateAttribute();
 
             // remove when finished
@@ -2596,6 +2597,8 @@ namespace Gecko
             {
                 m_browser.origJavaScriptHttpChannels.Remove(m_httpChannel);
             }
+#endif
+            throw new NotImplementedException();
         }
     }
 

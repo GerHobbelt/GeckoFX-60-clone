@@ -53,16 +53,17 @@ namespace Gecko
 
         public PropertiesDialog(nsIDOMDocument doc) : this()
         {
-            txtTitle.Text = nsString.Get(doc.GetTitleAttribute);
+            //txtTitle.Text = nsString.Get(doc.GetTitleAttribute);
 
-            txtAddress.Text = nsString.Get(doc.GetDocumentURIAttribute);
-            txtReferrer.Text = nsString.Get(doc.GetReferrerAttribute);
+            //txtAddress.Text = nsString.Get(doc.GetDocumentURIAttribute);
+            //txtReferrer.Text = nsString.Get(doc.GetReferrerAttribute);
 
-            nsIDOMDocumentType docType = doc.GetDoctypeAttribute();
-            if (docType != null)
-                lblDocType.Text = nsString.Get(docType.GetPublicIdAttribute);
-            else
-                lblDocType.Text = "(none)";
+            //nsIDOMDocumentType docType = doc.GetDoctypeAttribute();
+            //if (docType != null)
+            //    lblDocType.Text = nsString.Get(docType.GetPublicIdAttribute);
+            //else
+            //    lblDocType.Text = "(none)";
+            throw new NotImplementedException();
         }
 
         protected override bool ProcessDialogKey(Keys keyData)

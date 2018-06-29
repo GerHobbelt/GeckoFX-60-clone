@@ -218,8 +218,9 @@ namespace Gecko
                 return;
 
             var domWindow = WebBrowser.GetContentDOMWindowAttribute();
-            EventTarget =
-                ((nsIDOMEventTarget) new WebIDL.Window(domWindow, (nsISupports) domWindow).PrivateRoot).AsComPtr();
+            //EventTarget =
+            //    ((nsIDOMEventTarget) new WebIDL.Window(domWindow, (nsISupports) domWindow).PrivateRoot).AsComPtr();
+            throw new NotImplementedException();
             Marshal.ReleaseComObject(domWindow);
 
             foreach (string sEventName in this.DefaultEvents)

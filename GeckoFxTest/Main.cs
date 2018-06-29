@@ -342,7 +342,8 @@ namespace GeckoFxTest
 			open.Click += (s, a) =>
 			{
 				nsIFilePicker filePicker = Xpcom.CreateInstance<nsIFilePicker>("@mozilla.org/filepicker;1");
-				filePicker.Init(browser.Window.DomWindow, new nsAString("hello"), nsIFilePickerConsts.modeOpen);
+#if PORTFF60
+                filePicker.Init(browser.Window.DomWindow, new nsAString("hello"), nsIFilePickerConsts.modeOpen);
 				filePicker.AppendFilter(new nsAString("png"), new nsAString("*.png"));
 				filePicker.AppendFilter(new nsAString("html"), new nsAString("*.html"));
 				if (nsIFilePickerConsts.returnOK == filePicker.Show())
@@ -353,8 +354,10 @@ namespace GeckoFxTest
 						browser.Navigate(str.ToString());
 					}					
 				}
+#endif
+                throw new NotImplementedException();
 
-			};
+            };
 			//url in Navigating event may be the mapped version,
 			//e.g. about:config in Navigating event is jar:file:///<xulrunner>/omni.ja!/chrome/toolkit/content/global/config.xul
 			browser.Navigating += (s, e) =>
