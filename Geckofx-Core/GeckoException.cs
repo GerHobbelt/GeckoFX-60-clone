@@ -37,14 +37,14 @@ namespace Gecko
         private nsIException _exception;
 
         private GeckoNativeException(nsIException exception)
-            : base(nsString.Get(exception.GetMessageAttribute))
+            : base(/*nsString.Get(exception.GetMessageAttribute)*/"PORTFF60")
         {
             _exception = exception;
         }
 
         public string Name
         {
-            get { return nsString.Get(_exception.GetNameAttribute); }
+            get { /*return nsString.Get(_exception.GetNameAttribute);*/throw new NotImplementedException(); }
         }
 
 

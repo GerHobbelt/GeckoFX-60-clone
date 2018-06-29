@@ -6,7 +6,7 @@ namespace Gecko
         private nsIDOMUIEvent _Event;
 
         internal DomUIEventArgs(nsIDOMUIEvent ev)
-            : base(ev)
+            : base((nsIDOMEvent)ev)
         {
             _Event = ev;
         }
@@ -17,10 +17,12 @@ namespace Gecko
             {
                 return DomMouseEventArgs.Create((nsIDOMMouseEvent) ev);
             }
+#if PORTFF60
             else if (ev is nsIDOMKeyEvent)
             {
                 return DomKeyEventArgs.Create((nsIDOMKeyEvent) ev);
             }
+#endif
 
             return new DomUIEventArgs(ev);
         }

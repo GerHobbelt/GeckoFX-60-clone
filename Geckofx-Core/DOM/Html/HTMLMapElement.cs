@@ -21,13 +21,13 @@ namespace Gecko.DOM
 
         public GeckoHtmlElementCollection Areas
         {
-            get { return new GeckoHtmlElementCollection(DOMHTMLElement.GetAreasAttribute()); }
+            get { /*return new GeckoHtmlElementCollection(DOMHTMLElement.GetAreasAttribute());*/throw new NotImplementedException(); }
         }
 
         public string Name
         {
-            get { return nsString.Get(DOMHTMLElement.GetNameAttribute); }
-            set { DOMHTMLElement.SetNameAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetNameAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetNameAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

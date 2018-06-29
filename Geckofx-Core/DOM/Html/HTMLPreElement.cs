@@ -21,8 +21,8 @@ namespace Gecko.DOM
 
         public int Width
         {
-            get { return DOMHTMLElement.GetWidthAttribute(); }
-            set { DOMHTMLElement.SetWidthAttribute(value); }
+            get { /*return DOMHTMLElement.GetWidthAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetWidthAttribute(value);*/throw new NotImplementedException(); }
         }
     }
 }

@@ -21,30 +21,30 @@ namespace Gecko.DOM
 
         public GeckoFormElement Form
         {
-            get { return new GeckoFormElement(DOMHTMLElement.GetFormAttribute()); }
+            get {/* return new GeckoFormElement(DOMHTMLElement.GetFormAttribute());*/throw new NotImplementedException(); }
         }
 
         public bool Disabled
         {
-            get { return DOMHTMLElement.GetDisabledAttribute(); }
-            set { DOMHTMLElement.SetDisabledAttribute(value); }
+            get { /*return DOMHTMLElement.GetDisabledAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetDisabledAttribute(value); */throw new NotImplementedException(); }
         }
 
         public string Name
         {
-            get { return nsString.Get(DOMHTMLElement.GetNameAttribute); }
-            set { DOMHTMLElement.SetNameAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetNameAttribute);*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetNameAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Type
         {
-            get { return nsString.Get(DOMHTMLElement.GetTypeAttribute); }
+            get { /*return nsString.Get(DOMHTMLElement.GetTypeAttribute);*/throw new NotImplementedException(); }
         }
 
         public string Value
         {
-            get { return nsString.Get(DOMHTMLElement.GetValueAttribute); }
-            set { DOMHTMLElement.SetValueAttribute(new nsAString(value)); }
+            get {/* return nsString.Get(DOMHTMLElement.GetValueAttribute);*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetValueAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

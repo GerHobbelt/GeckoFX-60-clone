@@ -21,8 +21,8 @@ namespace Gecko.DOM
 
         public string Cite
         {
-            get { return nsString.Get(DOMHTMLElement.GetCiteAttribute); }
-            set { DOMHTMLElement.SetCiteAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetCiteAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetCiteAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

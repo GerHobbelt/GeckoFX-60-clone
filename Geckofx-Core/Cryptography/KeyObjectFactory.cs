@@ -20,14 +20,16 @@ namespace Gecko.Cryptography
 
         public static KeyObject UnwrapKey(AlgorithmType algorithm, byte[] key)
         {
-            var keyObj = _keyObjectFactory.Instance.UnwrapKey((short) algorithm, key, (uint) key.Length);
-            return new KeyObject(keyObj);
+            //var keyObj = _keyObjectFactory.Instance.UnwrapKey((short) algorithm, key, (uint) key.Length);
+            //return new KeyObject(keyObj);
+            throw new NotImplementedException();
         }
 
         public static KeyObject LookupKeyByName(string name)
         {
-            var keyObj = nsString.Pass<nsIKeyObject>(_keyObjectFactory.Instance.LookupKeyByName, name);
-            return new KeyObject(keyObj);
+            //var keyObj = nsString.Pass<nsIKeyObject>(_keyObjectFactory.Instance.LookupKeyByName, name);
+            //return new KeyObject(keyObj);
+            throw new NotImplementedException();
         }
     }
 }

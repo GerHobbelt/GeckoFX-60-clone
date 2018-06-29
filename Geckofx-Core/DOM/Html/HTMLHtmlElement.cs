@@ -21,8 +21,8 @@ namespace Gecko.DOM
 
         public string Version
         {
-            get { return nsString.Get(DOMHTMLElement.GetVersionAttribute); }
-            set { DOMHTMLElement.SetVersionAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetVersionAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetVersionAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

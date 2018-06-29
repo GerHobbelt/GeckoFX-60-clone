@@ -16,69 +16,69 @@ namespace Gecko.DOM
 
         public string AppCodeName
         {
-            get { return nsString.Get(_navigator.GetAppCodeNameAttribute); }
+            get { /*return nsString.Get(_navigator.GetAppCodeNameAttribute); */throw new NotImplementedException(); }
         }
 
         public string AppName
         {
-            get { return nsString.Get(_navigator.GetAppNameAttribute); }
+            get { /*return nsString.Get(_navigator.GetAppNameAttribute);*/throw new NotImplementedException(); }
         }
 
         public string AppVersion
         {
-            get { return nsString.Get(_navigator.GetAppVersionAttribute); }
+            get { /*return nsString.Get(_navigator.GetAppVersionAttribute);*/ throw new NotImplementedException(); }
         }
 
         public string BuildID
         {
-            get { return nsString.Get(_navigator.GetBuildIDAttribute); }
+            get { /*return nsString.Get(_navigator.GetBuildIDAttribute);*/ throw new NotImplementedException(); }
         }
 
         public string DoNotTrack
         {
-            get { return nsString.Get(_navigator.GetDoNotTrackAttribute); }
+            get { /*return nsString.Get(_navigator.GetDoNotTrackAttribute);*/ throw new NotImplementedException(); }
         }
 
         public string Language
         {
-            get { return nsString.Get(_navigator.GetLanguageAttribute); }
+            get { /*return nsString.Get(_navigator.GetLanguageAttribute);*/ throw new NotImplementedException(); }
         }
 
         public string Oscpu
         {
-            get { return nsString.Get(_navigator.GetOscpuAttribute); }
+            get { /*return nsString.Get(_navigator.GetOscpuAttribute);*/throw new NotImplementedException(); }
         }
 
         public string Platform
         {
-            get { return nsString.Get(_navigator.GetPlatformAttribute); }
+            get { /*return nsString.Get(_navigator.GetPlatformAttribute);*/ throw new NotImplementedException(); }
         }
 
         //_navigator.GetPluginsAttribute(  );
 
         public string Product
         {
-            get { return nsString.Get(_navigator.GetProductAttribute); }
+            get { /*return nsString.Get(_navigator.GetProductAttribute);*/throw new NotImplementedException(); }
         }
 
         public string ProductSub
         {
-            get { return nsString.Get(_navigator.GetProductSubAttribute); }
+            get { /*return nsString.Get(_navigator.GetProductSubAttribute);*/throw new NotImplementedException(); }
         }
 
         public string UserAgent
         {
-            get { return nsString.Get(_navigator.GetUserAgentAttribute); }
+            get { /*return nsString.Get(_navigator.GetUserAgentAttribute);*/throw new NotImplementedException(); }
         }
 
         public string Vendor
         {
-            get { return nsString.Get(_navigator.GetVendorAttribute); }
+            get { /*return nsString.Get(_navigator.GetVendorAttribute);*/throw new NotImplementedException(); }
         }
 
         public string GetVendorSub
         {
-            get { return nsString.Get(_navigator.GetVendorSubAttribute); }
+            get { /*return nsString.Get(_navigator.GetVendorSubAttribute);*/throw new NotImplementedException(); }
         }
     }
 }

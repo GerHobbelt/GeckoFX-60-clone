@@ -27,17 +27,19 @@ namespace Gecko
                 if (index < 0 || index >= Count)
                     throw new ArgumentOutOfRangeException("index");
 
-                return _collection.Instance.Item(index).Wrap(x => new GeckoWindow(x));
+                //return _collection.Instance.Item(index).Wrap(x => new GeckoWindow(x));
+                throw new NotImplementedException();
             }
         }
 
         public virtual IEnumerator<GeckoWindow> GetEnumerator()
         {
             uint length = Count;
-            for (uint i = 0; i < length; i++)
-            {
-                yield return _collection.Instance.Item(i).Wrap(x => new GeckoWindow(x));
-            }
+            //for (uint i = 0; i < length; i++)
+            //{
+            //    yield return _collection.Instance.Item(i).Wrap(x => new GeckoWindow(x));
+            //}
+            throw new NotImplementedException();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

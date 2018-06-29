@@ -1,3 +1,4 @@
+using System;
 using Gecko.Interop;
 using System.Collections.Generic;
 
@@ -62,7 +63,8 @@ namespace Gecko
             if (Disable)
                 return null;
 
-            return _windowMediator.Instance.GetMostRecentWindow(type);
+            //return _windowMediator.Instance.GetMostRecentWindow(type);
+            throw new NotImplementedException();
         }
 
         /// <summary>

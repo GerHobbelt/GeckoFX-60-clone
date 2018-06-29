@@ -160,12 +160,14 @@ namespace Gecko
 
         public void GetLastRunCrashIDAttribute(nsAStringBase aLastRunCrashID)
         {
-            backXulRuntime.GetLastRunCrashIDAttribute(aLastRunCrashID);
+            //backXulRuntime.GetLastRunCrashIDAttribute(aLastRunCrashID);
+            throw new NotImplementedException();
         }
 
         public bool GetIsReleaseBuildAttribute()
         {
-            return backXulRuntime.GetIsReleaseBuildAttribute();
+            //return backXulRuntime.GetIsReleaseBuildAttribute();
+            throw new NotImplementedException();
         }
 
         public bool GetIsOfficialBrandingAttribute()
@@ -185,7 +187,8 @@ namespace Gecko
 
         public bool GetIsOfficialAttribute()
         {
-            return backXulRuntime.GetIsOfficialAttribute();
+            //return backXulRuntime.GetIsOfficialAttribute();
+            throw new NotImplementedException();
         }
 
         void nsIPlatformInfo.GetPlatformBuildIDAttribute(nsACStringBase aPlatformBuildID)

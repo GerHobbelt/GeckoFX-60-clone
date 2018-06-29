@@ -19,18 +19,18 @@ namespace Gecko.DOM.Svg
 
         public string ID
         {
-            get { return nsString.Get(_svgElement.GetIdAttribute); }
-            set { nsString.Set(_svgElement.SetIdAttribute, value); }
+            get { /*return nsString.Get(_svgElement.GetIdAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(_svgElement.SetIdAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public SvgSvgElement OwnerSvgElement
         {
-            get { return _svgElement.GetOwnerSVGElementAttribute().Wrap(SvgSvgElement.CreateSvgSvgElementWrapper); }
+            get { /*return _svgElement.GetOwnerSVGElementAttribute().Wrap(SvgSvgElement.CreateSvgSvgElementWrapper);*/throw new NotImplementedException(); }
         }
 
         public SvgElement ViewportElement
         {
-            get { return _svgElement.GetViewportElementAttribute().Wrap(CreateSvgElementWrapper); }
+            get { /*return _svgElement.GetViewportElementAttribute().Wrap(CreateSvgElementWrapper);*/throw new NotImplementedException(); }
         }
 
         public static SvgElement CreateSvgElementWrapper(/* nsIDOMSVGElement */ nsISupports svgElement)

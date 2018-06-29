@@ -57,7 +57,8 @@ namespace Gecko.DOM
         /// </summary>
         public short GetCursorType()
         {
-            return _windowUtils.Instance.GetCursorType();
+            //return _windowUtils.Instance.GetCursorType();
+            throw new NotImplementedException();
         }
 
 
@@ -205,8 +206,9 @@ namespace Gecko.DOM
         {
             using (nsAString type = new nsAString(aType))
             {
-                _windowUtils.Instance.SendMouseEvent(type, aX, aY, (int) aButton, aClickCount, aModifiers,
-                    aIgnoreRootScrollFrame, aPressure, aInputSourceArg, false, 10);
+                //_windowUtils.Instance.SendMouseEvent(type, aX, aY, (int) aButton, aClickCount, aModifiers,
+                //    aIgnoreRootScrollFrame, aPressure, aInputSourceArg, false, 10);
+                throw new NotImplementedException();
             }
         }
 
@@ -220,8 +222,9 @@ namespace Gecko.DOM
         {
             using (nsAString type = new nsAString(aType))
             {
-                _windowUtils.Instance.SendMouseEventToWindow(type, aX, aY, (int) aButton, aClickCount, aModifiers,
-                    aIgnoreRootScrollFrame, aPressure, aInputSourceArg, false, 10);
+                //_windowUtils.Instance.SendMouseEventToWindow(type, aX, aY, (int) aButton, aClickCount, aModifiers,
+                //    aIgnoreRootScrollFrame, aPressure, aInputSourceArg, false, 10);
+                throw new NotImplementedException();
             }
         }
 
@@ -250,8 +253,9 @@ namespace Gecko.DOM
         {
             using (nsAString type = new nsAString(aType))
             {
-                return _windowUtils.Instance.SendKeyEvent(type, aKeyCode, aCharCode, aModifiers,
-                    aPreventDefault ? 1U : 0U);
+                //return _windowUtils.Instance.SendKeyEvent(type, aKeyCode, aCharCode, aModifiers,
+                //    aPreventDefault ? 1U : 0U);
+                throw new NotImplementedException();
             }
         }
 
@@ -347,7 +351,8 @@ namespace Gecko.DOM
         /// </summary>		
         public void Focus(GeckoElement aElement)
         {
-            _windowUtils.Instance.Focus(aElement.DOMElement);
+            //_windowUtils.Instance.Focus(aElement.DOMElement);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -368,7 +373,8 @@ namespace Gecko.DOM
         /// </summary>		
         public void GarbageCollect(nsICycleCollectorListener aListener, int aExtraForgetSkippableCalls)
         {
-            _windowUtils.Instance.GarbageCollect(aListener, aExtraForgetSkippableCalls);
+            //_windowUtils.Instance.GarbageCollect(aListener, aExtraForgetSkippableCalls);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -389,7 +395,8 @@ namespace Gecko.DOM
         /// </summary>		
         public void CycleCollect(nsICycleCollectorListener aListener, int aExtraForgetSkippableCalls)
         {
-            _windowUtils.Instance.GarbageCollect(aListener, aExtraForgetSkippableCalls);
+            //_windowUtils.Instance.GarbageCollect(aListener, aExtraForgetSkippableCalls);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -763,7 +770,8 @@ namespace Gecko.DOM
         /// </summary>		
         public GeckoWindow GetOuterWindowWithId(ulong aOuterWindowID)
         {
-            return _windowUtils.Instance.GetOuterWindowWithId(aOuterWindowID).Wrap(x => new GeckoWindow(x));
+            //return _windowUtils.Instance.GetOuterWindowWithId(aOuterWindowID).Wrap(x => new GeckoWindow(x));
+            throw new NotImplementedException();
         }
 
         public void RenderDocument(nsConstRect aRect, uint aFlags, nscolor aBackgroundColor, gfxContext aThebesContext)
@@ -820,7 +828,7 @@ namespace Gecko.DOM
         /// </summary>		
         public string FocusedInputType
         {
-            get { return _windowUtils.Instance.GetFocusedInputTypeAttribute(); }
+            get { /*return _windowUtils.Instance.GetFocusedInputTypeAttribute();*/throw new NotImplementedException(); }
         }
 
 

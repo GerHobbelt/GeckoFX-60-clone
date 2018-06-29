@@ -16,8 +16,9 @@ namespace Gecko.Listeners
         public void OnHistoryNewEntry(nsIURI aNewURI)
         {
             nsISHistoryListener b = (nsISHistoryListener) _browser;
-            if (b != null)
-                b.OnHistoryNewEntry(aNewURI);
+            //if (b != null)
+            //    b.OnHistoryNewEntry(aNewURI);
+            throw new NotImplementedException();
         }
 
         public bool OnHistoryGoBack(nsIURI aBackURI)

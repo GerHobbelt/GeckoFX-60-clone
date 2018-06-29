@@ -21,7 +21,7 @@ namespace Gecko.DOM
 
         public GeckoFormElement Form
         {
-            get { return new GeckoFormElement(DOMHTMLElement.GetFormAttribute()); }
+            get { /*return new GeckoFormElement(DOMHTMLElement.GetFormAttribute());*/throw new NotImplementedException(); }
         }
     }
 }

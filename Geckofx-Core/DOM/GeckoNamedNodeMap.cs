@@ -24,7 +24,7 @@ namespace Gecko.DOM
         /// </summary>
         public int Length
         {
-            get { return (int) _map.Instance.GetLengthAttribute(); }
+            get { /*return (int) _map.Instance.GetLengthAttribute();*/ throw new NotImplementedException(); }
         }
 
         public GeckoNode this[int index]
@@ -34,34 +34,37 @@ namespace Gecko.DOM
                 if (index < 0 || index >= Length)
                     throw new ArgumentOutOfRangeException("index");
 
-                return _map.Instance.Item((uint) index).Wrap(GeckoNode.Create);
+                //return _map.Instance.Item((uint) index).Wrap(GeckoNode.Create);
+                throw new NotImplementedException();
             }
         }
 
         public GeckoNode this[string name]
         {
-            get { return nsString.Pass(_map.Instance.GetNamedItem, name).Wrap(GeckoNode.Create); }
+            get { /*return nsString.Pass(_map.Instance.GetNamedItem, name).Wrap(GeckoNode.Create);*/ throw new NotImplementedException(); }
         }
 
         public GeckoNode this[string namespaceUri, string localName]
         {
-            get { return nsString.Pass(_map.Instance.GetNamedItemNS, namespaceUri, localName).Wrap(GeckoNode.Create); }
+            get { /*return nsString.Pass(_map.Instance.GetNamedItemNS, namespaceUri, localName).Wrap(GeckoNode.Create);*/  throw new NotImplementedException(); }
         }
 
         public GeckoNode RemoveNamedItem(string name)
         {
-            return nsString.Pass(_map.Instance.RemoveNamedItem, name)
-                .Wrap(GeckoNode.Create);
+            //return nsString.Pass(_map.Instance.RemoveNamedItem, name)
+            //    .Wrap(GeckoNode.Create);
+            throw new NotImplementedException();
         }
 
         #region IEnumerable<GeckoNode> Members
 
         public IEnumerator<GeckoNode> GetEnumerator()
         {
+            throw new NotImplementedException();
             int length = Length;
             for (int i = 0; i < length; i++)
             {
-                yield return GeckoNode.Create(_map.Instance.Item((uint) i));
+                //yield return GeckoNode.Create(_map.Instance.Item((uint) i));
             }
         }
 

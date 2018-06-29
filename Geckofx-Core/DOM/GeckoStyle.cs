@@ -67,8 +67,8 @@ namespace Gecko
         /// </summary>
         public string CssText
         {
-            get { return nsString.Get(StyleDelcaration.GetCssTextAttribute); }
-            set { nsString.Set(StyleDelcaration.SetCssTextAttribute, value); }
+            get { /*return nsString.Get(StyleDelcaration.GetCssTextAttribute);*/ throw new NotImplementedException();  }
+            set {/* nsString.Set(StyleDelcaration.SetCssTextAttribute, value);*/ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Gecko
         /// </summary>
         public uint Length
         {
-            get { return StyleDelcaration.GetLengthAttribute(); }
+            get { /*return StyleDelcaration.GetLengthAttribute();*/ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -87,7 +87,8 @@ namespace Gecko
             get
             {
                 var retval = new nsAString();
-                StyleDelcaration.Item((uint) index, retval);
+                //StyleDelcaration.Item((uint) index, retval);
+                throw new NotImplementedException();
                 return retval.ToString();
             }
         }
@@ -98,7 +99,8 @@ namespace Gecko
         public string GetPropertyValue(string propertyName)
         {
             var retval = new nsAString();
-            StyleDelcaration.GetPropertyValue(new nsAString(propertyName), retval);
+            //StyleDelcaration.GetPropertyValue(new nsAString(propertyName), retval);
+            throw new NotImplementedException();
             return retval.ToString();
         }
 
@@ -107,7 +109,8 @@ namespace Gecko
         /// </summary>		
         public void SetPropertyValue(string propertyName, string value)
         {
-            StyleDelcaration.SetProperty(new nsAString(propertyName), new nsAString(value), new nsAString());
+            //StyleDelcaration.SetProperty(new nsAString(propertyName), new nsAString(value), new nsAString());
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -115,7 +118,8 @@ namespace Gecko
         /// </summary>          
         public void SetPropertyValue(string propertyName, string value, string priority)
         {
-            StyleDelcaration.SetProperty(new nsAString(propertyName), new nsAString(value), new nsAString(priority));
+            //StyleDelcaration.SetProperty(new nsAString(propertyName), new nsAString(value), new nsAString(priority));
+            throw new NotImplementedException();
         }
     }
 
@@ -149,8 +153,8 @@ namespace Gecko
         /// </summary>
         public bool Disabled
         {
-            get { return _DomStyleSheet.GetDisabledAttribute(); }
-            set { _DomStyleSheet.SetDisabledAttribute(value); }
+            get { /*return _DomStyleSheet.GetDisabledAttribute();*/throw new NotImplementedException(); }
+            set { /*_DomStyleSheet.SetDisabledAttribute(value); */throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -158,7 +162,7 @@ namespace Gecko
         /// </summary>
         public string Href
         {
-            get { return nsString.Get(_DomStyleSheet.GetHrefAttribute); }
+            get { /*return nsString.Get(_DomStyleSheet.GetHrefAttribute);*/throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -166,7 +170,13 @@ namespace Gecko
         /// </summary>
         public GeckoStyleSheet ParentStyleSheet
         {
-            get { return Create((/* nsIDOMCSSStyleSheet */nsISupports) _DomStyleSheet.GetParentStyleSheetAttribute()); }
+            get
+            {
+#if PORTFF60
+                return Create((/* nsIDOMCSSStyleSheet */nsISupports)_DomStyleSheet.GetParentStyleSheetAttribute()); 
+#endif
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -174,7 +184,7 @@ namespace Gecko
         /// </summary>
         public GeckoStyleRule OwnerRule
         {
-            get { return GeckoStyleRule.Create((nsIDOMCSSRule) _DomStyleSheet.GetOwnerRuleAttribute()); }
+            get { /*return GeckoStyleRule.Create((nsIDOMCSSRule) _DomStyleSheet.GetOwnerRuleAttribute());*/throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -183,7 +193,7 @@ namespace Gecko
         /// </summary>
         public GeckoNode OwnerNode
         {
-            get { return GeckoNode.Create(_DomStyleSheet.GetOwnerNodeAttribute()); }
+            get { /*return GeckoNode.Create(_DomStyleSheet.GetOwnerNodeAttribute());*/ throw new NotImplementedException(); }
         }
 
         public override string ToString()
@@ -232,10 +242,11 @@ namespace Gecko
             {
                 if (_window == null)
                 {
-                    _window =
-                        StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
-                            .GetOwnerDocumentAttribute()
-                            .GetDefaultViewAttribute();
+                    //_window =
+                    //    StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
+                    //        .GetOwnerDocumentAttribute()
+                    //        .GetDefaultViewAttribute();
+                    throw new NotImplementedException();
                 }
                 return _window;
             }
@@ -261,7 +272,7 @@ namespace Gecko
             /// </summary>
             public int Count
             {
-                get { return (List == null) ? 0 : (int) List.GetLengthAttribute(); }
+                get { /*return (List == null) ? 0 : (int) List.GetLengthAttribute();*/throw new NotImplementedException(); }
             }
 
             /// <summary>
@@ -276,7 +287,8 @@ namespace Gecko
                     if (index < 0 || index >= Count)
                         throw new ArgumentOutOfRangeException("index");
 
-                    return GeckoStyleRule.Create(List.Item((uint) index));
+                    //return GeckoStyleRule.Create(List.Item((uint) index));
+                    throw new NotImplementedException();
                 }
             }
 
@@ -308,6 +320,7 @@ namespace Gecko
 
                 using (AutoJSContext context = new AutoJSContext(GetGlobalWindow()))
                 {
+#if PORTFF60
                     var window =
                         StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
                             .GetOwnerDocumentAttribute()
@@ -316,6 +329,8 @@ namespace Gecko
                         context.EvaluateScript(
                             String.Format("this.document.styleSheets[0].insertRule('{0}',{1});", rule, index), window);
                     return val.ToInteger();
+#endif
+                    throw new NotImplementedException();
                 }
 
                 return index;
@@ -334,11 +349,14 @@ namespace Gecko
 
                 using (AutoJSContext context = new AutoJSContext(GetGlobalWindow()))
                 {
+#if PORTFF60
                     var window =
                         StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
                             .GetOwnerDocumentAttribute()
                             .GetDefaultViewAttribute();
                     context.EvaluateScript(String.Format("this.document.styleSheets[0].deleteRule({0});", index), window);
+#endif
+                    throw new NotImplementedException();
                 }
             }
 
@@ -352,28 +370,34 @@ namespace Gecko
 
                 using (AutoJSContext context = new AutoJSContext(GetGlobalWindow()))
                 {
+#if PORTFF60
                     var window =
                         StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
                             .GetOwnerDocumentAttribute()
                             .GetDefaultViewAttribute();
                     for (int i = Count - 1; i >= 0; i--)
                         context.EvaluateScript(String.Format("this.document.styleSheets[0].deleteRule({0});", i), window);
+#endif
+                    throw new NotImplementedException();
                 }
             }
 
-            #region IEnumerable<GeckoStyleRule> Members
+#region IEnumerable<GeckoStyleRule> Members
 
             /// <summary>
             /// Returns an IEnumerator which can enumerate through the rules in the collection.
             /// </summary>
             /// <returns></returns>
             public IEnumerator<GeckoStyleRule> GetEnumerator()
-            {
+            {           
                 int length = Count;
+#if PORTFF60
                 for (int i = 0; i < length; i++)
                 {
                     yield return GeckoStyleRule.Create((nsIDOMCSSRule) List.Item((uint) i));
                 }
+#endif
+                throw new NotImplementedException();
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -382,10 +406,10 @@ namespace Gecko
                     yield return element;
             }
 
-            #endregion
+#endregion
         }
 
-        #endregion
+#endregion
     }
 
     /// <summary>
@@ -420,12 +444,15 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 nsIDOMCSSStyleRule rule = Xpcom.QueryInterface<nsIDOMCSSStyleRule>(DomStyleRule);
                 if (rule != null)
                 {
                     return nsString.Get(rule.GetSelectorTextAttribute);
                 }
                 return null;
+#endif
+                throw new NotImplementedException();
             }
         }
 
@@ -434,7 +461,7 @@ namespace Gecko
         /// </summary>
         public string CssText
         {
-            get { return nsString.Get(_DomStyleRule.GetCssTextAttribute); }
+            get { /*return nsString.Get(_DomStyleRule.GetCssTextAttribute);*/throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -444,15 +471,19 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 nsIDOMCSSStyleRule rule = Xpcom.QueryInterface<nsIDOMCSSStyleRule>(DomStyleRule);
                 if (rule != null)
                 {
                     return nsString.Get(rule.GetStyleAttribute().GetCssTextAttribute);
                 }
                 return null;
+#endif
+                throw new NotImplementedException();
             }
             set
             {
+#if PORTFF60
                 nsIDOMCSSStyleRule rule = Xpcom.QueryInterface<nsIDOMCSSStyleRule>(DomStyleRule);
                 if (rule != null)
                 {
@@ -462,6 +493,7 @@ namespace Gecko
                 {
                     throw new InvalidOperationException("This rule does not support StyleCssText.");
                 }
+#endif
             }
         }
 
@@ -470,7 +502,13 @@ namespace Gecko
         /// </summary>
         public GeckoStyleSheet ParentStyleSheet
         {
-            get { return GeckoStyleSheet.Create((/* nsIDOMCSSStyleSheet */nsISupports) _DomStyleRule.GetParentStyleSheetAttribute()); }
+            get
+            {
+#if PORTFF60
+                return GeckoStyleSheet.Create((/* nsIDOMCSSStyleSheet */nsISupports) _DomStyleRule.GetParentStyleSheetAttribute());
+#endif
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -480,12 +518,15 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 nsIDOMCSSImportRule rule = Xpcom.QueryInterface<nsIDOMCSSImportRule>(DomStyleRule);
                 if (rule != null)
                 {
                     return GeckoStyleSheet.Create((/* nsIDOMCSSStyleSheet */nsISupports) rule.GetStyleSheetAttribute());
                 }
                 return null;
+#endif
+                throw new NotImplementedException();
             }
         }
 
@@ -496,12 +537,15 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 nsIDOMCSSImportRule rule = Xpcom.QueryInterface<nsIDOMCSSImportRule>(DomStyleRule);
                 if (rule != null)
                 {
                     return nsString.Get(rule.GetHrefAttribute);
                 }
                 return null;
+#endif
+                throw new NotImplementedException();
             }
         }
 
@@ -512,12 +556,15 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 nsIDOMCSSImportRule rule = Xpcom.QueryInterface<nsIDOMCSSImportRule>(DomStyleRule);
                 if (rule != null)
                 {
                     return new GeckoMediaList(rule.GetMediaAttribute());
                 }
                 return null;
+#endif
+                throw new NotImplementedException();
             }
         }
 
@@ -526,7 +573,7 @@ namespace Gecko
         /// </summary>
         public GeckoRuleType RuleType
         {
-            get { return (GeckoRuleType) _DomStyleRule.GetTypeAttribute(); }
+            get { /*return (GeckoRuleType) _DomStyleRule.GetTypeAttribute();*/throw new NotImplementedException(); }
         }
 
         public override string ToString()
@@ -552,7 +599,7 @@ namespace Gecko
         /// </summary>
         public int Count
         {
-            get { return (int) MediaList.GetLengthAttribute(); }
+            get { /*return (int) MediaList.GetLengthAttribute();*/throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -566,9 +613,12 @@ namespace Gecko
             {
                 if (index < 0 || index >= Count)
                     throw new ArgumentOutOfRangeException("index");
+#if PORTFF60
                 var retval = new nsAString();
                 MediaList.Item((uint) index, retval);
                 return retval.ToString();
+#endif
+                throw new NotImplementedException();
             }
         }
 
@@ -578,7 +628,8 @@ namespace Gecko
         /// <param name="medium"></param>
         public void AppendMedium(string medium)
         {
-            MediaList.AppendMedium(new nsAString(medium));
+            //MediaList.AppendMedium(new nsAString(medium));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -587,7 +638,8 @@ namespace Gecko
         /// <param name="medium"></param>
         public void DeleteMedium(string medium)
         {
-            MediaList.DeleteMedium(new nsAString(medium));
+            //MediaList.DeleteMedium(new nsAString(medium));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -595,8 +647,8 @@ namespace Gecko
         /// </summary>
         public string MediaText
         {
-            get { return nsString.Get(MediaList.GetMediaTextAttribute); }
-            set { nsString.Set(MediaList.SetMediaTextAttribute, value); }
+            get { /*return nsString.Get(MediaList.GetMediaTextAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(MediaList.SetMediaTextAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public override string ToString()
@@ -604,7 +656,7 @@ namespace Gecko
             return MediaText;
         }
 
-        #region IEnumerable<string> Members
+#region IEnumerable<string> Members
 
         public IEnumerator<string> GetEnumerator()
         {
@@ -615,9 +667,9 @@ namespace Gecko
             }
         }
 
-        #endregion
+#endregion
 
-        #region IEnumerable Members
+#region IEnumerable Members
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
@@ -625,7 +677,7 @@ namespace Gecko
                 yield return str;
         }
 
-        #endregion
+#endregion
     }
 
     /// <summary>

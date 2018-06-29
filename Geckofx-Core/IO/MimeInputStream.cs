@@ -1,3 +1,4 @@
+using System;
 using Gecko.Interop;
 
 namespace Gecko.IO
@@ -15,8 +16,8 @@ namespace Gecko.IO
 
         public bool AddContentLength
         {
-            get { return _mimeInputStream.GetAddContentLengthAttribute(); }
-            set { _mimeInputStream.SetAddContentLengthAttribute(value); }
+            get { /*return _mimeInputStream.GetAddContentLengthAttribute();*/throw new NotImplementedException(); }
+            set { /*_mimeInputStream.SetAddContentLengthAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public void AddHeader(string name, string value)

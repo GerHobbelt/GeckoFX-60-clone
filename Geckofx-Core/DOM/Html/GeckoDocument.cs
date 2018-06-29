@@ -9,14 +9,14 @@ namespace Gecko
     /// </summary>
     public class GeckoDocument : GeckoDomDocument
     {
-        private /* nsIDOMHTMLDocument */nsISupports _domHtmlDocument;
+        private /* nsIDOMHTMLDocument */nsIDOMDocument _domHtmlDocument;
 
-        internal GeckoDocument(/* nsIDOMHTMLDocument */nsISupports document) : base(document)
+        internal GeckoDocument(/* nsIDOMHTMLDocument */nsIDOMDocument document) : base(document)
         {
             this._domHtmlDocument = document;
         }
 
-        internal static GeckoDocument Create(/* nsIDOMHTMLDocument */nsISupports document)
+        internal static GeckoDocument Create(/* nsIDOMHTMLDocument */nsIDOMDocument document)
         {
             return (document == null) ? null : new GeckoDocument(document);
         }
@@ -33,9 +33,12 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 return (_domHtmlDocument == null)
                     ? null
                     : GeckoHtmlElement.Create<GeckoHeadElement>((/* nsIDOMHTMLElement */nsISupports) _domHtmlDocument.GetHeadAttribute());
+#endif
+                throw new NotImplementedException();
             }
         }
 
@@ -46,9 +49,12 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 return (_domHtmlDocument == null)
                     ? null
                     : GeckoHtmlElement.Create<GeckoHtmlElement>(_domHtmlDocument.GetBodyAttribute());
+#endif
+                throw new NotImplementedException();
             }
         }
 
@@ -59,7 +65,8 @@ namespace Gecko
         {
             internal StyleSheetCollection(GeckoDocument document)
             {
-                this.List = document._domHtmlDocument.GetStyleSheetsAttribute();
+                //this.List = document._domHtmlDocument.GetStyleSheetsAttribute();
+                throw new NotImplementedException();
             }
 
             private /* nsIDOMStyleSheetList */nsISupports List;
@@ -69,7 +76,7 @@ namespace Gecko
             /// </summary>
             public int Count
             {
-                get { return (List == null) ? 0 : (int) List.GetLengthAttribute(); }
+                get {/* return (List == null) ? 0 : (int) List.GetLengthAttribute();*/throw new NotImplementedException(); }
             }
 
             /// <summary>
@@ -84,11 +91,12 @@ namespace Gecko
                     if (index < 0 || index >= Count)
                         throw new ArgumentOutOfRangeException("index");
 
-                    return GeckoStyleSheet.Create((nsIDOMCSSStyleSheet) List.Item((uint) index));
+                    //return GeckoStyleSheet.Create((nsIDOMCSSStyleSheet) List.Item((uint) index));
+                    throw new NotImplementedException();
                 }
             }
 
-            #region IEnumerable<GeckoStyleSheet> Members
+#region IEnumerable<GeckoStyleSheet> Members
 
             /// <summary>
             /// Returns an <see cref="IEnumerator{GeckoStyleSheet}"/> which can enumerate through the collection.
@@ -97,10 +105,11 @@ namespace Gecko
             public IEnumerator<GeckoStyleSheet> GetEnumerator()
             {
                 int length = Count;
-                for (int i = 0; i < length; i++)
-                {
-                    yield return GeckoStyleSheet.Create((nsIDOMCSSStyleSheet) List.Item((uint) i));
-                }
+                //for (int i = 0; i < length; i++)
+                //{
+                //    yield return GeckoStyleSheet.Create((nsIDOMCSSStyleSheet) List.Item((uint) i));
+                //}
+                throw new NotImplementedException();
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -109,7 +118,7 @@ namespace Gecko
                     yield return element;
             }
 
-            #endregion
+#endregion
         }
 
         /// <summary>
@@ -127,16 +136,17 @@ namespace Gecko
         /// </summary>
         public Uri Url
         {
-            get { return (_domHtmlDocument == null) ? null : new Uri(nsString.Get(_domHtmlDocument.GetURLAttribute)); }
+            get { /*return (_domHtmlDocument == null) ? null : new Uri(nsString.Get(_domHtmlDocument.GetURLAttribute));*/throw new NotImplementedException(); }
         }
 
         public GeckoElementCollection Forms
         {
             get
             {
-                return (_domHtmlDocument == null)
-                    ? null
-                    : new GeckoHtmlElementCollection(_domHtmlDocument.GetFormsAttribute());
+                //return (_domHtmlDocument == null)
+                //    ? null
+                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetFormsAttribute());
+                throw new NotImplementedException();
             }
         }
 
@@ -144,9 +154,10 @@ namespace Gecko
         {
             get
             {
-                return (_domHtmlDocument == null)
-                    ? null
-                    : new GeckoHtmlElementCollection(_domHtmlDocument.GetImagesAttribute());
+                //return (_domHtmlDocument == null)
+                //    ? null
+                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetImagesAttribute());
+                throw new NotImplementedException();
             }
         }
 
@@ -154,9 +165,10 @@ namespace Gecko
         {
             get
             {
-                return (_domHtmlDocument == null)
-                    ? null
-                    : new GeckoHtmlElementCollection(_domHtmlDocument.GetAnchorsAttribute());
+                //return (_domHtmlDocument == null)
+                //    ? null
+                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetAnchorsAttribute());
+                throw new NotImplementedException();
             }
         }
 
@@ -164,9 +176,10 @@ namespace Gecko
         {
             get
             {
-                return (_domHtmlDocument == null)
-                    ? null
-                    : new GeckoHtmlElementCollection(_domHtmlDocument.GetAppletsAttribute());
+                //return (_domHtmlDocument == null)
+                //    ? null
+                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetAppletsAttribute());
+                throw new NotImplementedException();
             }
         }
 
@@ -174,21 +187,22 @@ namespace Gecko
         {
             get
             {
-                return (_domHtmlDocument == null)
-                    ? null
-                    : new GeckoHtmlElementCollection(_domHtmlDocument.GetLinksAttribute());
+                //return (_domHtmlDocument == null)
+                //    ? null
+                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetLinksAttribute());
+                throw new NotImplementedException();
             }
         }
 
         public string Cookie
         {
-            get { return (_domHtmlDocument == null) ? null : nsString.Get(_domHtmlDocument.GetCookieAttribute); }
-            set { nsString.Set(_domHtmlDocument.SetCookieAttribute, value); }
+            get {/* return (_domHtmlDocument == null) ? null : nsString.Get(_domHtmlDocument.GetCookieAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(_domHtmlDocument.SetCookieAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public string Domain
         {
-            get { return (_domHtmlDocument == null) ? null : nsString.Get(_domHtmlDocument.GetDomainAttribute); }
+            get { /*return (_domHtmlDocument == null) ? null : nsString.Get(_domHtmlDocument.GetDomainAttribute);*/throw new NotImplementedException(); }
         }
 
 
@@ -202,7 +216,8 @@ namespace Gecko
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            return new GeckoElementCollection(_domHtmlDocument.GetElementsByName(new nsAString(name)));
+            //return new GeckoElementCollection(_domHtmlDocument.GetElementsByName(new nsAString(name)));
+            throw new NotImplementedException();
         }
     }
 }

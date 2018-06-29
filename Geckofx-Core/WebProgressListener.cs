@@ -187,12 +187,14 @@ namespace Gecko
 
             Uri destUri = new Uri(nsString.Get(aRefreshURI.GetSpecAttribute));
             bool cancel = false;
+#if PORTFF60
             using (var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap(x => new GeckoWindow(x)))
             {
                 GeckoNavigatingEventArgs ea = new GeckoNavigatingEventArgs(destUri, domWindow);
                 evnt(ea);
                 cancel = ea.Cancel;
             }
+#endif
             return !cancel;
         }
 

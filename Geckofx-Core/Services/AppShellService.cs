@@ -24,8 +24,9 @@ namespace Gecko
             int aInitialWidth, int aInitialHeight)
         {
             // TODO: add a nsITabParent
-            return _appShellService.Instance.CreateTopLevelWindow(aParent, aUrl, aChromeMask, aInitialWidth,
-                aInitialHeight, null);
+            //return _appShellService.Instance.CreateTopLevelWindow(aParent, aUrl, aChromeMask, aInitialWidth,
+            //    aInitialHeight, null);
+            throw new NotImplementedException();
         }
     }
 }

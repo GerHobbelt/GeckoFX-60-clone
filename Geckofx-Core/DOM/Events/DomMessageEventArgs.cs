@@ -12,15 +12,15 @@ namespace Gecko
     public class DomMessageEventArgs
         : DomEventArgs
     {
-        private /* nsIDOMMessageEvent */nsISupports _messageEvent;
+        private /* nsIDOMMessageEvent */nsIDOMEvent _messageEvent;
 
-        private DomMessageEventArgs(/* nsIDOMMessageEvent */nsISupports ev)
+        private DomMessageEventArgs(/* nsIDOMMessageEvent */nsIDOMEvent ev)
             : base(ev)
         {
             _messageEvent = ev;
         }
 
-        public static DomMessageEventArgs Create(/* nsIDOMMessageEvent */nsISupports ev)
+        public static DomMessageEventArgs Create(/* nsIDOMMessageEvent */nsIDOMEvent ev)
         {
             return new DomMessageEventArgs(ev);
         }
@@ -32,6 +32,7 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 using (
                     AutoJSContext context =
                         new AutoJSContext(_messageEvent.GetTargetAttribute().GetJSContextForEventHandlers()))
@@ -50,6 +51,8 @@ namespace Gecko
                         throw e;
                     }
                 }
+#endif
+                throw new NotImplementedException();
             }
         }
     }

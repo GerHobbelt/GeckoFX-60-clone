@@ -1,3 +1,4 @@
+using System;
 using Gecko.DOM;
 
 namespace Gecko
@@ -26,10 +27,11 @@ namespace Gecko
         {
             using (var typeArg = new nsAString(type))
             {
-                _mouseScrollEvent.InitMouseScrollEvent(typeArg, canBubble, cancelable, view.DomWindow, detail, screenX,
-                    screenY,
-                    clientX, clientY, ctrlKey, altKey, shiftKey, metaKey, button,
-                    target.NativeObject, axis);
+                throw new NotImplementedException();
+                //_mouseScrollEvent.InitMouseScrollEvent(typeArg, canBubble, cancelable, view.DomWindow, detail, screenX,
+                //    screenY,
+                //    clientX, clientY, ctrlKey, altKey, shiftKey, metaKey, button,
+                //    target.NativeObject, axis);
             }
         }
 
@@ -38,7 +40,7 @@ namespace Gecko
         /// </summary>
         public int Axis
         {
-            get { return _mouseScrollEvent.GetAxisAttribute(); }
+            get { /*return _mouseScrollEvent.GetAxisAttribute();*/ throw new NotImplementedException(); }
         }
     }
 }

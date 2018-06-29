@@ -21,14 +21,14 @@ namespace Gecko.DOM
 
         public uint Width
         {
-            get { return DOMHTMLElement.GetWidthAttribute(); }
-            set { DOMHTMLElement.SetWidthAttribute(value); }
+            get { /*return DOMHTMLElement.GetWidthAttribute();*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetWidthAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public uint Height
         {
-            get { return DOMHTMLElement.GetHeightAttribute(); }
-            set { DOMHTMLElement.SetHeightAttribute(value); }
+            get { /*return DOMHTMLElement.GetHeightAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetHeightAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string ToDataURL(string type)
@@ -37,7 +37,8 @@ namespace Gecko.DOM
             using (nsAString retval = new nsAString(), param = new nsAString(type))
             {
                 JsVal js = default(JsVal);
-                DOMHTMLElement.ToDataURL(param, ref js, context.ContextPointer, retval);
+                //DOMHTMLElement.ToDataURL(param, ref js, context.ContextPointer, retval);
+                throw new NotImplementedException();
                 return retval.ToString();
             }
         }

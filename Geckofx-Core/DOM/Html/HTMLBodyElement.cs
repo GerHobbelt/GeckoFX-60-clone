@@ -18,38 +18,38 @@ namespace Gecko.DOM
 
         public string ALink
         {
-            get { return nsString.Get(_domHtmlBodyElement.GetALinkAttribute); }
-            set { nsString.Set(_domHtmlBodyElement.SetALinkAttribute, value); }
+            get { /*return nsString.Get(_domHtmlBodyElement.GetALinkAttribute);*/throw new NotImplementedException(); }
+            set {/* nsString.Set(_domHtmlBodyElement.SetALinkAttribute, value); */throw new NotImplementedException(); }
         }
 
         public string Background
         {
-            get { return nsString.Get(_domHtmlBodyElement.GetBackgroundAttribute); }
-            set { nsString.Set(_domHtmlBodyElement.SetBackgroundAttribute, value); }
+            get {/* return nsString.Get(_domHtmlBodyElement.GetBackgroundAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(_domHtmlBodyElement.SetBackgroundAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public string BgColor
         {
-            get { return nsString.Get(_domHtmlBodyElement.GetBgColorAttribute); }
-            set { nsString.Set(_domHtmlBodyElement.SetBgColorAttribute, value); }
+            get { /*return nsString.Get(_domHtmlBodyElement.GetBgColorAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(_domHtmlBodyElement.SetBgColorAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public string Link
         {
-            get { return nsString.Get(_domHtmlBodyElement.GetLinkAttribute); }
-            set { nsString.Set(_domHtmlBodyElement.SetLinkAttribute, value); }
+            get {/* return nsString.Get(_domHtmlBodyElement.GetLinkAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(_domHtmlBodyElement.SetLinkAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public string Text
         {
-            get { return nsString.Get(_domHtmlBodyElement.GetTextAttribute); }
-            set { nsString.Set(_domHtmlBodyElement.SetTextAttribute, value); }
+            get { /*return nsString.Get(_domHtmlBodyElement.GetTextAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(_domHtmlBodyElement.SetTextAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public string VLink
         {
-            get { return nsString.Get(_domHtmlBodyElement.GetVLinkAttribute); }
-            set { nsString.Set(_domHtmlBodyElement.SetVLinkAttribute, value); }
+            get { /*return nsString.Get(_domHtmlBodyElement.GetVLinkAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(_domHtmlBodyElement.SetVLinkAttribute, value);*/throw new NotImplementedException(); }
         }
     }
 }

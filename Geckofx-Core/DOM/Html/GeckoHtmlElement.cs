@@ -58,11 +58,12 @@ namespace Gecko
         {
             get
             {
-                var cssInlineStyle = Xpcom.QueryInterface<nsIDOMElementCSSInlineStyle>(DomObject);
-                if (cssInlineStyle == null) return null;
-                var ret = cssInlineStyle.GetStyleAttribute().Wrap(GeckoStyle.Create);
-                Marshal.ReleaseComObject(cssInlineStyle);
-                return ret;
+                //var cssInlineStyle = Xpcom.QueryInterface<nsIDOMElementCSSInlineStyle>(DomObject);
+                //if (cssInlineStyle == null) return null;
+                //var ret = cssInlineStyle.GetStyleAttribute().Wrap(GeckoStyle.Create);
+                //Marshal.ReleaseComObject(cssInlineStyle);
+                //return ret;
+                throw new NotImplementedException();
             }
         }
 
@@ -92,9 +93,10 @@ namespace Gecko
             get
             {
                 // note: the parent node could also be the document
-                return
-                    GeckoHtmlElement.Create(
-                        Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(_domHtmlElement.GetParentNodeAttribute()));
+                //return
+                //    GeckoHtmlElement.Create(
+                //        Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(_domHtmlElement.GetParentNodeAttribute()));
+                throw new NotImplementedException();
             }
         }
 
@@ -104,13 +106,14 @@ namespace Gecko
         /// </summary>
         public string Id
         {
-            get { return nsString.Get(_domHtmlElement.GetIdAttribute); }
+            get {/* return nsString.Get(_domHtmlElement.GetIdAttribute);*/throw new NotImplementedException(); }
             set
             {
-                if (string.IsNullOrEmpty(value))
-                    this.RemoveAttribute("id");
-                else
-                    nsString.Set(_domHtmlElement.SetIdAttribute, value);
+                //if (string.IsNullOrEmpty(value))
+                //    this.RemoveAttribute("id");
+                //else
+                //    nsString.Set(_domHtmlElement.SetIdAttribute, value);
+                throw new NotImplementedException();
             }
         }
 
@@ -119,41 +122,45 @@ namespace Gecko
         /// </summary>
         public string ClassName
         {
-            get { return nsString.Get(_domHtmlElement.GetClassNameAttribute); }
+            get {/* return nsString.Get(_domHtmlElement.GetClassNameAttribute);*/throw new NotImplementedException(); }
             set
             {
-                if (string.IsNullOrEmpty(value))
-                    this.RemoveAttribute("class");
-                else
-                    nsString.Set(_domHtmlElement.SetClassNameAttribute, value);
+                //if (string.IsNullOrEmpty(value))
+                //    this.RemoveAttribute("class");
+                //else
+                //    nsString.Set(_domHtmlElement.SetClassNameAttribute, value);
+                throw new NotImplementedException();
             }
         }
 
         public void Blur()
         {
-            _domHtmlElement.Blur();
+            //_domHtmlElement.Blur();
+            throw new NotImplementedException();
         }
 
         public string AccessKey
         {
-            get { return nsString.Get(_domHtmlElement.GetAccessKeyAttribute); }
-            set { _domHtmlElement.SetAccessKeyAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(_domHtmlElement.GetAccessKeyAttribute);*/throw new NotImplementedException(); }
+            set {/* _domHtmlElement.SetAccessKeyAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public void Focus()
         {
-            _domHtmlElement.Focus();
+            //_domHtmlElement.Focus();
+            throw new NotImplementedException();
         }
 
         public void Click()
         {
-            _domHtmlElement.Click();
+            //_domHtmlElement.Click();
+            throw new NotImplementedException();
         }
 
         public bool Draggable
         {
-            get { return _domHtmlElement.GetDraggableAttribute(); }
-            set { _domHtmlElement.SetDraggableAttribute(value); }
+            get { /*return _domHtmlElement.GetDraggableAttribute();*/throw new NotImplementedException(); }
+            set {/* _domHtmlElement.SetDraggableAttribute(value);*/throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -161,96 +168,104 @@ namespace Gecko
         /// </summary>
         public string ContentEditable
         {
-            get { return nsString.Get(_domHtmlElement.GetContentEditableAttribute); }
-            set { nsString.Set(_domHtmlElement.GetContentEditableAttribute, value); }
+            get { /*return nsString.Get(_domHtmlElement.GetContentEditableAttribute);*/throw new NotImplementedException(); }
+            set {/* nsString.Set(_domHtmlElement.GetContentEditableAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public System.Drawing.Rectangle[] ClientRects
         {
             get
             {
-                nsIDOMClientRectList domRects = DOMHtmlElement.GetClientRects();
-                uint count = domRects.GetLengthAttribute();
-                Rectangle[] rects = new Rectangle[count];
-                for (uint i = 0; i < count; i++)
-                {
-                    nsIDOMClientRect domRect = domRects.Item(i);
-                    rects[i] = new Rectangle(
-                        (int) Math.Round(domRect.GetLeftAttribute()),
-                        (int) Math.Round(domRect.GetTopAttribute()),
-                        (int) Math.Round(domRect.GetWidthAttribute()),
-                        (int) Math.Round(domRect.GetHeightAttribute()));
-                }
-                return rects;
+                //nsIDOMClientRectList domRects = DOMHtmlElement.GetClientRects();
+                //uint count = domRects.GetLengthAttribute();
+                //Rectangle[] rects = new Rectangle[count];
+                //for (uint i = 0; i < count; i++)
+                //{
+                //    nsIDOMClientRect domRect = domRects.Item(i);
+                //    rects[i] = new Rectangle(
+                //        (int) Math.Round(domRect.GetLeftAttribute()),
+                //        (int) Math.Round(domRect.GetTopAttribute()),
+                //        (int) Math.Round(domRect.GetWidthAttribute()),
+                //        (int) Math.Round(domRect.GetHeightAttribute()));
+                //}
+                //return rects;
+                throw new NotImplementedException();
             }
         }
 
         public int OffsetLeft
         {
-            get { return _domHtmlElement.GetOffsetLeftAttribute(); }
+            get {/* return _domHtmlElement.GetOffsetLeftAttribute();*/throw new NotImplementedException(); }
         }
 
         public int OffsetTop
         {
-            get { return _domHtmlElement.GetOffsetTopAttribute(); }
+            get { /*return _domHtmlElement.GetOffsetTopAttribute();*/throw new NotImplementedException(); }
         }
 
         public int OffsetWidth
         {
-            get { return _domHtmlElement.GetOffsetWidthAttribute(); }
+            get { /*return _domHtmlElement.GetOffsetWidthAttribute();*/throw new NotImplementedException(); }
         }
 
         public int OffsetHeight
         {
-            get { return _domHtmlElement.GetOffsetHeightAttribute(); }
+            get {/* return _domHtmlElement.GetOffsetHeightAttribute();*/throw new NotImplementedException(); }
         }
 
 
         public GeckoHtmlElement OffsetParent
         {
-            get { return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) _domHtmlElement.GetOffsetParentAttribute()); }
+            get
+            {
+                //return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) _domHtmlElement.GetOffsetParentAttribute());
+                throw new NotImplementedException();
+            }
         }
 
         public void ScrollIntoView(bool top)
         {
-            _domHtmlElement.ScrollIntoView(top, 1);
+            //_domHtmlElement.ScrollIntoView(top, 1);
+            throw new NotImplementedException();
         }
 
 
         public bool Spellcheck
         {
-            get { return _domHtmlElement.GetSpellcheckAttribute(); }
-            set { _domHtmlElement.SetSpellcheckAttribute(value); }
+            get { /*return _domHtmlElement.GetSpellcheckAttribute();*/throw new NotImplementedException(); }
+            set { /*_domHtmlElement.SetSpellcheckAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string InnerHtml
         {
-            get { return nsString.Get(_domHtmlElement.GetInnerHTMLAttribute); }
-            set { nsString.Set(_domHtmlElement.SetInnerHTMLAttribute, value); }
+            get { /*return nsString.Get(_domHtmlElement.GetInnerHTMLAttribute);*/throw new NotImplementedException(); }
+            set {/* nsString.Set(_domHtmlElement.SetInnerHTMLAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public virtual string OuterHtml
         {
-            get { return nsString.Get(_domHtmlElement.GetOuterHTMLAttribute); }
+            get { /*return nsString.Get(_domHtmlElement.GetOuterHTMLAttribute); */throw new NotImplementedException(); }
         }
 
         public int TabIndex
         {
-            get { return _domHtmlElement.GetTabIndexAttribute(); }
-            set { _domHtmlElement.SetTabIndexAttribute(value); }
+            get { /*return _domHtmlElement.GetTabIndexAttribute();*/throw new NotImplementedException(); }
+            set { /*_domHtmlElement.SetTabIndexAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public void InsertAdjacentHTML(string position, string text)
         {
             using (nsAString tempPos = new nsAString(position), tempText = new nsAString(text))
             {
-                _domHtmlElement.InsertAdjacentHTML(tempPos, tempText);
+                //_domHtmlElement.InsertAdjacentHTML(tempPos, tempText);
+                throw new NotImplementedException();
             }
         }
 
         public void MozRequestFullScreen()
         {
-            _domHtmlElement.MozRequestFullScreen();
+            //_domHtmlElement.MozRequestFullScreen();
+            throw new NotImplementedException();
         }
     }
 }

@@ -22,7 +22,8 @@ namespace Gecko
         {
             IntPtr pointer;
             var ret = new byte[count];
-            _randomGenerator.Instance.GenerateRandomBytes((uint) count, out pointer);
+            //_randomGenerator.Instance.GenerateRandomBytes((uint) count, out pointer);
+            throw new NotImplementedException();
             Marshal.Copy(pointer, ret, 0, count);
             Xpcom.Free(pointer);
             return ret;

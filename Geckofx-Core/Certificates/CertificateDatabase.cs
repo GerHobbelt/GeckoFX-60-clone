@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Gecko.Interop;
 
@@ -16,7 +17,8 @@ namespace Gecko.Certificates
 
         public static Certificate ConstructX509FromBase64(string base64)
         {
-            return Certificate.Create((nsIX509Cert) _certDb.Instance.ConstructX509FromBase64(base64));
+            //return Certificate.Create((nsIX509Cert) _certDb.Instance.ConstructX509FromBase64(base64));
+            throw new NotImplementedException();
         }
 
         #region nsIX509CertDB2
@@ -28,7 +30,8 @@ namespace Gecko.Certificates
 
         public static void AddCertFromBase64(string base64, string trust, string name)
         {
-            _certDb.Instance.AddCertFromBase64(base64, trust, name);
+            //_certDb.Instance.AddCertFromBase64(base64, trust, name);
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -89,7 +89,8 @@ namespace Gecko
 
         public static IntPtr GetPrompt(nsIDOMWindow aParent, ref Guid iid)
         {
-            return _factory.GetPrompt(aParent, ref iid);
+            //return _factory.GetPrompt(aParent, ref iid);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -102,14 +103,15 @@ namespace Gecko
         {
             var iid = (GuidAttribute) typeof (TPrompt).GetCustomAttributes(typeof (GuidAttribute), false)[0];
             var g = new Guid(iid.Value);
-            var ptr = _factory.GetPrompt(aParent, ref g);
-            TPrompt prompt;
-            if (Xpcom.IsMono)
-                prompt = (TPrompt)Marshal.GetObjectForIUnknown(ptr);
-            else
-                prompt = (TPrompt)Marshal.GetTypedObjectForIUnknown(ptr, typeof(TPrompt));
-            Marshal.Release(ptr);
-            return prompt;
+            //var ptr = _factory.GetPrompt(aParent, ref g);
+            //TPrompt prompt;
+            //if (Xpcom.IsMono)
+            //    prompt = (TPrompt)Marshal.GetObjectForIUnknown(ptr);
+            //else
+            //    prompt = (TPrompt)Marshal.GetTypedObjectForIUnknown(ptr, typeof(TPrompt));
+            //Marshal.Release(ptr);
+            //return prompt;
+            throw new NotImplementedException();
         }
     }
 

@@ -21,47 +21,47 @@ namespace Gecko.DOM
 
         public GeckoFormElement Form
         {
-            get { return new GeckoFormElement(DOMHTMLElement.GetFormAttribute()); }
+            get { /*return new GeckoFormElement(DOMHTMLElement.GetFormAttribute());*/throw new NotImplementedException(); }
         }
 
         public bool DefaultSelected
         {
-            get { return DOMHTMLElement.GetDefaultSelectedAttribute(); }
-            set { DOMHTMLElement.SetDefaultSelectedAttribute(value); }
+            get { /*return DOMHTMLElement.GetDefaultSelectedAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetDefaultSelectedAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string Text
         {
-            get { return nsString.Get(DOMHTMLElement.GetTextAttribute); }
+            get { /*return nsString.Get(DOMHTMLElement.GetTextAttribute);*/throw new NotImplementedException(); }
         }
 
         public int Index
         {
-            get { return DOMHTMLElement.GetIndexAttribute(); }
+            get { /*return DOMHTMLElement.GetIndexAttribute();*/throw new NotImplementedException(); }
         }
 
         public bool Disabled
         {
-            get { return DOMHTMLElement.GetDisabledAttribute(); }
-            set { DOMHTMLElement.SetDisabledAttribute(value); }
+            get { /*return DOMHTMLElement.GetDisabledAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetDisabledAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string Label
         {
-            get { return nsString.Get(DOMHTMLElement.GetLabelAttribute); }
-            set { DOMHTMLElement.SetLabelAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetLabelAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetLabelAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public bool Selected
         {
-            get { return DOMHTMLElement.GetSelectedAttribute(); }
-            set { DOMHTMLElement.SetSelectedAttribute(value); }
+            get { /*return DOMHTMLElement.GetSelectedAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetSelectedAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string Value
         {
-            get { return nsString.Get(DOMHTMLElement.GetValueAttribute); }
-            set { DOMHTMLElement.SetValueAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetValueAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetValueAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

@@ -350,6 +350,7 @@ namespace Gecko.DOM
         {
             // if null -> return null
             if (domObject == null) return null;
+#if PORTFF60
             var nodeType = (NodeType) domObject.GetNodeTypeAttribute();
             // by nodeType we can find proper wrapper faster, than perform QueryInterface
             switch (nodeType)
@@ -375,10 +376,13 @@ namespace Gecko.DOM
             }
             // if we don't handle this type - just create GeckoNode
             return new GeckoNode(domObject);
+#endif
+            throw new NotImplementedException();
         }
 
         internal static GeckoHtmlElement CreateDomHtmlElementWrapper(/* /* nsIDOMHTMLElement*/nsISupports instance)
         {
+#if PORTFF60
             var lowerTagName = nsString.Get(instance.GetTagNameAttribute).ToLowerInvariant();
             GeckoClassDesc desc;
 
@@ -392,6 +396,8 @@ namespace Gecko.DOM
                 }
             }
             return null;
+#endif
+            throw new NotImplementedException();
         }
     }
 }

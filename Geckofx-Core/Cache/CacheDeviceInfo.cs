@@ -1,3 +1,4 @@
+using System;
 using Gecko.Interop;
 
 namespace Gecko.Cache
@@ -13,7 +14,7 @@ namespace Gecko.Cache
 
         public string Description
         {
-            get { return _cacheDeviceInfo.Instance.GetDescriptionAttribute(); }
+            get { /*return _cacheDeviceInfo.Instance.GetDescriptionAttribute();*/ throw new NotImplementedException(); }
         }
 
         public uint EntryCount
@@ -33,7 +34,7 @@ namespace Gecko.Cache
 
         public string UsageReport
         {
-            get { return _cacheDeviceInfo.Instance.GetUsageReportAttribute(); }
+            get { /*return _cacheDeviceInfo.Instance.GetUsageReportAttribute();*/throw new NotImplementedException(); }
         }
     }
 }

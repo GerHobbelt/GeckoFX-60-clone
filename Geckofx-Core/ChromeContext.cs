@@ -14,8 +14,8 @@ namespace Gecko
         {
             using (var appShallSvc = Xpcom.GetService2<nsIAppShellService>(Contracts.AppShellService))
             {
-                webNav = appShallSvc.Instance.CreateWindowlessBrowser(true).AsComPtr();
                 // TODO: this doesn't work yet..
+                //webNav = appShallSvc.Instance.CreateWindowlessBrowser(true).AsComPtr();
                 //webNav.Instance.LoadURI("chrome://global/content/alerts/alert.xul", 0, null, null, null);
             }
         }
@@ -76,8 +76,10 @@ namespace Gecko
                 // Use of the canvas technique was inspired by: the abduction! firefox plugin by Rowan Lewis
                 // https://addons.mozilla.org/en-US/firefox/addon/abduction/
 
-                uint flags = (uint) (nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DO_NOT_FLUSH
-                    //| nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DRAW_VIEW
+                throw new NotImplementedException();
+#if PORTFF60
+                uint flags = (uint)(nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DO_NOT_FLUSH
+                                     //| nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DRAW_VIEW
                                      | nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_ASYNC_DECODE_IMAGES
                                      | nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_USE_WIDGET_LAYERS);
 
@@ -104,6 +106,7 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
                 rootElement.AppendChild(button);
 
                 command = Xpcom.QueryInterface<nsIDOMXULElement>(button.DOMElement).AsComPtr();
+#endif
             }
         }
 
@@ -134,13 +137,13 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
             string base64Image = null;
             using (var key = new nsAString("drawResult"))
             {
-                #if PORTFF60
+#if PORTFF60
                 using (var drawResult = command.Instance.SetUserData(key, null).AsComPtr())
                 {
                     if (drawResult != null)
                         base64Image = drawResult.Instance.GetAsWString();
                 }
-                #endif
+#endif
             }
 
             if (base64Image == null)

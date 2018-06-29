@@ -67,7 +67,8 @@ namespace Gecko.IO
         public override unsafe void WriteByte(byte value)
         {
             byte* ptr = &value;
-            _outputStream.Write(new IntPtr(ptr), 1);
+            //_outputStream.Write(new IntPtr(ptr), 1);
+            throw new NotImplementedException();
         }
 
         public override unsafe void Write(byte[] buffer, int offset, int count)
@@ -79,7 +80,8 @@ namespace Gecko.IO
             fixed (byte* ptr = buffer)
             {
                 byte* start = ptr + offset;
-                _outputStream.Write(new IntPtr((void*) start), (uint) count);
+                //_outputStream.Write(new IntPtr((void*) start), (uint) count);
+                throw new NotImplementedException();
             }
         }
 

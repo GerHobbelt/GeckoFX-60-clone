@@ -84,7 +84,8 @@ namespace Gecko
                 if (m_cachedTagName != null)
                     return m_cachedTagName;
 
-                return m_cachedTagName = nsString.Get(_domElement.GetTagNameAttribute);
+                //return m_cachedTagName = nsString.Get(_domElement.GetTagNameAttribute);
+                throw new NotImplementedException();
             }
         }
 
@@ -105,7 +106,8 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
-            return nsString.Get(_domElement.GetAttribute, attributeName);
+            //return nsString.Get(_domElement.GetAttribute, attributeName);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -131,7 +133,8 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
-            nsString.Set(_domElement.SetAttribute, attributeName, value);
+            //nsString.Set(_domElement.SetAttribute, attributeName, value);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -144,7 +147,8 @@ namespace Gecko
                 throw new ArgumentException("attributeName");
 
 
-            nsString.Set(_domElement.RemoveAttribute, attributeName);
+            //nsString.Set(_domElement.RemoveAttribute, attributeName);
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -159,14 +163,16 @@ namespace Gecko
 
         public GeckoAttribute SetAttributeNode(GeckoAttribute newAttr)
         {
-            var ret = _domElement.SetAttributeNode(newAttr.DomAttr);
-            return ret == null ? null : new GeckoAttribute(ret);
+            //var ret = _domElement.SetAttributeNode(newAttr.DomAttr);
+            //return ret == null ? null : new GeckoAttribute(ret);
+            throw new NotImplementedException();
         }
 
         public GeckoAttribute RemoveAttributeNode(GeckoAttribute newAttr)
         {
-            var ret = _domElement.RemoveAttributeNode(newAttr.DomAttr);
-            return ret == null ? null : new GeckoAttribute(ret);
+            //var ret = _domElement.RemoveAttributeNode(newAttr.DomAttr);
+            //return ret == null ? null : new GeckoAttribute(ret);
+            throw new NotImplementedException();
         }
 
         public bool HasAttributes
@@ -186,7 +192,8 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
-            return nsString.Pass<bool>(_domElement.HasAttributeNS, namespaceUri, attributeName);
+            //return nsString.Pass<bool>(_domElement.HasAttributeNS, namespaceUri, attributeName);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -222,8 +229,9 @@ namespace Gecko
                 if (string.IsNullOrEmpty(attributeName))
                     throw new ArgumentException("attributeName");
 
-                _domElement.SetAttributeNS(new nsAString(namespaceUri), new nsAString(attributeName),
-                    new nsAString(value));
+                //_domElement.SetAttributeNS(new nsAString(namespaceUri), new nsAString(attributeName),
+                //    new nsAString(value));
+                throw new NotImplementedException();
             }
         }
 
@@ -288,11 +296,14 @@ namespace Gecko
         /// <returns></returns>
         public IDomHtmlCollection<GeckoElement> GetElementsByTagName(string tagName)
         {
+#if PORTFF60
             if (string.IsNullOrEmpty(tagName))
                 return null;
             //return new GeckoHtmlElementCollection(_domElement.GetElementsByTagName(new nsAString(tagName)));
             return nsString.Pass</*nsIDOMHTMLCollection*/nsISupports>(_domElement.GetElementsByTagName, tagName)
                 .Wrap(x => new DomHtmlCollection<GeckoElement, /* nsIDOMHTMLElement */nsISupports>(x, CreateDomElementWrapper));
+#endif
+            throw new NotImplementedException();
         }
 
         public IDomHtmlCollection<GeckoElement> GetElementsByTagNameNS(string namespaceURI, string localName)
@@ -301,11 +312,13 @@ namespace Gecko
 
             if (string.IsNullOrEmpty(localName))
                 return null;
-
+            throw new NotImplementedException();
+#if PORTFF60
             //var ret = nsString.Pass<nsIDOMHTMLCollection>(_domElement.GetElementsByTagNameNS, namespaceURI, localName);
             //return ret == null ? null : new GeckoHtmlElementCollection(ret);
             return nsString.Pass<nsIDOMHTMLCollection>(_domElement.GetElementsByTagNameNS, namespaceURI, localName)
                 .Wrap(x => new DomHtmlCollection<GeckoElement, /* nsIDOMHTMLElement */nsISupports>(x, CreateDomElementWrapper));
+#endif
         }
 
 

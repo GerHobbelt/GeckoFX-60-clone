@@ -31,7 +31,7 @@ namespace Gecko
 
         public DOM.DomDocumentType Doctype
         {
-            get { return _domDocument.GetDoctypeAttribute().Wrap(DomDocumentType.Create); }
+            get { /*return _domDocument.GetDoctypeAttribute().Wrap(DomDocumentType.Create);*/throw new NotImplementedException(); }
         }
 
         //[return: MarshalAs(UnmanagedType.Interface)]
@@ -45,9 +45,12 @@ namespace Gecko
         {
             get
             {
+                throw new NotImplementedException();
+#if PORTFF60
                 nsIDOMElement domElement = _domDocument.GetDocumentElementAttribute();
 
                 return domElement.Wrap(GeckoElement.CreateDomElementWrapper);
+#endif
             }
         }
 
@@ -56,9 +59,12 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 throw new ArgumentException("tagName");
 
+            throw new NotImplementedException();
+#if PORTFF60
             var nativeElement = nsString.Pass<nsIDOMElement>(_domDocument.CreateElement, tagName);
 
             return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) nativeElement);
+#endif
         }
 
         public GeckoElement CreateElement(string tagName)
@@ -66,26 +72,38 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 throw new ArgumentException("tagName");
 
+            throw new NotImplementedException();
+#if PORTFF60
             return nsString.Pass<nsIDOMElement>(_domDocument.CreateElement, tagName)
                 .Wrap(GeckoElement.CreateDomElementWrapper);
+#endif
         }
 
         public DocumentFragment CreateDocumentFragment()
         {
+            throw new NotImplementedException();
+#if PORTFF60
             return _domDocument.CreateDocumentFragment()
                 .Wrap(DocumentFragment.CreateDocumentFragmentWrapper);
+#endif
         }
 
         public GeckoTextNode CreateTextNode(string data)
         {
+            throw new NotImplementedException();
+#if PORTFF60
             return nsString.Pass<nsIDOMText>(_domDocument.CreateTextNode, data)
                 .Wrap(DOM.GeckoTextNode.CreateTextNodeWrapper);
+#endif
         }
 
         public GeckoComment CreateComment(string data)
         {
+            throw new NotImplementedException();
+#if PORTFF60
             return nsString.Pass<nsIDOMComment>(_domDocument.CreateComment, data)
                 .Wrap(GeckoComment.CreateCommentWrapper);
+#endif
         }
 
         //[return: MarshalAs(UnmanagedType.Interface)]
@@ -100,8 +118,11 @@ namespace Gecko
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("name");
+            throw new NotImplementedException();
+#if PORTFF60
             return nsString.Pass</* nsIDOMAttr */nsISupports>(_domDocument.CreateAttribute, name)
                 .Wrap(GeckoAttribute.CreateAttributeWrapper);
+#endif
         }
 
         /// <summary>
@@ -114,8 +135,11 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 return null;
 
+            throw new NotImplementedException();
+#if PORTFF60
             return nsString.Pass<nsIDOMNodeList>(_domDocument.GetElementsByTagName, tagName)
                 .Wrap(x => new GeckoElementCollection(x));
+#endif
         }
 
         public GeckoNode ImportNode(GeckoNode node, bool deep)
@@ -123,8 +147,11 @@ namespace Gecko
             if (node == null)
                 throw new ArgumentNullException("node");
 
+            throw new NotImplementedException();
+#if PORTFF60
             return _domDocument.ImportNode(node.DomObject, deep, 1)
                 .Wrap(Create);
+#endif
         }
 
 
@@ -135,9 +162,12 @@ namespace Gecko
             if (string.IsNullOrEmpty(qualifiedName))
                 throw new ArgumentException("qualifiedName");
 
+            throw new NotImplementedException();
+#if PORTFF60
             var native = nsString.Pass<nsIDOMElement>(_domDocument.CreateElementNS, namespaceUri, qualifiedName);
 
             return GeckoHtmlElement.Create((/* nsIDOMHTMLElement **/nsISupports) native);
+#endif
         }
 
         public GeckoAttribute CreateAttribute(string namespaceUri, string qualifiedName)
@@ -147,14 +177,20 @@ namespace Gecko
             if (string.IsNullOrEmpty(qualifiedName))
                 throw new ArgumentException("qualifiedName");
 
+            throw new NotImplementedException();
+#if PORTFF60
             return nsString.Pass</* nsIDOMAttr */nsISupports>(_domDocument.CreateAttributeNS, namespaceUri, qualifiedName)
                 .Wrap(GeckoAttribute.CreateAttributeWrapper);
+#endif
         }
 
         public DomEventArgs CreateEvent(string name)
         {
+            throw new NotImplementedException();
+#if PORTFF60
             var target = nsString.Pass(_domDocument.CreateEvent, name);
             return target.Wrap(DomEventArgs.Create);
+#endif
         }
 
 
@@ -169,9 +205,12 @@ namespace Gecko
             if (string.IsNullOrEmpty(localName))
                 throw new ArgumentException("localName");
 
+            throw new NotImplementedException();
+#if PORTFF60
             var native = nsString.Pass<nsIDOMNodeList>(_domDocument.GetElementsByTagNameNS, namespaceUri, localName);
 
             return new GeckoElementCollection(native);
+#endif
         }
 
 
@@ -185,8 +224,11 @@ namespace Gecko
             if (string.IsNullOrEmpty(id))
                 return null;
 
+            throw new NotImplementedException();
+#if PORTFF60
             return nsString.Pass<nsIDOMElement>(_domDocument.GetElementById, id)
                 .Wrap(GeckoElement.CreateDomElementWrapper);
+#endif
         }
 
         /// <summary>
@@ -200,19 +242,21 @@ namespace Gecko
             if (string.IsNullOrEmpty(id))
                 return null;
 
-
+            throw new NotImplementedException();
+#if PORTFF60
             return (GeckoHtmlElement) nsString.Pass<nsIDOMElement>(_domDocument.GetElementById, id)
                 .Wrap(Create);
+#endif
         }
 
         public string InputEncoding
         {
-            get { return nsString.Get(_domDocument.GetInputEncodingAttribute); }
+            get { /*return nsString.Get(_domDocument.GetInputEncodingAttribute);*/ throw new NotImplementedException(); }
         }
 
         public string Uri
         {
-            get { return nsString.Get(_domDocument.GetDocumentURIAttribute); }
+            get { /*return nsString.Get(_domDocument.GetDocumentURIAttribute);*/  throw new NotImplementedException(); }
         }
 
         ///// <summary>
@@ -228,7 +272,8 @@ namespace Gecko
         /// <returns></returns>
         public GeckoRange CreateRange()
         {
-            return new GeckoRange(_domDocument.CreateRange());
+            //return new GeckoRange(_domDocument.CreateRange()); 
+            throw new NotImplementedException();
         }
 
         //[return: MarshalAs(UnmanagedType.Interface)]
@@ -249,7 +294,7 @@ namespace Gecko
         /// </summary>
         public GeckoWindow DefaultView
         {
-            get { return _domDocument.GetDefaultViewAttribute().Wrap(x => new GeckoWindow(x)); }
+            get {/* return _domDocument.GetDefaultViewAttribute().Wrap(x => new GeckoWindow(x));*/ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -257,7 +302,7 @@ namespace Gecko
         /// </summary>
         public string CharacterSet
         {
-            get { return nsString.Get(_domDocument.GetCharacterSetAttribute); }
+            get { /*return nsString.Get(_domDocument.GetCharacterSetAttribute);*/ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -265,8 +310,8 @@ namespace Gecko
         /// </summary>
         public string Dir
         {
-            get { return nsString.Get(_domDocument.GetDirAttribute); }
-            set { nsString.Set(_domDocument.SetDirAttribute, value); }
+            get { /*return nsString.Get(_domDocument.GetDirAttribute); */ throw new NotImplementedException(); }
+            set {/* nsString.Set(_domDocument.SetDirAttribute, value);*/ throw new NotImplementedException(); }
         }
 
 
@@ -275,7 +320,7 @@ namespace Gecko
         /// </summary>
         public Location Location
         {
-            get { return _domDocument.GetLocationAttribute().Wrap(Location.Create); }
+            get { /*return _domDocument.GetLocationAttribute().Wrap(Location.Create);*/ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -283,8 +328,8 @@ namespace Gecko
         /// </summary>
         public string Title
         {
-            get { return nsString.Get(_domDocument.GetTitleAttribute); }
-            set { nsString.Set(_domDocument.SetTitleAttribute, value); }
+            get { /*return nsString.Get(_domDocument.GetTitleAttribute);*/ throw new NotImplementedException(); }
+            set { /*nsString.Set(_domDocument.SetTitleAttribute, value);*/ throw new NotImplementedException(); }
         }
 
 
@@ -293,7 +338,7 @@ namespace Gecko
         /// </summary>
         public string ReadyState
         {
-            get { return nsString.Get(_domDocument.GetReadyStateAttribute); }
+            get { /*return nsString.Get(_domDocument.GetReadyStateAttribute);*/ throw new NotImplementedException(); }
         }
 
         ///// <summary>
@@ -304,7 +349,7 @@ namespace Gecko
 
         public string Referrer
         {
-            get { return nsString.Get(_domDocument.GetReferrerAttribute); }
+            get {/* return nsString.Get(_domDocument.GetReferrerAttribute); */ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -312,7 +357,8 @@ namespace Gecko
         /// </summary>
         public bool HasFocus()
         {
-            return _domDocument.HasFocus();
+            //return _domDocument.HasFocus();
+            throw new NotImplementedException();
         }
 
         ///// <summary>
@@ -327,7 +373,7 @@ namespace Gecko
         /// </summary>
         public GeckoHtmlElement ActiveElement
         {
-            get { return (GeckoHtmlElement) _domDocument.GetActiveElementAttribute().Wrap(Create); }
+            get { /*return (GeckoHtmlElement) _domDocument.GetActiveElementAttribute().Wrap(Create);*/ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -337,8 +383,9 @@ namespace Gecko
         /// <returns></returns>
         public GeckoNodeCollection GetElementsByClassName(string classes)
         {
-            nsIDOMNodeList list = nsString.Pass<nsIDOMNodeList>(_domDocument.GetElementsByClassName, classes);
-            return GeckoNodeCollection.Create(list);
+            //nsIDOMNodeList list = nsString.Pass<nsIDOMNodeList>(_domDocument.GetElementsByClassName, classes);
+            //return GeckoNodeCollection.Create(list);
+            throw new NotImplementedException();
         }
 
         ///// <summary>
@@ -353,7 +400,7 @@ namespace Gecko
         /// </summary>
         public string PreferredStyleSheetSet
         {
-            get { return nsString.Get(_domDocument.GetPreferredStyleSheetSetAttribute); }
+            get { /*return nsString.Get(_domDocument.GetPreferredStyleSheetSetAttribute);*/ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -361,8 +408,8 @@ namespace Gecko
         /// </summary>
         public string SelectedStyleSheetSet
         {
-            get { return nsString.Get(_domDocument.GetSelectedStyleSheetSetAttribute); }
-            set { nsString.Set(_domDocument.SetSelectedStyleSheetSetAttribute, value); }
+            get { /*return nsString.Get(_domDocument.GetSelectedStyleSheetSetAttribute);*/ throw new NotImplementedException(); }
+            set { /*nsString.Set(_domDocument.SetSelectedStyleSheetSetAttribute, value);*/ throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -370,7 +417,7 @@ namespace Gecko
         /// </summary>
         public string LastStyleSheetSet
         {
-            get { return nsString.Get(_domDocument.GetLastStyleSheetSetAttribute); }
+            get { /*return nsString.Get(_domDocument.GetLastStyleSheetSetAttribute);*/ throw new NotImplementedException(); }
         }
 
 
@@ -394,7 +441,8 @@ namespace Gecko
         /// <param name="name"></param>
         public void EnableStyleSheetsForSet(string name)
         {
-            nsString.Set(_domDocument.EnableStyleSheetsForSet, name);
+            //nsString.Set(_domDocument.EnableStyleSheetsForSet, name);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -405,12 +453,13 @@ namespace Gecko
         /// <returns></returns>
         public GeckoElement ElementFromPoint(int x, int y)
         {
-            return _domDocument.ElementFromPoint(x, y).Wrap(GeckoElement.CreateDomElementWrapper);
+            //return _domDocument.ElementFromPoint(x, y).Wrap(GeckoElement.CreateDomElementWrapper);
+            throw new NotImplementedException();
         }
 
         public string ContentType
         {
-            get { return nsString.Get(_domDocument.GetContentTypeAttribute); }
+            get { /*return nsString.Get(_domDocument.GetContentTypeAttribute);*/  throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -419,7 +468,7 @@ namespace Gecko
         /// </summary>
         public bool MozSyntheticDocument
         {
-            get { return _domDocument.GetMozSyntheticDocumentAttribute(); }
+            get {/* return _domDocument.GetMozSyntheticDocumentAttribute();*/  throw new NotImplementedException(); }
         }
 
         ///// <summary>
@@ -433,7 +482,7 @@ namespace Gecko
 
         public GeckoNode CurrentScript
         {
-            get { return _domDocument.GetCurrentScriptAttribute().Wrap(Create); }
+            get { /*return _domDocument.GetCurrentScriptAttribute().Wrap(Create);*/  throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -441,7 +490,8 @@ namespace Gecko
         /// </summary>
         public void ReleaseCapture()
         {
-            _domDocument.ReleaseCapture();
+            //_domDocument.ReleaseCapture();
+            throw new NotImplementedException();
         }
 
         ///// <summary>
@@ -493,7 +543,8 @@ namespace Gecko
         /// </summary>
         public void MozCancelFullScreen()
         {
-            _domDocument.MozCancelFullScreen();
+            //_domDocument.MozCancelFullScreen();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -503,7 +554,7 @@ namespace Gecko
         /// </summary>
         public bool MozFullScreen
         {
-            get { return _domDocument.GetMozFullScreenAttribute(); }
+            get { /*return _domDocument.GetMozFullScreenAttribute();*/  throw new NotImplementedException(); }
         }
 
 
@@ -515,7 +566,7 @@ namespace Gecko
         /// </summary>
         public bool MozFullScreenEnabled
         {
-            get { return _domDocument.GetMozFullScreenEnabledAttribute(); }
+            get { /*return _domDocument.GetMozFullScreenEnabledAttribute(); */  throw new NotImplementedException(); }
         }
 
         ///// <summary>
@@ -547,24 +598,25 @@ namespace Gecko
         /// </summary>
         public bool MozHidden
         {
-            get { return _domDocument.GetMozHiddenAttribute(); }
+            get { /*return _domDocument.GetMozHiddenAttribute(); */  throw new NotImplementedException(); }
         }
 
         public string MozVisibilityState
         {
-            get { return nsString.Get(_domDocument.GetMozVisibilityStateAttribute); }
+            get { /*return nsString.Get(_domDocument.GetMozVisibilityStateAttribute);*/  throw new NotImplementedException(); }
         }
 
 
         public static GeckoDomDocument CreateDomDocumentWraper(nsIDOMDocument domDocument)
         {
-            var htmlDocument = Xpcom.QueryInterface<nsIDOMHTMLDocument>(domDocument);
-            if (htmlDocument != null)
-            {
-                Marshal.ReleaseComObject(htmlDocument);
-                return new GeckoDocument((nsIDOMHTMLDocument) domDocument);
-            }
-            return new GeckoDomDocument(domDocument);
+            //var htmlDocument = Xpcom.QueryInterface<nsIDOMHTMLDocument>(domDocument);
+            //if (htmlDocument != null)
+            //{
+            //    Marshal.ReleaseComObject(htmlDocument);
+            //    return new GeckoDocument((nsIDOMHTMLDocument) domDocument);
+            //}
+            //return new GeckoDomDocument(domDocument);
+            throw new NotImplementedException();
         }
     }
 }

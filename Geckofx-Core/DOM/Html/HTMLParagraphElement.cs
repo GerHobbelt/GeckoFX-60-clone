@@ -21,8 +21,8 @@ namespace Gecko.DOM
 
         public string Align
         {
-            get { return nsString.Get(DOMHTMLElement.GetAlignAttribute); }
-            set { DOMHTMLElement.SetAlignAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetAlignAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetAlignAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Gecko.Collections;
 
 namespace Gecko.Windows
@@ -45,7 +46,8 @@ namespace Gecko.Windows
 
         public bool CommitListBuild()
         {
-            return _jumpListBuilder.CommitListBuild();
+            //return _jumpListBuilder.CommitListBuild();
+            throw new NotImplementedException();
         }
 
         public bool DeleteActiveList()

@@ -18,7 +18,7 @@ namespace Gecko.Certificates
 
         public IntPtr RawCertList
         {
-            get { return _list.Instance.GetRawCertList(); }
+            get { /*return _list.Instance.GetRawCertList();*/throw new NotImplementedException(); }
         }
 
         public IEnumerator<Certificate> GetEnumerator()
@@ -38,7 +38,8 @@ namespace Gecko.Certificates
 
         public void DeleteCert(Certificate certificate)
         {
-            _list.Instance.DeleteCert(certificate._cert.Instance);
+            //_list.Instance.DeleteCert(certificate._cert.Instance);
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace Gecko
 {
     /// <summary>
@@ -22,7 +24,7 @@ namespace Gecko
         /// </summary>
         public string Name
         {
-            get { return nsString.Get(DomAttr.GetNameAttribute); }
+            get { /*return nsString.Get(DomAttr.GetNameAttribute);*/ throw new NotImplementedException();}
         }
 
         /// <summary>
@@ -30,7 +32,14 @@ namespace Gecko
         /// </summary>
         public GeckoNode OwnerDocument
         {
-            get { return GeckoNode.Create((/* nsIDOMHTMLElement */nsISupports) DomAttr.GetOwnerDocumentAttribute()); }
+            get
+            {
+                throw new NotImplementedException();
+#if PORTFF60
+                return GeckoNode.Create((/* nsIDOMHTMLElement */nsISupports) DomAttr.GetOwnerDocumentAttribute());
+#endif
+
+            }
         }
 
         /// <summary>
@@ -38,7 +47,7 @@ namespace Gecko
         /// </summary>
         public bool Specified
         {
-            get { return DomAttr.GetSpecifiedAttribute(); }
+            get { /*return DomAttr.GetSpecifiedAttribute();*/throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -46,8 +55,8 @@ namespace Gecko
         /// </summary>
         public string Value
         {
-            get { return nsString.Get(DomAttr.GetValueAttribute); }
-            set { nsString.Set(DomAttr.SetValueAttribute, value); }
+            get { /*return nsString.Get(DomAttr.GetValueAttribute);*/throw new NotImplementedException(); }
+            set {/* nsString.Set(DomAttr.SetValueAttribute, value);*/throw new NotImplementedException(); }
         }
     }
 }

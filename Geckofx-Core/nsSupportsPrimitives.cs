@@ -58,7 +58,7 @@ namespace Gecko
                     return GetDouble((nsISupportsDouble) value);
                     //TYPE_VOID 	16 	Corresponding to nsISupportsVoid .
                 case 16:
-                    return GetVoid((nsISupportsVoid) value);
+                    return GetVoid((/*nsISupportsVoid*/nsISupports) value);
                     //TYPE_INTERFACE_POINTER 	17 	Corresponding to nsISupportsInterfacePointer .
                 case 17:
                     return GetInterfacePointer((nsISupportsInterfacePointer) value);
@@ -143,7 +143,8 @@ namespace Gecko
 
         public static IntPtr GetVoid(nsISupports value)
         {
-            return value.GetDataAttribute();
+            //return value.GetDataAttribute();
+            throw new NotImplementedException();
         }
 
         internal static nsISupports GetInterfacePointer(nsISupportsInterfacePointer value)

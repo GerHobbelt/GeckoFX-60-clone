@@ -223,7 +223,8 @@ namespace Gecko
         /// </summary>
         public void StartBatchChanges()
         {
-            ((nsISelectionPrivate) Selection).StartBatchChanges();
+            //((nsISelectionPrivate) Selection).StartBatchChanges();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -231,7 +232,8 @@ namespace Gecko
         /// </summary>
         public void EndBatchChanges()
         {
-            ((nsISelectionPrivate) Selection).EndBatchChanges();
+            //((nsISelectionPrivate) Selection).EndBatchChanges();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -303,7 +305,7 @@ namespace Gecko
 
         public int StartOffset
         {
-            get { return DomRange.GetStartOffsetAttribute(); }
+            get { /*return DomRange.GetStartOffsetAttribute();*/throw new NotImplementedException(); }
         }
 
         public GeckoNode EndContainer
@@ -313,7 +315,7 @@ namespace Gecko
 
         public int EndOffset
         {
-            get { return DomRange.GetEndOffsetAttribute(); }
+            get { /*return DomRange.GetEndOffsetAttribute();*/throw new NotImplementedException(); }
         }
 
         public bool Collapsed
@@ -328,12 +330,14 @@ namespace Gecko
 
         public void SetStart(GeckoNode node, int offset)
         {
-            DomRange.SetStart((nsIDOMNode) node.DomObject, offset);
+            //DomRange.SetStart((nsIDOMNode) node.DomObject, offset);
+            throw new NotImplementedException();
         }
 
         public void SetEnd(GeckoNode node, int offset)
         {
-            DomRange.SetEnd((nsIDOMNode) node.DomObject, offset);
+            //DomRange.SetEnd((nsIDOMNode) node.DomObject, offset);
+            throw new NotImplementedException();
         }
 
         public void SetStartBefore(GeckoNode node)
@@ -461,7 +465,8 @@ namespace Gecko
 
         public bool IsPointInRange(GeckoNode node, int offset)
         {
-            return DomRange.IsPointInRange(node.DomObject, offset);
+            //return DomRange.IsPointInRange(node.DomObject, offset);
+            throw new NotImplementedException();
         }
     }
 }

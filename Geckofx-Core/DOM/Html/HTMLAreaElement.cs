@@ -21,38 +21,38 @@ namespace Gecko.DOM
 
         public string Alt
         {
-            get { return nsString.Get(DOMHTMLElement.GetAltAttribute); }
-            set { DOMHTMLElement.SetAltAttribute(new nsAString(value)); }
+            get {/* return nsString.Get(DOMHTMLElement.GetAltAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetAltAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Coords
         {
-            get { return nsString.Get(DOMHTMLElement.GetCoordsAttribute); }
-            set { DOMHTMLElement.SetCoordsAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetCoordsAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetCoordsAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Href
         {
-            get { return nsString.Get(DOMHTMLElement.GetHrefAttribute); }
-            set { DOMHTMLElement.SetHrefAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetHrefAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetHrefAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public bool NoHref
         {
-            get { return DOMHTMLElement.GetNoHrefAttribute(); }
-            set { DOMHTMLElement.SetNoHrefAttribute(value); }
+            get { /*return DOMHTMLElement.GetNoHrefAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetNoHrefAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string Shape
         {
-            get { return nsString.Get(DOMHTMLElement.GetShapeAttribute); }
-            set { DOMHTMLElement.SetShapeAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetShapeAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetShapeAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Target
         {
-            get { return nsString.Get(DOMHTMLElement.GetTargetAttribute); }
-            set { DOMHTMLElement.SetTargetAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetTargetAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetTargetAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

@@ -50,7 +50,8 @@ namespace Gecko.Windows
 
         public void SetGroupIdForWindow(GeckoWindow aParent, string aIdentifier)
         {
-            nsString.Set(x => _winTaskbar.Instance.SetGroupIdForWindow(aParent.DomWindow, x), aIdentifier);
+            //nsString.Set(x => _winTaskbar.Instance.SetGroupIdForWindow(aParent.DomWindow, x), aIdentifier);
+            throw new NotImplementedException();
         }
     }
 }

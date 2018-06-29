@@ -14,12 +14,12 @@ namespace Gecko.Interop
 
         public string ContractID
         {
-            get { return _classInfo.Instance.GetContractIDAttribute(); }
+            get { /*return _classInfo.Instance.GetContractIDAttribute();*/throw new NotImplementedException(); }
         }
 
         public string ClassDescription
         {
-            get { return _classInfo.Instance.GetClassDescriptionAttribute(); }
+            get { /*return _classInfo.Instance.GetClassDescriptionAttribute();*/throw new NotImplementedException(); }
         }
 
         public ClassInfoFlags Flags

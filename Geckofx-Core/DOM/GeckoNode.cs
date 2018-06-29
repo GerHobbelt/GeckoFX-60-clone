@@ -101,8 +101,8 @@ namespace Gecko
         /// </summary>
         public string TextContent
         {
-            get { return nsString.Get(_domNode.Instance.GetTextContentAttribute); }
-            set { nsString.Set(_domNode.Instance.SetTextContentAttribute, value); }
+            get { /*return nsString.Get(_domNode.Instance.GetTextContentAttribute);*/  throw new NotImplementedException(); }
+            set { /*nsString.Set(_domNode.Instance.SetTextContentAttribute, value);*/   throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -110,13 +110,13 @@ namespace Gecko
         /// </summary>
         public string NodeValue
         {
-            get { return nsString.Get(_domNode.Instance.GetNodeValueAttribute); }
-            set { nsString.Set(_domNode.Instance.SetNodeValueAttribute, value); }
+            get { /*return nsString.Get(_domNode.Instance.GetNodeValueAttribute);*/  throw new NotImplementedException(); }
+            set {/* nsString.Set(_domNode.Instance.SetNodeValueAttribute, value);*/  throw new NotImplementedException(); }
         }
 
         public string NodeName
         {
-            get { return nsString.Get(_domNode.Instance.GetNodeNameAttribute); }
+            get { /*return nsString.Get(_domNode.Instance.GetNodeNameAttribute);*/  throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -124,41 +124,42 @@ namespace Gecko
         /// </summary>
         public GeckoNodeCollection ChildNodes
         {
-            get { return _domNode.Instance.GetChildNodesAttribute().Wrap(GeckoNodeCollection.Create); }
+            get { /*return _domNode.Instance.GetChildNodesAttribute().Wrap(GeckoNodeCollection.Create);*/  throw new NotImplementedException(); }
         }
 
         public GeckoNode FirstChild
         {
-            get { return _domNode.Instance.GetFirstChildAttribute().Wrap(Create); }
+            get { /*return _domNode.Instance.GetFirstChildAttribute().Wrap(Create);*/  throw new NotImplementedException(); }
         }
 
         public GeckoNode LastChild
         {
-            get { return _domNode.Instance.GetLastChildAttribute().Wrap(Create); }
+            get { /*return _domNode.Instance.GetLastChildAttribute().Wrap(Create); */  throw new NotImplementedException(); }
         }
 
         public GeckoNode NextSibling
         {
-            get { return _domNode.Instance.GetNextSiblingAttribute().Wrap(Create); }
+            get {/* return _domNode.Instance.GetNextSiblingAttribute().Wrap(Create);*/  throw new NotImplementedException(); }
         }
 
         public GeckoNode PreviousSibling
         {
-            get { return _domNode.Instance.GetPreviousSiblingAttribute().Wrap(Create); }
+            get { /*return _domNode.Instance.GetPreviousSiblingAttribute().Wrap(Create);*/   throw new NotImplementedException(); }
         }
 
         public bool HasChildNodes
         {
-            get { return _domNode.Instance.HasChildNodes(); }
+            get { /*return _domNode.Instance.HasChildNodes();*/  throw new NotImplementedException(); }
         }
 
         public virtual GeckoDocument OwnerDocument
         {
             get
             {
-                return
-                    GeckoDocument.Create(
-                        Xpcom.QueryInterface<nsIDOMHTMLDocument>(_domNode.Instance.GetOwnerDocumentAttribute()));
+                //return
+                //    GeckoDocument.Create(
+                //        Xpcom.QueryInterface<nsIDOMHTMLDocument>(_domNode.Instance.GetOwnerDocumentAttribute()));
+                throw new NotImplementedException();
             }
         }
 
@@ -167,13 +168,15 @@ namespace Gecko
             if (node == null)
                 throw new ArgumentNullException("node");
 
-            _domNode.Instance.AppendChild(node._domNode.Instance);
+            //_domNode.Instance.AppendChild(node._domNode.Instance);
+            throw new NotImplementedException();
             return node;
         }
 
         public GeckoNode CloneNode(bool deep)
         {
-            return GeckoNode.Create(_domNode.Instance.CloneNode(deep, 1));
+            //return GeckoNode.Create(_domNode.Instance.CloneNode(deep, 1));
+            throw new NotImplementedException();
         }
 
         public GeckoNode InsertBefore(GeckoNode newChild, GeckoNode before)
@@ -183,7 +186,8 @@ namespace Gecko
             if (before == null)
                 throw new ArgumentNullException("before");
 
-            _domNode.Instance.InsertBefore(newChild._domNode.Instance, before._domNode.Instance);
+            //_domNode.Instance.InsertBefore(newChild._domNode.Instance, before._domNode.Instance);
+            throw new NotImplementedException();
             return newChild;
         }
 
@@ -192,7 +196,8 @@ namespace Gecko
             if (node == null)
                 throw new ArgumentNullException("node");
 
-            _domNode.Instance.RemoveChild(node._domNode.Instance);
+            //_domNode.Instance.RemoveChild(node._domNode.Instance);
+            throw new NotImplementedException();
             return node;
         }
 
@@ -203,23 +208,24 @@ namespace Gecko
             if (oldChild == null)
                 throw new ArgumentNullException("oldChild");
 
-            _domNode.Instance.ReplaceChild(newChild._domNode.Instance, oldChild._domNode.Instance);
+            //_domNode.Instance.ReplaceChild(newChild._domNode.Instance, oldChild._domNode.Instance);
+            throw new NotImplementedException();
             return newChild;
         }
 
         public string NamespaceURI
         {
-            get { return nsString.Get(_domNode.Instance.GetNamespaceURIAttribute); }
+            get { /*return nsString.Get(_domNode.Instance.GetNamespaceURIAttribute);*/ throw new NotImplementedException(); }
         }
 
         public string Prefix
         {
-            get { return nsString.Get(_domNode.Instance.GetPrefixAttribute); }
+            get { /*return nsString.Get(_domNode.Instance.GetPrefixAttribute);*/ throw new NotImplementedException(); }
         }
 
         public string LocalName
         {
-            get { return nsString.Get(_domNode.Instance.GetLocalNameAttribute); }
+            get { /*return nsString.Get(_domNode.Instance.GetLocalNameAttribute);*/ throw new NotImplementedException(); }
         }
 
         private NodeType m_cachedType;
@@ -231,19 +237,21 @@ namespace Gecko
                 if (m_cachedType != 0)
                     return m_cachedType;
 
-                return m_cachedType = (NodeType) _domNode.Instance.GetNodeTypeAttribute();
+                //return m_cachedType = (NodeType) _domNode.Instance.GetNodeTypeAttribute();
+                throw new NotImplementedException();
             }
         }
 
         public GeckoNode ParentNode
         {
-            get { return _domNode.Instance.GetParentNodeAttribute().Wrap(Create); }
+            get { /*return _domNode.Instance.GetParentNodeAttribute().Wrap(Create);*/ throw new NotImplementedException(); }
         }
 
         public GeckoElement ParentElement
         {
             get
             {
+#if PORTFF60
                 nsIDOMNode node = _domNode.Instance.GetParentNodeAttribute();
                 while (node != null && !(node is nsIDOMElement))
                 {
@@ -252,6 +260,8 @@ namespace Gecko
                 // after cycle node is nsIDOMElement or null
 
                 return ((nsIDOMElement) node).Wrap(GeckoElement.CreateDomElementWrapper);
+#endif
+                throw new NotImplementedException();
             }
         }
 
@@ -259,6 +269,7 @@ namespace Gecko
         private nsIXPathResult EvaluateXPathInternal(string xpath)
         {
             nsIXPathResult result;
+#if PORTFF60
             using (var evaluator = Xpcom.CreateInstance2<nsIDOMXPathEvaluator>(Contracts.XPathEvaluator))
             {
                 var node = DomObject;
@@ -269,6 +280,8 @@ namespace Gecko
             }
 
             return result;
+#endif
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -300,6 +313,7 @@ namespace Gecko
                 // TODO: (Idenally I would generate these calls via a webidl-> C# compiler but for now just do it via manually written spidermonkey calls..)
                 var resultType = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "resultType").ToInteger();
 
+#if PORTFF60
                 switch (resultType)
                 {
                     case nsIDOMXPathResultConsts.UNORDERED_NODE_ITERATOR_TYPE:
@@ -316,6 +330,8 @@ namespace Gecko
                                     .ToComObject(context.ContextPointer);
                         break;
                 }
+#endif
+                throw new NotImplementedException();
                 var ret = singleNode.Wrap(GeckoNode.Create);
                 Xpcom.FreeComObject(ref r);
                 return ret;
@@ -334,6 +350,7 @@ namespace Gecko
                 // TODO: (Idenally I would generate these calls via a webidl-> C# compiler but for now just do it via manually written spidermonkey calls..)
                 var resultType = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "resultType").ToInteger();
 
+#if PORTFF60
                 switch (resultType)
                 {
                     case nsIDOMXPathResultConsts.UNORDERED_NODE_ITERATOR_TYPE:
@@ -359,7 +376,10 @@ namespace Gecko
                                     .ToComObject(context.ContextPointer);
                         break;
                 }
+#endif
+                throw new NotImplementedException();
             }
+
             var ret = singleNode.Wrap(GeckoNode.Create);
             Xpcom.FreeComObject(ref r);
             return ret;

@@ -21,122 +21,124 @@ namespace Gecko.DOM
 
         public string DefaultValue
         {
-            get { return nsString.Get(DOMHTMLElement.GetDefaultValueAttribute); }
-            set { DOMHTMLElement.SetDefaultValueAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetDefaultValueAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetDefaultValueAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public bool DefaultChecked
         {
-            get { return DOMHTMLElement.GetDefaultCheckedAttribute(); }
-            set { DOMHTMLElement.SetDefaultCheckedAttribute(value); }
+            get { /*return DOMHTMLElement.GetDefaultCheckedAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetDefaultCheckedAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public GeckoFormElement Form
         {
             get
             {
-                nsIDOMHTMLFormElement formElement = DOMHTMLElement.GetFormAttribute();
+                //nsIDOMHTMLFormElement formElement = DOMHTMLElement.GetFormAttribute();
 
-                if (formElement == null)
-                    return null;
-                else
-                    return new GeckoFormElement(formElement);
+                //if (formElement == null)
+                //    return null;
+                //else
+                //    return new GeckoFormElement(formElement);
+                throw new NotImplementedException();
             }
         }
 
         public string Accept
         {
-            get { return nsString.Get(DOMHTMLElement.GetAcceptAttribute); }
-            set { DOMHTMLElement.SetAcceptAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetAcceptAttribute);*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetAcceptAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Align
         {
-            get { return nsString.Get(DOMHTMLElement.GetAlignAttribute); }
-            set { DOMHTMLElement.SetAlignAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetAlignAttribute);*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetAlignAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Alt
         {
-            get { return nsString.Get(DOMHTMLElement.GetAltAttribute); }
-            set { DOMHTMLElement.SetAltAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetAltAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetAltAttribute(new nsAString(value));*/ throw new NotImplementedException(); }
         }
 
         public bool Checked
         {
-            get { return DOMHTMLElement.GetCheckedAttribute(); }
-            set { DOMHTMLElement.SetCheckedAttribute(value); }
+            get { /*return DOMHTMLElement.GetCheckedAttribute();*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetCheckedAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public bool Disabled
         {
-            get { return DOMHTMLElement.GetDisabledAttribute(); }
-            set { DOMHTMLElement.SetDisabledAttribute(value); }
+            get {/* return DOMHTMLElement.GetDisabledAttribute();*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetDisabledAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public int MaxLength
         {
-            get { return DOMHTMLElement.GetMaxLengthAttribute(); }
-            set { DOMHTMLElement.SetMaxLengthAttribute(value); }
+            get { /*return DOMHTMLElement.GetMaxLengthAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetMaxLengthAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string Name
         {
-            get { return nsString.Get(DOMHTMLElement.GetNameAttribute); }
-            set { DOMHTMLElement.SetNameAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetNameAttribute);*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetNameAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public bool ReadOnly
         {
-            get { return DOMHTMLElement.GetReadOnlyAttribute(); }
-            set { DOMHTMLElement.SetReadOnlyAttribute(value); }
+            get { /*return DOMHTMLElement.GetReadOnlyAttribute(); */throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetReadOnlyAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public uint Size
         {
-            get { return DOMHTMLElement.GetSizeAttribute(); }
-            set { DOMHTMLElement.SetSizeAttribute(value); }
+            get { /*return DOMHTMLElement.GetSizeAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetSizeAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string Src
         {
-            get { return nsString.Get(DOMHTMLElement.GetSrcAttribute); }
-            set { DOMHTMLElement.SetSrcAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetSrcAttribute);*/throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetSrcAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Type
         {
-            get { return nsString.Get(DOMHTMLElement.GetTypeAttribute); }
-            set { DOMHTMLElement.SetTypeAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetTypeAttribute); */throw new NotImplementedException(); }
+            set {/* DOMHTMLElement.SetTypeAttribute(new nsAString(value)); */throw new NotImplementedException(); }
         }
 
         public string UseMap
         {
-            get { return nsString.Get(DOMHTMLElement.GetUseMapAttribute); }
-            set { DOMHTMLElement.SetUseMapAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetUseMapAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetUseMapAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Value
         {
-            get { return nsString.Get(DOMHTMLElement.GetValueAttribute); }
-            set { DOMHTMLElement.SetValueAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetValueAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetValueAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public int SelectionStart
         {
-            get { return DOMHTMLElement.GetSelectionStartAttribute(); }
-            set { DOMHTMLElement.SetSelectionStartAttribute(value); }
+            get { /*return DOMHTMLElement.GetSelectionStartAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetSelectionStartAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public int SelectionEnd
         {
-            get { return DOMHTMLElement.GetSelectionEndAttribute(); }
-            set { DOMHTMLElement.SetSelectionEndAttribute(value); }
+            get {/* return DOMHTMLElement.GetSelectionEndAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetSelectionEndAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public void select()
         {
-            DOMHTMLElement.Select();
+            //DOMHTMLElement.Select();
+            throw new NotImplementedException();
         }
     }
 }

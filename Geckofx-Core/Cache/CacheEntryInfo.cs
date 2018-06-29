@@ -29,7 +29,7 @@ namespace Gecko.Cache
 
         public string ClientID
         {
-            get { return _cacheEntryInfo.Instance.GetClientIDAttribute(); }
+            get { /*return _cacheEntryInfo.Instance.GetClientIDAttribute();*/ throw new NotImplementedException(); }
         }
 
         public uint DataSize
@@ -39,7 +39,7 @@ namespace Gecko.Cache
 
         public string DeviceID
         {
-            get { return _cacheEntryInfo.Instance.GetDeviceIDAttribute(); }
+            get { /*return _cacheEntryInfo.Instance.GetDeviceIDAttribute();*/ throw new NotImplementedException(); }
         }
 
         public uint ExpirationTimeNative

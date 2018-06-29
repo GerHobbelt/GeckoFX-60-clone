@@ -17,7 +17,7 @@ namespace Gecko
 
         public static int NumberOfScreens
         {
-            get { return (int) _screenManager.Instance.GetNumberOfScreensAttribute(); }
+            get { /*return (int) _screenManager.Instance.GetNumberOfScreensAttribute();*/throw new NotImplementedException(); }
         }
 
         public static Screen PrimaryScreen

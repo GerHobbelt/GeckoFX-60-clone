@@ -156,7 +156,8 @@ namespace Gecko
         /// </summary>
         public int GetProgressMode(int row, TreeColumn col)
         {
-            return _treeView.GetProgressMode(row, col._treeColumn);
+            //return _treeView.GetProgressMode(row, col._treeColumn);
+            throw new NotImplementedException();
         }
 
         /// <summary>

@@ -21,8 +21,8 @@ namespace Gecko.DOM
 
         public bool Compact
         {
-            get { return DOMHTMLElement.GetCompactAttribute(); }
-            set { DOMHTMLElement.SetCompactAttribute(value); }
+            get { /*return DOMHTMLElement.GetCompactAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetCompactAttribute(value);*/throw new NotImplementedException(); }
         }
     }
 }

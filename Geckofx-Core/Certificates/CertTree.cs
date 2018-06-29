@@ -1,3 +1,5 @@
+using System;
+
 namespace Gecko.Certificates
 {
     public sealed class CertTree
@@ -50,7 +52,8 @@ namespace Gecko.Certificates
         /// <returns>A System.Boolean</returns>
         public bool IsHostPortOverride(uint index)
         {
-            return _certTree.IsHostPortOverride(index);
+            //return _certTree.IsHostPortOverride(index);
+            throw new NotImplementedException();
         }
 
         /// <summary>Member DeleteEntryObject </summary>

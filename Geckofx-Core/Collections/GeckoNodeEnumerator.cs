@@ -122,12 +122,14 @@ namespace Gecko.Collections
             public Wrapper2(/* nsIDOMHTMLCollection */nsISupports collection)
             {
                 _collection = collection;
-                _length = (int) collection.GetLengthAttribute();
+                //_length = (int) collection.GetLengthAttribute();
+                throw new NotImplementedException();
             }
 
             public override nsIDOMNode Item(uint index)
             {
-                return _collection.Item(index);
+                //return _collection.Item(index);
+                throw new NotImplementedException();
             }
 
             public override int Length

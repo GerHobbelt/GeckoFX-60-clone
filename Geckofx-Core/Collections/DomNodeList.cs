@@ -73,19 +73,20 @@ namespace Gecko.Collections
 
         public int Length
         {
-            get { return (int) _collection.GetLengthAttribute(); }
+            get {/* return (int) _collection.GetLengthAttribute();*/ throw new NotImplementedException(); }
         }
 
         public TWrapper this[int index]
         {
             get
             {
-                var item = _collection.Item((uint) index);
-                if (item is TGeckoNode)
-                {
-                    return ((TGeckoNode) item).Wrap(_translator);
-                }
-                return null;
+                //var item = _collection.Item((uint) index);
+                //if (item is TGeckoNode)
+                //{
+                //    return ((TGeckoNode) item).Wrap(_translator);
+                //}
+                //return null;
+                throw new NotImplementedException();
             }
         }
 
@@ -93,12 +94,13 @@ namespace Gecko.Collections
         {
             get
             {
-                var item = nsString.Pass(_collection.NamedItem, name);
-                if (item is TGeckoNode)
-                {
-                    return ((TGeckoNode) item).Wrap(_translator);
-                }
-                return null;
+                //var item = nsString.Pass(_collection.NamedItem, name);
+                //if (item is TGeckoNode)
+                //{
+                //    return ((TGeckoNode) item).Wrap(_translator);
+                //}
+                //return null;
+                throw new NotImplementedException();
             }
         }
 

@@ -21,14 +21,14 @@ namespace Gecko.DOM
 
         public string Type
         {
-            get { return nsString.Get(DOMHTMLElement.GetTypeAttribute); }
-            set { DOMHTMLElement.SetTypeAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetTypeAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetTypeAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public int Value
         {
-            get { return DOMHTMLElement.GetValueAttribute(); }
-            set { DOMHTMLElement.SetValueAttribute(value); }
+            get { /*return DOMHTMLElement.GetValueAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetValueAttribute(value);*/throw new NotImplementedException(); }
         }
     }
 }

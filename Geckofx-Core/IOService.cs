@@ -18,8 +18,8 @@ namespace Gecko
 
         public static bool Offline
         {
-            get { return _service.Instance.GetOfflineAttribute(); }
-            set { _service.Instance.SetOfflineAttribute(value); }
+            get { /*return _service.Instance.GetOfflineAttribute();*/throw new NotImplementedException(); }
+            set { /*_service.Instance.SetOfflineAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public static nsIURI CreateNsIUri(string url)
@@ -27,7 +27,8 @@ namespace Gecko
             nsIURI ret;
             using (var str = new nsAUTF8String(url))
             {
-                ret = _service.Instance.NewURI(str, null, null);
+                //ret = _service.Instance.NewURI(str, null, null);
+                throw new NotImplementedException();
             }
             return ret;
         }
@@ -47,19 +48,21 @@ namespace Gecko
 
         public static nsIChannel NewChannelFromUri(nsIURI uri)
         {
-            return _service.Instance.NewChannelFromURI(uri);
+            //return _service.Instance.NewChannelFromURI(uri);
+            throw new NotImplementedException();
         }
 
         public static nsIChannel NewChannelFromUriWithProxyFlags(nsIURI uri, nsIURI proxyUri, uint proxyFlags)
         {
-            return _service.Instance.NewChannelFromURIWithProxyFlags(uri, proxyUri, proxyFlags);
+            //return _service.Instance.NewChannelFromURIWithProxyFlags(uri, proxyUri, proxyFlags);
+            throw new NotImplementedException();
         }
 
 
         public static bool ManageOfflineStatus
         {
-            get { return _service.Instance.GetManageOfflineStatusAttribute(); }
-            set { _service.Instance.SetManageOfflineStatusAttribute(value); }
+            get { /*return _service.Instance.GetManageOfflineStatusAttribute();*/throw new NotImplementedException(); }
+            set { /*_service.Instance.SetManageOfflineStatusAttribute(value);*/throw new NotImplementedException(); }
         }
     }
 }

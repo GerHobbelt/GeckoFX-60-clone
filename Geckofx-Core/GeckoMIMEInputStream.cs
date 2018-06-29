@@ -33,7 +33,7 @@ namespace Gecko
 
         public bool AddContentLength
         {
-            set { _inputStream.Instance.SetAddContentLengthAttribute(value); }
+            set { /*_inputStream.Instance.SetAddContentLengthAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public void AddHeader(string name, string value)

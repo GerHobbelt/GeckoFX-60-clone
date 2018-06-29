@@ -15,7 +15,7 @@ namespace Gecko
 
         public override int Length
         {
-            get { return (Collection == null) ? 0 : (int) Collection.GetLengthAttribute(); }
+            get { /*return (Collection == null) ? 0 : (int) Collection.GetLengthAttribute();*/throw new NotImplementedException(); }
         }
 
         public override GeckoHtmlElement this[int index]
@@ -25,17 +25,19 @@ namespace Gecko
                 if (index < 0 || index >= Length)
                     throw new ArgumentOutOfRangeException("index");
 
-                return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) Collection.Item((uint) index));
+                //return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) Collection.Item((uint) index));
+                throw new NotImplementedException();
             }
         }
 
         public override IEnumerator<GeckoHtmlElement> GetEnumerator()
         {
             int length = Length;
-            for (int i = 0; i < length; i++)
-            {
-                yield return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) Collection.Item((uint) i));
-            }
+            //for (int i = 0; i < length; i++)
+            //{
+            //    yield return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) Collection.Item((uint) i));
+            //}
+            throw new NotImplementedException();
         }
     }
 }

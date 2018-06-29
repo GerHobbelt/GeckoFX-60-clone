@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Gecko.DOM;
@@ -38,8 +39,9 @@ namespace Gecko
         {
             using (var typeArg = new nsAString(type))
             {
-                _domMouseEvent.InitMouseEvent(typeArg, canBubble, cancelable, view.DomWindow, detail, screenX, screenY,
-                    clientX, clientY, ctrlKey, altKey, shiftKey, metaKey, button, target.NativeObject);
+                throw new NotImplementedException();
+                //_domMouseEvent.InitMouseEvent(typeArg, canBubble, cancelable, view.DomWindow, detail, screenX, screenY,
+                //    clientX, clientY, ctrlKey, altKey, shiftKey, metaKey, button, target.NativeObject);
             }
         }
 

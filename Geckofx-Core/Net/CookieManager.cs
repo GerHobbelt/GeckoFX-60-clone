@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Gecko.Interop;
 
 namespace Gecko
@@ -15,58 +16,66 @@ namespace Gecko
         public static void Add(string host, string path, string name, string value, bool isSecure, bool isHttpOnly,
             bool isSession, long expiry)
         {
-            _cookieManager.Instance.Add(
-                new nsAUTF8String(host),
-                new nsAUTF8String(path),
-                new nsACString(name),
-                new nsACString(value),
-                isSecure,
-                isHttpOnly,
-                isSession,
-                expiry);
+            //_cookieManager.Instance.Add(
+            //    new nsAUTF8String(host),
+            //    new nsAUTF8String(path),
+            //    new nsACString(name),
+            //    new nsACString(value),
+            //    isSecure,
+            //    isHttpOnly,
+            //    isSession,
+            //    expiry);
+            throw new NotImplementedException();
         }
 
         public static bool CookieExists(Cookie cookie)
         {
-            return _cookieManager.Instance.CookieExists(cookie._cookie);
+            //return _cookieManager.Instance.CookieExists(cookie._cookie);
+            throw new NotImplementedException();
         }
 
         public static int CountCookiesFromHost(string host)
         {
             // int is big for cookie count :)
-            return (int) _cookieManager.Instance.CountCookiesFromHost(new nsAUTF8String(host));
+            //return (int) _cookieManager.Instance.CountCookiesFromHost(new nsAUTF8String(host));
+            throw new NotImplementedException();
         }
 
         public static IEnumerator<Cookie> GetCookiesFromHost(string host)
         {
-            return
-                new Collections.GeckoEnumerator<Cookie, nsICookie2>(
-                    _cookieManager.Instance.GetCookiesFromHost(new nsAUTF8String(host)),
-                    x => new Cookie(x));
+            //return
+            //    new Collections.GeckoEnumerator<Cookie, nsICookie2>(
+            //        _cookieManager.Instance.GetCookiesFromHost(new nsAUTF8String(host)),
+            //        x => new Cookie(x));
+            throw new NotImplementedException();
         }
 
         public static IEnumerator<Cookie> GetEnumerator()
         {
-            return new Collections.GeckoEnumerator<Cookie, nsICookie2>(_cookieManager.Instance.GetEnumeratorAttribute(),
-                x => new Cookie(x));
+            //return new Collections.GeckoEnumerator<Cookie, nsICookie2>(_cookieManager.Instance.GetEnumeratorAttribute(),
+            //    x => new Cookie(x));
+            throw new NotImplementedException();
         }
 
         public static void ImportCookies(string filename)
         {
-            _cookieManager.Instance.ImportCookies((nsIFile) Xpcom.NewNativeLocalFile(filename));
+            //_cookieManager.Instance.ImportCookies((nsIFile) Xpcom.NewNativeLocalFile(filename));
+            throw new NotImplementedException();
         }
 
         public static void Remove(string host, string name, string path, bool blocked)
         {
-            _cookieManager.Instance.Remove(new nsAUTF8String(host),
-                new nsACString(name),
-                new nsAUTF8String(path),
-                blocked);
+            //_cookieManager.Instance.Remove(new nsAUTF8String(host),
+            //    new nsACString(name),
+            //    new nsAUTF8String(path),
+            //    blocked);
+            throw new NotImplementedException();
         }
 
         public static void RemoveAll()
         {
-            _cookieManager.Instance.RemoveAll();
+            //_cookieManager.Instance.RemoveAll();
+            throw new NotImplementedException();
         }
     }
 

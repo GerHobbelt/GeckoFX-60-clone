@@ -27,8 +27,9 @@ namespace Gecko.DOM.Xul
         {
             get
             {
-                return
-                    GeckoStyle.Create(Xpcom.QueryInterface<nsIDOMElementCSSInlineStyle>(DomObject).GetStyleAttribute());
+                //return
+                //    GeckoStyle.Create(Xpcom.QueryInterface<nsIDOMElementCSSInlineStyle>(DomObject).GetStyleAttribute());
+                throw new NotImplementedException();
             }
         }
 

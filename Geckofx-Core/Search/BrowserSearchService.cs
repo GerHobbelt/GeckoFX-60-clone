@@ -44,7 +44,8 @@ namespace Gecko.Search
         {
             using (nsAString native1 = new nsAString(engineUrl), native2 = new nsAString(iconUrl))
             {
-                _browserSearchService.Instance.AddEngine(native1, dataType, native2, confirm, null);
+                //_browserSearchService.Instance.AddEngine(native1, dataType, native2, confirm, null);
+                throw new NotImplementedException();
             }
         }
 
@@ -83,8 +84,9 @@ namespace Gecko.Search
                 native6 = new nsAString(url),
                 native7 = new nsAString(String.Empty))
             {
-                _browserSearchService.Instance.AddEngineWithDetails(native1, native2, native3, native4, native5, native6,
-                    native7);
+                //_browserSearchService.Instance.AddEngineWithDetails(native1, native2, native3, native4, native5, native6,
+                //    native7);
+                throw new NotImplementedException();
             }
         }
 

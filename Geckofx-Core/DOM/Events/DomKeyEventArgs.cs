@@ -35,6 +35,7 @@
 
 #endregion END LICENSE BLOCK
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -46,42 +47,42 @@ namespace Gecko
     public class DomKeyEventArgs
         : DomUIEventArgs
     {
-        private /* nsIDOMKeyEvent */nsISupports _Event;
+        private /* nsIDOMKeyEvent */nsIDOMUIEvent _Event;
 
-        protected DomKeyEventArgs(/* nsIDOMKeyEvent */nsISupports ev)
+        protected DomKeyEventArgs(/* nsIDOMKeyEvent */nsIDOMUIEvent ev)
             : base(ev)
         {
             _Event = ev;
         }
 
-        public static DomKeyEventArgs Create(/* nsIDOMKeyEvent */nsISupports ev)
+        public static DomKeyEventArgs Create(/* nsIDOMKeyEvent */nsIDOMUIEvent ev)
         {
             return new DomKeyEventArgs(ev);
         }
 
         public uint KeyChar
         {
-            get { return _Event.GetCharCodeAttribute(); }
+            get { /*return _Event.GetCharCodeAttribute();*/ throw new NotImplementedException(); }
         }
 
         public uint KeyCode
         {
-            get { return _Event.GetKeyCodeAttribute(); }
+            get { /*return _Event.GetKeyCodeAttribute();*/  throw new NotImplementedException(); }
         }
 
         public bool AltKey
         {
-            get { return _Event.GetAltKeyAttribute(); }
+            get { /*return _Event.GetAltKeyAttribute();*/  throw new NotImplementedException(); }
         }
 
         public bool CtrlKey
         {
-            get { return _Event.GetCtrlKeyAttribute(); }
+            get { /*return _Event.GetCtrlKeyAttribute();*/  throw new NotImplementedException(); }
         }
 
         public bool ShiftKey
         {
-            get { return _Event.GetShiftKeyAttribute(); }
+            get {/* return _Event.GetShiftKeyAttribute();*/  throw new NotImplementedException(); }
         }
     }
 }

@@ -287,12 +287,14 @@ namespace Gecko
                     const int GetSafeJSContextSlotPosition = 12;
 
                     ComPtr<nsIXPConnect> xpc = Xpcom.XPConnect;
+#if PORTFF60
                     int slot = xpc.GetSlotOfComMethod(new Func<IntPtr>(xpc.Instance.GetSafeJSContext));
                     var getSafeJSContext =
                         xpc.GetComMethod<Xpcom.GetSafeJSContextDelegate>(Xpcom.IsLinux
                             ? GetSafeJSContextSlotPosition
                             : slot);
                     _safeContext = getSafeJSContext(xpc.Instance);
+#endif
                 }
                 return _safeContext;
             }

@@ -21,20 +21,20 @@ namespace Gecko.DOM
 
         public bool Disabled
         {
-            get { return DOMHTMLElement.GetDisabledAttribute(); }
-            set { DOMHTMLElement.SetDisabledAttribute(value); }
+            get { /*return DOMHTMLElement.GetDisabledAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetDisabledAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string Media
         {
-            get { return nsString.Get(DOMHTMLElement.GetMediaAttribute); }
-            set { DOMHTMLElement.SetMediaAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetMediaAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetMediaAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
 
         public string Type
         {
-            get { return nsString.Get(DOMHTMLElement.GetTypeAttribute); }
-            set { DOMHTMLElement.SetTypeAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetTypeAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetTypeAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

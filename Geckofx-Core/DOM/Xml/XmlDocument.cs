@@ -11,21 +11,22 @@ namespace Gecko.DOM.Xml
         private nsIDOMXMLDocument _xmlDocument;
 
         internal XmlDocument(nsIDOMXMLDocument document)
-            : base(document)
+            : base((nsIDOMDocument)document)
         {
             _xmlDocument = document;
         }
 
         public bool Async
         {
-            get { return _xmlDocument.GetAsyncAttribute(); }
-            set { _xmlDocument.SetAsyncAttribute(value); }
+            get { /*return _xmlDocument.GetAsyncAttribute();*/ throw new NotImplementedException(); }
+            set { /*_xmlDocument.SetAsyncAttribute(value);*/ throw new NotImplementedException(); }
         }
 
         public bool Load(string url)
         {
-            bool ret = nsString.Pass(_xmlDocument.Load, url);
-            return ret;
+            //bool ret = nsString.Pass(_xmlDocument.Load, url);
+            //return ret;
+            throw new NotImplementedException();
         }
     }
 }

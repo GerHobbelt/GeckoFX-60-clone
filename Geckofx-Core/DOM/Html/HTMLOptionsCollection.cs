@@ -16,18 +16,20 @@ namespace Gecko.DOM
 
         public uint Length
         {
-            get { return DOMHTMLElement.GetLengthAttribute(); }
-            set { DOMHTMLElement.SetLengthAttribute(value); }
+            get { /*return DOMHTMLElement.GetLengthAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetLengthAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public GeckoOptionElement item(uint index)
         {
-            return new GeckoOptionElement(DOMHTMLElement.Item(index));
+            //return new GeckoOptionElement(DOMHTMLElement.Item(index));
+            throw new NotImplementedException();
         }
 
         public GeckoOptionElement namedItem(string name)
         {
-            return new GeckoOptionElement(DOMHTMLElement.NamedItem(new nsAString(name)));
+            //return new GeckoOptionElement(DOMHTMLElement.NamedItem(new nsAString(name)));
+            throw new NotImplementedException();
         }
     }
 }

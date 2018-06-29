@@ -926,9 +926,10 @@ namespace Gecko
                 }
                 else if (uuid == typeof (nsIDOMDocument).GUID)
                 {
-                    obj =
-                        new WebIDL.Window(instance.GetContentDOMWindowAttribute(),
-                            (nsISupports) instance.GetContentDOMWindowAttribute()).Document;
+                    //obj =
+                    //    new WebIDL.Window(instance.GetContentDOMWindowAttribute(),
+                    //        (nsISupports) instance.GetContentDOMWindowAttribute()).Document;
+                    throw new NotImplementedException();
                 }
             }
 

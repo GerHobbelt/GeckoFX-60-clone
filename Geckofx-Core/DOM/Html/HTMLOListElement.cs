@@ -21,20 +21,20 @@ namespace Gecko.DOM
 
         public bool Compact
         {
-            get { return DOMHTMLElement.GetCompactAttribute(); }
-            set { DOMHTMLElement.SetCompactAttribute(value); }
+            get { /*return DOMHTMLElement.GetCompactAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetCompactAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public int Start
         {
-            get { return DOMHTMLElement.GetStartAttribute(); }
-            set { DOMHTMLElement.SetStartAttribute(value); }
+            get { /*return DOMHTMLElement.GetStartAttribute();*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetStartAttribute(value);*/throw new NotImplementedException(); }
         }
 
         public string Type
         {
-            get { return nsString.Get(DOMHTMLElement.GetTypeAttribute); }
-            set { DOMHTMLElement.SetTypeAttribute(new nsAString(value)); }
+            get { /*return nsString.Get(DOMHTMLElement.GetTypeAttribute);*/throw new NotImplementedException(); }
+            set { /*DOMHTMLElement.SetTypeAttribute(new nsAString(value));*/throw new NotImplementedException(); }
         }
     }
 }

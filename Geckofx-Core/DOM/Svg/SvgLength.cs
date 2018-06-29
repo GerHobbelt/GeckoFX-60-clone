@@ -22,13 +22,13 @@ namespace Gecko.DOM.Svg
 
         public SvgLengthType UnitType
         {
-            get { return (SvgLengthType) _domSvgLength.Instance.GetUnitTypeAttribute(); }
+            get { /*return (SvgLengthType) _domSvgLength.Instance.GetUnitTypeAttribute();*/throw new NotImplementedException(); }
         }
 
         public float Value
         {
-            get { return _domSvgLength.Instance.GetValueAttribute(); }
-            set { _domSvgLength.Instance.SetValueAttribute(value); }
+            get { /*return _domSvgLength.Instance.GetValueAttribute();*/throw new NotImplementedException(); }
+            set { /*_domSvgLength.Instance.SetValueAttribute(value);*/throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace Gecko.DOM.Svg
         /// </summary>
         public float ValueInSpecifiedUnits
         {
-            get { return _domSvgLength.Instance.GetValueInSpecifiedUnitsAttribute(); }
-            set { _domSvgLength.Instance.SetValueInSpecifiedUnitsAttribute(value); }
+            get { /*return _domSvgLength.Instance.GetValueInSpecifiedUnitsAttribute();*/throw new NotImplementedException(); }
+            set { /*_domSvgLength.Instance.SetValueInSpecifiedUnitsAttribute(value);*/throw new NotImplementedException(); }
         }
 
         /// <summary>
@@ -45,18 +45,20 @@ namespace Gecko.DOM.Svg
         /// </summary
         public string ValueAsString
         {
-            get { return nsString.Get(_domSvgLength.Instance.GetValueAsStringAttribute); }
-            set { nsString.Set(_domSvgLength.Instance.SetValueAsStringAttribute, value); }
+            get { /*return nsString.Get(_domSvgLength.Instance.GetValueAsStringAttribute);*/throw new NotImplementedException(); }
+            set { /*nsString.Set(_domSvgLength.Instance.SetValueAsStringAttribute, value);*/throw new NotImplementedException(); }
         }
 
         public void NewValueSpecifiedUnits(SvgLengthType unitType, float valueInSpecifiedUnits)
         {
-            _domSvgLength.Instance.NewValueSpecifiedUnits((ushort) unitType, valueInSpecifiedUnits);
+            //_domSvgLength.Instance.NewValueSpecifiedUnits((ushort) unitType, valueInSpecifiedUnits);
+            throw new NotImplementedException();
         }
 
         public void ConvertToSpecifiedUnits(SvgLengthType unitType)
         {
-            _domSvgLength.Instance.ConvertToSpecifiedUnits((ushort) unitType);
+            //_domSvgLength.Instance.ConvertToSpecifiedUnits((ushort) unitType);
+            throw new NotImplementedException();
         }
     }
 

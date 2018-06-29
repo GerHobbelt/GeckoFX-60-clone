@@ -18,7 +18,7 @@ namespace Gecko.Certificates
 
         public string Nickname
         {
-            get { return nsString.Get(_cert.Instance.GetNicknameAttribute); }
+            get { /*return nsString.Get(_cert.Instance.GetNicknameAttribute);*/ throw new NotImplementedException(); }
         }
 
         public string EmailAddress
@@ -103,12 +103,12 @@ namespace Gecko.Certificates
 
         public string DbKey
         {
-            get { return _cert.Instance.GetDbKeyAttribute(); }
+            get { /*return _cert.Instance.GetDbKeyAttribute();*/throw new NotImplementedException(); }
         }
 
         public string WindowTitle
         {
-            get { return nsString.Get(_cert.Instance.GetWindowTitleAttribute); }
+            get { /*return nsString.Get(_cert.Instance.GetWindowTitleAttribute);*/throw new NotImplementedException(); }
         }
 
         public Collections.IGeckoArray<Certificate> Chain
@@ -122,7 +122,8 @@ namespace Gecko.Certificates
 
         public void GetUsagesArray(bool localOnly, ref uint verified, ref uint count, ref System.IntPtr[] usages)
         {
-            _cert.Instance.GetUsagesArray(localOnly, ref verified, ref count, ref usages);
+            //_cert.Instance.GetUsagesArray(localOnly, ref verified, ref count, ref usages);
+            throw new NotImplementedException();
         }
 
         public string GetUsagesString(bool localOnly, ref uint verified)
@@ -130,7 +131,8 @@ namespace Gecko.Certificates
             string ret = null;
             using (nsAString str = new nsAString())
             {
-                _cert.Instance.GetUsagesString(localOnly, ref verified, str);
+                //_cert.Instance.GetUsagesString(localOnly, ref verified, str);
+                throw new NotImplementedException();
                 ret = str.ToString();
             }
             return ret;
@@ -176,7 +178,8 @@ namespace Gecko.Certificates
 
         public void GetAllTokenNames(ref uint length, ref System.IntPtr[] tokenNames)
         {
-            _cert.Instance.GetAllTokenNames(ref length, ref tokenNames);
+            //_cert.Instance.GetAllTokenNames(ref length, ref tokenNames);
+            throw new NotImplementedException();
         }
 
         public bool Equals(Certificate other)
