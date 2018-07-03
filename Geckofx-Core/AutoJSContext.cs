@@ -54,7 +54,7 @@ namespace Gecko
         #region fields
 
         private readonly IntPtr _cx;
-        private readonly nsIDOMWindow _window;
+        private readonly mozIDOMWindowProxy _window;
         private JSAutoCompartment _defaultCompartment;
         private Stack<JSAutoCompartment> _compartmentStack = new Stack<JSAutoCompartment>();
         private nsIXPCComponents _nsIXPCComponents;
@@ -86,11 +86,11 @@ namespace Gecko
         }
 
         public AutoJSContext(nsISupports window) :
-            this((nsIDOMWindow) window)
+            this((mozIDOMWindowProxy) window)
         {
         }
 
-        public AutoJSContext(nsIDOMWindow window)
+        public AutoJSContext(mozIDOMWindowProxy window)
         {
             var context = SafeJSContext;
             var go = (nsIGlobalObject) window;
@@ -105,7 +105,9 @@ namespace Gecko
                         "Window does not have a global JSObject. Purhaps the window doesn't have an initalized document?");
 
                 _contextToGlobalDictionary[context] = _globalJSObject;
+#if PORTFF60
                 _defaultCompartment = new JSAutoCompartment(SafeJSContext, _globalJSObject);
+#endif
                 _cx = context;
                 _window = window;
             }
@@ -144,9 +146,9 @@ namespace Gecko
         {
         }
 
-        #endregion
+#endregion
 
-        #region EvaluateScriptMethods
+#region EvaluateScriptMethods
 
         /// <summary>
         /// Evaluate javascript in the current context, in the global scope.
@@ -171,7 +173,7 @@ namespace Gecko
         /// <param name="javascript"></param>
         /// <param name="window"></param>
         /// <returns>result of javascript as JsVal</returns>
-        public JsVal EvaluateScript(string javascript, nsIDOMWindow window)
+        public JsVal EvaluateScript(string javascript, mozIDOMWindowProxy window)
         {
             return EvaluateScript(javascript, (nsISupports) window, (nsISupports) window);
         }
@@ -275,6 +277,9 @@ namespace Gecko
 
         #region static methods
 
+        [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false)]
+        private static extern IntPtr NS_GetSafeJSContext();
+
         public static IntPtr SafeJSContext
         {
             get
@@ -295,6 +300,8 @@ namespace Gecko
                             : slot);
                     _safeContext = getSafeJSContext(xpc.Instance);
 #endif
+
+                    _safeContext = NS_GetSafeJSContext();
                 }
                 return _safeContext;
             }
@@ -316,9 +323,9 @@ namespace Gecko
             return globalObject;
         }
 
-        #endregion
+#endregion
 
-        #region Non Public methods
+#region Non Public methods
 
         /// <summary>
         /// Helper method for EvaluateScript.
@@ -423,9 +430,9 @@ namespace Gecko
             return !success ? String.Empty : String.Format(" StackTrace: {0}", retJsVal);
         }
 
-        #endregion
+#endregion
 
-        #region IDisposable implementation.
+#region IDisposable implementation.
 
         public void Dispose()
         {
@@ -436,6 +443,6 @@ namespace Gecko
             GC.SuppressFinalize(this);
         }
 
-        #endregion
+#endregion
     }
 }

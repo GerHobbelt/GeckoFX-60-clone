@@ -42,12 +42,11 @@ namespace Gecko.Services
 
         public static GeckoWindow ActiveWindow
         {
-            get { /*return _watcher.Instance.GetActiveWindowAttribute().Wrap(x => new GeckoWindow(x));*/ throw new NotImplementedException(); }
+            get { return _watcher.Instance.GetActiveWindowAttribute().Wrap(x => new GeckoWindow(x)); }
             set
             {
-                //if (value != null)
-                //    _watcher.Instance.SetActiveWindowAttribute(value.DomWindow);
-                throw new NotImplementedException();
+                if (value != null)
+                    _watcher.Instance.SetActiveWindowAttribute(value.DomWindow);                
             }
         }
 

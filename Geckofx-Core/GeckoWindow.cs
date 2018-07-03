@@ -11,20 +11,20 @@ namespace Gecko
     public class GeckoWindow
         : IEquatable<GeckoWindow>, IDisposable
     {
-        private ComPtr<nsIDOMWindow> _domWindow;
+        private ComPtr<mozIDOMWindowProxy> _domWindow;
 
         #region ctor & dtor
 
         public GeckoWindow(nsIDOMWindow window, bool ownRCW = true)
         {
             //Interop.ComDebug.WriteDebugInfo( window );
-            _domWindow = new ComPtr<nsIDOMWindow>(window, ownRCW);
+            //_domWindow = new ComPtr<nsIDOMWindow>(window, ownRCW);
+            throw new NotImplementedException();
         }
 
-        public GeckoWindow(Gecko.mozIDOMWindowProxy window, bool ownRCW = true)
+        public GeckoWindow(mozIDOMWindowProxy window, bool ownRCW = true)
         {
-            // PORTFF60
-            throw new NotImplementedException();
+            _domWindow = new ComPtr<mozIDOMWindowProxy>(window, ownRCW);
         }
 
         ~GeckoWindow()
@@ -43,7 +43,7 @@ namespace Gecko
         /// <summary>
         /// Gets the underlying unmanaged DOM object.
         /// </summary>
-        public nsIDOMWindow DomWindow
+        public mozIDOMWindowProxy DomWindow
         {
             get { return _domWindow.Instance; }
         }

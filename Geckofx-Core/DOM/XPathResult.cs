@@ -8,12 +8,12 @@ namespace Gecko.DOM
 {
     public class XPathResult
     {
-        private ComPtr<nsIDOMWindow> _window;
+        private ComPtr<mozIDOMWindowProxy> _window;
         private ComPtr<nsIXPathResult> _xpathResult = null;
 
-        internal XPathResult(nsIDOMWindow window, nsIXPathResult xpathResult)
+        internal XPathResult(mozIDOMWindowProxy window, nsIXPathResult xpathResult)
         {
-            _window = new ComPtr<nsIDOMWindow>(window);
+            _window = new ComPtr<mozIDOMWindowProxy>(window);
             _xpathResult = new ComPtr<nsIXPathResult>(xpathResult);
         }
 

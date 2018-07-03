@@ -61,7 +61,7 @@ namespace Gecko
 
         // Keep in alphabetical order.
 
-        delegate IntPtr CompileOptionsDelegate(IntPtr @this, IntPtr cx, int jsver);
+        delegate IntPtr CompileOptionsDelegate(IntPtr @this);
         delegate IntPtr CurrentGlobalOrNullDelegate(IntPtr aJSContext);
         delegate IntPtr GetGlobalForObjectCrossCompartmentDelegate(IntPtr jsObject);
         delegate bool IsObjectInContextCompartmentDelegate(IntPtr jsObject, IntPtr context);
@@ -561,28 +561,37 @@ namespace Gecko
 
         private static Dictionary<IntPtr, IntPtr> ContextToCompileOptionsMap = new Dictionary<IntPtr, IntPtr>();
 
+        [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false)]
+        private static extern IntPtr NewCompileOptions(IntPtr context);
+
         private static IntPtr GetCompileOptions(IntPtr context)
         {
+
             IntPtr compileOptions;
             if (!ContextToCompileOptionsMap.TryGetValue(context, out compileOptions))
             {
+#if false
                 IntPtr block = Marshal.AllocCoTaskMem(160);
-                CompileOptionsFunc(block, context, 0);
-                ContextToCompileOptionsMap[context] = compileOptions = block;
+                CompileOptionsFunc(block);
+                compilerOptions = block;
+#else
+                compileOptions = NewCompileOptions(context);
+#endif
+                ContextToCompileOptionsMap[context] = compileOptions;
             }
 
-            return compileOptions;
+            return compileOptions;        
         }
 
-        #endregion
+#endregion
 
-        #region Windows x86
+#region Windows x86
 
         // These should be in Alphabetical order.
 
         [DllImport("xul", CallingConvention = CallingConvention.ThisCall, CharSet = CharSet.Ansi, ExactSpelling = false,
-            EntryPoint = "??0CompileOptions@JS@@QAE@PAUJSContext@@W4JSVersion@@@Z")]
-        private static extern IntPtr CompileOptions_Win32(IntPtr @this, IntPtr cx, int jsver);
+            EntryPoint = "??0ReadOnlyCompileOptions@JS@@IAE@XZ")]
+        private static extern IntPtr CompileOptions_Win32(IntPtr @this);
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
             EntryPoint = "?CurrentGlobalOrNull@JS@@YAPAVJSObject@@PAUJSContext@@@Z")]
@@ -795,15 +804,15 @@ namespace Gecko
                    EntryPoint = "?ToStringSlow@js@@YAPAVJSString@@PAUJSContext@@V?$Handle@VValue@JS@@@JS@@@Z")]
         private static extern IntPtr ToStringSlow_Win32(IntPtr cx, ref JsVal v);
 
-        #endregion
+#endregion
 
-        #region Windows x64
+#region Windows x64
 
         // These should be in Alphabetical order.
 
         [DllImport("xul", CallingConvention = CallingConvention.ThisCall, CharSet = CharSet.Ansi, ExactSpelling = false,
             EntryPoint = "??0CompileOptions@JS@@QEAA@PEAUJSContext@@W4JSVersion@@@Z")]
-        private static extern IntPtr CompileOptions_Win64(IntPtr @this, IntPtr cx, int jsver);
+        private static extern IntPtr CompileOptions_Win64(IntPtr @this);
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
             EntryPoint = "?CurrentGlobalOrNull@JS@@YAPEAVJSObject@@PEAUJSContext@@@Z")]
@@ -1016,15 +1025,15 @@ namespace Gecko
                    EntryPoint = "?ToStringSlow@js@@YAPEAVJSString@@PEAUJSContext@@V?$Handle@VValue@JS@@@JS@@@Z")]
         private static extern IntPtr ToStringSlow_Win64(IntPtr cx, ref JsVal v);
 
-        #endregion
+#endregion
 
-        #region Linux x86
+#region Linux x86
 
         // These should be in Alphabetical order.
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = false,
                    EntryPoint = "_ZN2JS14CompileOptionsC2EP9JSContext9JSVersion")]
-        private static extern IntPtr CompileOptions_Linux32(IntPtr @this, IntPtr cx, int jsver);
+        private static extern IntPtr CompileOptions_Linux32(IntPtr @this);
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
                    EntryPoint = "_ZN2JS19CurrentGlobalOrNullEP9JSContext")]
@@ -1237,15 +1246,15 @@ namespace Gecko
                    EntryPoint = "_ZN2js12ToStringSlowEP9JSContextN2JS6HandleINS2_5ValueEEE")]
         private static extern IntPtr ToStringSlow_Linux32(IntPtr cx, ref JsVal v);
 
-        #endregion
+#endregion
 
-        #region Linux x64
+#region Linux x64
 
         // These should be in Alphabetical order.
 
         [DllImport("xul", CallingConvention = CallingConvention.ThisCall, CharSet = CharSet.Ansi, ExactSpelling = false,
            EntryPoint = "_ZN2JS14CompileOptionsC2EP9JSContext9JSVersion")]
-        private static extern IntPtr CompileOptions_Linux64(IntPtr @this, IntPtr cx, int jsver);
+        private static extern IntPtr CompileOptions_Linux64(IntPtr @this);
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
            EntryPoint = "_ZN2JS19CurrentGlobalOrNullEP9JSContext")]
@@ -1458,6 +1467,6 @@ namespace Gecko
            EntryPoint = "_ZN2js12ToStringSlowEP9JSContextN2JS6HandleINS2_5ValueEEE")]
         private static extern IntPtr ToStringSlow_Linux64(IntPtr cx, ref JsVal v);
 
-        #endregion
+#endregion
     }
 }

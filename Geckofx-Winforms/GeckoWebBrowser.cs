@@ -1022,8 +1022,7 @@ namespace Gecko
                         return _Window;
                     _Window.Dispose();
                 }
-                //_Window = WebBrowser.GetContentDOMWindowAttribute().Wrap(x => new GeckoWindow(x));
-                throw new NotImplementedException();
+                _Window = WebBrowser.GetContentDOMWindowAttribute().Wrap(x => new GeckoWindow(x));
                 return _Window;
             }
         }

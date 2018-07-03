@@ -8,17 +8,23 @@ namespace Gecko.WebIDL
     public class WebIDLBase
     {
         private readonly nsISupports _thisObject;
-        private readonly nsIDOMWindow _globalWindow;
+        private readonly mozIDOMWindowProxy _globalWindow;
+        private readonly mozIDOMWindowProxy _gloablWindowProxy;
 
         public WebIDLBase(nsIDOMWindow globalWindow, nsISupports thisObject)
         {
-            _globalWindow = globalWindow;
+            throw new NotImplementedException();
+        }
+
+        public WebIDLBase(mozIDOMWindowProxy globalWindow, nsISupports thisObject)
+        {
+            _gloablWindowProxy = globalWindow;
             _thisObject = thisObject;
         }
 
         public T GetProperty<T>(string propertyName)
         {
-            using (var context = new AutoJSContext(_globalWindow))
+            using (var context = new AutoJSContext(_gloablWindowProxy))
             {
                 var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
                 var result = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, propertyName);
@@ -32,7 +38,7 @@ namespace Gecko.WebIDL
 
         public void SetProperty(string propertyName, object value)
         {
-            using (var context = new AutoJSContext(_globalWindow))
+            using (var context = new AutoJSContext(_gloablWindowProxy))
             {
                 var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
                 if (
@@ -45,7 +51,7 @@ namespace Gecko.WebIDL
 
         public void CallVoidMethod(string methodName, params object[] paramObjects)
         {
-            using (var context = new AutoJSContext(_globalWindow))
+            using (var context = new AutoJSContext(_gloablWindowProxy))
             {
                 var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
                 var collection = ConvertTypes(paramObjects, context);
@@ -55,7 +61,7 @@ namespace Gecko.WebIDL
 
         public T CallMethod<T>(string methodName, params object[] paramObjects)
         {
-            using (var context = new AutoJSContext(_globalWindow))
+            using (var context = new AutoJSContext(_gloablWindowProxy))
             {
                 var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
                 var collection = ConvertTypes(paramObjects, context);
@@ -89,7 +95,12 @@ namespace Gecko.WebIDL
                 {
                     val = JsVal.FromDouble((double) p);
                 }
+                else if (p is int)
+                {
+                    val = JsVal.FromDouble(Convert.ToDouble(p));
+                }
                 else
+                    // TODO: PORTFF60 JS_ExecuteScript wasn't working - don't know why yet. (adding the int case above meant I could fix this later..)
                     SpiderMonkey.JS_ExecuteScript(context.ContextPointer, p.ToString(), out val);
                 collection.Add(val);
             }

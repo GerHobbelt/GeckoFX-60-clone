@@ -10,7 +10,12 @@ namespace Gecko.WebIDL
                 base(globalWindow, thisObject)
         {
         }
-        
+
+        public Window(mozIDOMWindowProxy globalWindow, nsISupports thisObject) :
+                base(globalWindow, thisObject)
+        {
+        }
+
         public nsIDOMWindow WindowAttribute
         {
             get
