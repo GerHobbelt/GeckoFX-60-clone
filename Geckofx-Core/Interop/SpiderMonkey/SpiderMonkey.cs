@@ -570,13 +570,8 @@ namespace Gecko
             IntPtr compileOptions;
             if (!ContextToCompileOptionsMap.TryGetValue(context, out compileOptions))
             {
-#if false
-                IntPtr block = Marshal.AllocCoTaskMem(160);
-                CompileOptionsFunc(block);
-                compilerOptions = block;
-#else
+
                 compileOptions = NewCompileOptions(context);
-#endif
                 ContextToCompileOptionsMap[context] = compileOptions;
             }
 
