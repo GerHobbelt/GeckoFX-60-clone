@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGAnimatedPathData : WebIDLBase
     {
         
-        public SVGAnimatedPathData(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGAnimatedPathData(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaRecorder : WebIDLBase
     {
         
-        public MediaRecorder(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaRecorder(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

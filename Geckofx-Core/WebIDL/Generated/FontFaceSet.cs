@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FontFaceSet : WebIDLBase
     {
         
-        public FontFaceSet(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FontFaceSet(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

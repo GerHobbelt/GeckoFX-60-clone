@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLFrameSetElement : WebIDLBase
     {
         
-        public HTMLFrameSetElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLFrameSetElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

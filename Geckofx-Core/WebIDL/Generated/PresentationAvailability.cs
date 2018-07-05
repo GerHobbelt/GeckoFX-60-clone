@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PresentationAvailability : WebIDLBase
     {
         
-        public PresentationAvailability(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PresentationAvailability(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

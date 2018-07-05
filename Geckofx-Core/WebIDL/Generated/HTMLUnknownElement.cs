@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLUnknownElement : WebIDLBase
     {
         
-        public HTMLUnknownElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLUnknownElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

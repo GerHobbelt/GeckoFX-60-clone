@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLFontElement : WebIDLBase
     {
         
-        public HTMLFontElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLFontElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

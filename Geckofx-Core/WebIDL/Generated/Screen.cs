@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Screen : WebIDLBase
     {
         
-        public Screen(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Screen(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

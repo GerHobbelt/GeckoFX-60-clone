@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MozImageLoadingContent : WebIDLBase
     {
         
-        public MozImageLoadingContent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MozImageLoadingContent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -39,6 +39,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports CurrentRequestFinalURI
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("currentRequestFinalURI");
+            }
+        }
+        
         public void AddObserver(nsISupports aObserver)
         {
             this.CallVoidMethod("addObserver", aObserver);
@@ -57,11 +65,6 @@ namespace Gecko.WebIDL
         public int GetRequestType(nsISupports aRequest)
         {
             return this.CallMethod<int>("getRequestType", aRequest);
-        }
-        
-        public nsISupports LoadImageWithChannel(nsISupports aChannel)
-        {
-            return this.CallMethod<nsISupports>("loadImageWithChannel", aChannel);
         }
         
         public void ForceReload()

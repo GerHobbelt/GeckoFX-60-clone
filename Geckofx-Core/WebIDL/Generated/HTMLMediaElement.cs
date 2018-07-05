@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLMediaElement : WebIDLBase
     {
         
-        public HTMLMediaElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLMediaElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -290,9 +290,9 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("fastSeek", time);
         }
         
-        public void Play()
+        public Promise Play()
         {
-            this.CallVoidMethod("play");
+            return this.CallMethod<Promise>("play");
         }
         
         public void Pause()
@@ -323,6 +323,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string MozDebugReaderData
+        {
+            get
+            {
+                return this.GetProperty<string>("mozDebugReaderData");
+            }
+        }
+        
         public nsISupports SrcObject
         {
             get
@@ -335,18 +343,6 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports MozSrcObject
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("mozSrcObject");
-            }
-            set
-            {
-                this.SetProperty("mozSrcObject", value);
-            }
-        }
-        
         public bool MozPreservesPitch
         {
             get
@@ -356,26 +352,6 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("mozPreservesPitch", value);
-            }
-        }
-        
-        public bool MozAutoplayEnabled
-        {
-            get
-            {
-                return this.GetProperty<bool>("mozAutoplayEnabled");
-            }
-        }
-        
-        public bool MozMediaStatisticsShowing
-        {
-            get
-            {
-                return this.GetProperty<bool>("mozMediaStatisticsShowing");
-            }
-            set
-            {
-                this.SetProperty("mozMediaStatisticsShowing", value);
             }
         }
         
@@ -419,16 +395,19 @@ namespace Gecko.WebIDL
             }
         }
         
-        public AudioChannel MozAudioChannelType
+        public Promise <string> MozRequestDebugInfo()
         {
-            get
-            {
-                return this.GetProperty<AudioChannel>("mozAudioChannelType");
-            }
-            set
-            {
-                this.SetProperty("mozAudioChannelType", value);
-            }
+            return this.CallMethod<Promise <string>>("mozRequestDebugInfo");
+        }
+        
+        public Promise <string> MozRequestDebugLog()
+        {
+            return this.CallMethod<Promise <string>>("mozRequestDebugLog");
+        }
+        
+        public Promise MozDumpDebugInfo()
+        {
+            return this.CallMethod<Promise>("mozDumpDebugInfo");
         }
         
         public nsISupports MozCaptureStream()
@@ -446,6 +425,24 @@ namespace Gecko.WebIDL
             return this.CallMethod<object>("mozGetMetadata");
         }
         
+        public void ReportCanPlayTelemetry()
+        {
+            this.CallVoidMethod("reportCanPlayTelemetry");
+        }
+        
+        public nsISupports MediaKeys
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("mediaKeys");
+            }
+        }
+        
+        public Promise SetMediaKeys(nsISupports mediaKeys)
+        {
+            return this.CallMethod<Promise>("setMediaKeys", mediaKeys);
+        }
+        
         public double ComputedVolume
         {
             get
@@ -460,6 +457,29 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<bool>("computedMuted");
             }
+        }
+        
+        public uint ComputedSuspended
+        {
+            get
+            {
+                return this.GetProperty<uint>("computedSuspended");
+            }
+        }
+        
+        public Promise SeekToNextFrame()
+        {
+            return this.CallMethod<Promise>("seekToNextFrame");
+        }
+        
+        public void SetVisible(bool aVisible)
+        {
+            this.CallVoidMethod("setVisible", aVisible);
+        }
+        
+        public bool HasSuspendTaint()
+        {
+            return this.CallMethod<bool>("hasSuspendTaint");
         }
     }
 }

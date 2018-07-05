@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLBRElement : WebIDLBase
     {
         
-        public HTMLBRElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLBRElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

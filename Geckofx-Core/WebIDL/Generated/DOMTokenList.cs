@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMTokenList : WebIDLBase
     {
         
-        public DOMTokenList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMTokenList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,18 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<uint>("length");
+            }
+        }
+        
+        public string Value
+        {
+            get
+            {
+                return this.GetProperty<string>("value");
+            }
+            set
+            {
+                this.SetProperty("value", value);
             }
         }
         
@@ -34,6 +46,11 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("remove", tokens);
         }
         
+        public void Replace(string token, string newToken)
+        {
+            this.CallVoidMethod("replace", token, newToken);
+        }
+        
         public bool Toggle(string token)
         {
             return this.CallMethod<bool>("toggle", token);
@@ -42,6 +59,11 @@ namespace Gecko.WebIDL
         public bool Toggle(string token, bool force)
         {
             return this.CallMethod<bool>("toggle", token, force);
+        }
+        
+        public bool Supports(string token)
+        {
+            return this.CallMethod<bool>("supports", token);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLProgressElement : WebIDLBase
     {
         
-        public HTMLProgressElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLProgressElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -40,6 +40,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<double>("position");
+            }
+        }
+        
+        public nsISupports Labels
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("labels");
             }
         }
     }

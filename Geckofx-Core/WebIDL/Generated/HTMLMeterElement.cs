@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLMeterElement : WebIDLBase
     {
         
-        public HTMLMeterElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLMeterElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -80,6 +80,14 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("optimum", value);
+            }
+        }
+        
+        public nsISupports Labels
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("labels");
             }
         }
     }

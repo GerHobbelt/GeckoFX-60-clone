@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLPreElement : WebIDLBase
     {
         
-        public HTMLPreElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLPreElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PresentationConnection : WebIDLBase
     {
         
-        public PresentationConnection(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PresentationConnection(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -19,6 +19,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string Url
+        {
+            get
+            {
+                return this.GetProperty<string>("url");
+            }
+        }
+        
         public PresentationConnectionState State
         {
             get
@@ -27,9 +35,36 @@ namespace Gecko.WebIDL
             }
         }
         
+        public PresentationConnectionBinaryType BinaryType
+        {
+            get
+            {
+                return this.GetProperty<PresentationConnectionBinaryType>("binaryType");
+            }
+            set
+            {
+                this.SetProperty("binaryType", value);
+            }
+        }
+        
         public void Send(string data)
         {
             this.CallVoidMethod("send", data);
+        }
+        
+        public void Send(nsIDOMBlob data)
+        {
+            this.CallVoidMethod("send", data);
+        }
+        
+        public void Send(IntPtr data)
+        {
+            this.CallVoidMethod("send", data);
+        }
+        
+        public void Close()
+        {
+            this.CallVoidMethod("close");
         }
         
         public void Terminate()

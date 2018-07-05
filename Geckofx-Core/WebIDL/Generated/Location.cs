@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Location : WebIDLBase
     {
         
-        public Location(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Location(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

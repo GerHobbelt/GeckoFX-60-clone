@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FetchEvent : WebIDLBase
     {
         
-        public FetchEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FetchEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

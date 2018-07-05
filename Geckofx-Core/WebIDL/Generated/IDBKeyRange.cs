@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IDBKeyRange : WebIDLBase
     {
         
-        public IDBKeyRange(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IDBKeyRange(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -41,6 +41,11 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<bool>("upperOpen");
             }
+        }
+        
+        public bool Includes(object key)
+        {
+            return this.CallMethod<bool>("includes", key);
         }
     }
 }

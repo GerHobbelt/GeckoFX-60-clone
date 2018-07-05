@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CaretStateChangedEvent : WebIDLBase
     {
         
-        public CaretStateChangedEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CaretStateChangedEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLObjectElement : WebIDLBase
     {
         
-        public HTMLObjectElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLObjectElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -111,11 +111,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow ContentWindow
+        public mozIDOMWindowProxy ContentWindow
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("contentWindow");
+                return this.GetProperty<mozIDOMWindowProxy>("contentWindow");
             }
         }
         
@@ -146,6 +146,11 @@ namespace Gecko.WebIDL
         public bool CheckValidity()
         {
             return this.CallMethod<bool>("checkValidity");
+        }
+        
+        public bool ReportValidity()
+        {
+            return this.CallMethod<bool>("reportValidity");
         }
         
         public void SetCustomValidity(string error)
@@ -271,6 +276,11 @@ namespace Gecko.WebIDL
             {
                 this.SetProperty("border", value);
             }
+        }
+        
+        public nsIDOMDocument GetSVGDocument()
+        {
+            return this.CallMethod<nsIDOMDocument>("getSVGDocument");
         }
     }
 }

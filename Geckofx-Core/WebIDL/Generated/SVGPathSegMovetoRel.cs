@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGPathSegMovetoRel : WebIDLBase
     {
         
-        public SVGPathSegMovetoRel(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGPathSegMovetoRel(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

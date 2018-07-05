@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGFilterPrimitiveStandardAttributes : WebIDLBase
     {
         
-        public SVGFilterPrimitiveStandardAttributes(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGFilterPrimitiveStandardAttributes(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

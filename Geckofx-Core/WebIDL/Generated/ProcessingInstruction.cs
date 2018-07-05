@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ProcessingInstruction : WebIDLBase
     {
         
-        public ProcessingInstruction(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ProcessingInstruction(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

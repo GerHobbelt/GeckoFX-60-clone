@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TCPSocket : WebIDLBase
     {
         
-        public TCPSocket(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TCPSocket(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -77,6 +77,11 @@ namespace Gecko.WebIDL
         public void Close()
         {
             this.CallVoidMethod("close");
+        }
+        
+        public void CloseImmediately()
+        {
+            this.CallVoidMethod("closeImmediately");
         }
         
         public bool Send(ByteString data)

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CSSTransition : WebIDLBase
     {
         
-        public CSSTransition(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CSSTransition(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

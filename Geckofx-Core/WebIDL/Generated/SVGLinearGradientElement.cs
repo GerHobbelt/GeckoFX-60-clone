@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGLinearGradientElement : WebIDLBase
     {
         
-        public SVGLinearGradientElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGLinearGradientElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

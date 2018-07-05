@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLScriptElement : WebIDLBase
     {
         
-        public HTMLScriptElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLScriptElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -32,6 +32,18 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("type", value);
+            }
+        }
+        
+        public bool NoModule
+        {
+            get
+            {
+                return this.GetProperty<bool>("noModule");
+            }
+            set
+            {
+                this.SetProperty("noModule", value);
             }
         }
         

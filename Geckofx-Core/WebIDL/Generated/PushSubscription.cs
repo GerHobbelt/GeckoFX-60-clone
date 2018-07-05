@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PushSubscription : WebIDLBase
     {
         
-        public PushSubscription(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PushSubscription(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<USVString>("endpoint");
+            }
+        }
+        
+        public nsISupports Options
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("options");
             }
         }
         
@@ -29,9 +37,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<Promise <bool>>("unsubscribe");
         }
         
-        public void SetPrincipal(nsISupports principal)
+        public object ToJSON()
         {
-            this.CallVoidMethod("setPrincipal", principal);
+            return this.CallMethod<object>("toJSON");
         }
     }
 }

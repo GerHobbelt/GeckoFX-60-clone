@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class VRFieldOfView : WebIDLBase
     {
         
-        public VRFieldOfView(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public VRFieldOfView(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -17,10 +17,6 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<double>("upDegrees");
             }
-            set
-            {
-                this.SetProperty("upDegrees", value);
-            }
         }
         
         public double RightDegrees
@@ -28,10 +24,6 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<double>("rightDegrees");
-            }
-            set
-            {
-                this.SetProperty("rightDegrees", value);
             }
         }
         
@@ -41,10 +33,6 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<double>("downDegrees");
             }
-            set
-            {
-                this.SetProperty("downDegrees", value);
-            }
         }
         
         public double LeftDegrees
@@ -52,10 +40,6 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<double>("leftDegrees");
-            }
-            set
-            {
-                this.SetProperty("leftDegrees", value);
             }
         }
     }

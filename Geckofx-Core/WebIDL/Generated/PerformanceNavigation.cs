@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PerformanceNavigation : WebIDLBase
     {
         
-        public PerformanceNavigation(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PerformanceNavigation(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

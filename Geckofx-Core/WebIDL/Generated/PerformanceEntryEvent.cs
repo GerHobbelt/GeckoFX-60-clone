@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PerformanceEntryEvent : WebIDLBase
     {
         
-        public PerformanceEntryEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PerformanceEntryEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -27,19 +27,19 @@ namespace Gecko.WebIDL
             }
         }
         
-        public Double StartTime
+        public double StartTime
         {
             get
             {
-                return this.GetProperty<Double>("startTime");
+                return this.GetProperty<double>("startTime");
             }
         }
         
-        public Double Duration
+        public double Duration
         {
             get
             {
-                return this.GetProperty<Double>("duration");
+                return this.GetProperty<double>("duration");
             }
         }
         

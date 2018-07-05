@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMRequest : WebIDLBase
     {
         
-        public DOMRequest(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMRequest(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -14,6 +14,11 @@ namespace Gecko.WebIDL
         public object Then()
         {
             return this.CallMethod<object>("then");
+        }
+        
+        public void FireDetailedError(nsIDOMDOMException aError)
+        {
+            this.CallVoidMethod("fireDetailedError", aError);
         }
     }
 }

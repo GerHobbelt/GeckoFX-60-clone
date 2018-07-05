@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGLengthList : WebIDLBase
     {
         
-        public SVGLengthList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGLengthList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class EventTarget : WebIDLBase
     {
         
-        public EventTarget(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public EventTarget(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,14 +16,14 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("addEventListener", type, listener);
         }
         
-        public void AddEventListener(string type, nsISupports listener, bool capture)
+        public void AddEventListener(string type, nsISupports listener, WebIDLUnion<System.Object,System.Boolean> options)
         {
-            this.CallVoidMethod("addEventListener", type, listener, capture);
+            this.CallVoidMethod("addEventListener", type, listener, options);
         }
         
-        public void AddEventListener(string type, nsISupports listener, bool capture, System.Nullable<bool> wantsUntrusted)
+        public void AddEventListener(string type, nsISupports listener, WebIDLUnion<System.Object,System.Boolean> options, System.Nullable<bool> wantsUntrusted)
         {
-            this.CallVoidMethod("addEventListener", type, listener, capture, wantsUntrusted);
+            this.CallVoidMethod("addEventListener", type, listener, options, wantsUntrusted);
         }
         
         public void RemoveEventListener(string type, nsISupports listener)
@@ -31,9 +31,9 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("removeEventListener", type, listener);
         }
         
-        public void RemoveEventListener(string type, nsISupports listener, bool capture)
+        public void RemoveEventListener(string type, nsISupports listener, WebIDLUnion<System.Object,System.Boolean> options)
         {
-            this.CallVoidMethod("removeEventListener", type, listener, capture);
+            this.CallVoidMethod("removeEventListener", type, listener, options);
         }
         
         public bool DispatchEvent(nsIDOMEvent @event)
@@ -41,11 +41,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("dispatchEvent", @event);
         }
         
-        public nsIDOMWindow OwnerGlobal
+        public mozIDOMWindowProxy OwnerGlobal
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("ownerGlobal");
+                return this.GetProperty<mozIDOMWindowProxy>("ownerGlobal");
             }
         }
     }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMStringList : WebIDLBase
     {
         
-        public DOMStringList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMStringList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

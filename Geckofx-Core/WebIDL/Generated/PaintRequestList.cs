@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PaintRequestList : WebIDLBase
     {
         
-        public PaintRequestList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PaintRequestList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

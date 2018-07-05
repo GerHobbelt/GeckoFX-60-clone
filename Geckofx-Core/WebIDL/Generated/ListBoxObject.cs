@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ListBoxObject : WebIDLBase
     {
         
-        public ListBoxObject(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ListBoxObject(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -14,6 +14,11 @@ namespace Gecko.WebIDL
         public int GetRowCount()
         {
             return this.CallMethod<int>("getRowCount");
+        }
+        
+        public int GetRowHeight()
+        {
+            return this.CallMethod<int>("getRowHeight");
         }
         
         public int GetNumberOfVisibleRows()

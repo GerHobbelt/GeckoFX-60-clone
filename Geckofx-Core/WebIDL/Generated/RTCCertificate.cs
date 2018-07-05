@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class RTCCertificate : WebIDLBase
     {
         
-        public RTCCertificate(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public RTCCertificate(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class OfflineResourceList : WebIDLBase
     {
         
-        public OfflineResourceList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public OfflineResourceList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -42,6 +42,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<uint>("mozLength");
+            }
+        }
+        
+        public uint Length
+        {
+            get
+            {
+                return this.GetProperty<uint>("length");
             }
         }
         

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class imgIRequest : WebIDLBase
     {
         
-        public imgIRequest(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public imgIRequest(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

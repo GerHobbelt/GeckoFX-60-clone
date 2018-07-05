@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ChromeNodeList : WebIDLBase
     {
         
-        public ChromeNodeList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ChromeNodeList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

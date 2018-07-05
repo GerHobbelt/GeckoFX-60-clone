@@ -84,12 +84,12 @@ namespace Gecko
             }
         }
 
-        public int ScrollX
+        public double ScrollX
         {
             get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollX; }
         }
 
-        public int ScrollY
+        public double ScrollY
         {
             get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollY; }
         }

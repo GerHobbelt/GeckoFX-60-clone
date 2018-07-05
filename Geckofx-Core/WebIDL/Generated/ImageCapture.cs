@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ImageCapture : WebIDLBase
     {
         
-        public ImageCapture(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ImageCapture(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

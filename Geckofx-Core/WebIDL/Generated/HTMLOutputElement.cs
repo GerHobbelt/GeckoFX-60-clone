@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLOutputElement : WebIDLBase
     {
         
-        public HTMLOutputElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLOutputElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -95,9 +95,22 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports Labels
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("labels");
+            }
+        }
+        
         public bool CheckValidity()
         {
             return this.CallMethod<bool>("checkValidity");
+        }
+        
+        public bool ReportValidity()
+        {
+            return this.CallMethod<bool>("reportValidity");
         }
         
         public void SetCustomValidity(string error)

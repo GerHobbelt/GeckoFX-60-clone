@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class nsISelectionListener : WebIDLBase
     {
         
-        public nsISelectionListener(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public nsISelectionListener(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

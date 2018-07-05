@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLFieldSetElement : WebIDLBase
     {
         
-        public HTMLFieldSetElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLFieldSetElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -86,6 +86,11 @@ namespace Gecko.WebIDL
         public bool CheckValidity()
         {
             return this.CallMethod<bool>("checkValidity");
+        }
+        
+        public bool ReportValidity()
+        {
+            return this.CallMethod<bool>("reportValidity");
         }
         
         public void SetCustomValidity(string error)

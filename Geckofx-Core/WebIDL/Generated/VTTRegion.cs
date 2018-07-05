@@ -6,9 +6,21 @@ namespace Gecko.WebIDL
     public class VTTRegion : WebIDLBase
     {
         
-        public VTTRegion(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public VTTRegion(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
+        }
+        
+        public string Id
+        {
+            get
+            {
+                return this.GetProperty<string>("id");
+            }
+            set
+            {
+                this.SetProperty("id", value);
+            }
         }
         
         public double Width
@@ -83,11 +95,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public string Scroll
+        public ScrollSetting Scroll
         {
             get
             {
-                return this.GetProperty<string>("scroll");
+                return this.GetProperty<ScrollSetting>("scroll");
             }
             set
             {

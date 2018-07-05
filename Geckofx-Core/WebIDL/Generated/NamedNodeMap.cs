@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class NamedNodeMap : WebIDLBase
     {
         
-        public NamedNodeMap(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public NamedNodeMap(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

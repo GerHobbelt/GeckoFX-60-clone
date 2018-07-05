@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class RTCIceCandidate : WebIDLBase
     {
         
-        public RTCIceCandidate(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public RTCIceCandidate(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

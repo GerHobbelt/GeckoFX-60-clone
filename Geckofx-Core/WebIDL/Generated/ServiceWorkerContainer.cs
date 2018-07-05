@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ServiceWorkerContainer : WebIDLBase
     {
         
-        public ServiceWorkerContainer(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ServiceWorkerContainer(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -37,14 +37,14 @@ namespace Gecko.WebIDL
             return this.CallMethod<Promise < nsISupports >>("register", scriptURL, options);
         }
         
-        public Promise < nsISupports > GetRegistration()
+        public Promise <object> GetRegistration()
         {
-            return this.CallMethod<Promise < nsISupports >>("getRegistration");
+            return this.CallMethod<Promise <object>>("getRegistration");
         }
         
-        public Promise < nsISupports > GetRegistration(USVString documentURL)
+        public Promise <object> GetRegistration(USVString documentURL)
         {
-            return this.CallMethod<Promise < nsISupports >>("getRegistration", documentURL);
+            return this.CallMethod<Promise <object>>("getRegistration", documentURL);
         }
         
         public Promise < nsISupports[] > GetRegistrations()

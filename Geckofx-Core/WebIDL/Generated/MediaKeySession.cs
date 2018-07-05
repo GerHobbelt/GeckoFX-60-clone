@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaKeySession : WebIDLBase
     {
         
-        public MediaKeySession(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaKeySession(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,14 +16,6 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<nsISupports>("error");
-            }
-        }
-        
-        public string KeySystem
-        {
-            get
-            {
-                return this.GetProperty<string>("keySystem");
             }
         }
         

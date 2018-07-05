@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WEBGL_debug_shaders : WebIDLBase
     {
         
-        public WEBGL_debug_shaders(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WEBGL_debug_shaders(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

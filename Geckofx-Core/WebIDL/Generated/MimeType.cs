@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MimeType : WebIDLBase
     {
         
-        public MimeType(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MimeType(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

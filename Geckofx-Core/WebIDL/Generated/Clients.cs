@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Clients : WebIDLBase
     {
         
-        public Clients(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Clients(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

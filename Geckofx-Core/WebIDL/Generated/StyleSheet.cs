@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class StyleSheet : WebIDLBase
     {
         
-        public StyleSheet(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public StyleSheet(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -68,6 +68,22 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("disabled", value);
+            }
+        }
+        
+        public string SourceMapURL
+        {
+            get
+            {
+                return this.GetProperty<string>("sourceMapURL");
+            }
+        }
+        
+        public string SourceURL
+        {
+            get
+            {
+                return this.GetProperty<string>("sourceURL");
             }
         }
     }

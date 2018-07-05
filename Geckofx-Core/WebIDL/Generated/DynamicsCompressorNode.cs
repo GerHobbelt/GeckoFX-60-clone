@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DynamicsCompressorNode : WebIDLBase
     {
         
-        public DynamicsCompressorNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DynamicsCompressorNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

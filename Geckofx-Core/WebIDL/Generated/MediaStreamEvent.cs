@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaStreamEvent : WebIDLBase
     {
         
-        public MediaStreamEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaStreamEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

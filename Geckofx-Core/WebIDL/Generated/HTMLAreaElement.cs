@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLAreaElement : WebIDLBase
     {
         
-        public HTMLAreaElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLAreaElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

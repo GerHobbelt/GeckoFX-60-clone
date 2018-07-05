@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TreeBoxObject : WebIDLBase
     {
         
-        public TreeBoxObject(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TreeBoxObject(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -216,6 +216,11 @@ namespace Gecko.WebIDL
         public void ClearStyleAndImageCaches()
         {
             this.CallVoidMethod("clearStyleAndImageCaches");
+        }
+        
+        public void RemoveImageCacheEntry(int row, nsISupports col)
+        {
+            this.CallVoidMethod("removeImageCacheEntry", row, col);
         }
     }
 }

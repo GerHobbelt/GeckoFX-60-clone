@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PushMessageData : WebIDLBase
     {
         
-        public PushMessageData(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PushMessageData(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

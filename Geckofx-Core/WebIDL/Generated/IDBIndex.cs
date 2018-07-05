@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IDBIndex : WebIDLBase
     {
         
-        public IDBIndex(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IDBIndex(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,10 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<string>("name");
+            }
+            set
+            {
+                this.SetProperty("name", value);
             }
         }
         

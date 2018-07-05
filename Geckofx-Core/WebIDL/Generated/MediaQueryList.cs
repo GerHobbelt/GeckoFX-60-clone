@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaQueryList : WebIDLBase
     {
         
-        public MediaQueryList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaQueryList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -25,6 +25,16 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<bool>("matches");
             }
+        }
+        
+        public void AddListener(nsISupports listener)
+        {
+            this.CallVoidMethod("addListener", listener);
+        }
+        
+        public void RemoveListener(nsISupports listener)
+        {
+            this.CallVoidMethod("removeListener", listener);
         }
     }
 }

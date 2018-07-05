@@ -6,20 +6,20 @@ namespace Gecko.WebIDL
     public class RTCIdentityProviderRegistrar : WebIDLBase
     {
         
-        public RTCIdentityProviderRegistrar(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public RTCIdentityProviderRegistrar(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public nsISupports Idp
+        public bool HasIdp
         {
             get
             {
-                return this.GetProperty<nsISupports>("idp");
+                return this.GetProperty<bool>("hasIdp");
             }
         }
         
-        public void Register(nsISupports idp)
+        public void Register(object idp)
         {
             this.CallVoidMethod("register", idp);
         }

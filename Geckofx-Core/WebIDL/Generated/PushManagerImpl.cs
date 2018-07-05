@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PushManagerImpl : WebIDLBase
     {
         
-        public PushManagerImpl(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PushManagerImpl(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -14,6 +14,11 @@ namespace Gecko.WebIDL
         public Promise < nsISupports > Subscribe()
         {
             return this.CallMethod<Promise < nsISupports >>("subscribe");
+        }
+        
+        public Promise < nsISupports > Subscribe(object options)
+        {
+            return this.CallMethod<Promise < nsISupports >>("subscribe", options);
         }
         
         public Promise < nsISupports > GetSubscription()
@@ -26,9 +31,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<Promise < PushPermissionState >>("permissionState");
         }
         
-        public void SetScope(string scope)
+        public Promise < PushPermissionState > PermissionState(object options)
         {
-            this.CallVoidMethod("setScope", scope);
+            return this.CallMethod<Promise < PushPermissionState >>("permissionState", options);
         }
     }
 }

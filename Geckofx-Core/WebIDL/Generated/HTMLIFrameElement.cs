@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLIFrameElement : WebIDLBase
     {
         
-        public HTMLIFrameElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLIFrameElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -67,6 +67,18 @@ namespace Gecko.WebIDL
             }
         }
         
+        public bool AllowPaymentRequest
+        {
+            get
+            {
+                return this.GetProperty<bool>("allowPaymentRequest");
+            }
+            set
+            {
+                this.SetProperty("allowPaymentRequest", value);
+            }
+        }
+        
         public string Width
         {
             get
@@ -111,11 +123,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow ContentWindow
+        public mozIDOMWindowProxy ContentWindow
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("contentWindow");
+                return this.GetProperty<mozIDOMWindowProxy>("contentWindow");
             }
         }
         
@@ -205,14 +217,6 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("mozbrowser", value);
-            }
-        }
-        
-        public string AppManifestURL
-        {
-            get
-            {
-                return this.GetProperty<string>("appManifestURL");
             }
         }
     }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class InstallTriggerImpl : WebIDLBase
     {
         
-        public InstallTriggerImpl(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public InstallTriggerImpl(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -21,7 +21,7 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("updateEnabled");
         }
         
-        public bool Install(MozMap < WebIDLUnion<System.String,System.Object>> installs)
+        public bool Install(Tuple<System.String,WebIDLUnion<System.String,System.Object>> installs)
         {
             return this.CallMethod<bool>("install", installs);
         }

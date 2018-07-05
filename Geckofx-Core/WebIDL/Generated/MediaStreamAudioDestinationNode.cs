@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaStreamAudioDestinationNode : WebIDLBase
     {
         
-        public MediaStreamAudioDestinationNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaStreamAudioDestinationNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

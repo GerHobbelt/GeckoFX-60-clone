@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Touch : WebIDLBase
     {
         
-        public Touch(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Touch(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

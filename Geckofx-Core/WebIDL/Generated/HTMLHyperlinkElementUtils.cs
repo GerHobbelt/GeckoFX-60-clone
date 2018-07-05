@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLHyperlinkElementUtils : WebIDLBase
     {
         
-        public HTMLHyperlinkElementUtils(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLHyperlinkElementUtils(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

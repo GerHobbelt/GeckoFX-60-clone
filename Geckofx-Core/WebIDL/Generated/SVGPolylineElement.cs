@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGPolylineElement : WebIDLBase
     {
         
-        public SVGPolylineElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGPolylineElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Coordinates : WebIDLBase
     {
         
-        public Coordinates(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Coordinates(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

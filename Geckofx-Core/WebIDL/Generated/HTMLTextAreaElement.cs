@@ -6,9 +6,21 @@ namespace Gecko.WebIDL
     public class HTMLTextAreaElement : WebIDLBase
     {
         
-        public HTMLTextAreaElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLTextAreaElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
+        }
+        
+        public string Autocomplete
+        {
+            get
+            {
+                return this.GetProperty<string>("autocomplete");
+            }
+            set
+            {
+                this.SetProperty("autocomplete", value);
+            }
         }
         
         public bool Autofocus
@@ -64,6 +76,18 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("maxLength", value);
+            }
+        }
+        
+        public int MinLength
+        {
+            get
+            {
+                return this.GetProperty<int>("minLength");
+            }
+            set
+            {
+                this.SetProperty("minLength", value);
             }
         }
         
@@ -203,11 +227,19 @@ namespace Gecko.WebIDL
             }
         }
         
-        public uint SelectionStart
+        public nsISupports Labels
         {
             get
             {
-                return this.GetProperty<uint>("selectionStart");
+                return this.GetProperty<nsISupports>("labels");
+            }
+        }
+        
+        public System.Nullable<uint> SelectionStart
+        {
+            get
+            {
+                return this.GetProperty<System.Nullable<uint>>("selectionStart");
             }
             set
             {
@@ -215,11 +247,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public uint SelectionEnd
+        public System.Nullable<uint> SelectionEnd
         {
             get
             {
-                return this.GetProperty<uint>("selectionEnd");
+                return this.GetProperty<System.Nullable<uint>>("selectionEnd");
             }
             set
             {
@@ -242,6 +274,11 @@ namespace Gecko.WebIDL
         public bool CheckValidity()
         {
             return this.CallMethod<bool>("checkValidity");
+        }
+        
+        public bool ReportValidity()
+        {
+            return this.CallMethod<bool>("reportValidity");
         }
         
         public void SetCustomValidity(string error)
@@ -298,6 +335,18 @@ namespace Gecko.WebIDL
         public void SetUserInput(string input)
         {
             this.CallVoidMethod("setUserInput", input);
+        }
+        
+        public string PreviewValue
+        {
+            get
+            {
+                return this.GetProperty<string>("previewValue");
+            }
+            set
+            {
+                this.SetProperty("previewValue", value);
+            }
         }
     }
 }

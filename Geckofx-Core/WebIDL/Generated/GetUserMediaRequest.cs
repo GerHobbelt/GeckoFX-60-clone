@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class GetUserMediaRequest : WebIDLBase
     {
         
-        public GetUserMediaRequest(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public GetUserMediaRequest(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -35,11 +35,35 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string RawID
+        {
+            get
+            {
+                return this.GetProperty<string>("rawID");
+            }
+        }
+        
+        public string MediaSource
+        {
+            get
+            {
+                return this.GetProperty<string>("mediaSource");
+            }
+        }
+        
         public bool IsSecure
         {
             get
             {
                 return this.GetProperty<bool>("isSecure");
+            }
+        }
+        
+        public bool IsHandlingUserInput
+        {
+            get
+            {
+                return this.GetProperty<bool>("isHandlingUserInput");
             }
         }
         

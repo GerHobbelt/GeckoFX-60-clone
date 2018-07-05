@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class GamepadEvent : WebIDLBase
     {
         
-        public GamepadEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public GamepadEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

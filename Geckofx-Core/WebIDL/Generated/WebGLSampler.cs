@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WebGLSampler : WebIDLBase
     {
         
-        public WebGLSampler(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WebGLSampler(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

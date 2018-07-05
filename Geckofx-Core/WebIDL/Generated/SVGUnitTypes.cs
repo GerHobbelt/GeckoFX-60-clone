@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGUnitTypes : WebIDLBase
     {
         
-        public SVGUnitTypes(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGUnitTypes(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

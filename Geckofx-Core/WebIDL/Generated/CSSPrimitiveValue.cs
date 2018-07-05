@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CSSPrimitiveValue : WebIDLBase
     {
         
-        public CSSPrimitiveValue(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CSSPrimitiveValue(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -39,9 +39,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<string>("getStringValue");
         }
         
-        public nsISupports GetCounterValue()
+        public void GetCounterValue()
         {
-            return this.CallMethod<nsISupports>("getCounterValue");
+            this.CallVoidMethod("getCounterValue");
         }
         
         public nsISupports GetRectValue()

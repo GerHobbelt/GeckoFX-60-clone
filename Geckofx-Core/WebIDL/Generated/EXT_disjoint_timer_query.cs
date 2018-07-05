@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class EXT_disjoint_timer_query : WebIDLBase
     {
         
-        public EXT_disjoint_timer_query(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public EXT_disjoint_timer_query(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -26,27 +26,27 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("isQueryEXT", query);
         }
         
-        public void BeginQueryEXT(UInt32 target, nsISupports query)
+        public void BeginQueryEXT(uint target, nsISupports query)
         {
             this.CallVoidMethod("beginQueryEXT", target, query);
         }
         
-        public void EndQueryEXT(UInt32 target)
+        public void EndQueryEXT(uint target)
         {
             this.CallVoidMethod("endQueryEXT", target);
         }
         
-        public void QueryCounterEXT(nsISupports query, UInt32 target)
+        public void QueryCounterEXT(nsISupports query, uint target)
         {
             this.CallVoidMethod("queryCounterEXT", query, target);
         }
         
-        public object GetQueryEXT(UInt32 target, UInt32 pname)
+        public object GetQueryEXT(uint target, uint pname)
         {
             return this.CallMethod<object>("getQueryEXT", target, pname);
         }
         
-        public object GetQueryObjectEXT(nsISupports query, UInt32 pname)
+        public object GetQueryObjectEXT(nsISupports query, uint pname)
         {
             return this.CallMethod<object>("getQueryObjectEXT", query, pname);
         }

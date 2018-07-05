@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PerformanceObserverEntryList : WebIDLBase
     {
         
-        public PerformanceObserverEntryList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PerformanceObserverEntryList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

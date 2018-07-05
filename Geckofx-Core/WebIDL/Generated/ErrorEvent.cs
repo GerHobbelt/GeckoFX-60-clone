@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ErrorEvent : WebIDLBase
     {
         
-        public ErrorEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ErrorEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGAnimatedAngle : WebIDLBase
     {
         
-        public SVGAnimatedAngle(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGAnimatedAngle(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

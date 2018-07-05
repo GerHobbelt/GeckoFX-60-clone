@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MozApplicationEvent : WebIDLBase
     {
         
-        public MozApplicationEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MozApplicationEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WindowSessionStorage : WebIDLBase
     {
         
-        public WindowSessionStorage(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WindowSessionStorage(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

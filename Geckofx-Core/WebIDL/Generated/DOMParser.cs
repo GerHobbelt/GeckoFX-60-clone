@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMParser : WebIDLBase
     {
         
-        public DOMParser(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMParser(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLHRElement : WebIDLBase
     {
         
-        public HTMLHRElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLHRElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

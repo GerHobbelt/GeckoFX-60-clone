@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGGradientElement : WebIDLBase
     {
         
-        public SVGGradientElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGGradientElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

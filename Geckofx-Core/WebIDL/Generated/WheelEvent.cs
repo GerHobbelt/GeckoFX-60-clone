@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WheelEvent : WebIDLBase
     {
         
-        public WheelEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WheelEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

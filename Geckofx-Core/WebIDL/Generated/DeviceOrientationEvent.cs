@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DeviceOrientationEvent : WebIDLBase
     {
         
-        public DeviceOrientationEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DeviceOrientationEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -41,6 +41,36 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<bool>("absolute");
             }
+        }
+        
+        public void InitDeviceOrientationEvent(string type)
+        {
+            this.CallVoidMethod("initDeviceOrientationEvent", type);
+        }
+        
+        public void InitDeviceOrientationEvent(string type, bool canBubble)
+        {
+            this.CallVoidMethod("initDeviceOrientationEvent", type, canBubble);
+        }
+        
+        public void InitDeviceOrientationEvent(string type, bool canBubble, bool cancelable)
+        {
+            this.CallVoidMethod("initDeviceOrientationEvent", type, canBubble, cancelable);
+        }
+        
+        public void InitDeviceOrientationEvent(string type, bool canBubble, bool cancelable, System.Nullable<double> alpha)
+        {
+            this.CallVoidMethod("initDeviceOrientationEvent", type, canBubble, cancelable, alpha);
+        }
+        
+        public void InitDeviceOrientationEvent(string type, bool canBubble, bool cancelable, System.Nullable<double> alpha, System.Nullable<double> beta)
+        {
+            this.CallVoidMethod("initDeviceOrientationEvent", type, canBubble, cancelable, alpha, beta);
+        }
+        
+        public void InitDeviceOrientationEvent(string type, bool canBubble, bool cancelable, System.Nullable<double> alpha, System.Nullable<double> beta, System.Nullable<double> gamma)
+        {
+            this.CallVoidMethod("initDeviceOrientationEvent", type, canBubble, cancelable, alpha, beta, gamma);
         }
         
         public void InitDeviceOrientationEvent(string type, bool canBubble, bool cancelable, System.Nullable<double> alpha, System.Nullable<double> beta, System.Nullable<double> gamma, bool absolute)

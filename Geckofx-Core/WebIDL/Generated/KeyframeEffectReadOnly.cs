@@ -6,16 +6,16 @@ namespace Gecko.WebIDL
     public class KeyframeEffectReadOnly : WebIDLBase
     {
         
-        public KeyframeEffectReadOnly(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public KeyframeEffectReadOnly(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public nsIDOMElement Target
+        public WebIDLUnion<nsIDOMElement,nsISupports> Target
         {
             get
             {
-                return this.GetProperty<nsIDOMElement>("target");
+                return this.GetProperty<WebIDLUnion<nsIDOMElement,nsISupports>>("target");
             }
         }
         
@@ -35,17 +35,14 @@ namespace Gecko.WebIDL
             }
         }
         
-        public string Spacing
+        public object[] GetKeyframes()
         {
-            get
-            {
-                return this.GetProperty<string>("spacing");
-            }
+            return this.CallMethod<object[]>("getKeyframes");
         }
         
-        public object[] GetFrames()
+        public object[] GetProperties()
         {
-            return this.CallMethod<object[]>("getFrames");
+            return this.CallMethod<object[]>("getProperties");
         }
     }
 }

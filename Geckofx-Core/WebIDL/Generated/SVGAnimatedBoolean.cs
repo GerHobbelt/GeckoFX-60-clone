@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGAnimatedBoolean : WebIDLBase
     {
         
-        public SVGAnimatedBoolean(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGAnimatedBoolean(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

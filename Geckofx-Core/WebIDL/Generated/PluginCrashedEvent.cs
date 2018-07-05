@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PluginCrashedEvent : WebIDLBase
     {
         
-        public PluginCrashedEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PluginCrashedEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

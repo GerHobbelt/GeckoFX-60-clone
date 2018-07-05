@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WEBGL_lose_context : WebIDLBase
     {
         
-        public WEBGL_lose_context(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WEBGL_lose_context(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

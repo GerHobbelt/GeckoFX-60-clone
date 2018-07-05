@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class RadioNodeList : WebIDLBase
     {
         
-        public RadioNodeList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public RadioNodeList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

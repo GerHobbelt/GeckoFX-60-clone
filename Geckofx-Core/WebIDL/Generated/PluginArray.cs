@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PluginArray : WebIDLBase
     {
         
-        public PluginArray(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PluginArray(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

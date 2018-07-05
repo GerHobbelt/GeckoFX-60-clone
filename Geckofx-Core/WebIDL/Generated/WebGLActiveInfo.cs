@@ -6,24 +6,24 @@ namespace Gecko.WebIDL
     public class WebGLActiveInfo : WebIDLBase
     {
         
-        public WebGLActiveInfo(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WebGLActiveInfo(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public Int32 Size
+        public int Size
         {
             get
             {
-                return this.GetProperty<Int32>("size");
+                return this.GetProperty<int>("size");
             }
         }
         
-        public UInt32 Type
+        public uint Type
         {
             get
             {
-                return this.GetProperty<UInt32>("type");
+                return this.GetProperty<uint>("type");
             }
         }
         

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGFEConvolveMatrixElement : WebIDLBase
     {
         
-        public SVGFEConvolveMatrixElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGFEConvolveMatrixElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

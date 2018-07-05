@@ -6,9 +6,33 @@ namespace Gecko.WebIDL
     public class Element : WebIDLBase
     {
         
-        public Element(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Element(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
+        }
+        
+        public string NamespaceURI
+        {
+            get
+            {
+                return this.GetProperty<string>("namespaceURI");
+            }
+        }
+        
+        public string Prefix
+        {
+            get
+            {
+                return this.GetProperty<string>("prefix");
+            }
+        }
+        
+        public string LocalName
+        {
+            get
+            {
+                return this.GetProperty<string>("localName");
+            }
         }
         
         public string TagName
@@ -147,6 +171,21 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("getElementsByClassName", classNames);
         }
         
+        public nsIDOMElement[] GetElementsWithGrid()
+        {
+            return this.CallMethod<nsIDOMElement[]>("getElementsWithGrid");
+        }
+        
+        public nsIDOMElement InsertAdjacentElement(string where, nsIDOMElement element)
+        {
+            return this.CallMethod<nsIDOMElement>("insertAdjacentElement", where, element);
+        }
+        
+        public void InsertAdjacentText(string where, string data)
+        {
+            this.CallVoidMethod("insertAdjacentText", where, data);
+        }
+        
         public bool MozMatchesSelector(string selector)
         {
             return this.CallMethod<bool>("mozMatchesSelector", selector);
@@ -160,6 +199,11 @@ namespace Gecko.WebIDL
         public void ReleasePointerCapture(int pointerId)
         {
             this.CallVoidMethod("releasePointerCapture", pointerId);
+        }
+        
+        public bool HasPointerCapture(int pointerId)
+        {
+            return this.CallMethod<bool>("hasPointerCapture", pointerId);
         }
         
         public void SetCapture()
@@ -177,19 +221,14 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("releaseCapture");
         }
         
-        public void MozRequestFullScreen()
+        public void SetCaptureAlways()
         {
-            this.CallVoidMethod("mozRequestFullScreen");
+            this.CallVoidMethod("setCaptureAlways");
         }
         
-        public void MozRequestFullScreen(object options)
+        public void SetCaptureAlways(bool retargetToElement)
         {
-            this.CallVoidMethod("mozRequestFullScreen", options);
-        }
-        
-        public void MozRequestPointerLock()
-        {
-            this.CallVoidMethod("mozRequestPointerLock");
+            this.CallVoidMethod("setCaptureAlways", retargetToElement);
         }
         
         public nsISupports GetAttributeNode(string name)
@@ -220,6 +259,31 @@ namespace Gecko.WebIDL
         public bool ScrollByNoFlush(int dx, int dy)
         {
             return this.CallMethod<bool>("scrollByNoFlush", dx, dy);
+        }
+        
+        public nsISupports GetAsFlexContainer()
+        {
+            return this.CallMethod<nsISupports>("getAsFlexContainer");
+        }
+        
+        public nsISupports[] GetGridFragments()
+        {
+            return this.CallMethod<nsISupports[]>("getGridFragments");
+        }
+        
+        public nsISupports GetTransformToAncestor(nsIDOMElement ancestor)
+        {
+            return this.CallMethod<nsISupports>("getTransformToAncestor", ancestor);
+        }
+        
+        public nsISupports GetTransformToParent()
+        {
+            return this.CallMethod<nsISupports>("getTransformToParent");
+        }
+        
+        public nsISupports GetTransformToViewport()
+        {
+            return this.CallMethod<nsISupports>("getTransformToViewport");
         }
         
         public int ScrollTop
@@ -336,19 +400,14 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("getBoundingClientRect");
         }
         
-        public void ScrollIntoView(bool top)
-        {
-            this.CallVoidMethod("scrollIntoView", top);
-        }
-        
         public void ScrollIntoView()
         {
             this.CallVoidMethod("scrollIntoView");
         }
         
-        public void ScrollIntoView(object options)
+        public void ScrollIntoView(WebIDLUnion<System.Boolean,System.Object> arg)
         {
-            this.CallVoidMethod("scrollIntoView", options);
+            this.CallVoidMethod("scrollIntoView", arg);
         }
         
         public void Scroll(double x, double y)
@@ -401,26 +460,6 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("mozScrollSnap");
         }
         
-        public nsISupports UndoManager
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("undoManager");
-            }
-        }
-        
-        public bool UndoScope
-        {
-            get
-            {
-                return this.GetProperty<bool>("undoScope");
-            }
-            set
-            {
-                this.SetProperty("undoScope", value);
-            }
-        }
-        
         public string InnerHTML
         {
             get
@@ -450,6 +489,11 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("insertAdjacentHTML", position, text);
         }
         
+        public void UnsafeSetInnerHTML(string html)
+        {
+            this.CallVoidMethod("unsafeSetInnerHTML", html);
+        }
+        
         public nsIDOMElement QuerySelector(string selectors)
         {
             return this.CallMethod<nsIDOMElement>("querySelector", selectors);
@@ -468,14 +512,57 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports OpenOrClosedShadowRoot
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("openOrClosedShadowRoot");
+            }
+        }
+        
+        public nsISupports AssignedSlot
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("assignedSlot");
+            }
+        }
+        
+        public string Slot
+        {
+            get
+            {
+                return this.GetProperty<string>("slot");
+            }
+            set
+            {
+                this.SetProperty("slot", value);
+            }
+        }
+        
+        public nsISupports AttachShadow(object shadowRootInitDict)
+        {
+            return this.CallMethod<nsISupports>("attachShadow", shadowRootInitDict);
+        }
+        
         public nsISupports CreateShadowRoot()
         {
             return this.CallMethod<nsISupports>("createShadowRoot");
         }
         
-        public nsISupports GetDestinationInsertionPoints()
+        public void RequestFullscreen()
         {
-            return this.CallMethod<nsISupports>("getDestinationInsertionPoints");
+            this.CallVoidMethod("requestFullscreen");
+        }
+        
+        public void MozRequestFullScreen()
+        {
+            this.CallVoidMethod("mozRequestFullScreen");
+        }
+        
+        public void RequestPointerLock()
+        {
+            this.CallVoidMethod("requestPointerLock");
         }
     }
 }

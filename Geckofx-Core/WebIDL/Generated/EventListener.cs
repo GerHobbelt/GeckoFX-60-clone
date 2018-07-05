@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class EventListener : WebIDLBase
     {
         
-        public EventListener(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public EventListener(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

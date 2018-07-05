@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaList : WebIDLBase
     {
         
-        public MediaList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

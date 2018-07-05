@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLEmbedElement : WebIDLBase
     {
         
-        public HTMLEmbedElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLEmbedElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -81,6 +81,11 @@ namespace Gecko.WebIDL
             {
                 this.SetProperty("name", value);
             }
+        }
+        
+        public nsIDOMDocument GetSVGDocument()
+        {
+            return this.CallMethod<nsIDOMDocument>("getSVGDocument");
         }
     }
 }

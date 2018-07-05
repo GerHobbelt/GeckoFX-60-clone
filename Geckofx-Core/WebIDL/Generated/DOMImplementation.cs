@@ -6,14 +6,14 @@ namespace Gecko.WebIDL
     public class DOMImplementation : WebIDLBase
     {
         
-        public DOMImplementation(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMImplementation(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public bool HasFeature(string feature, string version)
+        public bool HasFeature()
         {
-            return this.CallMethod<bool>("hasFeature", feature, version);
+            return this.CallMethod<bool>("hasFeature");
         }
         
         public nsISupports CreateDocumentType(string qualifiedName, string publicId, string systemId)

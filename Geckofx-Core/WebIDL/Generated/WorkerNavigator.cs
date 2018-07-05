@@ -6,9 +6,17 @@ namespace Gecko.WebIDL
     public class WorkerNavigator : WebIDLBase
     {
         
-        public WorkerNavigator(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WorkerNavigator(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
+        }
+        
+        public nsISupports Connection
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("connection");
+            }
         }
     }
 }

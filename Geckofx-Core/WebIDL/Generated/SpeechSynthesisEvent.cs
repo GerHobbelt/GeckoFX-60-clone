@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SpeechSynthesisEvent : WebIDLBase
     {
         
-        public SpeechSynthesisEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SpeechSynthesisEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -24,6 +24,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<uint>("charIndex");
+            }
+        }
+        
+        public System.Nullable<uint> CharLength
+        {
+            get
+            {
+                return this.GetProperty<System.Nullable<uint>>("charLength");
             }
         }
         

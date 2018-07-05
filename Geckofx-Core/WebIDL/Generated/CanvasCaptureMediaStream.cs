@@ -6,16 +6,16 @@ namespace Gecko.WebIDL
     public class CanvasCaptureMediaStream : WebIDLBase
     {
         
-        public CanvasCaptureMediaStream(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CanvasCaptureMediaStream(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public /* nsIDOMHTMLCanvasElement */ nsISupports Canvas
+        public nsISupports Canvas
         {
             get
             {
-                return this.GetProperty</* nsIDOMHTMLCanvasElement */ nsISupports>("canvas");
+                return this.GetProperty<nsISupports>("canvas");
             }
         }
         

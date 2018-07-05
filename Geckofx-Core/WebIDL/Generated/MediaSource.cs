@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaSource : WebIDLBase
     {
         
-        public MediaSource(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaSource(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -73,6 +73,16 @@ namespace Gecko.WebIDL
         public void EndOfStream(MediaSourceEndOfStreamError error)
         {
             this.CallVoidMethod("endOfStream", error);
+        }
+        
+        public void SetLiveSeekableRange(double start, double end)
+        {
+            this.CallVoidMethod("setLiveSeekableRange", start, end);
+        }
+        
+        public void ClearLiveSeekableRange()
+        {
+            this.CallVoidMethod("clearLiveSeekableRange");
         }
     }
 }

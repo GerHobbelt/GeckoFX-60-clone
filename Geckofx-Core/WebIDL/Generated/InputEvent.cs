@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class InputEvent : WebIDLBase
     {
         
-        public InputEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public InputEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

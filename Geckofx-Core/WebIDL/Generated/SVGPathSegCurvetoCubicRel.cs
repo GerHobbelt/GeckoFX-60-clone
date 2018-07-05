@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGPathSegCurvetoCubicRel : WebIDLBase
     {
         
-        public SVGPathSegCurvetoCubicRel(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGPathSegCurvetoCubicRel(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IDBRequest : WebIDLBase
     {
         
-        public IDBRequest(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IDBRequest(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -19,11 +19,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports Error
+        public nsIDOMDOMException Error
         {
             get
             {
-                return this.GetProperty<nsISupports>("error");
+                return this.GetProperty<nsIDOMDOMException>("error");
             }
         }
         

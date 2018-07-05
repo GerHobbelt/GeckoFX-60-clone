@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SpeechRecognitionResultList : WebIDLBase
     {
         
-        public SpeechRecognitionResultList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SpeechRecognitionResultList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

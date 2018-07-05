@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class GlobalEventHandlers : WebIDLBase
     {
         
-        public GlobalEventHandlers(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public GlobalEventHandlers(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

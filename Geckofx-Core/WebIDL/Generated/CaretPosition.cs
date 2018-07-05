@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CaretPosition : WebIDLBase
     {
         
-        public CaretPosition(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CaretPosition(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

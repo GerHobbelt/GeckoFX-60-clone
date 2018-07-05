@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FileList : WebIDLBase
     {
         
-        public FileList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FileList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

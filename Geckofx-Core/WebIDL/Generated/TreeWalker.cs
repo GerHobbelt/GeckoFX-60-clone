@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TreeWalker : WebIDLBase
     {
         
-        public TreeWalker(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TreeWalker(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

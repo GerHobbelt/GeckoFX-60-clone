@@ -6,21 +6,9 @@ namespace Gecko.WebIDL
     public class XULElement : WebIDLBase
     {
         
-        public XULElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public XULElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
-        }
-        
-        public string ClassName
-        {
-            get
-            {
-                return this.GetProperty<string>("className");
-            }
-            set
-            {
-                this.SetProperty("className", value);
-            }
         }
         
         public string Align
@@ -287,30 +275,6 @@ namespace Gecko.WebIDL
             }
         }
         
-        public string Datasources
-        {
-            get
-            {
-                return this.GetProperty<string>("datasources");
-            }
-            set
-            {
-                this.SetProperty("datasources", value);
-            }
-        }
-        
-        public string Ref
-        {
-            get
-            {
-                return this.GetProperty<string>("ref");
-            }
-            set
-            {
-                this.SetProperty("ref", value);
-            }
-        }
-        
         public string TooltipText
         {
             get
@@ -335,6 +299,18 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string Src
+        {
+            get
+            {
+                return this.GetProperty<string>("src");
+            }
+            set
+            {
+                this.SetProperty("src", value);
+            }
+        }
+        
         public bool AllowEvents
         {
             get
@@ -344,30 +320,6 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("allowEvents", value);
-            }
-        }
-        
-        public nsISupports Database
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("database");
-            }
-        }
-        
-        public nsISupports Builder
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("builder");
-            }
-        }
-        
-        public nsISupports Resource
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("resource");
             }
         }
         
@@ -387,11 +339,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public /* nsIDOMCSSStyleDeclaration */ nsISupports Style
+        public nsISupports Style
         {
             get
             {
-                return this.GetProperty</* nsIDOMCSSStyleDeclaration */ nsISupports>("style");
+                return this.GetProperty<nsISupports>("style");
             }
         }
         

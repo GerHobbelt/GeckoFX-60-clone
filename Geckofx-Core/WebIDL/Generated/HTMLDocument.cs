@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLDocument : WebIDLBase
     {
         
-        public HTMLDocument(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLDocument(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -32,18 +32,6 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("cookie", value);
-            }
-        }
-        
-        public nsISupports Body
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("body");
-            }
-            set
-            {
-                this.SetProperty("body", value);
             }
         }
         
@@ -199,21 +187,6 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports GetElementsByName(string elementName)
-        {
-            return this.CallMethod<nsISupports>("getElementsByName", elementName);
-        }
-        
-        public nsISupports GetItems()
-        {
-            return this.CallMethod<nsISupports>("getItems");
-        }
-        
-        public nsISupports GetItems(string typeNames)
-        {
-            return this.CallMethod<nsISupports>("getItems", typeNames);
-        }
-        
         public nsIDOMDocument Open()
         {
             return this.CallMethod<nsIDOMDocument>("open");
@@ -229,14 +202,14 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsIDOMDocument>("open", type, replace);
         }
         
-        public nsIDOMWindow Open(string url, string name, string features)
+        public mozIDOMWindowProxy Open(string url, string name, string features)
         {
-            return this.CallMethod<nsIDOMWindow>("open", url, name, features);
+            return this.CallMethod<mozIDOMWindowProxy>("open", url, name, features);
         }
         
-        public nsIDOMWindow Open(string url, string name, string features, bool replace)
+        public mozIDOMWindowProxy Open(string url, string name, string features, bool replace)
         {
-            return this.CallMethod<nsIDOMWindow>("open", url, name, features, replace);
+            return this.CallMethod<mozIDOMWindowProxy>("open", url, name, features, replace);
         }
         
         public void Close()
@@ -297,11 +270,6 @@ namespace Gecko.WebIDL
         public void Clear()
         {
             this.CallVoidMethod("clear");
-        }
-        
-        public nsISelection GetSelection()
-        {
-            return this.CallMethod<nsISelection>("getSelection");
         }
         
         public void CaptureEvents()

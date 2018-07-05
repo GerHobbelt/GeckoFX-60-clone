@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMMatrix : WebIDLBase
     {
         
-        public DOMMatrix(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMMatrix(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

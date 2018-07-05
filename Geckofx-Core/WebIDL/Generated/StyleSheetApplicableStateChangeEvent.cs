@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class StyleSheetApplicableStateChangeEvent : WebIDLBase
     {
         
-        public StyleSheetApplicableStateChangeEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public StyleSheetApplicableStateChangeEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

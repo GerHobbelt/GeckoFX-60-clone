@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DataTransfer : WebIDLBase
     {
         
-        public DataTransfer(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DataTransfer(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -35,11 +35,19 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports Types
+        public nsISupports Items
         {
             get
             {
-                return this.GetProperty<nsISupports>("types");
+                return this.GetProperty<nsISupports>("items");
+            }
+        }
+        
+        public string[] Types
+        {
+            get
+            {
+                return this.GetProperty<string[]>("types");
             }
         }
         
@@ -81,6 +89,16 @@ namespace Gecko.WebIDL
             return this.CallMethod<Promise < WebIDLUnion<nsISupports,nsISupports>>>("getFilesAndDirectories");
         }
         
+        public Promise < nsISupports[] > GetFiles()
+        {
+            return this.CallMethod<Promise < nsISupports[] >>("getFiles");
+        }
+        
+        public Promise < nsISupports[] > GetFiles(bool recursiveFlag)
+        {
+            return this.CallMethod<Promise < nsISupports[] >>("getFiles", recursiveFlag);
+        }
+        
         public uint MozItemCount
         {
             get
@@ -117,6 +135,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string MozTriggeringPrincipalURISpec
+        {
+            get
+            {
+                return this.GetProperty<string>("mozTriggeringPrincipalURISpec");
+            }
+        }
+        
         public void AddElement(nsIDOMElement element)
         {
             this.CallVoidMethod("addElement", element);
@@ -140,6 +166,16 @@ namespace Gecko.WebIDL
         public object MozGetDataAt(string format, uint index)
         {
             return this.CallMethod<object>("mozGetDataAt", format, index);
+        }
+        
+        public void UpdateDragImage(nsIDOMElement image, int x, int y)
+        {
+            this.CallVoidMethod("updateDragImage", image, x, y);
+        }
+        
+        public nsISupports MozCloneForEvent(string @event)
+        {
+            return this.CallMethod<nsISupports>("mozCloneForEvent", @event);
         }
     }
 }

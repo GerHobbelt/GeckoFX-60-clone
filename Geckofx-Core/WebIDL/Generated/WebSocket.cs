@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WebSocket : WebIDLBase
     {
         
-        public WebSocket(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WebSocket(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

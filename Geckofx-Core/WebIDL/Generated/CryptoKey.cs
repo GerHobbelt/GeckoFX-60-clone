@@ -6,16 +6,16 @@ namespace Gecko.WebIDL
     public class CryptoKey : WebIDLBase
     {
         
-        public CryptoKey(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CryptoKey(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public String Type
+        public string Type
         {
             get
             {
-                return this.GetProperty<String>("type");
+                return this.GetProperty<string>("type");
             }
         }
         
@@ -35,11 +35,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public String[] Usages
+        public string[] Usages
         {
             get
             {
-                return this.GetProperty<String[]>("usages");
+                return this.GetProperty<string[]>("usages");
             }
         }
     }

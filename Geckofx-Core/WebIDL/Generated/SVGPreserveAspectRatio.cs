@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGPreserveAspectRatio : WebIDLBase
     {
         
-        public SVGPreserveAspectRatio(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGPreserveAspectRatio(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

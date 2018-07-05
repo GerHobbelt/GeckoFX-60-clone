@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Path2D : WebIDLBase
     {
         
-        public Path2D(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Path2D(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

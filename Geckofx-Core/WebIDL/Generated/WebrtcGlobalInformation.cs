@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WebrtcGlobalInformation : WebIDLBase
     {
         
-        public WebrtcGlobalInformation(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WebrtcGlobalInformation(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -32,6 +32,18 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("aecDebug", value);
+            }
+        }
+        
+        public string AecDebugLogDir
+        {
+            get
+            {
+                return this.GetProperty<string>("aecDebugLogDir");
+            }
+            set
+            {
+                this.SetProperty("aecDebugLogDir", value);
             }
         }
     }

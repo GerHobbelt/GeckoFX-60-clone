@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WindowClient : WebIDLBase
     {
         
-        public WindowClient(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WindowClient(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -30,6 +30,11 @@ namespace Gecko.WebIDL
         public Promise < nsISupports > Focus()
         {
             return this.CallMethod<Promise < nsISupports >>("focus");
+        }
+        
+        public Promise < nsISupports > Navigate(USVString url)
+        {
+            return this.CallMethod<Promise < nsISupports >>("navigate", url);
         }
     }
 }

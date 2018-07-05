@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGRadialGradientElement : WebIDLBase
     {
         
-        public SVGRadialGradientElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGRadialGradientElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -48,6 +48,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<nsISupports>("fy");
+            }
+        }
+        
+        public nsISupports Fr
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("fr");
             }
         }
     }

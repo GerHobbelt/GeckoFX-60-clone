@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class NonDocumentTypeChildNode : WebIDLBase
     {
         
-        public NonDocumentTypeChildNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public NonDocumentTypeChildNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

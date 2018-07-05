@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGPathSeg : WebIDLBase
     {
         
-        public SVGPathSeg(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGPathSeg(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

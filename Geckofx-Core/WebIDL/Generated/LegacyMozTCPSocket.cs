@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class LegacyMozTCPSocket : WebIDLBase
     {
         
-        public LegacyMozTCPSocket(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public LegacyMozTCPSocket(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

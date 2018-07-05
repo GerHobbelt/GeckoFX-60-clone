@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLElement : WebIDLBase
     {
         
-        public HTMLElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -64,74 +64,6 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("innerText", value);
-            }
-        }
-        
-        public bool ItemScope
-        {
-            get
-            {
-                return this.GetProperty<bool>("itemScope");
-            }
-            set
-            {
-                this.SetProperty("itemScope", value);
-            }
-        }
-        
-        public nsISupports ItemType
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("itemType");
-            }
-        }
-        
-        public string ItemId
-        {
-            get
-            {
-                return this.GetProperty<string>("itemId");
-            }
-            set
-            {
-                this.SetProperty("itemId", value);
-            }
-        }
-        
-        public nsISupports ItemRef
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("itemRef");
-            }
-        }
-        
-        public nsISupports ItemProp
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("itemProp");
-            }
-        }
-        
-        public nsISupports Properties
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("properties");
-            }
-        }
-        
-        public object ItemValue
-        {
-            get
-            {
-                return this.GetProperty<object>("itemValue");
-            }
-            set
-            {
-                this.SetProperty("itemValue", value);
             }
         }
         
@@ -231,11 +163,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public /* nsIDOMCSSStyleDeclaration */ nsISupports Style
+        public nsISupports Style
         {
             get
             {
-                return this.GetProperty</* nsIDOMCSSStyleDeclaration */ nsISupports>("style");
+                return this.GetProperty<nsISupports>("style");
             }
         }
         
@@ -291,18 +223,6 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<int>("offsetHeight");
-            }
-        }
-        
-        public bool Scrollgrab
-        {
-            get
-            {
-                return this.GetProperty<bool>("scrollgrab");
-            }
-            set
-            {
-                this.SetProperty("scrollgrab", value);
             }
         }
     }

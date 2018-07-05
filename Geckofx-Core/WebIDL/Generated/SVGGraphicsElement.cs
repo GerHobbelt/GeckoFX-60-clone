@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGGraphicsElement : WebIDLBase
     {
         
-        public SVGGraphicsElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGGraphicsElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGFEOffsetElement : WebIDLBase
     {
         
-        public SVGFEOffsetElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGFEOffsetElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TimeEvent : WebIDLBase
     {
         
-        public TimeEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TimeEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -19,12 +19,22 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow View
+        public mozIDOMWindowProxy View
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("view");
+                return this.GetProperty<mozIDOMWindowProxy>("view");
             }
+        }
+        
+        public void InitTimeEvent(string aType)
+        {
+            this.CallVoidMethod("initTimeEvent", aType);
+        }
+        
+        public void InitTimeEvent(string aType, nsIDOMWindow aView)
+        {
+            this.CallVoidMethod("initTimeEvent", aType, aView);
         }
         
         public void InitTimeEvent(string aType, nsIDOMWindow aView, int aDetail)

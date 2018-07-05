@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Range : WebIDLBase
     {
         
-        public Range(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Range(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -177,6 +177,11 @@ namespace Gecko.WebIDL
         public nsISupports GetBoundingClientRect()
         {
             return this.CallMethod<nsISupports>("getBoundingClientRect");
+        }
+        
+        public object GetClientRectsAndTexts()
+        {
+            return this.CallMethod<object>("getClientRectsAndTexts");
         }
     }
 }

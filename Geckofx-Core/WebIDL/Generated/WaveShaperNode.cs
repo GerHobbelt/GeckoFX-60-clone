@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WaveShaperNode : WebIDLBase
     {
         
-        public WaveShaperNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WaveShaperNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

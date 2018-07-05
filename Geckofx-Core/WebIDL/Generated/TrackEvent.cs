@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TrackEvent : WebIDLBase
     {
         
-        public TrackEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TrackEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

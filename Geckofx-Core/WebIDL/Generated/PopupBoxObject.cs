@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PopupBoxObject : WebIDLBase
     {
         
-        public PopupBoxObject(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PopupBoxObject(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -231,6 +231,11 @@ namespace Gecko.WebIDL
         public void MoveToAnchor(nsIDOMElement anchorElement, string position, int x, int y, bool attributesOverride)
         {
             this.CallVoidMethod("moveToAnchor", anchorElement, position, x, y, attributesOverride);
+        }
+        
+        public void SetConstraintRect(nsISupports rect)
+        {
+            this.CallVoidMethod("setConstraintRect", rect);
         }
     }
 }

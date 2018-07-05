@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Text : WebIDLBase
     {
         
-        public Text(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Text(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -22,6 +22,14 @@ namespace Gecko.WebIDL
         public nsIDOMText SplitText(uint offset)
         {
             return this.CallMethod<nsIDOMText>("splitText", offset);
+        }
+        
+        public nsISupports AssignedSlot
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("assignedSlot");
+            }
         }
     }
 }

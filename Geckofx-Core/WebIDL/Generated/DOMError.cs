@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMError : WebIDLBase
     {
         
-        public DOMError(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMError(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

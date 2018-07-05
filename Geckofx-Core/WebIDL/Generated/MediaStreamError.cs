@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaStreamError : WebIDLBase
     {
         
-        public MediaStreamError(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaStreamError(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

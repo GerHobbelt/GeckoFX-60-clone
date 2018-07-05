@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Response : WebIDLBase
     {
         
-        public Response(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Response(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -24,6 +24,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<USVString>("url");
+            }
+        }
+        
+        public bool Redirected
+        {
+            get
+            {
+                return this.GetProperty<bool>("redirected");
             }
         }
         
@@ -62,6 +70,19 @@ namespace Gecko.WebIDL
         public nsISupports Clone()
         {
             return this.CallMethod<nsISupports>("clone");
+        }
+        
+        public nsISupports CloneUnfiltered()
+        {
+            return this.CallMethod<nsISupports>("cloneUnfiltered");
+        }
+        
+        public nsISupports Body
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("body");
+            }
         }
     }
 }

@@ -6,16 +6,16 @@ namespace Gecko.WebIDL
     public class VideoPlaybackQuality : WebIDLBase
     {
         
-        public VideoPlaybackQuality(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public VideoPlaybackQuality(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public Double CreationTime
+        public double CreationTime
         {
             get
             {
-                return this.GetProperty<Double>("creationTime");
+                return this.GetProperty<double>("creationTime");
             }
         }
         

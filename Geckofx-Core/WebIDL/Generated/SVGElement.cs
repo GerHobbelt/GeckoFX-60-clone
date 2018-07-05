@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGElement : WebIDLBase
     {
         
-        public SVGElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -31,11 +31,19 @@ namespace Gecko.WebIDL
             }
         }
         
-        public /* nsIDOMCSSStyleDeclaration */ nsISupports Style
+        public nsISupports Dataset
         {
             get
             {
-                return this.GetProperty</* nsIDOMCSSStyleDeclaration */ nsISupports>("style");
+                return this.GetProperty<nsISupports>("dataset");
+            }
+        }
+        
+        public nsISupports Style
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("style");
             }
         }
         
@@ -53,6 +61,28 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<nsISupports>("viewportElement");
             }
+        }
+        
+        public int TabIndex
+        {
+            get
+            {
+                return this.GetProperty<int>("tabIndex");
+            }
+            set
+            {
+                this.SetProperty("tabIndex", value);
+            }
+        }
+        
+        public void Focus()
+        {
+            this.CallVoidMethod("focus");
+        }
+        
+        public void Blur()
+        {
+            this.CallVoidMethod("blur");
         }
     }
 }

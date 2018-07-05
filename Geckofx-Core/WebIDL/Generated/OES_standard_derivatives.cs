@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class OES_standard_derivatives : WebIDLBase
     {
         
-        public OES_standard_derivatives(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public OES_standard_derivatives(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

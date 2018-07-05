@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ParentNode : WebIDLBase
     {
         
-        public ParentNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ParentNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -41,6 +41,16 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<uint>("childElementCount");
             }
+        }
+        
+        public void Prepend(WebIDLUnion<nsIDOMNode,System.String> nodes)
+        {
+            this.CallVoidMethod("prepend", nodes);
+        }
+        
+        public void Append(WebIDLUnion<nsIDOMNode,System.String> nodes)
+        {
+            this.CallVoidMethod("append", nodes);
         }
     }
 }

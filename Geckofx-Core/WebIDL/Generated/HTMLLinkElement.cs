@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLLinkElement : WebIDLBase
     {
         
-        public HTMLLinkElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLLinkElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -103,6 +103,18 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string ReferrerPolicy
+        {
+            get
+            {
+                return this.GetProperty<string>("referrerPolicy");
+            }
+            set
+            {
+                this.SetProperty("referrerPolicy", value);
+            }
+        }
+        
         public nsISupports Sizes
         {
             get
@@ -147,14 +159,6 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMDocument Import
-        {
-            get
-            {
-                return this.GetProperty<nsIDOMDocument>("import");
-            }
-        }
-        
         public string Integrity
         {
             get
@@ -164,6 +168,18 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("integrity", value);
+            }
+        }
+        
+        public string As
+        {
+            get
+            {
+                return this.GetProperty<string>("as");
+            }
+            set
+            {
+                this.SetProperty("as", value);
             }
         }
     }

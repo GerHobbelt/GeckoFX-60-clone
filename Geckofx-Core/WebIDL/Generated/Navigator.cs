@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Navigator : WebIDLBase
     {
         
-        public Navigator(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Navigator(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -43,14 +43,6 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports Battery
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("battery");
-            }
-        }
-        
         public Promise < nsISupports > GetBattery()
         {
             return this.CallMethod<Promise < nsISupports >>("getBattery");
@@ -72,6 +64,16 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<int>("maxTouchPoints");
             }
+        }
+        
+        public void SetVibrationPermission(bool permitted)
+        {
+            this.CallVoidMethod("setVibrationPermission", permitted);
+        }
+        
+        public void SetVibrationPermission(bool permitted, bool persistent)
+        {
+            this.CallVoidMethod("setVibrationPermission", permitted, persistent);
         }
         
         public string Oscpu
@@ -122,14 +124,6 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports MozPower
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("mozPower");
-            }
-        }
-        
         public bool JavaEnabled()
         {
             return this.CallMethod<bool>("javaEnabled");
@@ -145,42 +139,6 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("removeIdleObserver", aIdleObserver);
         }
         
-        public nsISupports RequestWakeLock(string aTopic)
-        {
-            return this.CallMethod<nsISupports>("requestWakeLock", aTopic);
-        }
-        
-        public nsISupports DeviceStorageAreaListener
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("deviceStorageAreaListener");
-            }
-        }
-        
-        public nsISupports GetDeviceStorage(string type)
-        {
-            return this.CallMethod<nsISupports>("getDeviceStorage", type);
-        }
-        
-        public nsISupports[] GetDeviceStorages(string type)
-        {
-            return this.CallMethod<nsISupports[]>("getDeviceStorages", type);
-        }
-        
-        public nsISupports GetDeviceStorageByNameAndType(string name, string type)
-        {
-            return this.CallMethod<nsISupports>("getDeviceStorageByNameAndType", name, type);
-        }
-        
-        public nsISupports MozNotification
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("mozNotification");
-            }
-        }
-        
         public nsISupports Connection
         {
             get
@@ -189,27 +147,71 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports MozCameras
+        public nsISupports[] GetGamepads()
+        {
+            return this.CallMethod<nsISupports[]>("getGamepads");
+        }
+        
+        public nsISupports RequestGamepadServiceTest()
+        {
+            return this.CallMethod<nsISupports>("requestGamepadServiceTest");
+        }
+        
+        public nsISupports[] ActiveVRDisplays
         {
             get
             {
-                return this.GetProperty<nsISupports>("mozCameras");
+                return this.GetProperty<nsISupports[]>("activeVRDisplays");
             }
         }
         
-        public bool MozHasPendingMessage(string type)
+        public bool IsWebVRContentDetected
         {
-            return this.CallMethod<bool>("mozHasPendingMessage", type);
+            get
+            {
+                return this.GetProperty<bool>("isWebVRContentDetected");
+            }
         }
         
-        public void MozSetMessageHandlerPromise(Promise <object> promise)
+        public bool IsWebVRContentPresenting
         {
-            this.CallVoidMethod("mozSetMessageHandlerPromise", promise);
+            get
+            {
+                return this.GetProperty<bool>("isWebVRContentPresenting");
+            }
         }
         
-        public Promise < nsISupports[] > GetVRDevices()
+        public Promise < nsISupports[] > GetVRDisplays()
         {
-            return this.CallMethod<Promise < nsISupports[] >>("getVRDevices");
+            return this.CallMethod<Promise < nsISupports[] >>("getVRDisplays");
+        }
+        
+        public void RequestVRPresentation(nsISupports display)
+        {
+            this.CallVoidMethod("requestVRPresentation", display);
+        }
+        
+        public nsISupports RequestVRServiceTest()
+        {
+            return this.CallMethod<nsISupports>("requestVRServiceTest");
+        }
+        
+        public Promise < nsISupports > RequestMIDIAccess()
+        {
+            return this.CallMethod<Promise < nsISupports >>("requestMIDIAccess");
+        }
+        
+        public Promise < nsISupports > RequestMIDIAccess(object options)
+        {
+            return this.CallMethod<Promise < nsISupports >>("requestMIDIAccess", options);
+        }
+        
+        public nsISupports MediaDevices
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("mediaDevices");
+            }
         }
         
         public nsISupports ServiceWorker
@@ -225,25 +227,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("sendBeacon", url);
         }
         
-        public bool SendBeacon(string url, WebIDLUnion<IntPtr,nsIDOMBlob,System.String,/* nsIDOMFormData */ nsISupports> data)
+        public bool SendBeacon(string url, WebIDLUnion<nsIDOMBlob> data)
         {
             return this.CallMethod<bool>("sendBeacon", url, data);
-        }
-        
-        public nsISupports Tv
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("tv");
-            }
-        }
-        
-        public nsISupports InputPortManager
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("inputPortManager");
-            }
         }
         
         public nsISupports Presentation
@@ -259,6 +245,19 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<nsISupports>("mozTCPSocket");
+            }
+        }
+        
+        public Promise < nsISupports > RequestMediaKeySystemAccess(string keySystem, object[] supportedConfigurations)
+        {
+            return this.CallMethod<Promise < nsISupports >>("requestMediaKeySystemAccess", keySystem, supportedConfigurations);
+        }
+        
+        public nsISupports Credentials
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("credentials");
             }
         }
     }

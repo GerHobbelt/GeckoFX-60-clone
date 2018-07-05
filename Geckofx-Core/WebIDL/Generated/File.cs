@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class File : WebIDLBase
     {
         
-        public File(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public File(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -35,11 +35,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public string Path
+        public USVString WebkitRelativePath
         {
             get
             {
-                return this.GetProperty<string>("path");
+                return this.GetProperty<USVString>("webkitRelativePath");
             }
         }
         

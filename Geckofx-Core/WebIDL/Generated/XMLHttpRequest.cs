@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class XMLHttpRequest : WebIDLBase
     {
         
-        public XMLHttpRequest(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public XMLHttpRequest(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -51,11 +51,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public string ResponseURL
+        public USVString ResponseURL
         {
             get
             {
-                return this.GetProperty<string>("responseURL");
+                return this.GetProperty<USVString>("responseURL");
             }
         }
         
@@ -95,11 +95,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public string ResponseText
+        public USVString ResponseText
         {
             get
             {
-                return this.GetProperty<string>("responseText");
+                return this.GetProperty<USVString>("responseText");
             }
         }
         
@@ -143,6 +143,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public ushort ErrorCode
+        {
+            get
+            {
+                return this.GetProperty<ushort>("errorCode");
+            }
+        }
+        
         public bool MozAnon
         {
             get
@@ -159,22 +167,22 @@ namespace Gecko.WebIDL
             }
         }
         
-        public void Open(ByteString method, string url)
+        public void Open(ByteString method, USVString url)
         {
             this.CallVoidMethod("open", method, url);
         }
         
-        public void Open(ByteString method, string url, bool async)
+        public void Open(ByteString method, USVString url, bool async)
         {
             this.CallVoidMethod("open", method, url, async);
         }
         
-        public void Open(ByteString method, string url, bool async, string user)
+        public void Open(ByteString method, USVString url, bool async, USVString user)
         {
             this.CallVoidMethod("open", method, url, async, user);
         }
         
-        public void Open(ByteString method, string url, bool async, string user, string password)
+        public void Open(ByteString method, USVString url, bool async, USVString user, USVString password)
         {
             this.CallVoidMethod("open", method, url, async, user, password);
         }
@@ -189,31 +197,11 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("send");
         }
         
-        public void Send(IntPtr data)
+        public void Send(WebIDLUnion<nsIDOMDocument,WebIDLUnion<nsIDOMBlob>> body)
         {
-            this.CallVoidMethod("send", data);
+            this.CallVoidMethod("send", body);
         }
         
-        public void Send(nsIDOMBlob data)
-        {
-            this.CallVoidMethod("send", data);
-        }
-        
-        public void Send(nsIDOMDocument data)
-        {
-            this.CallVoidMethod("send", data);
-        }
-        
-        public void Send(string data)
-        {
-            this.CallVoidMethod("send", data);
-        }
-        
-        public void Send(/* nsIDOMFormData */ nsISupports data)
-        {
-            this.CallVoidMethod("send", data);
-        }
-
         public void Abort()
         {
             this.CallVoidMethod("abort");
@@ -237,6 +225,21 @@ namespace Gecko.WebIDL
         public object GetInterface(nsISupports iid)
         {
             return this.CallMethod<object>("getInterface", iid);
+        }
+        
+        public void SetOriginAttributes()
+        {
+            this.CallVoidMethod("setOriginAttributes");
+        }
+        
+        public void SetOriginAttributes(nsISupports originAttributes)
+        {
+            this.CallVoidMethod("setOriginAttributes", originAttributes);
+        }
+        
+        public void SendInputStream(nsISupports body)
+        {
+            this.CallVoidMethod("sendInputStream", body);
         }
     }
 }

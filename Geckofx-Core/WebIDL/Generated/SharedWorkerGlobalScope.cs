@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SharedWorkerGlobalScope : WebIDLBase
     {
         
-        public SharedWorkerGlobalScope(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SharedWorkerGlobalScope(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -17,6 +17,11 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<string>("name");
             }
+        }
+        
+        public void Close()
+        {
+            this.CallVoidMethod("close");
         }
     }
 }

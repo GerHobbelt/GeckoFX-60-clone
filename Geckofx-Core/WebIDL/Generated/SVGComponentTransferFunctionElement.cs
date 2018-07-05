@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGComponentTransferFunctionElement : WebIDLBase
     {
         
-        public SVGComponentTransferFunctionElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGComponentTransferFunctionElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

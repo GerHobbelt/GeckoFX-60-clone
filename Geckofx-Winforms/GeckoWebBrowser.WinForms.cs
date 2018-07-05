@@ -321,7 +321,7 @@ namespace Gecko
                 {
                     try
                     {
-                        var window = Xpcom.QueryInterface<nsIDOMWindow>(docShell);
+                        var window = Xpcom.QueryInterface<mozIDOMWindowProxy>(docShell);
                         if (window != null)
                         {
                             try

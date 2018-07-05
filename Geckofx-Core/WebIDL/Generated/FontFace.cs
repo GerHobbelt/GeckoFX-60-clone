@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FontFace : WebIDLBase
     {
         
-        public FontFace(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FontFace(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -92,6 +92,30 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("featureSettings", value);
+            }
+        }
+        
+        public string VariationSettings
+        {
+            get
+            {
+                return this.GetProperty<string>("variationSettings");
+            }
+            set
+            {
+                this.SetProperty("variationSettings", value);
+            }
+        }
+        
+        public string Display
+        {
+            get
+            {
+                return this.GetProperty<string>("display");
+            }
+            set
+            {
+                this.SetProperty("display", value);
             }
         }
         

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TextDecoder : WebIDLBase
     {
         
-        public TextDecoder(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TextDecoder(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PannerNode : WebIDLBase
     {
         
-        public PannerNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PannerNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -20,6 +20,54 @@ namespace Gecko.WebIDL
             set
             {
                 this.SetProperty("panningModel", value);
+            }
+        }
+        
+        public nsISupports PositionX
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("positionX");
+            }
+        }
+        
+        public nsISupports PositionY
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("positionY");
+            }
+        }
+        
+        public nsISupports PositionZ
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("positionZ");
+            }
+        }
+        
+        public nsISupports OrientationX
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("orientationX");
+            }
+        }
+        
+        public nsISupports OrientationY
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("orientationY");
+            }
+        }
+        
+        public nsISupports OrientationZ
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("orientationZ");
             }
         }
         

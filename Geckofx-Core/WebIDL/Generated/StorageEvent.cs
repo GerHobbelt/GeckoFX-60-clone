@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class StorageEvent : WebIDLBase
     {
         
-        public StorageEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public StorageEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -49,6 +49,41 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<nsISupports>("storageArea");
             }
+        }
+        
+        public void InitStorageEvent(string type)
+        {
+            this.CallVoidMethod("initStorageEvent", type);
+        }
+        
+        public void InitStorageEvent(string type, bool canBubble)
+        {
+            this.CallVoidMethod("initStorageEvent", type, canBubble);
+        }
+        
+        public void InitStorageEvent(string type, bool canBubble, bool cancelable)
+        {
+            this.CallVoidMethod("initStorageEvent", type, canBubble, cancelable);
+        }
+        
+        public void InitStorageEvent(string type, bool canBubble, bool cancelable, string key)
+        {
+            this.CallVoidMethod("initStorageEvent", type, canBubble, cancelable, key);
+        }
+        
+        public void InitStorageEvent(string type, bool canBubble, bool cancelable, string key, string oldValue)
+        {
+            this.CallVoidMethod("initStorageEvent", type, canBubble, cancelable, key, oldValue);
+        }
+        
+        public void InitStorageEvent(string type, bool canBubble, bool cancelable, string key, string oldValue, string newValue)
+        {
+            this.CallVoidMethod("initStorageEvent", type, canBubble, cancelable, key, oldValue, newValue);
+        }
+        
+        public void InitStorageEvent(string type, bool canBubble, bool cancelable, string key, string oldValue, string newValue, string url)
+        {
+            this.CallVoidMethod("initStorageEvent", type, canBubble, cancelable, key, oldValue, newValue, url);
         }
         
         public void InitStorageEvent(string type, bool canBubble, bool cancelable, string key, string oldValue, string newValue, string url, nsISupports storageArea)

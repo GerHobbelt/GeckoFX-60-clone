@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMPointReadOnly : WebIDLBase
     {
         
-        public DOMPointReadOnly(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMPointReadOnly(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

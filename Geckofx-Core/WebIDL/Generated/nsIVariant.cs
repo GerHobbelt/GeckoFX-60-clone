@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class nsIVariant : WebIDLBase
     {
         
-        public nsIVariant(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public nsIVariant(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

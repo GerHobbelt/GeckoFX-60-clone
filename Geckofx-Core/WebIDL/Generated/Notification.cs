@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Notification : WebIDLBase
     {
         
-        public Notification(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Notification(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -68,6 +68,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<string>("icon");
+            }
+        }
+        
+        public bool RequireInteraction
+        {
+            get
+            {
+                return this.GetProperty<bool>("requireInteraction");
             }
         }
         

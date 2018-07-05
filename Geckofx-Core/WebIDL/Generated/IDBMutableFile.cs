@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IDBMutableFile : WebIDLBase
     {
         
-        public IDBMutableFile(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IDBMutableFile(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

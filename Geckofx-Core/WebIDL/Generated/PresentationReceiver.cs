@@ -6,19 +6,17 @@ namespace Gecko.WebIDL
     public class PresentationReceiver : WebIDLBase
     {
         
-        public PresentationReceiver(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PresentationReceiver(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public Promise < nsISupports > GetConnection()
+        public Promise < nsISupports > ConnectionList
         {
-            return this.CallMethod<Promise < nsISupports >>("getConnection");
-        }
-        
-        public Promise < nsISupports[] > GetConnections()
-        {
-            return this.CallMethod<Promise < nsISupports[] >>("getConnections");
+            get
+            {
+                return this.GetProperty<Promise < nsISupports >>("connectionList");
+            }
         }
     }
 }

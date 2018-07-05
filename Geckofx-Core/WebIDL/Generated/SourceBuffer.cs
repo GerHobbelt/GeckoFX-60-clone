@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SourceBuffer : WebIDLBase
     {
         
-        public SourceBuffer(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SourceBuffer(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

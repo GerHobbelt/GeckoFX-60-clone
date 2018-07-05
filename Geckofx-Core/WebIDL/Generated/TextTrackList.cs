@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TextTrackList : WebIDLBase
     {
         
-        public TextTrackList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TextTrackList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

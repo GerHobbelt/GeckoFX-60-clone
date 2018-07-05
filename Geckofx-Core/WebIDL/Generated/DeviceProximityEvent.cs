@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DeviceProximityEvent : WebIDLBase
     {
         
-        public DeviceProximityEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DeviceProximityEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

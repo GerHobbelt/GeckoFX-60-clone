@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLSourceElement : WebIDLBase
     {
         
-        public HTMLSourceElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLSourceElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

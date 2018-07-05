@@ -6,9 +6,17 @@ namespace Gecko.WebIDL
     public class OfflineAudioContext : WebIDLBase
     {
         
-        public OfflineAudioContext(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public OfflineAudioContext(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
+        }
+        
+        public uint Length
+        {
+            get
+            {
+                return this.GetProperty<uint>("length");
+            }
         }
         
         public Promise < nsISupports > StartRendering()

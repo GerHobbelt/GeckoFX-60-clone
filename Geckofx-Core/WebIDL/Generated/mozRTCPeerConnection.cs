@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class mozRTCPeerConnection : WebIDLBase
     {
         
-        public mozRTCPeerConnection(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public mozRTCPeerConnection(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

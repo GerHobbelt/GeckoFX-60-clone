@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TouchEvent : WebIDLBase
     {
         
-        public TouchEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TouchEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -65,6 +65,61 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<bool>("shiftKey");
             }
+        }
+        
+        public void InitTouchEvent(string type)
+        {
+            this.CallVoidMethod("initTouchEvent", type);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable, view);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view, int detail)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable, view, detail);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view, int detail, bool ctrlKey)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable, view, detail, ctrlKey);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view, int detail, bool ctrlKey, bool altKey)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable, view, detail, ctrlKey, altKey);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view, int detail, bool ctrlKey, bool altKey, bool shiftKey)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable, view, detail, ctrlKey, altKey, shiftKey);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view, int detail, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable, view, detail, ctrlKey, altKey, shiftKey, metaKey);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view, int detail, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, nsISupports touches)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable, view, detail, ctrlKey, altKey, shiftKey, metaKey, touches);
+        }
+        
+        public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view, int detail, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, nsISupports touches, nsISupports targetTouches)
+        {
+            this.CallVoidMethod("initTouchEvent", type, canBubble, cancelable, view, detail, ctrlKey, altKey, shiftKey, metaKey, touches, targetTouches);
         }
         
         public void InitTouchEvent(string type, bool canBubble, bool cancelable, nsIDOMWindow view, int detail, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey, nsISupports touches, nsISupports targetTouches, nsISupports changedTouches)

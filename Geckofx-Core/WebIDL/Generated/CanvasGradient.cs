@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CanvasGradient : WebIDLBase
     {
         
-        public CanvasGradient(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CanvasGradient(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

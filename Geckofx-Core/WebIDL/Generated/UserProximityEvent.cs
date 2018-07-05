@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class UserProximityEvent : WebIDLBase
     {
         
-        public UserProximityEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public UserProximityEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

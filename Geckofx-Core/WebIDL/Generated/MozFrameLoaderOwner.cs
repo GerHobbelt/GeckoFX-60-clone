@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MozFrameLoaderOwner : WebIDLBase
     {
         
-        public MozFrameLoaderOwner(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MozFrameLoaderOwner(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -19,14 +19,14 @@ namespace Gecko.WebIDL
             }
         }
         
-        public void SetIsPrerendered()
+        public void PresetOpenerWindow(mozIDOMWindowProxy window)
         {
-            this.CallVoidMethod("setIsPrerendered");
+            this.CallVoidMethod("presetOpenerWindow", window);
         }
         
-        public void SwapFrameLoaders(nsISupports aOtherOwner)
+        public void SwapFrameLoaders(nsISupports aOtherLoaderOwner)
         {
-            this.CallVoidMethod("swapFrameLoaders", aOtherOwner);
+            this.CallVoidMethod("swapFrameLoaders", aOtherLoaderOwner);
         }
     }
 }

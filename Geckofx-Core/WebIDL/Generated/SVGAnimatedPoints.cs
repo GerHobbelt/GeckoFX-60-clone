@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGAnimatedPoints : WebIDLBase
     {
         
-        public SVGAnimatedPoints(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGAnimatedPoints(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

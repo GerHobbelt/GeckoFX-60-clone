@@ -6,17 +6,9 @@ namespace Gecko.WebIDL
     public class MediaStreamTrackEvent : WebIDLBase
     {
         
-        public MediaStreamTrackEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaStreamTrackEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
-        }
-        
-        public nsISupports Receiver
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("receiver");
-            }
         }
         
         public nsISupports Track
@@ -24,14 +16,6 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<nsISupports>("track");
-            }
-        }
-        
-        public nsISupports Stream
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("stream");
             }
         }
     }

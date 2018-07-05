@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TouchList : WebIDLBase
     {
         
-        public TouchList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TouchList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -17,11 +17,6 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<uint>("length");
             }
-        }
-        
-        public nsISupports IdentifiedTouch(int identifier)
-        {
-            return this.CallMethod<nsISupports>("identifiedTouch", identifier);
         }
     }
 }

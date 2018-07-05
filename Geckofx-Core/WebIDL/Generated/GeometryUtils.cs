@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class GeometryUtils : WebIDLBase
     {
         
-        public GeometryUtils(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public GeometryUtils(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

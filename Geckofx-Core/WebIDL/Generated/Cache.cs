@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Cache : WebIDLBase
     {
         
-        public Cache(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Cache(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

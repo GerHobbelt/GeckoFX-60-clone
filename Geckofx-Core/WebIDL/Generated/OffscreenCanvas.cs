@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class OffscreenCanvas : WebIDLBase
     {
         
-        public OffscreenCanvas(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public OffscreenCanvas(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -43,6 +43,26 @@ namespace Gecko.WebIDL
         public nsISupports GetContext(string contextId, object contextOptions)
         {
             return this.CallMethod<nsISupports>("getContext", contextId, contextOptions);
+        }
+        
+        public nsISupports TransferToImageBitmap()
+        {
+            return this.CallMethod<nsISupports>("transferToImageBitmap");
+        }
+        
+        public Promise < nsIDOMBlob > ToBlob()
+        {
+            return this.CallMethod<Promise < nsIDOMBlob >>("toBlob");
+        }
+        
+        public Promise < nsIDOMBlob > ToBlob(string type)
+        {
+            return this.CallMethod<Promise < nsIDOMBlob >>("toBlob", type);
+        }
+        
+        public Promise < nsIDOMBlob > ToBlob(string type, object encoderOptions)
+        {
+            return this.CallMethod<Promise < nsIDOMBlob >>("toBlob", type, encoderOptions);
         }
     }
 }

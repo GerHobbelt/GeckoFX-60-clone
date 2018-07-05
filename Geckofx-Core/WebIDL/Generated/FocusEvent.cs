@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FocusEvent : WebIDLBase
     {
         
-        public FocusEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FocusEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

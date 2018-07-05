@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SpeechRecognitionEvent : WebIDLBase
     {
         
-        public SpeechRecognitionEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SpeechRecognitionEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

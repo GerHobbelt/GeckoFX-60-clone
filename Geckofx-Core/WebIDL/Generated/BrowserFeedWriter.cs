@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class BrowserFeedWriter : WebIDLBase
     {
         
-        public BrowserFeedWriter(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public BrowserFeedWriter(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

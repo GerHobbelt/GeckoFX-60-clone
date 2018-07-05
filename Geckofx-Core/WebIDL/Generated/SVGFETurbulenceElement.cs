@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGFETurbulenceElement : WebIDLBase
     {
         
-        public SVGFETurbulenceElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGFETurbulenceElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLMenuElement : WebIDLBase
     {
         
-        public HTMLMenuElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLMenuElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

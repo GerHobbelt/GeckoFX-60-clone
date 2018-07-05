@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGTextPathElement : WebIDLBase
     {
         
-        public SVGTextPathElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGTextPathElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

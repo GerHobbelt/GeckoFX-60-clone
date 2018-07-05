@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class GainNode : WebIDLBase
     {
         
-        public GainNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public GainNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class XPathNSResolver : WebIDLBase
     {
         
-        public XPathNSResolver(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public XPathNSResolver(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

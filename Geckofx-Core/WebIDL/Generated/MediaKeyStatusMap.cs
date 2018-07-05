@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaKeyStatusMap : WebIDLBase
     {
         
-        public MediaKeyStatusMap(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaKeyStatusMap(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -24,9 +24,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("has", keyId);
         }
         
-        public MediaKeyStatus Get(IntPtr keyId)
+        public object Get(IntPtr keyId)
         {
-            return this.CallMethod<MediaKeyStatus>("get", keyId);
+            return this.CallMethod<object>("get", keyId);
         }
     }
 }

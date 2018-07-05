@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IDBFactory : WebIDLBase
     {
         
-        public IDBFactory(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IDBFactory(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

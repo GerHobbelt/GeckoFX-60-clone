@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class nsIMessageBroadcaster : WebIDLBase
     {
         
-        public nsIMessageBroadcaster(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public nsIMessageBroadcaster(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

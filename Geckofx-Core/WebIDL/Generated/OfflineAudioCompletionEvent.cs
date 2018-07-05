@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class OfflineAudioCompletionEvent : WebIDLBase
     {
         
-        public OfflineAudioCompletionEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public OfflineAudioCompletionEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

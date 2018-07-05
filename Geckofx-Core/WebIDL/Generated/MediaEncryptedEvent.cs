@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaEncryptedEvent : WebIDLBase
     {
         
-        public MediaEncryptedEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaEncryptedEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

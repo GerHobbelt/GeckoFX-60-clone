@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Request : WebIDLBase
     {
         
-        public Request(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Request(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -43,11 +43,19 @@ namespace Gecko.WebIDL
             }
         }
         
-        public string Referrer
+        public USVString Referrer
         {
             get
             {
-                return this.GetProperty<string>("referrer");
+                return this.GetProperty<USVString>("referrer");
+            }
+        }
+        
+        public ReferrerPolicy ReferrerPolicy
+        {
+            get
+            {
+                return this.GetProperty<ReferrerPolicy>("referrerPolicy");
             }
         }
         
@@ -83,14 +91,38 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string Integrity
+        {
+            get
+            {
+                return this.GetProperty<string>("integrity");
+            }
+        }
+        
+        public bool MozErrors
+        {
+            get
+            {
+                return this.GetProperty<bool>("mozErrors");
+            }
+        }
+        
+        public nsISupports Signal
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("signal");
+            }
+        }
+        
         public nsISupports Clone()
         {
             return this.CallMethod<nsISupports>("clone");
         }
         
-        public void SetContentPolicyType(UInt32 context)
+        public void OverrideContentPolicyType(uint context)
         {
-            this.CallVoidMethod("setContentPolicyType", context);
+            this.CallVoidMethod("overrideContentPolicyType", context);
         }
     }
 }

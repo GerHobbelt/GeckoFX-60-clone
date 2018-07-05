@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CommandEvent : WebIDLBase
     {
         
-        public CommandEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CommandEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -17,11 +17,6 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<string>("command");
             }
-        }
-        
-        public void InitCommandEvent(string type, bool canBubble, bool cancelable, string command)
-        {
-            this.CallVoidMethod("initCommandEvent", type, canBubble, cancelable, command);
         }
     }
 }

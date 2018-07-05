@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class OscillatorNode : WebIDLBase
     {
         
-        public OscillatorNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public OscillatorNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -37,26 +37,6 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<nsISupports>("detune");
             }
-        }
-        
-        public void Start()
-        {
-            this.CallVoidMethod("start");
-        }
-        
-        public void Start(double when)
-        {
-            this.CallVoidMethod("start", when);
-        }
-        
-        public void Stop()
-        {
-            this.CallVoidMethod("stop");
-        }
-        
-        public void Stop(double when)
-        {
-            this.CallVoidMethod("stop", when);
         }
         
         public void SetPeriodicWave(nsISupports periodicWave)

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IDBCursor : WebIDLBase
     {
         
-        public IDBCursor(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IDBCursor(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -61,6 +61,11 @@ namespace Gecko.WebIDL
         public void Continue(object key)
         {
             this.CallVoidMethod("continue", key);
+        }
+        
+        public void ContinuePrimaryKey(object key, object primaryKey)
+        {
+            this.CallVoidMethod("continuePrimaryKey", key, primaryKey);
         }
         
         public nsISupports Delete()

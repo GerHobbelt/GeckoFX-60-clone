@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGEllipseElement : WebIDLBase
     {
         
-        public SVGEllipseElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGEllipseElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

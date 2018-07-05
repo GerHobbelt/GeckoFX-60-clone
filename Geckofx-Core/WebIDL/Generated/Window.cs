@@ -6,16 +6,11 @@ namespace Gecko.WebIDL
     public class Window : WebIDLBase
     {
         
-        public Window(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Window(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
-
-        public Window(mozIDOMWindowProxy globalWindow, nsISupports thisObject) :
-                base(globalWindow, thisObject)
-        {
-        }
-
+        
         public nsIDOMWindow WindowAttribute
         {
             get
@@ -52,19 +47,27 @@ namespace Gecko.WebIDL
             }
         }
         
-        public /* nsIDOMLocation */ nsISupports Location
+        public nsISupports Location
         {
             get
             {
-                return this.GetProperty</* nsIDOMLocation */ nsISupports>("location");
+                return this.GetProperty<nsISupports>("location");
             }
         }
         
-        public /* nsIDOMHistory */ nsISupports History
+        public nsISupports History
         {
             get
             {
-                return this.GetProperty</* nsIDOMHistory */ nsISupports>("history");
+                return this.GetProperty<nsISupports>("history");
+            }
+        }
+        
+        public nsISupports CustomElements
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("customElements");
             }
         }
         
@@ -136,11 +139,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow Frames
+        public mozIDOMWindowProxy Frames
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("frames");
+                return this.GetProperty<mozIDOMWindowProxy>("frames");
             }
         }
         
@@ -152,19 +155,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow Top
+        public mozIDOMWindowProxy Top
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("top");
-            }
-        }
-        
-        public nsIDOMWindow PrivateRoot
-        {
-            get
-            {
-                return this.GetProperty<nsIDOMWindow>("privateRoot");
+                return this.GetProperty<mozIDOMWindowProxy>("top");
             }
         }
         
@@ -180,11 +175,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow Parent
+        public mozIDOMWindowProxy Parent
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("parent");
+                return this.GetProperty<mozIDOMWindowProxy>("parent");
             }
         }
         
@@ -196,11 +191,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public /* nsIDOMNavigator */ nsISupports Navigator
+        public nsISupports Navigator
         {
             get
             {
-                return this.GetProperty</* nsIDOMNavigator */ nsISupports>("navigator");
+                return this.GetProperty<nsISupports>("navigator");
             }
         }
         
@@ -232,24 +227,24 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("blur");
         }
         
-        public nsIDOMWindow Open()
+        public mozIDOMWindowProxy Open()
         {
-            return this.CallMethod<nsIDOMWindow>("open");
+            return this.CallMethod<mozIDOMWindowProxy>("open");
         }
         
-        public nsIDOMWindow Open(string url)
+        public mozIDOMWindowProxy Open(string url)
         {
-            return this.CallMethod<nsIDOMWindow>("open", url);
+            return this.CallMethod<mozIDOMWindowProxy>("open", url);
         }
         
-        public nsIDOMWindow Open(string url, string target)
+        public mozIDOMWindowProxy Open(string url, string target)
         {
-            return this.CallMethod<nsIDOMWindow>("open", url, target);
+            return this.CallMethod<mozIDOMWindowProxy>("open", url, target);
         }
         
-        public nsIDOMWindow Open(string url, string target, string features)
+        public mozIDOMWindowProxy Open(string url, string target, string features)
         {
-            return this.CallMethod<nsIDOMWindow>("open", url, target, features);
+            return this.CallMethod<mozIDOMWindowProxy>("open", url, target, features);
         }
         
         public void Alert()
@@ -292,27 +287,12 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("print");
         }
         
-        public object ShowModalDialog(string url)
-        {
-            return this.CallMethod<object>("showModalDialog", url);
-        }
-        
-        public object ShowModalDialog(string url, object argument)
-        {
-            return this.CallMethod<object>("showModalDialog", url, argument);
-        }
-        
-        public object ShowModalDialog(string url, object argument, string options)
-        {
-            return this.CallMethod<object>("showModalDialog", url, argument, options);
-        }
-        
         public void PostMessage(object message, string targetOrigin)
         {
             this.CallVoidMethod("postMessage", message, targetOrigin);
         }
         
-        public void PostMessage(object message, string targetOrigin, Object[] transfer)
+        public void PostMessage(object message, string targetOrigin, object[] transfer)
         {
             this.CallVoidMethod("postMessage", message, targetOrigin, transfer);
         }
@@ -332,14 +312,14 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISelection>("getSelection");
         }
         
-        public /* nsIDOMCSSStyleDeclaration */ nsISupports GetComputedStyle(nsIDOMElement elt)
+        public nsISupports GetComputedStyle(nsIDOMElement elt)
         {
-            return this.CallMethod</* nsIDOMCSSStyleDeclaration */ nsISupports>("getComputedStyle", elt);
+            return this.CallMethod<nsISupports>("getComputedStyle", elt);
         }
         
-        public /* nsIDOMCSSStyleDeclaration */ nsISupports GetComputedStyle(nsIDOMElement elt, string pseudoElt)
+        public nsISupports GetComputedStyle(nsIDOMElement elt, string pseudoElt)
         {
-            return this.CallMethod</* nsIDOMCSSStyleDeclaration */ nsISupports>("getComputedStyle", elt, pseudoElt);
+            return this.CallMethod<nsISupports>("getComputedStyle", elt, pseudoElt);
         }
         
         public nsISupports Screen
@@ -374,35 +354,35 @@ namespace Gecko.WebIDL
             }
         }
         
-        public int ScrollX
+        public double ScrollX
         {
             get
             {
-                return this.GetProperty<int>("scrollX");
+                return this.GetProperty<double>("scrollX");
             }
         }
         
-        public int PageXOffset
+        public double PageXOffset
         {
             get
             {
-                return this.GetProperty<int>("pageXOffset");
+                return this.GetProperty<double>("pageXOffset");
             }
         }
         
-        public int ScrollY
+        public double ScrollY
         {
             get
             {
-                return this.GetProperty<int>("scrollY");
+                return this.GetProperty<double>("scrollY");
             }
         }
         
-        public int PageYOffset
+        public double PageYOffset
         {
             get
             {
-                return this.GetProperty<int>("pageYOffset");
+                return this.GetProperty<double>("pageYOffset");
             }
         }
         
@@ -542,14 +522,6 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports Caches
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("caches");
-            }
-        }
-        
         public nsISupports Controllers
         {
             get
@@ -582,11 +554,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public float DevicePixelRatio
+        public double DevicePixelRatio
         {
             get
             {
-                return this.GetProperty<float>("devicePixelRatio");
+                return this.GetProperty<double>("devicePixelRatio");
             }
         }
         
@@ -642,27 +614,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports MozSelfSupport
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("MozSelfSupport");
-            }
-        }
-        
         public object Content
         {
             get
             {
                 return this.GetProperty<object>("content");
-            }
-        }
-        
-        public object @__content
-        {
-            get
-            {
-                return this.GetProperty<object>("__content");
             }
         }
         
@@ -674,14 +630,14 @@ namespace Gecko.WebIDL
             }
         }
         
-        public /* nsIDOMCSSStyleDeclaration */ nsISupports GetDefaultComputedStyle(nsIDOMElement elt)
+        public nsISupports GetDefaultComputedStyle(nsIDOMElement elt)
         {
-            return this.CallMethod</* nsIDOMCSSStyleDeclaration */ nsISupports>("getDefaultComputedStyle", elt);
+            return this.CallMethod<nsISupports>("getDefaultComputedStyle", elt);
         }
         
-        public /* nsIDOMCSSStyleDeclaration */ nsISupports GetDefaultComputedStyle(nsIDOMElement elt, string pseudoElt)
+        public nsISupports GetDefaultComputedStyle(nsIDOMElement elt, string pseudoElt)
         {
-            return this.CallMethod</* nsIDOMCSSStyleDeclaration */ nsISupports>("getDefaultComputedStyle", elt, pseudoElt);
+            return this.CallMethod<nsISupports>("getDefaultComputedStyle", elt, pseudoElt);
         }
         
         public void ScrollByLines(int numLines)
@@ -789,29 +745,29 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("setResizable", resizable);
         }
         
-        public nsIDOMWindow OpenDialog()
+        public mozIDOMWindowProxy OpenDialog()
         {
-            return this.CallMethod<nsIDOMWindow>("openDialog");
+            return this.CallMethod<mozIDOMWindowProxy>("openDialog");
         }
         
-        public nsIDOMWindow OpenDialog(string url)
+        public mozIDOMWindowProxy OpenDialog(string url)
         {
-            return this.CallMethod<nsIDOMWindow>("openDialog", url);
+            return this.CallMethod<mozIDOMWindowProxy>("openDialog", url);
         }
         
-        public nsIDOMWindow OpenDialog(string url, string name)
+        public mozIDOMWindowProxy OpenDialog(string url, string name)
         {
-            return this.CallMethod<nsIDOMWindow>("openDialog", url, name);
+            return this.CallMethod<mozIDOMWindowProxy>("openDialog", url, name);
         }
         
-        public nsIDOMWindow OpenDialog(string url, string name, string options)
+        public mozIDOMWindowProxy OpenDialog(string url, string name, string options)
         {
-            return this.CallMethod<nsIDOMWindow>("openDialog", url, name, options);
+            return this.CallMethod<mozIDOMWindowProxy>("openDialog", url, name, options);
         }
         
-        public nsIDOMWindow OpenDialog(string url, string name, string options, object extraArguments)
+        public mozIDOMWindowProxy OpenDialog(string url, string name, string options, object extraArguments)
         {
-            return this.CallMethod<nsIDOMWindow>("openDialog", url, name, options, extraArguments);
+            return this.CallMethod<mozIDOMWindowProxy>("openDialog", url, name, options, extraArguments);
         }
         
         public object GetInterface(nsISupports iid)
@@ -819,12 +775,137 @@ namespace Gecko.WebIDL
             return this.CallMethod<object>("getInterface", iid);
         }
         
-        public nsISupports Console
+        public bool ShouldReportForServiceWorkerScope(USVString aScope)
+        {
+            return this.CallMethod<bool>("shouldReportForServiceWorkerScope", aScope);
+        }
+        
+        public ushort WindowState
         {
             get
             {
-                return this.GetProperty<nsISupports>("console");
+                return this.GetProperty<ushort>("windowState");
             }
+        }
+        
+        public bool IsFullyOccluded
+        {
+            get
+            {
+                return this.GetProperty<bool>("isFullyOccluded");
+            }
+        }
+        
+        public nsIBrowserDOMWindow BrowserDOMWindow
+        {
+            get
+            {
+                return this.GetProperty<nsIBrowserDOMWindow>("browserDOMWindow");
+            }
+            set
+            {
+                this.SetProperty("browserDOMWindow", value);
+            }
+        }
+        
+        public nsISupports MessageManager
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("messageManager");
+            }
+        }
+        
+        public bool IsChromeWindow
+        {
+            get
+            {
+                return this.GetProperty<bool>("isChromeWindow");
+            }
+        }
+        
+        public void GetAttention()
+        {
+            this.CallVoidMethod("getAttention");
+        }
+        
+        public void GetAttentionWithCycleCount(int aCycleCount)
+        {
+            this.CallVoidMethod("getAttentionWithCycleCount", aCycleCount);
+        }
+        
+        public void SetCursor(string cursor)
+        {
+            this.CallVoidMethod("setCursor", cursor);
+        }
+        
+        public void Maximize()
+        {
+            this.CallVoidMethod("maximize");
+        }
+        
+        public void Minimize()
+        {
+            this.CallVoidMethod("minimize");
+        }
+        
+        public void Restore()
+        {
+            this.CallVoidMethod("restore");
+        }
+        
+        public void NotifyDefaultButtonLoaded(nsIDOMElement defaultButton)
+        {
+            this.CallVoidMethod("notifyDefaultButtonLoaded", defaultButton);
+        }
+        
+        public nsISupports GetGroupMessageManager(string aGroup)
+        {
+            return this.CallMethod<nsISupports>("getGroupMessageManager", aGroup);
+        }
+        
+        public void BeginWindowMove(nsIDOMEvent mouseDownEvent)
+        {
+            this.CallVoidMethod("beginWindowMove", mouseDownEvent);
+        }
+        
+        public void BeginWindowMove(nsIDOMEvent mouseDownEvent, nsIDOMElement panel)
+        {
+            this.CallVoidMethod("beginWindowMove", mouseDownEvent, panel);
+        }
+        
+        public nsISupports AudioWorklet
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("audioWorklet");
+            }
+        }
+        
+        public nsISupports PaintWorklet
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("paintWorklet");
+            }
+        }
+        
+        public void CancelIdleCallback(uint handle)
+        {
+            this.CallVoidMethod("cancelIdleCallback", handle);
+        }
+        
+        public nsISupports IntlUtils
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("intlUtils");
+            }
+        }
+        
+        public string[] GetRegionalPrefsLocales()
+        {
+            return this.CallMethod<string[]>("getRegionalPrefsLocales");
         }
     }
 }

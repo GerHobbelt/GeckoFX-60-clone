@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ValidityState : WebIDLBase
     {
         
-        public ValidityState(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ValidityState(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -40,6 +40,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<bool>("tooLong");
+            }
+        }
+        
+        public bool TooShort
+        {
+            get
+            {
+                return this.GetProperty<bool>("tooShort");
             }
         }
         

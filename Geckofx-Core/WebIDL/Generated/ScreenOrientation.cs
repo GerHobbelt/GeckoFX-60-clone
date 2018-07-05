@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ScreenOrientation : WebIDLBase
     {
         
-        public ScreenOrientation(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ScreenOrientation(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

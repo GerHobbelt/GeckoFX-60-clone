@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CreateOfferRequest : WebIDLBase
     {
         
-        public CreateOfferRequest(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CreateOfferRequest(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

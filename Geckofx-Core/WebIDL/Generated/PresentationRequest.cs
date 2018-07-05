@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PresentationRequest : WebIDLBase
     {
         
-        public PresentationRequest(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PresentationRequest(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,9 +16,19 @@ namespace Gecko.WebIDL
             return this.CallMethod<Promise < nsISupports >>("start");
         }
         
+        public Promise < nsISupports > Reconnect(string presentationId)
+        {
+            return this.CallMethod<Promise < nsISupports >>("reconnect", presentationId);
+        }
+        
         public Promise < nsISupports > GetAvailability()
         {
             return this.CallMethod<Promise < nsISupports >>("getAvailability");
+        }
+        
+        public Promise < nsISupports > StartWithDevice(string deviceId)
+        {
+            return this.CallMethod<Promise < nsISupports >>("startWithDevice", deviceId);
         }
     }
 }

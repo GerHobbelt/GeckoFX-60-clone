@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Directory : WebIDLBase
     {
         
-        public Directory(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Directory(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -17,36 +17,6 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<string>("name");
             }
-        }
-        
-        public Promise < nsISupports > CreateFile(string path)
-        {
-            return this.CallMethod<Promise < nsISupports >>("createFile", path);
-        }
-        
-        public Promise < nsISupports > CreateFile(string path, object options)
-        {
-            return this.CallMethod<Promise < nsISupports >>("createFile", path, options);
-        }
-        
-        public Promise < nsISupports > CreateDirectory(string path)
-        {
-            return this.CallMethod<Promise < nsISupports >>("createDirectory", path);
-        }
-        
-        public Promise < WebIDLUnion<nsISupports,nsISupports>> Get(string path)
-        {
-            return this.CallMethod<Promise < WebIDLUnion<nsISupports,nsISupports>>>("get", path);
-        }
-        
-        public Promise <bool> Remove(WebIDLUnion<System.String,nsISupports,nsISupports> path)
-        {
-            return this.CallMethod<Promise <bool>>("remove", path);
-        }
-        
-        public Promise <bool> RemoveDeep(WebIDLUnion<System.String,nsISupports,nsISupports> path)
-        {
-            return this.CallMethod<Promise <bool>>("removeDeep", path);
         }
         
         public string Path
@@ -60,6 +30,16 @@ namespace Gecko.WebIDL
         public Promise < WebIDLUnion<nsISupports,nsISupports>> GetFilesAndDirectories()
         {
             return this.CallMethod<Promise < WebIDLUnion<nsISupports,nsISupports>>>("getFilesAndDirectories");
+        }
+        
+        public Promise < nsISupports[] > GetFiles()
+        {
+            return this.CallMethod<Promise < nsISupports[] >>("getFiles");
+        }
+        
+        public Promise < nsISupports[] > GetFiles(bool recursiveFlag)
+        {
+            return this.CallMethod<Promise < nsISupports[] >>("getFiles", recursiveFlag);
         }
     }
 }

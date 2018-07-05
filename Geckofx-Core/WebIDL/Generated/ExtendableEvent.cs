@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ExtendableEvent : WebIDLBase
     {
         
-        public ExtendableEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ExtendableEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

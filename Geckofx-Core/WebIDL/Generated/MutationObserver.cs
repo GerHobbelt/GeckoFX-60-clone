@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MutationObserver : WebIDLBase
     {
         
-        public MutationObserver(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MutationObserver(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MutationRecord : WebIDLBase
     {
         
-        public MutationRecord(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MutationRecord(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

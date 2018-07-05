@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PerformanceMeasure : WebIDLBase
     {
         
-        public PerformanceMeasure(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PerformanceMeasure(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

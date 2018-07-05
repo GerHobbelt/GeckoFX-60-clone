@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class VTTCue : WebIDLBase
     {
         
-        public VTTCue(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public VTTCue(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -47,11 +47,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public WebIDLUnion<System.Int32,AutoKeyword> Line
+        public WebIDLUnion<System.Double,AutoKeyword> Line
         {
             get
             {
-                return this.GetProperty<WebIDLUnion<System.Int32,AutoKeyword>>("line");
+                return this.GetProperty<WebIDLUnion<System.Double,AutoKeyword>>("line");
             }
             set
             {
@@ -59,11 +59,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public AlignSetting LineAlign
+        public LineAlignSetting LineAlign
         {
             get
             {
-                return this.GetProperty<AlignSetting>("lineAlign");
+                return this.GetProperty<LineAlignSetting>("lineAlign");
             }
             set
             {
@@ -71,11 +71,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public int Position
+        public WebIDLUnion<System.Double,AutoKeyword> Position
         {
             get
             {
-                return this.GetProperty<int>("position");
+                return this.GetProperty<WebIDLUnion<System.Double,AutoKeyword>>("position");
             }
             set
             {
@@ -83,11 +83,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public AlignSetting PositionAlign
+        public PositionAlignSetting PositionAlign
         {
             get
             {
-                return this.GetProperty<AlignSetting>("positionAlign");
+                return this.GetProperty<PositionAlignSetting>("positionAlign");
             }
             set
             {
@@ -95,11 +95,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public int Size
+        public double Size
         {
             get
             {
-                return this.GetProperty<int>("size");
+                return this.GetProperty<double>("size");
             }
             set
             {
@@ -153,6 +153,38 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<bool>("hasBeenReset");
+            }
+        }
+        
+        public double ComputedLine
+        {
+            get
+            {
+                return this.GetProperty<double>("computedLine");
+            }
+        }
+        
+        public double ComputedPosition
+        {
+            get
+            {
+                return this.GetProperty<double>("computedPosition");
+            }
+        }
+        
+        public PositionAlignSetting ComputedPositionAlign
+        {
+            get
+            {
+                return this.GetProperty<PositionAlignSetting>("computedPositionAlign");
+            }
+        }
+        
+        public bool GetActive
+        {
+            get
+            {
+                return this.GetProperty<bool>("getActive");
             }
         }
     }

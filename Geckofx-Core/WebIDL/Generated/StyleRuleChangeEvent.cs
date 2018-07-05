@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class StyleRuleChangeEvent : WebIDLBase
     {
         
-        public StyleRuleChangeEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public StyleRuleChangeEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

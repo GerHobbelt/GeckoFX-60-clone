@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FormData : WebIDLBase
     {
         
-        public FormData(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FormData(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -31,14 +31,14 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("delete", name);
         }
         
-        public WebIDLUnion<nsISupports,USVString> Get(USVString name)
+        public WebIDLUnion<nsIDOMBlob,nsISupports,USVString> Get(USVString name)
         {
-            return this.CallMethod<WebIDLUnion<nsISupports,USVString>>("get", name);
+            return this.CallMethod<WebIDLUnion<nsIDOMBlob,nsISupports,USVString>>("get", name);
         }
         
-        public WebIDLUnion<nsISupports,USVString> GetAll(USVString name)
+        public WebIDLUnion<nsIDOMBlob,nsISupports,USVString> GetAll(USVString name)
         {
-            return this.CallMethod<WebIDLUnion<nsISupports,USVString>>("getAll", name);
+            return this.CallMethod<WebIDLUnion<nsIDOMBlob,nsISupports,USVString>>("getAll", name);
         }
         
         public bool Has(USVString name)

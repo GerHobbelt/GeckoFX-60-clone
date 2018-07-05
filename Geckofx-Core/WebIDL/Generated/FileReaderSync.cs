@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FileReaderSync : WebIDLBase
     {
         
-        public FileReaderSync(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FileReaderSync(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

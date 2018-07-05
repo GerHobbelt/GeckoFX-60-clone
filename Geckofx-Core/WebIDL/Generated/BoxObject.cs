@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class BoxObject : WebIDLBase
     {
         
-        public BoxObject(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public BoxObject(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

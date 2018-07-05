@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGFETileElement : WebIDLBase
     {
         
-        public SVGFETileElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGFETileElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ChannelSplitterNode : WebIDLBase
     {
         
-        public ChannelSplitterNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ChannelSplitterNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

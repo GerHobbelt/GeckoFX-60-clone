@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class History : WebIDLBase
     {
         
-        public History(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public History(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,18 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<uint>("length");
+            }
+        }
+        
+        public ScrollRestoration ScrollRestoration
+        {
+            get
+            {
+                return this.GetProperty<ScrollRestoration>("scrollRestoration");
+            }
+            set
+            {
+                this.SetProperty("scrollRestoration", value);
             }
         }
         

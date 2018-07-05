@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ImageCaptureErrorEvent : WebIDLBase
     {
         
-        public ImageCaptureErrorEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ImageCaptureErrorEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

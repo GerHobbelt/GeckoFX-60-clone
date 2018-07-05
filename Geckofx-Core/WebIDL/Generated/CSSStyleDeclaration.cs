@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CSSStyleDeclaration : WebIDLBase
     {
         
-        public CSSStyleDeclaration(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CSSStyleDeclaration(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -67,11 +67,6 @@ namespace Gecko.WebIDL
         public string RemoveProperty(string property)
         {
             return this.CallMethod<string>("removeProperty", property);
-        }
-        
-        public string GetAuthoredPropertyValue(string property)
-        {
-            return this.CallMethod<string>("getAuthoredPropertyValue", property);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLSelectElement : WebIDLBase
     {
         
-        public HTMLSelectElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLSelectElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -187,6 +187,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports Labels
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("labels");
+            }
+        }
+        
         public nsISupports NamedItem(string name)
         {
             return this.CallMethod<nsISupports>("namedItem", name);
@@ -205,6 +213,30 @@ namespace Gecko.WebIDL
         public void Remove(int index)
         {
             this.CallVoidMethod("remove", index);
+        }
+        
+        public bool OpenInParentProcess
+        {
+            get
+            {
+                return this.GetProperty<bool>("openInParentProcess");
+            }
+            set
+            {
+                this.SetProperty("openInParentProcess", value);
+            }
+        }
+        
+        public string PreviewValue
+        {
+            get
+            {
+                return this.GetProperty<string>("previewValue");
+            }
+            set
+            {
+                this.SetProperty("previewValue", value);
+            }
         }
     }
 }

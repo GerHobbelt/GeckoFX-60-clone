@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ScrollViewChangeEvent : WebIDLBase
     {
         
-        public ScrollViewChangeEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ScrollViewChangeEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CanvasPathMethods : WebIDLBase
     {
         
-        public CanvasPathMethods(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CanvasPathMethods(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -54,6 +54,16 @@ namespace Gecko.WebIDL
         public void Arc(double x, double y, double radius, double startAngle, double endAngle, bool anticlockwise)
         {
             this.CallVoidMethod("arc", x, y, radius, startAngle, endAngle, anticlockwise);
+        }
+        
+        public void Ellipse(double x, double y, double radiusX, double radiusY, double rotation, double startAngle, double endAngle)
+        {
+            this.CallVoidMethod("ellipse", x, y, radiusX, radiusY, rotation, startAngle, endAngle);
+        }
+        
+        public void Ellipse(double x, double y, double radiusX, double radiusY, double rotation, double startAngle, double endAngle, bool anticlockwise)
+        {
+            this.CallVoidMethod("ellipse", x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise);
         }
     }
 }

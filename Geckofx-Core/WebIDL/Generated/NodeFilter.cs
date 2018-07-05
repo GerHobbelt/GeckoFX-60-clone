@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class NodeFilter : WebIDLBase
     {
         
-        public NodeFilter(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public NodeFilter(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

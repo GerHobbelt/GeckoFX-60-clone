@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IID : WebIDLBase
     {
         
-        public IID(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IID(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

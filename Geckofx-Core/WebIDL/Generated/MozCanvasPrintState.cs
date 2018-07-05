@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MozCanvasPrintState : WebIDLBase
     {
         
-        public MozCanvasPrintState(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MozCanvasPrintState(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

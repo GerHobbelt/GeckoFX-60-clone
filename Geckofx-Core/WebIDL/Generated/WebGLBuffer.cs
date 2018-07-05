@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WebGLBuffer : WebIDLBase
     {
         
-        public WebGLBuffer(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WebGLBuffer(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

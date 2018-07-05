@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ScriptProcessorNode : WebIDLBase
     {
         
-        public ScriptProcessorNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ScriptProcessorNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

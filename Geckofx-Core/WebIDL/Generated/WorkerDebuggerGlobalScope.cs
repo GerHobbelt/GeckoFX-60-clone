@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WorkerDebuggerGlobalScope : WebIDLBase
     {
         
-        public WorkerDebuggerGlobalScope(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WorkerDebuggerGlobalScope(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -52,6 +52,11 @@ namespace Gecko.WebIDL
         public void ReportError(string message)
         {
             this.CallVoidMethod("reportError", message);
+        }
+        
+        public object[] RetrieveConsoleEvents()
+        {
+            return this.CallMethod<object[]>("retrieveConsoleEvents");
         }
         
         public void Dump()

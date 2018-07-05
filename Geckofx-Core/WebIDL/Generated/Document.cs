@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Document : WebIDLBase
     {
         
-        public Document(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Document(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -91,6 +91,18 @@ namespace Gecko.WebIDL
             }
         }
         
+        public bool AllowUnsafeHTML
+        {
+            get
+            {
+                return this.GetProperty<bool>("allowUnsafeHTML");
+            }
+            set
+            {
+                this.SetProperty("allowUnsafeHTML", value);
+            }
+        }
+        
         public nsISupports GetElementsByTagName(string localName)
         {
             return this.CallMethod<nsISupports>("getElementsByTagName", localName);
@@ -116,9 +128,19 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsIDOMElement>("createElement", localName);
         }
         
+        public nsIDOMElement CreateElement(string localName, WebIDLUnion<System.Object,System.String> options)
+        {
+            return this.CallMethod<nsIDOMElement>("createElement", localName, options);
+        }
+        
         public nsIDOMElement CreateElementNS(string @namespace, string qualifiedName)
         {
             return this.CallMethod<nsIDOMElement>("createElementNS", @namespace, qualifiedName);
+        }
+        
+        public nsIDOMElement CreateElementNS(string @namespace, string qualifiedName, WebIDLUnion<System.Object,System.String> options)
+        {
+            return this.CallMethod<nsIDOMElement>("createElementNS", @namespace, qualifiedName, options);
         }
         
         public nsISupports CreateDocumentFragment()
@@ -211,11 +233,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("createAttributeNS", @namespace, name);
         }
         
-        public /* nsIDOMLocation */ nsISupports Location
+        public nsISupports Location
         {
             get
             {
-                return this.GetProperty</* nsIDOMLocation */ nsISupports>("location");
+                return this.GetProperty<nsISupports>("location");
             }
         }
         
@@ -267,19 +289,23 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow DefaultView
+        public nsISupports Body
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("defaultView");
+                return this.GetProperty<nsISupports>("body");
+            }
+            set
+            {
+                this.SetProperty("body", value);
             }
         }
         
-        public nsIDOMElement ActiveElement
+        public mozIDOMWindowProxy DefaultView
         {
             get
             {
-                return this.GetProperty<nsIDOMElement>("activeElement");
+                return this.GetProperty<mozIDOMWindowProxy>("defaultView");
             }
         }
         
@@ -315,6 +341,11 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports GetElementsByName(string elementName)
+        {
+            return this.CallMethod<nsISupports>("getElementsByName", elementName);
+        }
+        
         public bool HasFocus()
         {
             return this.CallMethod<bool>("hasFocus");
@@ -330,19 +361,11 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("mozSetImageElement", aImageElementId, aImageElement);
         }
         
-        public bool MozFullScreenEnabled
+        public bool Fullscreen
         {
             get
             {
-                return this.GetProperty<bool>("mozFullScreenEnabled");
-            }
-        }
-        
-        public nsIDOMElement MozFullScreenElement
-        {
-            get
-            {
-                return this.GetProperty<nsIDOMElement>("mozFullScreenElement");
+                return this.GetProperty<bool>("fullscreen");
             }
         }
         
@@ -354,42 +377,35 @@ namespace Gecko.WebIDL
             }
         }
         
+        public bool FullscreenEnabled
+        {
+            get
+            {
+                return this.GetProperty<bool>("fullscreenEnabled");
+            }
+        }
+        
+        public bool MozFullScreenEnabled
+        {
+            get
+            {
+                return this.GetProperty<bool>("mozFullScreenEnabled");
+            }
+        }
+        
+        public void ExitFullscreen()
+        {
+            this.CallVoidMethod("exitFullscreen");
+        }
+        
         public void MozCancelFullScreen()
         {
             this.CallVoidMethod("mozCancelFullScreen");
         }
         
-        public nsIDOMElement MozPointerLockElement
+        public void ExitPointerLock()
         {
-            get
-            {
-                return this.GetProperty<nsIDOMElement>("mozPointerLockElement");
-            }
-        }
-        
-        public void MozExitPointerLock()
-        {
-            this.CallVoidMethod("mozExitPointerLock");
-        }
-        
-        public object RegisterElement(string name)
-        {
-            return this.CallMethod<object>("registerElement", name);
-        }
-        
-        public object RegisterElement(string name, object options)
-        {
-            return this.CallMethod<object>("registerElement", name, options);
-        }
-        
-        public nsIDOMElement CreateElement(string localName, string typeExtension)
-        {
-            return this.CallMethod<nsIDOMElement>("createElement", localName, typeExtension);
-        }
-        
-        public nsIDOMElement CreateElementNS(string @namespace, string qualifiedName, string typeExtension)
-        {
-            return this.CallMethod<nsIDOMElement>("createElementNS", @namespace, qualifiedName, typeExtension);
+            this.CallVoidMethod("exitPointerLock");
         }
         
         public bool Hidden
@@ -400,35 +416,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public bool MozHidden
-        {
-            get
-            {
-                return this.GetProperty<bool>("mozHidden");
-            }
-        }
-        
         public VisibilityState VisibilityState
         {
             get
             {
                 return this.GetProperty<VisibilityState>("visibilityState");
-            }
-        }
-        
-        public VisibilityState MozVisibilityState
-        {
-            get
-            {
-                return this.GetProperty<VisibilityState>("mozVisibilityState");
-            }
-        }
-        
-        public nsISupports StyleSheets
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("styleSheets");
             }
         }
         
@@ -473,22 +465,17 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("enableStyleSheetsForSet", name);
         }
         
-        public nsIDOMElement ElementFromPoint(float x, float y)
+        public nsIDOMElement ScrollingElement
         {
-            return this.CallMethod<nsIDOMElement>("elementFromPoint", x, y);
+            get
+            {
+                return this.GetProperty<nsIDOMElement>("scrollingElement");
+            }
         }
         
         public nsISupports CaretPositionFromPoint(float x, float y)
         {
             return this.CallMethod<nsISupports>("caretPositionFromPoint", x, y);
-        }
-        
-        public nsISupports UndoManager
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("undoManager");
-            }
         }
         
         public nsIDOMElement QuerySelector(string selectors)
@@ -506,6 +493,19 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<nsISupports>("timeline");
+            }
+        }
+        
+        public nsISupports[] GetAnimations()
+        {
+            return this.CallMethod<nsISupports[]>("getAnimations");
+        }
+        
+        public nsISupports RootElement
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("rootElement");
             }
         }
         
@@ -542,6 +542,22 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<nsISupports>("documentLoadGroup");
+            }
+        }
+        
+        public nsISupports MozDocumentURIIfNotForErrorPages
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("mozDocumentURIIfNotForErrorPages");
+            }
+        }
+        
+        public Promise < nsIDOMDocument > DocumentReadyForIdle
+        {
+            get
+            {
+                return this.GetProperty<Promise < nsIDOMDocument >>("documentReadyForIdle");
             }
         }
         
@@ -660,11 +676,29 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("obsoleteSheet", sheetURI);
         }
         
+        public Promise <object> BlockParsing(Promise <object> promise)
+        {
+            return this.CallMethod<Promise <object>>("blockParsing", promise);
+        }
+        
+        public Promise <object> BlockParsing(Promise <object> promise, object options)
+        {
+            return this.CallMethod<Promise <object>>("blockParsing", promise, options);
+        }
+        
         public bool IsSrcdocDocument
         {
             get
             {
                 return this.GetProperty<bool>("isSrcdocDocument");
+            }
+        }
+        
+        public string SandboxFlagsAsString
+        {
+            get
+            {
+                return this.GetProperty<string>("sandboxFlagsAsString");
             }
         }
         
@@ -678,11 +712,53 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("removeAnonymousContent", aContent);
         }
         
+        public nsISelection GetSelection()
+        {
+            return this.CallMethod<nsISelection>("getSelection");
+        }
+        
         public bool UserHasInteracted
         {
             get
             {
                 return this.GetProperty<bool>("userHasInteracted");
+            }
+        }
+        
+        public void NotifyUserActivation()
+        {
+            this.CallVoidMethod("notifyUserActivation");
+        }
+        
+        public bool HasScriptsBlockedBySandbox
+        {
+            get
+            {
+                return this.GetProperty<bool>("hasScriptsBlockedBySandbox");
+            }
+        }
+        
+        public bool InlineScriptAllowedByCSP
+        {
+            get
+            {
+                return this.GetProperty<bool>("inlineScriptAllowedByCSP");
+            }
+        }
+        
+        public FlashClassification DocumentFlashClassification
+        {
+            get
+            {
+                return this.GetProperty<FlashClassification>("documentFlashClassification");
+            }
+        }
+        
+        public nsISupports AboutCapabilities
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("aboutCapabilities");
             }
         }
     }

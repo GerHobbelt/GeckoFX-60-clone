@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGAnimatedLength : WebIDLBase
     {
         
-        public SVGAnimatedLength(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGAnimatedLength(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

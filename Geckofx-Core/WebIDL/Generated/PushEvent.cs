@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PushEvent : WebIDLBase
     {
         
-        public PushEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PushEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

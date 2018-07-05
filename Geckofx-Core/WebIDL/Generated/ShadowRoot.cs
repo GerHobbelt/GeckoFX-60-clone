@@ -6,20 +6,16 @@ namespace Gecko.WebIDL
     public class ShadowRoot : WebIDLBase
     {
         
-        public ShadowRoot(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ShadowRoot(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public string InnerHTML
+        public ShadowRootMode Mode
         {
             get
             {
-                return this.GetProperty<string>("innerHTML");
-            }
-            set
-            {
-                this.SetProperty("innerHTML", value);
+                return this.GetProperty<ShadowRootMode>("mode");
             }
         }
         
@@ -31,31 +27,15 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports OlderShadowRoot
+        public string InnerHTML
         {
             get
             {
-                return this.GetProperty<nsISupports>("olderShadowRoot");
-            }
-        }
-        
-        public bool ApplyAuthorStyles
-        {
-            get
-            {
-                return this.GetProperty<bool>("applyAuthorStyles");
+                return this.GetProperty<string>("innerHTML");
             }
             set
             {
-                this.SetProperty("applyAuthorStyles", value);
-            }
-        }
-        
-        public nsISupports StyleSheets
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("styleSheets");
+                this.SetProperty("innerHTML", value);
             }
         }
         

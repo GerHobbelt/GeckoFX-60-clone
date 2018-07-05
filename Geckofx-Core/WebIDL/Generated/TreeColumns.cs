@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TreeColumns : WebIDLBase
     {
         
-        public TreeColumns(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TreeColumns(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

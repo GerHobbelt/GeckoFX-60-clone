@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Gamepad : WebIDLBase
     {
         
-        public Gamepad(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Gamepad(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -35,6 +35,22 @@ namespace Gecko.WebIDL
             }
         }
         
+        public GamepadHand Hand
+        {
+            get
+            {
+                return this.GetProperty<GamepadHand>("hand");
+            }
+        }
+        
+        public uint DisplayId
+        {
+            get
+            {
+                return this.GetProperty<uint>("displayId");
+            }
+        }
+        
         public bool Connected
         {
             get
@@ -59,11 +75,27 @@ namespace Gecko.WebIDL
             }
         }
         
-        public Double Timestamp
+        public double Timestamp
         {
             get
             {
-                return this.GetProperty<Double>("timestamp");
+                return this.GetProperty<double>("timestamp");
+            }
+        }
+        
+        public nsISupports Pose
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("pose");
+            }
+        }
+        
+        public nsISupports[] HapticActuators
+        {
+            get
+            {
+                return this.GetProperty<nsISupports[]>("hapticActuators");
             }
         }
     }

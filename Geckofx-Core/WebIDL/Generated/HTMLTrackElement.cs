@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLTrackElement : WebIDLBase
     {
         
-        public HTMLTrackElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLTrackElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

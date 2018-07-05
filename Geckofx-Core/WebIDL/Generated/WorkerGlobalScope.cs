@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WorkerGlobalScope : WebIDLBase
     {
         
-        public WorkerGlobalScope(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WorkerGlobalScope(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -19,25 +19,12 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports Console
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("console");
-            }
-        }
-        
         public nsISupports Location
         {
             get
             {
                 return this.GetProperty<nsISupports>("location");
             }
-        }
-        
-        public void Close()
-        {
-            this.CallVoidMethod("close");
         }
         
         public nsISupports Navigator
@@ -51,14 +38,6 @@ namespace Gecko.WebIDL
         public void ImportScripts(string urls)
         {
             this.CallVoidMethod("importScripts", urls);
-        }
-        
-        public nsISupports Caches
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("caches");
-            }
         }
         
         public nsISupports Performance
@@ -77,6 +56,11 @@ namespace Gecko.WebIDL
         public void Dump(string str)
         {
             this.CallVoidMethod("dump", str);
+        }
+        
+        public object GetJSTestingFunctions()
+        {
+            return this.CallMethod<object>("getJSTestingFunctions");
         }
     }
 }

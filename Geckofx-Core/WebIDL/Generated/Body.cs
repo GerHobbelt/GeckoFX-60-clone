@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Body : WebIDLBase
     {
         
-        public Body(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Body(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -29,14 +29,14 @@ namespace Gecko.WebIDL
             return this.CallMethod<Promise < nsIDOMBlob >>("blob");
         }
         
-        public Promise < /* nsIDOMFormData */ nsISupports > FormData()
+        public Promise < nsISupports > FormData()
         {
-            return this.CallMethod<Promise < /* nsIDOMFormData */ nsISupports >>("formData");
+            return this.CallMethod<Promise < nsISupports >>("formData");
         }
         
-        public Promise < Object > Json()
+        public Promise <object> Json()
         {
-            return this.CallMethod<Promise < Object >>("json");
+            return this.CallMethod<Promise <object>>("json");
         }
         
         public Promise < USVString > Text()

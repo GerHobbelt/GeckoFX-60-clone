@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DeviceRotationRate : WebIDLBase
     {
         
-        public DeviceRotationRate(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DeviceRotationRate(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

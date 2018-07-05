@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGPathSegLinetoAbs : WebIDLBase
     {
         
-        public SVGPathSegLinetoAbs(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGPathSegLinetoAbs(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

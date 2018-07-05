@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TCPSocketEvent : WebIDLBase
     {
         
-        public TCPSocketEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TCPSocketEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

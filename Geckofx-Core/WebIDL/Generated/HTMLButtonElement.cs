@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLButtonElement : WebIDLBase
     {
         
-        public HTMLButtonElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLButtonElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -163,9 +163,22 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports Labels
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("labels");
+            }
+        }
+        
         public bool CheckValidity()
         {
             return this.CallMethod<bool>("checkValidity");
+        }
+        
+        public bool ReportValidity()
+        {
+            return this.CallMethod<bool>("reportValidity");
         }
         
         public void SetCustomValidity(string error)

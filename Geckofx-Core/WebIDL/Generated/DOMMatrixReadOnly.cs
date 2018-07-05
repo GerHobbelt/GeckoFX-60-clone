@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMMatrixReadOnly : WebIDLBase
     {
         
-        public DOMMatrixReadOnly(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMMatrixReadOnly(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -195,11 +195,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public bool Identity
+        public bool IsIdentity
         {
             get
             {
-                return this.GetProperty<bool>("identity");
+                return this.GetProperty<bool>("isIdentity");
             }
         }
         

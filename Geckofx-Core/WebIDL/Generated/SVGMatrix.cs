@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGMatrix : WebIDLBase
     {
         
-        public SVGMatrix(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGMatrix(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

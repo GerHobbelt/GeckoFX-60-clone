@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ServiceWorkerGlobalScope : WebIDLBase
     {
         
-        public ServiceWorkerGlobalScope(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ServiceWorkerGlobalScope(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -27,9 +27,9 @@ namespace Gecko.WebIDL
             }
         }
         
-        public Promise <bool> SkipWaiting()
+        public Promise SkipWaiting()
         {
-            return this.CallMethod<Promise <bool>>("skipWaiting");
+            return this.CallMethod<Promise>("skipWaiting");
         }
     }
 }

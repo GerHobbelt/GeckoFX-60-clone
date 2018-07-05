@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WindowProxy : WebIDLBase
     {
         
-        public WindowProxy(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WindowProxy(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

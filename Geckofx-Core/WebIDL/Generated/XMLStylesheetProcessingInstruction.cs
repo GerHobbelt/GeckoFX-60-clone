@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class XMLStylesheetProcessingInstruction : WebIDLBase
     {
         
-        public XMLStylesheetProcessingInstruction(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public XMLStylesheetProcessingInstruction(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

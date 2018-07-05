@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class NavigatorLanguage : WebIDLBase
     {
         
-        public NavigatorLanguage(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public NavigatorLanguage(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

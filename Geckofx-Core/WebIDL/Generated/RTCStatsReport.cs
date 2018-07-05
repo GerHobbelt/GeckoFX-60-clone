@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class RTCStatsReport : WebIDLBase
     {
         
-        public RTCStatsReport(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public RTCStatsReport(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -17,16 +17,6 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<string>("mozPcid");
             }
-        }
-        
-        public object Get(string key)
-        {
-            return this.CallMethod<object>("get", key);
-        }
-        
-        public bool Has(string key)
-        {
-            return this.CallMethod<bool>("has", key);
         }
     }
 }

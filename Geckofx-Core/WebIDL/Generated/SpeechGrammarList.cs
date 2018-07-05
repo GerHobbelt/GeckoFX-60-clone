@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SpeechGrammarList : WebIDLBase
     {
         
-        public SpeechGrammarList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SpeechGrammarList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

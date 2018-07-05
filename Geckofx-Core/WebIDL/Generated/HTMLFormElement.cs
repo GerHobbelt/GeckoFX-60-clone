@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLFormElement : WebIDLBase
     {
         
-        public HTMLFormElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLFormElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -150,9 +150,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("checkValidity");
         }
         
-        public void RequestAutocomplete()
+        public bool ReportValidity()
         {
-            this.CallVoidMethod("requestAutocomplete");
+            return this.CallMethod<bool>("reportValidity");
         }
     }
 }

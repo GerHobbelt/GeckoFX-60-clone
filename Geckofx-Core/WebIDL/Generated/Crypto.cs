@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Crypto : WebIDLBase
     {
         
-        public Crypto(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Crypto(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

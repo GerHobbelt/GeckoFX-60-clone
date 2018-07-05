@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class LegacyQueryInterface : WebIDLBase
     {
         
-        public LegacyQueryInterface(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public LegacyQueryInterface(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

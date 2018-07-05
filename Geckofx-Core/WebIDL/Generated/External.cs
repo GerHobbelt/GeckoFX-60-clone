@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class External : WebIDLBase
     {
         
-        public External(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public External(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -19,11 +19,6 @@ namespace Gecko.WebIDL
         public uint IsSearchProviderInstalled(string aSearchURL)
         {
             return this.CallMethod<uint>("IsSearchProviderInstalled", aSearchURL);
-        }
-        
-        public void AddSearchEngine(string engineURL, string iconURL, string suggestedTitle, string suggestedCategory)
-        {
-            this.CallVoidMethod("addSearchEngine", engineURL, iconURL, suggestedTitle, suggestedCategory);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Permissions : WebIDLBase
     {
         
-        public Permissions(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Permissions(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -14,6 +14,11 @@ namespace Gecko.WebIDL
         public Promise < nsISupports > Query(object permission)
         {
             return this.CallMethod<Promise < nsISupports >>("query", permission);
+        }
+        
+        public Promise < nsISupports > Revoke(object permission)
+        {
+            return this.CallMethod<Promise < nsISupports >>("revoke", permission);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PerformanceTiming : WebIDLBase
     {
         
-        public PerformanceTiming(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PerformanceTiming(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -91,6 +91,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public ulong SecureConnectionStart
+        {
+            get
+            {
+                return this.GetProperty<ulong>("secureConnectionStart");
+            }
+        }
+        
         public ulong RequestStart
         {
             get
@@ -168,6 +176,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<ulong>("loadEventEnd");
+            }
+        }
+        
+        public ulong TimeToNonBlankPaint
+        {
+            get
+            {
+                return this.GetProperty<ulong>("timeToNonBlankPaint");
             }
         }
     }

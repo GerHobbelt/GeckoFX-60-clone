@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class LocalMediaStream : WebIDLBase
     {
         
-        public LocalMediaStream(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public LocalMediaStream(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

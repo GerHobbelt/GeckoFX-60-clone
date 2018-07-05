@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGPathSegCurvetoCubicSmoothRel : WebIDLBase
     {
         
-        public SVGPathSegCurvetoCubicSmoothRel(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGPathSegCurvetoCubicSmoothRel(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

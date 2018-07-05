@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class UDPSocket : WebIDLBase
     {
         
-        public UDPSocket(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public UDPSocket(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

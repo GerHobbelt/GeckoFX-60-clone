@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMRectReadOnly : WebIDLBase
     {
         
-        public DOMRectReadOnly(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMRectReadOnly(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

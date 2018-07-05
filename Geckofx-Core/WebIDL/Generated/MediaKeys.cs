@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaKeys : WebIDLBase
     {
         
-        public MediaKeys(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaKeys(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -24,14 +24,24 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("createSession");
         }
         
-        public nsISupports CreateSession(SessionType sessionType)
+        public nsISupports CreateSession(MediaKeySessionType sessionType)
         {
             return this.CallMethod<nsISupports>("createSession", sessionType);
         }
         
-        public Promise SetServerCertificate(WebIDLUnion<IntPtr,IntPtr> serverCertificate)
+        public Promise SetServerCertificate(IntPtr serverCertificate)
         {
             return this.CallMethod<Promise>("setServerCertificate", serverCertificate);
+        }
+        
+        public Promise < MediaKeyStatus > GetStatusForPolicy()
+        {
+            return this.CallMethod<Promise < MediaKeyStatus >>("getStatusForPolicy");
+        }
+        
+        public Promise < MediaKeyStatus > GetStatusForPolicy(object policy)
+        {
+            return this.CallMethod<Promise < MediaKeyStatus >>("getStatusForPolicy", policy);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLDataListElement : WebIDLBase
     {
         
-        public HTMLDataListElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLDataListElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

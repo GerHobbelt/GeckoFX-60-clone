@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MessageChannel : WebIDLBase
     {
         
-        public MessageChannel(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MessageChannel(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

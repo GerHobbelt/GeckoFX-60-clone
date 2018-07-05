@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class URLSearchParams : WebIDLBase
     {
         
-        public URLSearchParams(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public URLSearchParams(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -39,6 +39,11 @@ namespace Gecko.WebIDL
         public void Set(USVString name, USVString value)
         {
             this.CallVoidMethod("set", name, value);
+        }
+        
+        public void Sort()
+        {
+            this.CallVoidMethod("sort");
         }
     }
 }

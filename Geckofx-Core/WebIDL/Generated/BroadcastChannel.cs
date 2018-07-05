@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class BroadcastChannel : WebIDLBase
     {
         
-        public BroadcastChannel(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public BroadcastChannel(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

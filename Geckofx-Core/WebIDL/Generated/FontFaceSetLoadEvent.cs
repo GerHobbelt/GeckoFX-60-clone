@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FontFaceSetLoadEvent : WebIDLBase
     {
         
-        public FontFaceSetLoadEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FontFaceSetLoadEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Event : WebIDLBase
     {
         
-        public Event(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Event(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -24,6 +24,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<nsISupports>("target");
+            }
+        }
+        
+        public nsISupports SrcElement
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("srcElement");
             }
         }
         
@@ -67,6 +75,30 @@ namespace Gecko.WebIDL
             }
         }
         
+        public bool DefaultPreventedByChrome
+        {
+            get
+            {
+                return this.GetProperty<bool>("defaultPreventedByChrome");
+            }
+        }
+        
+        public bool DefaultPreventedByContent
+        {
+            get
+            {
+                return this.GetProperty<bool>("defaultPreventedByContent");
+            }
+        }
+        
+        public bool Composed
+        {
+            get
+            {
+                return this.GetProperty<bool>("composed");
+            }
+        }
+        
         public bool IsTrusted
         {
             get
@@ -75,12 +107,29 @@ namespace Gecko.WebIDL
             }
         }
         
-        public Double TimeStamp
+        public double TimeStamp
         {
             get
             {
-                return this.GetProperty<Double>("timeStamp");
+                return this.GetProperty<double>("timeStamp");
             }
+        }
+        
+        public bool CancelBubble
+        {
+            get
+            {
+                return this.GetProperty<bool>("cancelBubble");
+            }
+            set
+            {
+                this.SetProperty("cancelBubble", value);
+            }
+        }
+        
+        public nsISupports[] ComposedPath()
+        {
+            return this.CallMethod<nsISupports[]>("composedPath");
         }
         
         public void StopPropagation()
@@ -96,6 +145,16 @@ namespace Gecko.WebIDL
         public void PreventDefault()
         {
             this.CallVoidMethod("preventDefault");
+        }
+        
+        public void InitEvent(string type)
+        {
+            this.CallVoidMethod("initEvent", type);
+        }
+        
+        public void InitEvent(string type, bool bubbles)
+        {
+            this.CallVoidMethod("initEvent", type, bubbles);
         }
         
         public void InitEvent(string type, bool bubbles, bool cancelable)
@@ -141,11 +200,6 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<bool>("isSynthesized");
             }
-        }
-        
-        public bool GetPreventDefault()
-        {
-            return this.CallMethod<bool>("getPreventDefault");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class NavigatorOnLine : WebIDLBase
     {
         
-        public NavigatorOnLine(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public NavigatorOnLine(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

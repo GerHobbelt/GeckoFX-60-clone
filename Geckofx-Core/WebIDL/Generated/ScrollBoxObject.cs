@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ScrollBoxObject : WebIDLBase
     {
         
-        public ScrollBoxObject(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ScrollBoxObject(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLFrameElement : WebIDLBase
     {
         
-        public HTMLFrameElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLFrameElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -91,11 +91,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow ContentWindow
+        public mozIDOMWindowProxy ContentWindow
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("contentWindow");
+                return this.GetProperty<mozIDOMWindowProxy>("contentWindow");
             }
         }
         

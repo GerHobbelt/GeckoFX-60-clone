@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class GamepadButton : WebIDLBase
     {
         
-        public GamepadButton(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public GamepadButton(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<bool>("pressed");
+            }
+        }
+        
+        public bool Touched
+        {
+            get
+            {
+                return this.GetProperty<bool>("touched");
             }
         }
         

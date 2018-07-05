@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ConvolverNode : WebIDLBase
     {
         
-        public ConvolverNode(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ConvolverNode(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

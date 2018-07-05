@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MozObjectLoadingContent : WebIDLBase
     {
         
-        public MozObjectLoadingContent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MozObjectLoadingContent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -73,6 +73,36 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<uint>("runID");
             }
+        }
+        
+        public uint GetContentTypeForMIMEType(string aMimeType)
+        {
+            return this.CallMethod<uint>("getContentTypeForMIMEType", aMimeType);
+        }
+        
+        public object[] GetPluginAttributes()
+        {
+            return this.CallMethod<object[]>("getPluginAttributes");
+        }
+        
+        public object[] GetPluginParameters()
+        {
+            return this.CallMethod<object[]>("getPluginParameters");
+        }
+        
+        public void PlayPlugin()
+        {
+            this.CallVoidMethod("playPlugin");
+        }
+        
+        public void Reload(bool aClearActivation)
+        {
+            this.CallVoidMethod("reload", aClearActivation);
+        }
+        
+        public void SkipFakePlugins()
+        {
+            this.CallVoidMethod("skipFakePlugins");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class RTCPeerConnection : WebIDLBase
     {
         
-        public RTCPeerConnection(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public RTCPeerConnection(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -19,6 +19,22 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports CurrentLocalDescription
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("currentLocalDescription");
+            }
+        }
+        
+        public nsISupports PendingLocalDescription
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("pendingLocalDescription");
+            }
+        }
+        
         public nsISupports RemoteDescription
         {
             get
@@ -27,11 +43,35 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports CurrentRemoteDescription
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("currentRemoteDescription");
+            }
+        }
+        
+        public nsISupports PendingRemoteDescription
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("pendingRemoteDescription");
+            }
+        }
+        
         public RTCSignalingState SignalingState
         {
             get
             {
                 return this.GetProperty<RTCSignalingState>("signalingState");
+            }
+        }
+        
+        public System.Nullable<bool> CanTrickleIceCandidates
+        {
+            get
+            {
+                return this.GetProperty<System.Nullable<bool>>("canTrickleIceCandidates");
             }
         }
         
@@ -99,47 +139,37 @@ namespace Gecko.WebIDL
             return this.CallMethod<Promise <string>>("getIdentityAssertion");
         }
         
-        public Promise < nsISupports > CreateOffer()
+        public Promise <object> CreateOffer()
         {
-            return this.CallMethod<Promise < nsISupports >>("createOffer");
+            return this.CallMethod<Promise <object>>("createOffer");
         }
         
-        public Promise < nsISupports > CreateOffer(object options)
+        public Promise <object> CreateOffer(object options)
         {
-            return this.CallMethod<Promise < nsISupports >>("createOffer", options);
+            return this.CallMethod<Promise <object>>("createOffer", options);
         }
         
-        public Promise < nsISupports > CreateAnswer()
+        public Promise <object> CreateAnswer()
         {
-            return this.CallMethod<Promise < nsISupports >>("createAnswer");
+            return this.CallMethod<Promise <object>>("createAnswer");
         }
         
-        public Promise < nsISupports > CreateAnswer(object options)
+        public Promise <object> CreateAnswer(object options)
         {
-            return this.CallMethod<Promise < nsISupports >>("createAnswer", options);
+            return this.CallMethod<Promise <object>>("createAnswer", options);
         }
         
-        public Promise SetLocalDescription(nsISupports description)
+        public Promise SetLocalDescription(object description)
         {
             return this.CallMethod<Promise>("setLocalDescription", description);
         }
         
-        public Promise SetRemoteDescription(nsISupports description)
+        public Promise SetRemoteDescription(object description)
         {
             return this.CallMethod<Promise>("setRemoteDescription", description);
         }
         
-        public void UpdateIce()
-        {
-            this.CallVoidMethod("updateIce");
-        }
-        
-        public void UpdateIce(object configuration)
-        {
-            this.CallVoidMethod("updateIce", configuration);
-        }
-        
-        public Promise AddIceCandidate(nsISupports candidate)
+        public Promise AddIceCandidate(WebIDLUnion<System.Object,nsISupports> candidate)
         {
             return this.CallMethod<Promise>("addIceCandidate", candidate);
         }
@@ -159,19 +189,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports[]>("getRemoteStreams");
         }
         
-        public nsISupports GetStreamById(string streamId)
-        {
-            return this.CallMethod<nsISupports>("getStreamById", streamId);
-        }
-        
         public void AddStream(nsISupports stream)
         {
             this.CallVoidMethod("addStream", stream);
-        }
-        
-        public void RemoveStream(nsISupports stream)
-        {
-            this.CallVoidMethod("removeStream", stream);
         }
         
         public nsISupports AddTrack(nsISupports track, nsISupports stream, nsISupports moreStreams)
@@ -184,6 +204,16 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("removeTrack", sender);
         }
         
+        public nsISupports AddTransceiver(WebIDLUnion<nsISupports,System.String> trackOrKind)
+        {
+            return this.CallMethod<nsISupports>("addTransceiver", trackOrKind);
+        }
+        
+        public nsISupports AddTransceiver(WebIDLUnion<nsISupports,System.String> trackOrKind, object init)
+        {
+            return this.CallMethod<nsISupports>("addTransceiver", trackOrKind, init);
+        }
+        
         public nsISupports[] GetSenders()
         {
             return this.CallMethod<nsISupports[]>("getSenders");
@@ -192,6 +222,41 @@ namespace Gecko.WebIDL
         public nsISupports[] GetReceivers()
         {
             return this.CallMethod<nsISupports[]>("getReceivers");
+        }
+        
+        public nsISupports[] GetTransceivers()
+        {
+            return this.CallMethod<nsISupports[]>("getTransceivers");
+        }
+        
+        public double MozGetNowInRtpSourceReferenceTime()
+        {
+            return this.CallMethod<double>("mozGetNowInRtpSourceReferenceTime");
+        }
+        
+        public void MozInsertAudioLevelForContributingSource(nsISupports receiver, uint source, double timestamp, bool hasLevel, sbyte level)
+        {
+            this.CallVoidMethod("mozInsertAudioLevelForContributingSource", receiver, source, timestamp, hasLevel, level);
+        }
+        
+        public void MozAddRIDExtension(nsISupports receiver, ushort extensionId)
+        {
+            this.CallVoidMethod("mozAddRIDExtension", receiver, extensionId);
+        }
+        
+        public void MozAddRIDFilter(nsISupports receiver, string rid)
+        {
+            this.CallVoidMethod("mozAddRIDFilter", receiver, rid);
+        }
+        
+        public void MozEnablePacketDump(uint level, MozPacketDumpType type, bool sending)
+        {
+            this.CallVoidMethod("mozEnablePacketDump", level, type, sending);
+        }
+        
+        public void MozDisablePacketDump(uint level, MozPacketDumpType type, bool sending)
+        {
+            this.CallVoidMethod("mozDisablePacketDump", level, type, sending);
         }
         
         public void Close()

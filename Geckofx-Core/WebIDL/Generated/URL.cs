@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class URL : WebIDLBase
     {
         
-        public URL(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public URL(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -145,6 +145,11 @@ namespace Gecko.WebIDL
             {
                 this.SetProperty("hash", value);
             }
+        }
+        
+        public USVString ToJSON()
+        {
+            return this.CallMethod<USVString>("toJSON");
         }
     }
 }

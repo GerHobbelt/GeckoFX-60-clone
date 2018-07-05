@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class BrowserElementPrivileged : WebIDLBase
     {
         
-        public BrowserElementPrivileged(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public BrowserElementPrivileged(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -91,16 +91,6 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("getContentDimensions");
         }
         
-        public nsISupports SetInputMethodActive(bool isActive)
-        {
-            return this.CallMethod<nsISupports>("setInputMethodActive", isActive);
-        }
-        
-        public void SetNFCFocus(bool isFocus)
-        {
-            this.CallVoidMethod("setNFCFocus", isFocus);
-        }
-        
         public void FindAll(string searchString, BrowserFindCaseSensitivity caseSensitivity)
         {
             this.CallVoidMethod("findAll", searchString, caseSensitivity);
@@ -126,47 +116,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("executeScript", script, options);
         }
         
-        public nsISupports GetStructuredData()
-        {
-            return this.CallMethod<nsISupports>("getStructuredData");
-        }
-        
         public nsISupports GetWebManifest()
         {
             return this.CallMethod<nsISupports>("getWebManifest");
-        }
-        
-        public nsISupports[] AllowedAudioChannels
-        {
-            get
-            {
-                return this.GetProperty<nsISupports[]>("allowedAudioChannels");
-            }
-        }
-        
-        public void Mute()
-        {
-            this.CallVoidMethod("mute");
-        }
-        
-        public void Unmute()
-        {
-            this.CallVoidMethod("unmute");
-        }
-        
-        public nsISupports GetMuted()
-        {
-            return this.CallMethod<nsISupports>("getMuted");
-        }
-        
-        public void SetVolume(float volume)
-        {
-            this.CallVoidMethod("setVolume", volume);
-        }
-        
-        public nsISupports GetVolume()
-        {
-            return this.CallMethod<nsISupports>("getVolume");
         }
     }
 }

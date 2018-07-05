@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class mozRTCSessionDescription : WebIDLBase
     {
         
-        public mozRTCSessionDescription(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public mozRTCSessionDescription(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

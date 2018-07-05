@@ -6,29 +6,9 @@ namespace Gecko.WebIDL
     public class ServiceWorkerRegistration : WebIDLBase
     {
         
-        public ServiceWorkerRegistration(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ServiceWorkerRegistration(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
-        }
-        
-        public Promise ShowNotification(string title)
-        {
-            return this.CallMethod<Promise>("showNotification", title);
-        }
-        
-        public Promise ShowNotification(string title, object options)
-        {
-            return this.CallMethod<Promise>("showNotification", title, options);
-        }
-        
-        public Promise < nsISupports[] > GetNotifications()
-        {
-            return this.CallMethod<Promise < nsISupports[] >>("getNotifications");
-        }
-        
-        public Promise < nsISupports[] > GetNotifications(object filter)
-        {
-            return this.CallMethod<Promise < nsISupports[] >>("getNotifications", filter);
         }
         
         public nsISupports Installing
@@ -63,6 +43,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public ServiceWorkerUpdateViaCache UpdateViaCache
+        {
+            get
+            {
+                return this.GetProperty<ServiceWorkerUpdateViaCache>("updateViaCache");
+            }
+        }
+        
         public Promise Update()
         {
             return this.CallMethod<Promise>("update");
@@ -71,6 +59,34 @@ namespace Gecko.WebIDL
         public Promise <bool> Unregister()
         {
             return this.CallMethod<Promise <bool>>("unregister");
+        }
+        
+        public nsISupports PushManager
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("pushManager");
+            }
+        }
+        
+        public Promise ShowNotification(string title)
+        {
+            return this.CallMethod<Promise>("showNotification", title);
+        }
+        
+        public Promise ShowNotification(string title, object options)
+        {
+            return this.CallMethod<Promise>("showNotification", title, options);
+        }
+        
+        public Promise < nsISupports[] > GetNotifications()
+        {
+            return this.CallMethod<Promise < nsISupports[] >>("getNotifications");
+        }
+        
+        public Promise < nsISupports[] > GetNotifications(object filter)
+        {
+            return this.CallMethod<Promise < nsISupports[] >>("getNotifications", filter);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGStringList : WebIDLBase
     {
         
-        public SVGStringList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGStringList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

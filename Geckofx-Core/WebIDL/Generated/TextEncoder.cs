@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class TextEncoder : WebIDLBase
     {
         
-        public TextEncoder(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public TextEncoder(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -24,7 +24,7 @@ namespace Gecko.WebIDL
             return this.CallMethod<IntPtr>("encode");
         }
         
-        public IntPtr Encode(USVString input)
+        public IntPtr Encode(string input)
         {
             return this.CallMethod<IntPtr>("encode", input);
         }

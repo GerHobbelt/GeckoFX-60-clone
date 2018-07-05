@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SharedWorker : WebIDLBase
     {
         
-        public SharedWorker(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SharedWorker(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

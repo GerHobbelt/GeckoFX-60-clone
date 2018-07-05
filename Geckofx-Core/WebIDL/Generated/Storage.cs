@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Storage : WebIDLBase
     {
         
-        public Storage(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Storage(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<uint>("length");
+            }
+        }
+        
+        public bool IsSessionOnly
+        {
+            get
+            {
+                return this.GetProperty<bool>("isSessionOnly");
             }
         }
         

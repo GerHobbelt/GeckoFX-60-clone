@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGNumber : WebIDLBase
     {
         
-        public SVGNumber(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGNumber(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

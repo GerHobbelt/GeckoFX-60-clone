@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class NotifyPaintEvent : WebIDLBase
     {
         
-        public NotifyPaintEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public NotifyPaintEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -32,6 +32,22 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<nsISupports>("paintRequests");
+            }
+        }
+        
+        public ulong TransactionId
+        {
+            get
+            {
+                return this.GetProperty<ulong>("transactionId");
+            }
+        }
+        
+        public double PaintTimeStamp
+        {
+            get
+            {
+                return this.GetProperty<double>("paintTimeStamp");
             }
         }
     }

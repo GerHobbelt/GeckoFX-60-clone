@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class FileReader : WebIDLBase
     {
         
-        public FileReader(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public FileReader(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -27,17 +27,22 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports Error
+        public nsIDOMDOMException Error
         {
             get
             {
-                return this.GetProperty<nsISupports>("error");
+                return this.GetProperty<nsIDOMDOMException>("error");
             }
         }
         
         public void ReadAsArrayBuffer(nsIDOMBlob blob)
         {
             this.CallVoidMethod("readAsArrayBuffer", blob);
+        }
+        
+        public void ReadAsBinaryString(nsIDOMBlob filedata)
+        {
+            this.CallVoidMethod("readAsBinaryString", filedata);
         }
         
         public void ReadAsText(nsIDOMBlob blob)
@@ -58,11 +63,6 @@ namespace Gecko.WebIDL
         public void Abort()
         {
             this.CallVoidMethod("abort");
-        }
-        
-        public void ReadAsBinaryString(nsIDOMBlob filedata)
-        {
-            this.CallVoidMethod("readAsBinaryString", filedata);
         }
     }
 }

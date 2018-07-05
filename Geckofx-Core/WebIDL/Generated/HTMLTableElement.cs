@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLTableElement : WebIDLBase
     {
         
-        public HTMLTableElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLTableElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

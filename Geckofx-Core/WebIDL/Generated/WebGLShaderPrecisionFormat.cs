@@ -6,32 +6,32 @@ namespace Gecko.WebIDL
     public class WebGLShaderPrecisionFormat : WebIDLBase
     {
         
-        public WebGLShaderPrecisionFormat(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WebGLShaderPrecisionFormat(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public Int32 RangeMin
+        public int RangeMin
         {
             get
             {
-                return this.GetProperty<Int32>("rangeMin");
+                return this.GetProperty<int>("rangeMin");
             }
         }
         
-        public Int32 RangeMax
+        public int RangeMax
         {
             get
             {
-                return this.GetProperty<Int32>("rangeMax");
+                return this.GetProperty<int>("rangeMax");
             }
         }
         
-        public Int32 Precision
+        public int Precision
         {
             get
             {
-                return this.GetProperty<Int32>("precision");
+                return this.GetProperty<int>("precision");
             }
         }
     }

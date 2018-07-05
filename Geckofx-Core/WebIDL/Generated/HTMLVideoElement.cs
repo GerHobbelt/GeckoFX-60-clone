@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLVideoElement : WebIDLBase
     {
         
-        public HTMLVideoElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLVideoElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -111,15 +111,23 @@ namespace Gecko.WebIDL
             }
         }
         
-        public bool MozUseScreenWakeLock
+        public bool MozOrientationLockEnabled
         {
             get
             {
-                return this.GetProperty<bool>("mozUseScreenWakeLock");
+                return this.GetProperty<bool>("mozOrientationLockEnabled");
+            }
+        }
+        
+        public bool MozIsOrientationLocked
+        {
+            get
+            {
+                return this.GetProperty<bool>("mozIsOrientationLocked");
             }
             set
             {
-                this.SetProperty("mozUseScreenWakeLock", value);
+                this.SetProperty("mozIsOrientationLocked", value);
             }
         }
         

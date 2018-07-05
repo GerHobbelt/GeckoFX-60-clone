@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PerformanceResourceTiming : WebIDLBase
     {
         
-        public PerformanceResourceTiming(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PerformanceResourceTiming(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -27,91 +27,99 @@ namespace Gecko.WebIDL
             }
         }
         
-        public Double RedirectStart
+        public double WorkerStart
         {
             get
             {
-                return this.GetProperty<Double>("redirectStart");
+                return this.GetProperty<double>("workerStart");
             }
         }
         
-        public Double RedirectEnd
+        public double RedirectStart
         {
             get
             {
-                return this.GetProperty<Double>("redirectEnd");
+                return this.GetProperty<double>("redirectStart");
             }
         }
         
-        public Double FetchStart
+        public double RedirectEnd
         {
             get
             {
-                return this.GetProperty<Double>("fetchStart");
+                return this.GetProperty<double>("redirectEnd");
             }
         }
         
-        public Double DomainLookupStart
+        public double FetchStart
         {
             get
             {
-                return this.GetProperty<Double>("domainLookupStart");
+                return this.GetProperty<double>("fetchStart");
             }
         }
         
-        public Double DomainLookupEnd
+        public double DomainLookupStart
         {
             get
             {
-                return this.GetProperty<Double>("domainLookupEnd");
+                return this.GetProperty<double>("domainLookupStart");
             }
         }
         
-        public Double ConnectStart
+        public double DomainLookupEnd
         {
             get
             {
-                return this.GetProperty<Double>("connectStart");
+                return this.GetProperty<double>("domainLookupEnd");
             }
         }
         
-        public Double ConnectEnd
+        public double ConnectStart
         {
             get
             {
-                return this.GetProperty<Double>("connectEnd");
+                return this.GetProperty<double>("connectStart");
             }
         }
         
-        public Double SecureConnectionStart
+        public double ConnectEnd
         {
             get
             {
-                return this.GetProperty<Double>("secureConnectionStart");
+                return this.GetProperty<double>("connectEnd");
             }
         }
         
-        public Double RequestStart
+        public double SecureConnectionStart
         {
             get
             {
-                return this.GetProperty<Double>("requestStart");
+                return this.GetProperty<double>("secureConnectionStart");
             }
         }
         
-        public Double ResponseStart
+        public double RequestStart
         {
             get
             {
-                return this.GetProperty<Double>("responseStart");
+                return this.GetProperty<double>("requestStart");
             }
         }
         
-        public Double ResponseEnd
+        public double ResponseStart
         {
             get
             {
-                return this.GetProperty<Double>("responseEnd");
+                return this.GetProperty<double>("responseStart");
+            }
+        }
+        
+        public double ResponseEnd
+        {
+            get
+            {
+                return this.GetProperty<double>("responseEnd");
             }
         }
         

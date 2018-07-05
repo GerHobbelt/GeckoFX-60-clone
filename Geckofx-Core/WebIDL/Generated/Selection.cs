@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Selection : WebIDLBase
     {
         
-        public Selection(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Selection(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -59,34 +59,12 @@ namespace Gecko.WebIDL
             }
         }
         
-        public void Collapse(nsIDOMNode node, uint offset)
+        public string Type
         {
-            this.CallVoidMethod("collapse", node, offset);
-        }
-        
-        public void CollapseToStart()
-        {
-            this.CallVoidMethod("collapseToStart");
-        }
-        
-        public void CollapseToEnd()
-        {
-            this.CallVoidMethod("collapseToEnd");
-        }
-        
-        public void Extend(nsIDOMNode node, uint offset)
-        {
-            this.CallVoidMethod("extend", node, offset);
-        }
-        
-        public void SelectAllChildren(nsIDOMNode node)
-        {
-            this.CallVoidMethod("selectAllChildren", node);
-        }
-        
-        public void DeleteFromDocument()
-        {
-            this.CallVoidMethod("deleteFromDocument");
+            get
+            {
+                return this.GetProperty<string>("type");
+            }
         }
         
         public nsISupports GetRangeAt(uint index)
@@ -107,6 +85,71 @@ namespace Gecko.WebIDL
         public void RemoveAllRanges()
         {
             this.CallVoidMethod("removeAllRanges");
+        }
+        
+        public void Empty()
+        {
+            this.CallVoidMethod("empty");
+        }
+        
+        public void Collapse(nsIDOMNode node)
+        {
+            this.CallVoidMethod("collapse", node);
+        }
+        
+        public void Collapse(nsIDOMNode node, uint offset)
+        {
+            this.CallVoidMethod("collapse", node, offset);
+        }
+        
+        public void SetPosition(nsIDOMNode node)
+        {
+            this.CallVoidMethod("setPosition", node);
+        }
+        
+        public void SetPosition(nsIDOMNode node, uint offset)
+        {
+            this.CallVoidMethod("setPosition", node, offset);
+        }
+        
+        public void CollapseToStart()
+        {
+            this.CallVoidMethod("collapseToStart");
+        }
+        
+        public void CollapseToEnd()
+        {
+            this.CallVoidMethod("collapseToEnd");
+        }
+        
+        public void Extend(nsIDOMNode node)
+        {
+            this.CallVoidMethod("extend", node);
+        }
+        
+        public void Extend(nsIDOMNode node, uint offset)
+        {
+            this.CallVoidMethod("extend", node, offset);
+        }
+        
+        public void SetBaseAndExtent(nsIDOMNode anchorNode, uint anchorOffset, nsIDOMNode focusNode, uint focusOffset)
+        {
+            this.CallVoidMethod("setBaseAndExtent", anchorNode, anchorOffset, focusNode, focusOffset);
+        }
+        
+        public void SelectAllChildren(nsIDOMNode node)
+        {
+            this.CallVoidMethod("selectAllChildren", node);
+        }
+        
+        public void DeleteFromDocument()
+        {
+            this.CallVoidMethod("deleteFromDocument");
+        }
+        
+        public bool ContainsNode(nsIDOMNode node)
+        {
+            return this.CallMethod<bool>("containsNode", node);
         }
         
         public bool ContainsNode(nsIDOMNode node, bool allowPartialContainment)
@@ -143,11 +186,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public short Type
+        public short SelectionType
         {
             get
             {
-                return this.GetProperty<short>("type");
+                return this.GetProperty<short>("selectionType");
             }
         }
         
@@ -174,6 +217,16 @@ namespace Gecko.WebIDL
         public void ScrollIntoView(short aRegion, bool aIsSynchronous, short aVPercent, short aHPercent)
         {
             this.CallVoidMethod("scrollIntoView", aRegion, aIsSynchronous, aVPercent, aHPercent);
+        }
+        
+        public void SetColors(string aForegroundColor, string aBackgroundColor, string aAltForegroundColor, string aAltBackgroundColor)
+        {
+            this.CallVoidMethod("setColors", aForegroundColor, aBackgroundColor, aAltForegroundColor, aAltBackgroundColor);
+        }
+        
+        public void ResetColors()
+        {
+            this.CallVoidMethod("resetColors");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGAnimatedTransformList : WebIDLBase
     {
         
-        public SVGAnimatedTransformList(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGAnimatedTransformList(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

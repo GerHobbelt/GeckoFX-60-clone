@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGFEDisplacementMapElement : WebIDLBase
     {
         
-        public SVGFEDisplacementMapElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGFEDisplacementMapElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

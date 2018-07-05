@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGPathSegArcRel : WebIDLBase
     {
         
-        public SVGPathSegArcRel(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGPathSegArcRel(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

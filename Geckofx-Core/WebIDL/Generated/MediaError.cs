@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaError : WebIDLBase
     {
         
-        public MediaError(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaError(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<ushort>("code");
+            }
+        }
+        
+        public string Message
+        {
+            get
+            {
+                return this.GetProperty<string>("message");
             }
         }
     }

@@ -6,16 +6,16 @@ namespace Gecko.WebIDL
     public class UIEvent : WebIDLBase
     {
         
-        public UIEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public UIEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public nsIDOMWindow View
+        public mozIDOMWindowProxy View
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("view");
+                return this.GetProperty<mozIDOMWindowProxy>("view");
             }
         }
         
@@ -25,6 +25,26 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<int>("detail");
             }
+        }
+        
+        public void InitUIEvent(string aType)
+        {
+            this.CallVoidMethod("initUIEvent", aType);
+        }
+        
+        public void InitUIEvent(string aType, bool aCanBubble)
+        {
+            this.CallVoidMethod("initUIEvent", aType, aCanBubble);
+        }
+        
+        public void InitUIEvent(string aType, bool aCanBubble, bool aCancelable)
+        {
+            this.CallVoidMethod("initUIEvent", aType, aCanBubble, aCancelable);
+        }
+        
+        public void InitUIEvent(string aType, bool aCanBubble, bool aCancelable, nsIDOMWindow aView)
+        {
+            this.CallVoidMethod("initUIEvent", aType, aCanBubble, aCancelable, aView);
         }
         
         public void InitUIEvent(string aType, bool aCanBubble, bool aCancelable, nsIDOMWindow aView, int aDetail)
@@ -85,26 +105,6 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<int>("rangeOffset");
-            }
-        }
-        
-        public bool CancelBubble
-        {
-            get
-            {
-                return this.GetProperty<bool>("cancelBubble");
-            }
-            set
-            {
-                this.SetProperty("cancelBubble", value);
-            }
-        }
-        
-        public bool IsChar
-        {
-            get
-            {
-                return this.GetProperty<bool>("isChar");
             }
         }
     }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Node : WebIDLBase
     {
         
-        public Node(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Node(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -32,6 +32,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<string>("baseURI");
+            }
+        }
+        
+        public bool IsConnected
+        {
+            get
+            {
+                return this.GetProperty<bool>("isConnected");
             }
         }
         
@@ -123,30 +131,6 @@ namespace Gecko.WebIDL
             }
         }
         
-        public string NamespaceURI
-        {
-            get
-            {
-                return this.GetProperty<string>("namespaceURI");
-            }
-        }
-        
-        public string Prefix
-        {
-            get
-            {
-                return this.GetProperty<string>("prefix");
-            }
-        }
-        
-        public string LocalName
-        {
-            get
-            {
-                return this.GetProperty<string>("localName");
-            }
-        }
-        
         public nsISupports NodePrincipal
         {
             get
@@ -161,6 +145,16 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<nsISupports>("baseURIObject");
             }
+        }
+        
+        public nsIDOMNode GetRootNode()
+        {
+            return this.CallMethod<nsIDOMNode>("getRootNode");
+        }
+        
+        public nsIDOMNode GetRootNode(object options)
+        {
+            return this.CallMethod<nsIDOMNode>("getRootNode", options);
         }
         
         public bool HasChildNodes()
@@ -201,6 +195,11 @@ namespace Gecko.WebIDL
         public nsIDOMNode CloneNode(bool deep)
         {
             return this.CallMethod<nsIDOMNode>("cloneNode", deep);
+        }
+        
+        public bool IsSameNode(nsIDOMNode node)
+        {
+            return this.CallMethod<bool>("isSameNode", node);
         }
         
         public bool IsEqualNode(nsIDOMNode node)
@@ -246,6 +245,11 @@ namespace Gecko.WebIDL
         public nsISupports[] GetBoundMutationObservers()
         {
             return this.CallMethod<nsISupports[]>("getBoundMutationObservers");
+        }
+        
+        public string GenerateXPath()
+        {
+            return this.CallMethod<string>("generateXPath");
         }
     }
 }

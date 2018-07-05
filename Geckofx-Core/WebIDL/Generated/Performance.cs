@@ -6,19 +6,22 @@ namespace Gecko.WebIDL
     public class Performance : WebIDLBase
     {
         
-        public Performance(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Performance(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public Double Now()
+        public double TimeOrigin
         {
-            return this.CallMethod<Double>("now");
+            get
+            {
+                return this.GetProperty<double>("timeOrigin");
+            }
         }
         
-        public Double TranslateTime(Double time, WebIDLUnion<nsIDOMWindow,nsISupports,nsISupports,nsISupports> timeSource)
+        public double Now()
         {
-            return this.CallMethod<Double>("translateTime", time, timeSource);
+            return this.CallMethod<double>("now");
         }
         
         public nsISupports Timing

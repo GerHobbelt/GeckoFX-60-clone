@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DeviceMotionEvent : WebIDLBase
     {
         
-        public DeviceMotionEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DeviceMotionEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -41,6 +41,36 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<System.Nullable<double>>("interval");
             }
+        }
+        
+        public void InitDeviceMotionEvent(string type)
+        {
+            this.CallVoidMethod("initDeviceMotionEvent", type);
+        }
+        
+        public void InitDeviceMotionEvent(string type, bool canBubble)
+        {
+            this.CallVoidMethod("initDeviceMotionEvent", type, canBubble);
+        }
+        
+        public void InitDeviceMotionEvent(string type, bool canBubble, bool cancelable)
+        {
+            this.CallVoidMethod("initDeviceMotionEvent", type, canBubble, cancelable);
+        }
+        
+        public void InitDeviceMotionEvent(string type, bool canBubble, bool cancelable, object acceleration)
+        {
+            this.CallVoidMethod("initDeviceMotionEvent", type, canBubble, cancelable, acceleration);
+        }
+        
+        public void InitDeviceMotionEvent(string type, bool canBubble, bool cancelable, object acceleration, object accelerationIncludingGravity)
+        {
+            this.CallVoidMethod("initDeviceMotionEvent", type, canBubble, cancelable, acceleration, accelerationIncludingGravity);
+        }
+        
+        public void InitDeviceMotionEvent(string type, bool canBubble, bool cancelable, object acceleration, object accelerationIncludingGravity, object rotationRate)
+        {
+            this.CallVoidMethod("initDeviceMotionEvent", type, canBubble, cancelable, acceleration, accelerationIncludingGravity, rotationRate);
         }
         
         public void InitDeviceMotionEvent(string type, bool canBubble, bool cancelable, object acceleration, object accelerationIncludingGravity, object rotationRate, System.Nullable<double> interval)

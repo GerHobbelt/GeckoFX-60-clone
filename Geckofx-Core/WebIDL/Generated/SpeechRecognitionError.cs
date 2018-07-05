@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SpeechRecognitionError : WebIDLBase
     {
         
-        public SpeechRecognitionError(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SpeechRecognitionError(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,17 +6,9 @@ namespace Gecko.WebIDL
     public class ImageDocument : WebIDLBase
     {
         
-        public ImageDocument(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ImageDocument(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
-        }
-        
-        public bool ImageResizingEnabled
-        {
-            get
-            {
-                return this.GetProperty<bool>("imageResizingEnabled");
-            }
         }
         
         public bool ImageIsOverflowing

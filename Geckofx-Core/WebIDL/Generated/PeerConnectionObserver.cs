@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PeerConnectionObserver : WebIDLBase
     {
         
-        public PeerConnectionObserver(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PeerConnectionObserver(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -66,11 +66,6 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("onIceCandidate", level, mid, candidate);
         }
         
-        public void OnNegotiationNeeded()
-        {
-            this.CallVoidMethod("onNegotiationNeeded");
-        }
-        
         public void OnGetStatsSuccess()
         {
             this.CallVoidMethod("onGetStatsSuccess");
@@ -86,16 +81,6 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("onGetStatsError", name, message);
         }
         
-        public void OnReplaceTrackSuccess()
-        {
-            this.CallVoidMethod("onReplaceTrackSuccess");
-        }
-        
-        public void OnReplaceTrackError(uint name, string message)
-        {
-            this.CallVoidMethod("onReplaceTrackError", name, message);
-        }
-        
         public void NotifyDataChannel(nsISupports channel)
         {
             this.CallVoidMethod("notifyDataChannel", channel);
@@ -106,24 +91,24 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("onStateChange", state);
         }
         
-        public void OnAddStream(nsISupports stream)
+        public void OnTransceiverNeeded(string kind, nsISupports transceiverImpl)
         {
-            this.CallVoidMethod("onAddStream", stream);
+            this.CallVoidMethod("onTransceiverNeeded", kind, transceiverImpl);
         }
         
-        public void OnRemoveStream(nsISupports stream)
+        public void OnDTMFToneChange(nsISupports track, string tone)
         {
-            this.CallVoidMethod("onRemoveStream", stream);
+            this.CallVoidMethod("onDTMFToneChange", track, tone);
         }
         
-        public void OnAddTrack(nsISupports track)
+        public void OnPacket(uint level, MozPacketDumpType type, bool sending, IntPtr packet)
         {
-            this.CallVoidMethod("onAddTrack", track);
+            this.CallVoidMethod("onPacket", level, type, sending, packet);
         }
         
-        public void OnRemoveTrack(nsISupports track)
+        public void SyncTransceivers()
         {
-            this.CallVoidMethod("onRemoveTrack", track);
+            this.CallVoidMethod("syncTransceivers");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CloseEvent : WebIDLBase
     {
         
-        public CloseEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CloseEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

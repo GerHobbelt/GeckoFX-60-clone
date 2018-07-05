@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class ExtendableMessageEvent : WebIDLBase
     {
         
-        public ExtendableMessageEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public ExtendableMessageEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -43,11 +43,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports Ports
+        public nsISupports[] Ports
         {
             get
             {
-                return this.GetProperty<nsISupports>("ports");
+                return this.GetProperty<nsISupports[]>("ports");
             }
         }
     }

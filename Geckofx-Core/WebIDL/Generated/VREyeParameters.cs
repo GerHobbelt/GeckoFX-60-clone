@@ -6,56 +6,40 @@ namespace Gecko.WebIDL
     public class VREyeParameters : WebIDLBase
     {
         
-        public VREyeParameters(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public VREyeParameters(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public nsISupports MinimumFieldOfView
+        public IntPtr Offset
         {
             get
             {
-                return this.GetProperty<nsISupports>("minimumFieldOfView");
+                return this.GetProperty<IntPtr>("offset");
             }
         }
         
-        public nsISupports MaximumFieldOfView
+        public nsISupports FieldOfView
         {
             get
             {
-                return this.GetProperty<nsISupports>("maximumFieldOfView");
+                return this.GetProperty<nsISupports>("fieldOfView");
             }
         }
         
-        public nsISupports RecommendedFieldOfView
+        public uint RenderWidth
         {
             get
             {
-                return this.GetProperty<nsISupports>("recommendedFieldOfView");
+                return this.GetProperty<uint>("renderWidth");
             }
         }
         
-        public nsISupports EyeTranslation
+        public uint RenderHeight
         {
             get
             {
-                return this.GetProperty<nsISupports>("eyeTranslation");
-            }
-        }
-        
-        public nsISupports CurrentFieldOfView
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("currentFieldOfView");
-            }
-        }
-        
-        public nsISupports RenderRect
-        {
-            get
-            {
-                return this.GetProperty<nsISupports>("renderRect");
+                return this.GetProperty<uint>("renderHeight");
             }
         }
     }

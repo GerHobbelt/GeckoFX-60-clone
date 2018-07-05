@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGTests : WebIDLBase
     {
         
-        public SVGTests(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGTests(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

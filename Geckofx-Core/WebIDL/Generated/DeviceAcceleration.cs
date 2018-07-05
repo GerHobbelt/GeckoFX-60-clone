@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DeviceAcceleration : WebIDLBase
     {
         
-        public DeviceAcceleration(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DeviceAcceleration(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

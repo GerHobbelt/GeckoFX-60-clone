@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PresentationConnectionAvailableEvent : WebIDLBase
     {
         
-        public PresentationConnectionAvailableEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PresentationConnectionAvailableEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

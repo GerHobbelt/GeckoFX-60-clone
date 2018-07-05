@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HashChangeEvent : WebIDLBase
     {
         
-        public HashChangeEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HashChangeEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -25,6 +25,26 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<string>("newURL");
             }
+        }
+        
+        public void InitHashChangeEvent(string typeArg)
+        {
+            this.CallVoidMethod("initHashChangeEvent", typeArg);
+        }
+        
+        public void InitHashChangeEvent(string typeArg, bool canBubbleArg)
+        {
+            this.CallVoidMethod("initHashChangeEvent", typeArg, canBubbleArg);
+        }
+        
+        public void InitHashChangeEvent(string typeArg, bool canBubbleArg, bool cancelableArg)
+        {
+            this.CallVoidMethod("initHashChangeEvent", typeArg, canBubbleArg, cancelableArg);
+        }
+        
+        public void InitHashChangeEvent(string typeArg, bool canBubbleArg, bool cancelableArg, string oldURLArg)
+        {
+            this.CallVoidMethod("initHashChangeEvent", typeArg, canBubbleArg, cancelableArg, oldURLArg);
         }
         
         public void InitHashChangeEvent(string typeArg, bool canBubbleArg, bool cancelableArg, string oldURLArg, string newURLArg)

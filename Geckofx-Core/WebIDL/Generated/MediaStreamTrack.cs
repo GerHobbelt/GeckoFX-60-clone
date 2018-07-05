@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaStreamTrack : WebIDLBase
     {
         
-        public MediaStreamTrack(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaStreamTrack(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -47,9 +47,40 @@ namespace Gecko.WebIDL
             }
         }
         
+        public bool Muted
+        {
+            get
+            {
+                return this.GetProperty<bool>("muted");
+            }
+        }
+        
+        public MediaStreamTrackState ReadyState
+        {
+            get
+            {
+                return this.GetProperty<MediaStreamTrackState>("readyState");
+            }
+        }
+        
+        public nsISupports Clone()
+        {
+            return this.CallMethod<nsISupports>("clone");
+        }
+        
         public void Stop()
         {
             this.CallVoidMethod("stop");
+        }
+        
+        public object GetConstraints()
+        {
+            return this.CallMethod<object>("getConstraints");
+        }
+        
+        public object GetSettings()
+        {
+            return this.CallMethod<object>("getSettings");
         }
         
         public Promise ApplyConstraints()
@@ -60,6 +91,11 @@ namespace Gecko.WebIDL
         public Promise ApplyConstraints(object constraints)
         {
             return this.CallMethod<Promise>("applyConstraints", constraints);
+        }
+        
+        public void MutedChanged(bool muted)
+        {
+            this.CallVoidMethod("mutedChanged", muted);
         }
     }
 }

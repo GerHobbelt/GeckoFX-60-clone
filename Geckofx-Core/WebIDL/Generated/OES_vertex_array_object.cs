@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class OES_vertex_array_object : WebIDLBase
     {
         
-        public OES_vertex_array_object(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public OES_vertex_array_object(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -21,9 +21,9 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("deleteVertexArrayOES", arrayObject);
         }
         
-        public Boolean IsVertexArrayOES(nsISupports arrayObject)
+        public bool IsVertexArrayOES(nsISupports arrayObject)
         {
-            return this.CallMethod<Boolean>("isVertexArrayOES", arrayObject);
+            return this.CallMethod<bool>("isVertexArrayOES", arrayObject);
         }
         
         public void BindVertexArrayOES(nsISupports arrayObject)

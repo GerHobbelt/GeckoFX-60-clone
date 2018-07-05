@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMRect : WebIDLBase
     {
         
-        public DOMRect(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMRect(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class DOMRequestShared : WebIDLBase
     {
         
-        public DOMRequestShared(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public DOMRequestShared(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -27,11 +27,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsISupports Error
+        public nsIDOMDOMException Error
         {
             get
             {
-                return this.GetProperty<nsISupports>("error");
+                return this.GetProperty<nsIDOMDOMException>("error");
             }
         }
     }

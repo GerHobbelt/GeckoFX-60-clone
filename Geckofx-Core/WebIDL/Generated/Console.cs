@@ -3,37 +3,42 @@ namespace Gecko.WebIDL
     using System;
     
     
-    public class Console : WebIDLBase
+    public class console : WebIDLBase
     {
         
-        public Console(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public console(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public void Log(object data)
+        public void Assert()
         {
-            this.CallVoidMethod("log", data);
+            this.CallVoidMethod("assert");
         }
         
-        public void Info(object data)
+        public void Assert(bool condition)
         {
-            this.CallVoidMethod("info", data);
+            this.CallVoidMethod("assert", condition);
         }
         
-        public void Warn(object data)
+        public void Assert(bool condition, object data)
         {
-            this.CallVoidMethod("warn", data);
+            this.CallVoidMethod("assert", condition, data);
         }
         
-        public void Error(object data)
+        public void Clear()
         {
-            this.CallVoidMethod("error", data);
+            this.CallVoidMethod("clear");
         }
         
-        public void _exception(object data)
+        public void Count()
         {
-            this.CallVoidMethod("_exception", data);
+            this.CallVoidMethod("count");
+        }
+        
+        public void Count(string label)
+        {
+            this.CallVoidMethod("count", label);
         }
         
         public void Debug(object data)
@@ -41,14 +46,34 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("debug", data);
         }
         
+        public void Error(object data)
+        {
+            this.CallVoidMethod("error", data);
+        }
+        
+        public void Info(object data)
+        {
+            this.CallVoidMethod("info", data);
+        }
+        
+        public void Log(object data)
+        {
+            this.CallVoidMethod("log", data);
+        }
+        
         public void Table(object data)
         {
             this.CallVoidMethod("table", data);
         }
         
-        public void Trace()
+        public void Trace(object data)
         {
-            this.CallVoidMethod("trace");
+            this.CallVoidMethod("trace", data);
+        }
+        
+        public void Warn(object data)
+        {
+            this.CallVoidMethod("warn", data);
         }
         
         public void Dir(object data)
@@ -71,9 +96,9 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("groupCollapsed", data);
         }
         
-        public void GroupEnd(object data)
+        public void GroupEnd()
         {
-            this.CallVoidMethod("groupEnd", data);
+            this.CallVoidMethod("groupEnd");
         }
         
         public void Time()
@@ -81,9 +106,9 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("time");
         }
         
-        public void Time(object time)
+        public void Time(string label)
         {
-            this.CallVoidMethod("time", time);
+            this.CallVoidMethod("time", label);
         }
         
         public void TimeEnd()
@@ -91,9 +116,14 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("timeEnd");
         }
         
-        public void TimeEnd(object time)
+        public void TimeEnd(string label)
         {
-            this.CallVoidMethod("timeEnd", time);
+            this.CallVoidMethod("timeEnd", label);
+        }
+        
+        public void _exception(object data)
+        {
+            this.CallVoidMethod("_exception", data);
         }
         
         public void TimeStamp()
@@ -116,34 +146,14 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("profileEnd", data);
         }
         
-        public void Assert(bool condition, object data)
+        public nsISupports CreateInstance()
         {
-            this.CallVoidMethod("assert", condition, data);
+            return this.CallMethod<nsISupports>("createInstance");
         }
         
-        public void Count(object data)
+        public nsISupports CreateInstance(object options)
         {
-            this.CallVoidMethod("count", data);
-        }
-        
-        public void Clear()
-        {
-            this.CallVoidMethod("clear");
-        }
-        
-        public void MarkTimeline()
-        {
-            this.CallVoidMethod("markTimeline");
-        }
-        
-        public void Timeline()
-        {
-            this.CallVoidMethod("timeline");
-        }
-        
-        public void TimelineEnd()
-        {
-            this.CallVoidMethod("timelineEnd");
+            return this.CallMethod<nsISupports>("createInstance", options);
         }
     }
 }

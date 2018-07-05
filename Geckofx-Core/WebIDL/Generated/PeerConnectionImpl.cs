@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PeerConnectionImpl : WebIDLBase
     {
         
-        public PeerConnectionImpl(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PeerConnectionImpl(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -39,11 +39,43 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string CurrentLocalDescription
+        {
+            get
+            {
+                return this.GetProperty<string>("currentLocalDescription");
+            }
+        }
+        
+        public string PendingLocalDescription
+        {
+            get
+            {
+                return this.GetProperty<string>("pendingLocalDescription");
+            }
+        }
+        
         public string RemoteDescription
         {
             get
             {
                 return this.GetProperty<string>("remoteDescription");
+            }
+        }
+        
+        public string CurrentRemoteDescription
+        {
+            get
+            {
+                return this.GetProperty<string>("currentRemoteDescription");
+            }
+        }
+        
+        public string PendingRemoteDescription
+        {
+            get
+            {
+                return this.GetProperty<string>("pendingRemoteDescription");
             }
         }
         
@@ -138,19 +170,49 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("getStats", selector);
         }
         
-        public void AddTrack(nsISupports track, nsISupports streams)
+        public nsISupports CreateTransceiverImpl(string kind, nsISupports track)
         {
-            this.CallVoidMethod("addTrack", track, streams);
+            return this.CallMethod<nsISupports>("createTransceiverImpl", kind, track);
         }
         
-        public void RemoveTrack(nsISupports track)
+        public bool CheckNegotiationNeeded()
         {
-            this.CallVoidMethod("removeTrack", track);
+            return this.CallMethod<bool>("checkNegotiationNeeded");
         }
         
-        public void ReplaceTrack(nsISupports thisTrack, nsISupports withTrack)
+        public void InsertDTMF(nsISupports transceiver, string tones)
         {
-            this.CallVoidMethod("replaceTrack", thisTrack, withTrack);
+            this.CallVoidMethod("insertDTMF", transceiver, tones);
+        }
+        
+        public void InsertDTMF(nsISupports transceiver, string tones, uint duration)
+        {
+            this.CallVoidMethod("insertDTMF", transceiver, tones, duration);
+        }
+        
+        public void InsertDTMF(nsISupports transceiver, string tones, uint duration, uint interToneGap)
+        {
+            this.CallVoidMethod("insertDTMF", transceiver, tones, duration, interToneGap);
+        }
+        
+        public string GetDTMFToneBuffer(nsISupports sender)
+        {
+            return this.CallMethod<string>("getDTMFToneBuffer", sender);
+        }
+        
+        public object[] GetRtpSources(nsISupports track, double rtpSourceNow)
+        {
+            return this.CallMethod<object[]>("getRtpSources", track, rtpSourceNow);
+        }
+        
+        public double GetNowInRtpSourceReferenceTime()
+        {
+            return this.CallMethod<double>("getNowInRtpSourceReferenceTime");
+        }
+        
+        public void ReplaceTrackNoRenegotiation(nsISupports transceiverImpl, nsISupports withTrack)
+        {
+            this.CallVoidMethod("replaceTrackNoRenegotiation", transceiverImpl, withTrack);
         }
         
         public void CloseStreams()
@@ -158,14 +220,29 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("closeStreams");
         }
         
-        public nsISupports[] GetLocalStreams()
+        public void AddRIDExtension(nsISupports recvTrack, ushort extensionId)
         {
-            return this.CallMethod<nsISupports[]>("getLocalStreams");
+            this.CallVoidMethod("addRIDExtension", recvTrack, extensionId);
         }
         
-        public nsISupports[] GetRemoteStreams()
+        public void AddRIDFilter(nsISupports recvTrack, string rid)
         {
-            return this.CallMethod<nsISupports[]>("getRemoteStreams");
+            this.CallVoidMethod("addRIDFilter", recvTrack, rid);
+        }
+        
+        public void InsertAudioLevelForContributingSource(nsISupports recvTrack, uint source, double timestamp, bool hasLevel, sbyte level)
+        {
+            this.CallVoidMethod("insertAudioLevelForContributingSource", recvTrack, source, timestamp, hasLevel, level);
+        }
+        
+        public void EnablePacketDump(uint level, MozPacketDumpType type, bool sending)
+        {
+            this.CallVoidMethod("enablePacketDump", level, type, sending);
+        }
+        
+        public void DisablePacketDump(uint level, MozPacketDumpType type, bool sending)
+        {
+            this.CallVoidMethod("disablePacketDump", level, type, sending);
         }
         
         public void AddIceCandidate(string candidate, string mid, ushort level)
@@ -183,9 +260,9 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("pluginCrash", pluginId, name);
         }
         
-        public nsISupports CreateDataChannel(string label, string protocol, ushort type, bool outOfOrderAllowed, ushort maxTime, ushort maxNum, bool externalNegotiated, ushort stream)
+        public nsISupports CreateDataChannel(string label, string protocol, ushort type, bool ordered, ushort maxTime, ushort maxNum, bool externalNegotiated, ushort stream)
         {
-            return this.CallMethod<nsISupports>("createDataChannel", label, protocol, type, outOfOrderAllowed, maxTime, maxNum, externalNegotiated, stream);
+            return this.CallMethod<nsISupports>("createDataChannel", label, protocol, type, ordered, maxTime, maxNum, externalNegotiated, stream);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class SVGAngle : WebIDLBase
     {
         
-        public SVGAngle(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public SVGAngle(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

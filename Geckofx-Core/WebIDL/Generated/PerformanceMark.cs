@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PerformanceMark : WebIDLBase
     {
         
-        public PerformanceMark(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PerformanceMark(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

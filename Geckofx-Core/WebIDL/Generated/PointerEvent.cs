@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PointerEvent : WebIDLBase
     {
         
-        public PointerEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PointerEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -43,6 +43,14 @@ namespace Gecko.WebIDL
             }
         }
         
+        public float TangentialPressure
+        {
+            get
+            {
+                return this.GetProperty<float>("tangentialPressure");
+            }
+        }
+        
         public int TiltX
         {
             get
@@ -56,6 +64,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<int>("tiltY");
+            }
+        }
+        
+        public int Twist
+        {
+            get
+            {
+                return this.GetProperty<int>("twist");
             }
         }
         
@@ -73,6 +89,11 @@ namespace Gecko.WebIDL
             {
                 return this.GetProperty<bool>("isPrimary");
             }
+        }
+        
+        public nsISupports[] GetCoalescedEvents()
+        {
+            return this.CallMethod<nsISupports[]>("getCoalescedEvents");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class Worker : WebIDLBase
     {
         
-        public Worker(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public Worker(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

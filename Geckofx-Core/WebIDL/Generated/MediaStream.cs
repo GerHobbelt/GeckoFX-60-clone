@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class MediaStream : WebIDLBase
     {
         
-        public MediaStream(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public MediaStream(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<string>("id");
+            }
+        }
+        
+        public bool Active
+        {
+            get
+            {
+                return this.GetProperty<bool>("active");
             }
         }
         
@@ -42,6 +50,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports[]>("getTracks");
         }
         
+        public nsISupports GetTrackById(string trackId)
+        {
+            return this.CallMethod<nsISupports>("getTrackById", trackId);
+        }
+        
         public void AddTrack(nsISupports track)
         {
             this.CallVoidMethod("addTrack", track);
@@ -50,6 +63,16 @@ namespace Gecko.WebIDL
         public void RemoveTrack(nsISupports track)
         {
             this.CallVoidMethod("removeTrack", track);
+        }
+        
+        public nsISupports Clone()
+        {
+            return this.CallMethod<nsISupports>("clone");
+        }
+        
+        public void AssignId(string id)
+        {
+            this.CallVoidMethod("assignId", id);
         }
     }
 }

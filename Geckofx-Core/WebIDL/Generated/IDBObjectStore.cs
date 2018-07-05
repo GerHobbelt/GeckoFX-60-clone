@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IDBObjectStore : WebIDLBase
     {
         
-        public IDBObjectStore(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IDBObjectStore(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,10 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<string>("name");
+            }
+            set
+            {
+                this.SetProperty("name", value);
             }
         }
         
@@ -81,6 +85,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("get", key);
         }
         
+        public nsISupports GetKey(object key)
+        {
+            return this.CallMethod<nsISupports>("getKey", key);
+        }
+        
         public nsISupports Clear()
         {
             return this.CallMethod<nsISupports>("clear");
@@ -101,22 +110,12 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("openCursor", range, direction);
         }
         
-        public nsISupports CreateIndex(string name, string keyPath)
+        public nsISupports CreateIndex(string name, WebIDLUnion<System.String,System.String[]> keyPath)
         {
             return this.CallMethod<nsISupports>("createIndex", name, keyPath);
         }
         
-        public nsISupports CreateIndex(string name, string keyPath, object optionalParameters)
-        {
-            return this.CallMethod<nsISupports>("createIndex", name, keyPath, optionalParameters);
-        }
-        
-        public nsISupports CreateIndex(string name, string[] keyPath)
-        {
-            return this.CallMethod<nsISupports>("createIndex", name, keyPath);
-        }
-        
-        public nsISupports CreateIndex(string name, string[] keyPath, object optionalParameters)
+        public nsISupports CreateIndex(string name, WebIDLUnion<System.String,System.String[]> keyPath, object optionalParameters)
         {
             return this.CallMethod<nsISupports>("createIndex", name, keyPath, optionalParameters);
         }

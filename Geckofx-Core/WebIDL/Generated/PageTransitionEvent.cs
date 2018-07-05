@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PageTransitionEvent : WebIDLBase
     {
         
-        public PageTransitionEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PageTransitionEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
@@ -16,6 +16,14 @@ namespace Gecko.WebIDL
             get
             {
                 return this.GetProperty<bool>("persisted");
+            }
+        }
+        
+        public bool InFrameSwap
+        {
+            get
+            {
+                return this.GetProperty<bool>("inFrameSwap");
             }
         }
     }

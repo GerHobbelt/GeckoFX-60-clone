@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class CSSLexer : WebIDLBase
     {
         
-        public CSSLexer(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public CSSLexer(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

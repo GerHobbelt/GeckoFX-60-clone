@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLCanvasElement : WebIDLBase
     {
         
-        public HTMLCanvasElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLCanvasElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

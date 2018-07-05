@@ -6,12 +6,12 @@ namespace Gecko.WebIDL
     public class WEBGL_draw_buffers : WebIDLBase
     {
         
-        public WEBGL_draw_buffers(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WEBGL_draw_buffers(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
         
-        public void DrawBuffersWEBGL(UInt32[] buffers)
+        public void DrawBuffersWEBGL(uint[] buffers)
         {
             this.CallVoidMethod("drawBuffersWEBGL", buffers);
         }

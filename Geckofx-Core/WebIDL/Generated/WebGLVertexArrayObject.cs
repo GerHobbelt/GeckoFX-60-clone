@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class WebGLVertexArrayObject : WebIDLBase
     {
         
-        public WebGLVertexArrayObject(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public WebGLVertexArrayObject(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

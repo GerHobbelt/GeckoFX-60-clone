@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class PopupBlockedEvent : WebIDLBase
     {
         
-        public PopupBlockedEvent(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public PopupBlockedEvent(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

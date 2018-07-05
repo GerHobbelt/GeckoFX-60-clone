@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class EXT_frag_depth : WebIDLBase
     {
         
-        public EXT_frag_depth(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public EXT_frag_depth(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class IDBDatabase : WebIDLBase
     {
         
-        public IDBDatabase(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public IDBDatabase(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

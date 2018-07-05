@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class HTMLTimeElement : WebIDLBase
     {
         
-        public HTMLTimeElement(nsIDOMWindow globalWindow, nsISupports thisObject) : 
+        public HTMLTimeElement(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
