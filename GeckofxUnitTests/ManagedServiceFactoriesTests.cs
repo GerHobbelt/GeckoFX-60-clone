@@ -149,6 +149,11 @@ namespace GeckofxUnitTests
 			{
 				// Console.WriteLine("SetCookieStringFromHttp {0} {1} {2} {3} {4} {5}", aURI, aFirstURI, aPrompt, aCookie, aServerTime, aChannel);
 			}
+
+		    public void RunInTransaction(nsICookieTransactionCallback aCallback)
+		    {
+		        throw new NotImplementedException();
+		    }
 		}
 
 		[Guid("c375fa80-150f-11d6-a618-0010a401eb10")]
@@ -183,7 +188,12 @@ namespace GeckofxUnitTests
  				throw new NotImplementedException();
 			}
 
-			#endregion
+		    public void Init(mozIDOMWindowProxy window)
+		    {
+		        throw new NotImplementedException();
+		    }
+
+		    #endregion
 		}
 
 		[Guid("aaaaaaaa-bbbb-bbbb-bbbb-cccccccccccc")]

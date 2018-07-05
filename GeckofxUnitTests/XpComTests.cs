@@ -379,15 +379,6 @@ namespace GeckofxUnitTests
 		{
 			Assert.Throws<COMException>(() => Xpcom.CreateInstance<nsITooltipTextProvider>("@mozilla.org/embedcomp/tooltiptextprovider;1"));
 		}
-		
-		[Test]
-		public void CreateInstance_CreatingNsCommandHandler_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsICommandHandler>("@mozilla.org/embedding/browser/nsCommandHandler;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-
-		}
 
 		[Test]
 		public void CreateInstance_CreatingAppStartupNotifier_ReturnsValidInstance()
@@ -588,14 +579,6 @@ namespace GeckofxUnitTests
 			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/nslanguageatomservice;1");
 			Assert.IsNotNull(instance);
 			Marshal.ReleaseComObject(instance);		
-		}
-
-		[Test]
-		public void CreateInstance_CreatingSemanticUnitsScanner_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISemanticUnitScanner>("@mozilla.org/intl/semanticunitscanner;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
 		}
 
 		[Test]

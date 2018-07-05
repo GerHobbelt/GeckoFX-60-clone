@@ -97,6 +97,11 @@ namespace GeckofxUnitTests
 			{
 				throw new NotImplementedException();
 			}
+
+		    public uint Write(string aBuf, uint aCount)
+		    {
+		        throw new NotImplementedException();
+		    }
 		}
 
 		[Test]

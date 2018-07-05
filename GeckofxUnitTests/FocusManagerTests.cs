@@ -42,32 +42,9 @@ namespace GeckofxUnitTests
 	}
 
 	#region Stubs
-	internal class StubDOMWindow : nsIDOMWindow
+	internal class StubDOMWindow : mozIDOMWindowProxy
 	{		
-		#region nsIDOMWindow Members
 
-
-		public float GetDevicePixelRatioAttribute()
-		{
-			throw new NotImplementedException();
-		}
-
-		#endregion
-
-		#region nsIDOMWindow Members
-
-
-		public void PostMessage(JsVal message, nsAStringBase targetOrigin, JsVal transfer, IntPtr jsContext)
-		{
-			throw new NotImplementedException();
-		}
-
-		public nsIDOMCSSStyleDeclaration GetDefaultComputedStyle(nsIDOMElement elt, nsAStringBase pseudoElt)
-		{
-			throw new NotImplementedException();
-		}
-
-		#endregion
 	}
 	#endregion
 }
