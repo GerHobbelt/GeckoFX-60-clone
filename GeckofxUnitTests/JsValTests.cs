@@ -88,7 +88,7 @@ namespace GeckofxUnitTests
                 Assert.AreEqual(JSType.JSTYPE_OBJECT, jsVal.Type);
                 Assert.AreEqual("[object HTMLDocument]", jsVal.ToString());
                 // Verify that converting back to ComObject yields expected object.
-	            var documentObject = (nsIDOMHTMLDocument)jsVal.ToObject();                
+	            var documentObject = (nsIDOMDocument)jsVal.ToObject();                
                 Assert.AreEqual(browser.Document.TextContent, new GeckoDocument(documentObject).TextContent);
 	        }
 
