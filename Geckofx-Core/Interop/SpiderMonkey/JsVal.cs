@@ -53,6 +53,7 @@ namespace Gecko
         // This field is not valid for 64bit JsVal. (64bit little endian tag is stored in 17 most significant bits of the 8 byte JsVal)
         [FieldOffset(4)] public uint tag;
 
+        // TODO: PORTFF60 - these values are likely wrong.
         public enum ValueTag64Bit : uint
         {
             Clear = 0x1FFF0,
@@ -70,13 +71,13 @@ namespace Gecko
         {
             Clear = 0xFFFFFF80,
             Int32 = Clear | 1,
-            Undefined = Clear | 2,
-            String = Clear | 5,
-            Boolean = Clear | 3,
-            Magic = Clear | 4,
-            Symbol = Clear | 6,
-            Null = Clear | 7,
-            Object = Clear | 8
+            Boolean = Clear | 2,
+            Undefined = Clear | 3,
+            Null = Clear | 4,
+            Magic = Clear | 5,
+            String = Clear | 6,
+            Symbol = Clear | 7,
+            Object = Clear | 0x0c
         }
 
         public uint Tag

@@ -1,0 +1,30 @@
+namespace Gecko.WebIDL
+{
+    using System;
+    
+    
+    public class PaintRequest : WebIDLBase
+    {
+        
+        public PaintRequest(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
+                base(globalWindow, thisObject)
+        {
+        }
+        
+        public nsISupports ClientRect
+        {
+            get
+            {
+                return this.GetProperty<nsISupports>("clientRect");
+            }
+        }
+        
+        public string Reason
+        {
+            get
+            {
+                return this.GetProperty<string>("reason");
+            }
+        }
+    }
+}
