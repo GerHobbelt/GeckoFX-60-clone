@@ -75,7 +75,13 @@ namespace Gecko
         /// </summary>
         public GeckoNode AnchorNode
         {
-            get { return GeckoNode.Create(Selection.GetAnchorNodeAttribute()); }
+            get
+            {
+#if PORTFF60
+                return GeckoNode.Create(Selection.GetAnchorNodeAttribute());
+#endif
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -91,7 +97,11 @@ namespace Gecko
         /// </summary>
         public GeckoNode FocusNode
         {
+#if PORTFF60
             get { return GeckoNode.Create(Selection.GetFocusNodeAttribute()); }
+#endif
+            get { throw new NotImplementedException(); }
+
         }
 
         /// <summary>
@@ -300,7 +310,13 @@ namespace Gecko
 
         public GeckoNode StartContainer
         {
-            get { return GeckoNode.Create(DomRange.GetStartContainerAttribute()); }
+            get
+            {
+#if PORTFF60
+                return GeckoNode.Create(DomRange.GetStartContainerAttribute());
+#endif
+                throw new NotImplementedException();
+            }
         }
 
         public int StartOffset
@@ -310,7 +326,13 @@ namespace Gecko
 
         public GeckoNode EndContainer
         {
-            get { return GeckoNode.Create(DomRange.GetEndContainerAttribute()); }
+            get
+            {
+#if PORTFF60
+                return GeckoNode.Create(DomRange.GetEndContainerAttribute());
+#endif
+                throw new NotImplementedException();
+            }
         }
 
         public int EndOffset
@@ -320,12 +342,24 @@ namespace Gecko
 
         public bool Collapsed
         {
-            get { return DomRange.GetCollapsedAttribute(); }
+            get
+            {
+#if PORTFF60
+                return DomRange.GetCollapsedAttribute();
+#endif
+                throw new NotImplementedException();
+            }
         }
 
         public GeckoNode CommonAncestorContainer
         {
-            get { return GeckoNode.Create(DomRange.GetCommonAncestorContainerAttribute()); }
+            get
+            {
+#if PORTFF60
+                return GeckoNode.Create(DomRange.GetCommonAncestorContainerAttribute());
+#endif
+                throw new NotImplementedException();
+            }
         }
 
         public void SetStart(GeckoNode node, int offset)
@@ -387,12 +421,18 @@ namespace Gecko
 
         public GeckoNode ExtractContents()
         {
+#if PORTFF60
             return GeckoNode.Create(DomRange.ExtractContents());
+#endif
+            throw new NotImplementedException();
         }
 
         public GeckoNode CloneContents()
         {
+#if PORTFF60
             return GeckoNode.Create(DomRange.CloneContents());
+#endif
+            throw new NotImplementedException();
         }
 
         public void InsertNode(GeckoNode newNode)

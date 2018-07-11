@@ -74,7 +74,7 @@ namespace GeckofxUnitTests
 
 
             DomEventArgs ev = browser.Document.CreateEvent("MouseEvent");
-            var webEvent = new Event(browser.Window.DomWindow, ev.DomEvent as nsISupports);
+            var webEvent = new Event((mozIDOMWindow)browser.Window.DomWindow, ev.DomEvent as nsISupports);
             webEvent.InitEvent("mousedown", true, true);
             element.GetEventTarget().DispatchEvent(ev);
 

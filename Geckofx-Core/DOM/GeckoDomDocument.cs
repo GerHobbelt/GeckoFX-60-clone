@@ -609,14 +609,8 @@ namespace Gecko
 
         public static GeckoDomDocument CreateDomDocumentWraper(nsIDOMDocument domDocument)
         {
-            //var htmlDocument = Xpcom.QueryInterface<nsIDOMHTMLDocument>(domDocument);
-            //if (htmlDocument != null)
-            //{
-            //    Marshal.ReleaseComObject(htmlDocument);
-            //    return new GeckoDocument((nsIDOMHTMLDocument) domDocument);
-            //}
-            //return new GeckoDomDocument(domDocument);
-            throw new NotImplementedException();
+            // REVIEW: PORTFF60 - shoudl we cache this?
+            return new GeckoDomDocument(domDocument);
         }
     }
 }

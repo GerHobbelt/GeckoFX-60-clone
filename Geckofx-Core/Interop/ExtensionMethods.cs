@@ -15,11 +15,18 @@ namespace Gecko.Interop
         /// <param name="obj"></param>
         /// <param name="wrapper"></param>
         /// <returns></returns>
+        public static TWrapper Wrap<TGeckoObject, TWrapper>(this TGeckoObject obj, nsISupports window, Func<nsISupports, TGeckoObject, TWrapper> wrapper)
+            where TGeckoObject : class
+            where TWrapper : class
+        {
+            return obj == null ? null : wrapper(window, obj);
+        }
+
         public static TWrapper Wrap<TGeckoObject, TWrapper>(this TGeckoObject obj, Func<TGeckoObject, TWrapper> wrapper)
             where TGeckoObject : class
             where TWrapper : class
         {
-            return obj == null ? null : wrapper(obj);
+            throw new NotImplementedException("need to pass a window with object now..");
         }
 
         /// <summary>

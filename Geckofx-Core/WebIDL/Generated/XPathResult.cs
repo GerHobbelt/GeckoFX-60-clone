@@ -6,7 +6,7 @@ namespace Gecko.WebIDL
     public class XPathResult : WebIDLBase
     {
         
-        public XPathResult(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
+        public XPathResult(mozIDOMWindow globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }

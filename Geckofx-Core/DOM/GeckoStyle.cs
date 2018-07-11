@@ -226,7 +226,7 @@ namespace Gecko
 
             private GeckoStyleSheet StyleSheet;
             private /* nsIDOMCSSRuleList */nsISupports List;
-            private mozIDOMWindowProxy _window;
+            private mozIDOMWindow _window;
 
             private /* nsIDOMCSSRuleList */nsISupports GetRuleList()
             {
@@ -238,7 +238,7 @@ namespace Gecko
                 }
             }
 
-            private mozIDOMWindowProxy GetGlobalWindow()
+            private mozIDOMWindow GetGlobalWindow()
             {
                 if (_window == null)
                 {

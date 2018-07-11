@@ -54,7 +54,7 @@ namespace Gecko
         #region fields
 
         private readonly IntPtr _cx;
-        private readonly mozIDOMWindowProxy _window;
+        private readonly nsISupports _window;
         private JSAutoCompartment _defaultCompartment;
         private Stack<JSAutoCompartment> _compartmentStack = new Stack<JSAutoCompartment>();
         private nsIXPCComponents _nsIXPCComponents;
@@ -81,16 +81,21 @@ namespace Gecko
         #region Connstructors
 
         public AutoJSContext(GeckoWindow window) :
-            this(window.DomWindow)
+            this((nsISupports)window.DomWindow)
         {
         }
 
         public AutoJSContext(nsISupports window) :
-            this((mozIDOMWindowProxy) window)
+            this((nsIGlobalObject) window)
         {
         }
 
-        public AutoJSContext(mozIDOMWindowProxy window)
+        public AutoJSContext(mozIDOMWindow window) :
+        this((nsIGlobalObject)window)
+        {
+        }
+
+        public AutoJSContext(nsIGlobalObject window)
         {
             var context = SafeJSContext;
             var go = (nsIGlobalObject) window;
@@ -107,7 +112,7 @@ namespace Gecko
                 _contextToGlobalDictionary[context] = _globalJSObject;
                 _defaultCompartment = new JSAutoCompartment(SafeJSContext, _globalJSObject);
                 _cx = context;
-                _window = window;
+                _window = (nsISupports)window;
             }
         }
 
@@ -171,9 +176,14 @@ namespace Gecko
         /// <param name="javascript"></param>
         /// <param name="window"></param>
         /// <returns>result of javascript as JsVal</returns>
-        public JsVal EvaluateScript(string javascript, mozIDOMWindowProxy window)
+        public JsVal EvaluateScript(string javascript, mozIDOMWindow window)
         {
             return EvaluateScript(javascript, (nsISupports) window, (nsISupports) window);
+        }
+
+        public JsVal EvaluateScript(string javascript, nsISupports window)
+        {
+            return EvaluateScript(javascript, window, window);
         }
 
         /// <summary>

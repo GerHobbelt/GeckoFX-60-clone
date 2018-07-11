@@ -157,10 +157,8 @@ namespace Gecko
                     Guid nsIWebProgressListenerGUID = typeof (nsIWebProgressListener).GUID;
                     Guid nsIWebProgressListener2GUID = typeof (nsIWebProgressListener2).GUID;
                     // AddEventListener Doesn't yet work
-#if false
                     WebBrowser.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListenerGUID);
                     WebBrowser.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListener2GUID);
-#endif
 
                     if (UseHttpActivityObserver)
                     {
@@ -170,8 +168,6 @@ namespace Gecko
 
                     // force inital window initialization. (Events now get added after document navigation.
                     {
-                        // AddEventListener doesn't yet work...
-#if false
                         var domWindow = WebBrowser.GetContentDOMWindowAttribute();
                         EventTarget = ((nsIDOMEventTarget) domWindow).AsComPtr();
                         using (var eventType = new nsAString("somedummyevent"))
@@ -179,7 +175,6 @@ namespace Gecko
                             EventTarget.Instance.AddEventListener(eventType, this, true, true, 2);
                             EventTarget.Instance.RemoveEventListener(eventType, this, true);
                         }
-#endif
                     }
 
                     // history
@@ -191,7 +186,7 @@ namespace Gecko
 
                     }
 // not working yet
-#if false
+#if PORTFF60
                     WindowMediator.RegisterWindow(this);
 #endif
                 }
@@ -212,17 +207,17 @@ namespace Gecko
         /// </summary>
         private bool _eventsAttached;
 
+        // TODO: PORTFF60 - NS_GetPrivateRoot move to geckofx-Core.
+        [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
+            EntryPoint = "NS_GetPrivateRoot")]
+        public static extern nsIDOMEventTarget GetPrivateRoot(nsISupports supports);
         private void AttachEvents()
         {
             if (_eventsAttached)
                 return;
 
             var domWindow = WebBrowser.GetContentDOMWindowAttribute();
-            //EventTarget =
-            //    ((nsIDOMEventTarget) new WebIDL.Window(domWindow, (nsISupports) domWindow).PrivateRoot).AsComPtr();
-            throw new NotImplementedException();
-            Marshal.ReleaseComObject(domWindow);
-
+            EventTarget = GetPrivateRoot((nsISupports) domWindow).AsComPtr();
             foreach (string sEventName in this.DefaultEvents)
             {
                 using (var eventType = new nsAString(sEventName))

@@ -437,7 +437,11 @@ namespace Gecko.DOM
             if (element == null)
                 return null;
 
+#if PORTFF60
             return GeckoElement.CreateDomElementWrapper(element);
+#else
+            throw new NotImplementedException();
+#endif
         }
 
         /// <summary>

@@ -110,7 +110,7 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
             }
         }
 
-        internal byte[] DrawWindow(mozIDOMWindowProxy window, uint x, uint y, uint w, uint h)
+        internal byte[] DrawWindow(mozIDOMWindow window, uint x, uint y, uint w, uint h)
         {
             Xpcom.AssertCorrectThread();
             Init();

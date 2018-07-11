@@ -22,7 +22,7 @@ namespace Gecko
     /// <typeparam name="WrapperType"></typeparam>
     internal class GeckoWrapperCache<InterfaceType, WrapperType>
     {
-        public delegate WrapperType CreateWrapper(InterfaceType instance);
+        public delegate WrapperType CreateWrapper(nsISupports window, InterfaceType instance);
 
         private readonly Dictionary<InterfaceType, WeakReference> m_cache =
             new Dictionary<InterfaceType, WeakReference>();
@@ -34,13 +34,13 @@ namespace Gecko
             m_creator = creator;
         }
 
-        public WrapperType Get(InterfaceType instance)
+        public WrapperType Get(nsISupports window, InterfaceType instance)
         {
             if (instance == null)
                 return default(WrapperType);
 
             if (!GeckoWrapperCache.Enabled)
-                return m_creator(instance);
+                return m_creator(window, instance);
 
             WeakReference wrapper;
             if (m_cache.TryGetValue(instance, out wrapper))
@@ -50,7 +50,7 @@ namespace Gecko
                     return (WrapperType) geckoElement;
             }
 
-            WrapperType ret = m_creator(instance);
+            WrapperType ret = m_creator(window, instance);
             m_cache[instance] = new WeakReference(ret);
             return ret;
         }

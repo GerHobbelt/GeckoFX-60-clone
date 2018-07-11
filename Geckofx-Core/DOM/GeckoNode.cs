@@ -51,9 +51,9 @@ namespace Gecko
             GC.SuppressFinalize(this);
         }
 
-        internal static GeckoNode Create(nsIDOMNode domObject)
+        internal static GeckoNode Create(nsISupports window, nsIDOMNode domObject)
         {
-            return m_nodeCache.Get(domObject);
+            return m_nodeCache.Get(window, domObject);
         }
 
         #endregion
@@ -292,7 +292,7 @@ namespace Gecko
         public XPathResult EvaluateXPath(string xpath)
         {
             var r = EvaluateXPathInternal(xpath);
-            return new XPathResult(OwnerDocument.DefaultView.DomWindow, r);
+            return new XPathResult((mozIDOMWindow)OwnerDocument.DefaultView.DomWindow, r);
         }
 
 
@@ -332,9 +332,11 @@ namespace Gecko
                 }
 #endif
                 throw new NotImplementedException();
+#if PORTFF60
                 var ret = singleNode.Wrap(GeckoNode.Create);
                 Xpcom.FreeComObject(ref r);
                 return ret;
+#endif
             }
         }
 
@@ -380,15 +382,20 @@ namespace Gecko
                 throw new NotImplementedException();
             }
 
+            #if PORTFF60
             var ret = singleNode.Wrap(GeckoNode.Create);
             Xpcom.FreeComObject(ref r);
             return ret;
+#endif
         }
 
         public DomEventTarget GetEventTarget()
         {
             var eventTarget = Xpcom.QueryInterface<nsIDOMEventTarget>(_domNode.Instance);
+#if PORTFF60
             return eventTarget.Wrap(DomEventTarget.Create);
+#endif
+            throw new NotImplementedException();
         }
     }
 }

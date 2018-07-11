@@ -98,7 +98,7 @@ namespace Gecko
 
         public DOM.DomEventTarget CurrentTarget
         {
-            get { return _event.GetCurrentTargetAttribute().Wrap(DOM.DomEventTarget.Create); }
+            get { return _event.GetCurrentTargetAttribute().Wrap((nsISupports)Window, DOM.DomEventTarget.Create); }
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Gecko
         /// </summary>
         public DOM.DomEventTarget Target
         {
-            get { return _event.GetTargetAttribute().Wrap(DOM.DomEventTarget.Create); }
+            get { return _event.GetTargetAttribute().Wrap((nsISupports)Window, DOM.DomEventTarget.Create); }
         }
 
 
@@ -154,6 +154,8 @@ namespace Gecko
             get { return _Handled; }
             set { _Handled = value; }
         }
+
+        public mozIDOMWindowProxy Window { get; set; }
     }
 
     public enum EventPhase

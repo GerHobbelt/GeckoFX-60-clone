@@ -11,30 +11,33 @@ namespace Gecko
     public class GeckoWindow
         : IEquatable<GeckoWindow>, IDisposable
     {
-        private ComPtr<mozIDOMWindowProxy> _domWindow;
+        private ComPtr<nsISupports> _domWindowProxy;
 
         #region ctor & dtor
 
+        public GeckoWindow(mozIDOMWindow window, bool ownRCW = true)
+        {
+            _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
+        }
+
         public GeckoWindow(nsIDOMWindow window, bool ownRCW = true)
         {
-            //Interop.ComDebug.WriteDebugInfo( window );
-            //_domWindow = new ComPtr<nsIDOMWindow>(window, ownRCW);
             throw new NotImplementedException();
         }
 
         public GeckoWindow(mozIDOMWindowProxy window, bool ownRCW = true)
         {
-            _domWindow = new ComPtr<mozIDOMWindowProxy>(window, ownRCW);
+            _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
         }
 
         ~GeckoWindow()
         {
-            Xpcom.DisposeObject(ref _domWindow);
+            Xpcom.DisposeObject(ref _domWindowProxy);
         }
 
         public void Dispose()
         {
-            Xpcom.DisposeObject(ref _domWindow);
+            Xpcom.DisposeObject(ref _domWindowProxy);
             GC.SuppressFinalize(this);
         }
 
@@ -43,9 +46,9 @@ namespace Gecko
         /// <summary>
         /// Gets the underlying unmanaged DOM object.
         /// </summary>
-        public mozIDOMWindowProxy DomWindow
+        public nsISupports DomWindow
         {
-            get { return _domWindow.Instance; }
+            get { return _domWindowProxy.Instance; }
         }
 
         public WindowUtils WindowUtils
@@ -66,7 +69,7 @@ namespace Gecko
             get
             {
                 return
-                    new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).Document.Wrap(
+                    new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Document.Wrap(
                         GeckoDomDocument.CreateDomDocumentWraper);
             }
         }
@@ -79,64 +82,64 @@ namespace Gecko
             get
             {
                 return
-                    new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).Parent.Wrap(
+                    new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Parent.Wrap(
                         x => new GeckoWindow(x));
             }
         }
 
         public double ScrollX
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollX; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollX; }
         }
 
         public double ScrollY
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollY; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollY; }
         }
 
         public int ScrollMinX
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollMinX; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollMinX; }
         }
 
         public int ScrollMinY
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollMinY; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollMinY; }
         }
 
         public int ScrollMaxX
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollMaxX; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollMaxX; }
         }
 
         public int ScrollMaxY
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollMaxY; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollMaxY; }
         }
 
         public void ScrollTo(int xScroll, int yScroll)
         {
-            new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollTo(xScroll, yScroll);
+            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollTo(xScroll, yScroll);
         }
 
         public void ScrollBy(double xScrollDif, double yScrollDif)
         {
-            new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollBy(xScrollDif, yScrollDif);
+            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollBy(xScrollDif, yScrollDif);
         }
 
         public void ScrollByLines(int numLines)
         {
-            new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollByLines(numLines);
+            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollByLines(numLines);
         }
 
         public void ScrollByPages(int numPages)
         {
-            new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).ScrollByPages(numPages);
+            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollByPages(numPages);
         }
 
         public void SizeToContent()
         {
-            new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).SizeToContent();
+            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).SizeToContent();
         }
 
         public GeckoWindow Top
@@ -144,37 +147,37 @@ namespace Gecko
             get
             {
                 return
-                    new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).Top.Wrap(
-                        x => new GeckoWindow(x));
+                    new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Top.Wrap(_domWindowProxy.Instance,
+                        (x,y) => new GeckoWindow(y));
             }
         }
 
         public string Name
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).Name; }
-            set { new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).Name = value; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Name; }
+            set { new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Name = value; }
         }
 
         public ulong MozPaintCount
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).MozPaintCount; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).MozPaintCount; }
         }
 
         public object Content
         {
-            get { return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).Content; }
+            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Content; }
         }
 
         public bool Find(string str, bool caseSensitive, bool backwards, bool wrapAround, bool wholeWord,
             bool searchInFrames, bool showDialog)
         {
-            return new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).Find(str, caseSensitive,
+            return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Find(str, caseSensitive,
                 backwards, wrapAround, wholeWord, searchInFrames, showDialog);
         }
 
         public void Print()
         {
-            nsIWebBrowserPrint print = Xpcom.QueryInterface<nsIWebBrowserPrint>(_domWindow.Instance);
+            nsIWebBrowserPrint print = Xpcom.QueryInterface<nsIWebBrowserPrint>(_domWindowProxy.Instance);
 
             try
             {
@@ -196,7 +199,7 @@ namespace Gecko
             {
                 return
                     GeckoSelection.Create(
-                        new WebIDL.Window(_domWindow.Instance, (nsISupports) _domWindow.Instance).GetSelection());
+                        new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).GetSelection());
             }
         }
 
@@ -204,7 +207,7 @@ namespace Gecko
 #if false
 		public GeckoWindowCollection Frames
 		{
-			get { return new GeckoWindowCollection(_domWindow.Instance.GetFramesAttribute()); }
+			get { return new GeckoWindowCollection(_domWindowProxy.Instance.GetFramesAttribute()); }
 		}
 #endif
 
@@ -212,20 +215,20 @@ namespace Gecko
         {
             if (ReferenceEquals(this, other)) return true;
             if (ReferenceEquals(other, null)) return false;
-            return _domWindow.Instance.GetHashCode() == other._domWindow.Instance.GetHashCode();
+            return _domWindowProxy.Instance.GetHashCode() == other._domWindowProxy.Instance.GetHashCode();
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj)) return true;
             if (ReferenceEquals(obj, null)) return false;
-            return _domWindow.Instance.GetHashCode() == ((GeckoWindow) obj)._domWindow.Instance.GetHashCode();
+            return _domWindowProxy.Instance.GetHashCode() == ((GeckoWindow) obj)._domWindowProxy.Instance.GetHashCode();
         }
 
         public override int GetHashCode()
         {
 // ReSharper disable once NonReadonlyFieldInGetHashCode
-            return _domWindow.Instance.GetHashCode();
+            return _domWindowProxy.Instance.GetHashCode();
         }
     }
 

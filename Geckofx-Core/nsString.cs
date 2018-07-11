@@ -648,8 +648,10 @@ namespace Gecko
 
         public void Dispose()
         {
+#if PORTFF60
             NS_CStringContainerFinish(this);
             GC.SuppressFinalize(this);
+#endif
         }
     }
 

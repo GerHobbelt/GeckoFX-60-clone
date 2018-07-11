@@ -1,19 +1,22 @@
+using System;
 using Gecko.Interop;
 
 namespace Gecko.DOM
 {
     public sealed class DomEventTarget
     {
+        private readonly mozIDOMWindowProxy _window;
         private ComPtr<nsIDOMEventTarget> _target;
 
-        private DomEventTarget(nsIDOMEventTarget target)
+        private DomEventTarget(mozIDOMWindowProxy window, nsIDOMEventTarget target)
         {
+            _window = window;
             _target = new ComPtr<nsIDOMEventTarget>(target);
         }
 
-        public static DomEventTarget Create(nsIDOMEventTarget target)
+        public static DomEventTarget Create(nsISupports window, nsIDOMEventTarget target)
         {
-            return new DomEventTarget(target);
+            return new DomEventTarget((mozIDOMWindowProxy)window, target);
         }
 
         public nsIDOMEventTarget NativeObject
@@ -24,7 +27,8 @@ namespace Gecko.DOM
         public GeckoElement CastToGeckoElement()
         {
             var domElement = Xpcom.QueryInterface<nsIDOMElement>(_target.Instance);
-            return domElement.Wrap(GeckoElement.CreateDomElementWrapper);
+
+            return domElement.Wrap((nsISupports)_window, GeckoElement.CreateDomElementWrapper);
         }
 
 
@@ -58,7 +62,7 @@ namespace Gecko.DOM
         /// </summary>
         public DomEventTarget TargetForDOMEvent
         {
-            get { return _target.Instance.GetTargetForDOMEvent().Wrap(Create); }
+            get { return _target.Instance.GetTargetForDOMEvent().Wrap((nsISupports)_target.Instance.GetTargetForDOMEvent(), Create); }
         }
 
         /// <summary>
@@ -69,7 +73,7 @@ namespace Gecko.DOM
         /// </summary>
         public DomEventTarget TargetForEventTargetChain
         {
-            get { return _target.Instance.GetTargetForEventTargetChain().Wrap(Create); }
+            get { return _target.Instance.GetTargetForEventTargetChain().Wrap((nsISupports)_target.Instance.GetTargetForDOMEvent(), Create); }
         }
     }
 }

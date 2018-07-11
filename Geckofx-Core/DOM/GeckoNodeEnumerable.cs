@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Gecko.Interop;
 
@@ -19,6 +20,7 @@ namespace Gecko
 
         public IEnumerator<GeckoNode> GetEnumerator()
         {
+#if PORTFF60
             while (!_xpathResult.InvalidIteratorState)
             {
                 var result = _xpathResult.IterateNext().Wrap(GeckoNode.Create);
@@ -26,11 +28,13 @@ namespace Gecko
                     yield break;
                 yield return result;
             }
+#endif
+            throw new NotImplementedException();
         }
 
-        #endregion
+#endregion
 
-        #region IEnumerable Members
+#region IEnumerable Members
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
@@ -41,6 +45,6 @@ namespace Gecko
             }
         }
 
-        #endregion
+#endregion
     }
 }

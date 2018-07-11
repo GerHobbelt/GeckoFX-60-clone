@@ -19,7 +19,7 @@ namespace GeckofxUnitTests
 		{
 			// Needed when single unittests are run
 		    var xulrunnerPath = XpComTests.XulRunnerLocation;
-            //xulrunnerPath = @"C:\mozilla-central\obj-i686-pc-mingw32\dist\bin";
+            xulrunnerPath = @"C:\mozilla-release\obj-i686-pc-mingw32\dist\bin";
             Xpcom.Initialize(xulrunnerPath);
 			OverrideX11ErrorHandler();
 						

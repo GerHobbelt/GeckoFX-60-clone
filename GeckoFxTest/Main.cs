@@ -210,7 +210,7 @@ namespace GeckoFxTest
 			m_tabControl.SelectedTab = tabPage;
 
 			// Uncomment this to stop links from navigating.
-			// browser.DomClick += StopLinksNavigating;
+			browser.DomClick += StopLinksNavigating;
 
 			// Demo use of ReadyStateChange.
 			// For some special page, e.g. about:config browser.Document is null.
@@ -257,6 +257,7 @@ namespace GeckoFxTest
 		{
 			if ( sender == null ) return;
 			if ( e == null ) return;
+                        e.Window = ((GeckoWebBrowser) sender).WebBrowser.GetContentDOMWindowAttribute();
 			if ( e.Target == null ) return;
 
 			var element = e.Target.CastToGeckoElement();

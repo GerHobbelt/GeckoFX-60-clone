@@ -8,12 +8,12 @@ namespace Gecko.DOM
 {
     public class XPathResult
     {
-        private ComPtr<mozIDOMWindowProxy> _window;
+        private ComPtr<mozIDOMWindow> _window;
         private ComPtr<nsIXPathResult> _xpathResult = null;
 
-        internal XPathResult(mozIDOMWindowProxy window, nsIXPathResult xpathResult)
+        internal XPathResult(mozIDOMWindow window, nsIXPathResult xpathResult)
         {
-            _window = new ComPtr<mozIDOMWindowProxy>(window);
+            _window = new ComPtr<mozIDOMWindow>(window);
             _xpathResult = new ComPtr<nsIXPathResult>(xpathResult);
         }
 
@@ -58,7 +58,10 @@ namespace Gecko.DOM
         public GeckoNode GetSingleNodeValue()
         {
             // TODO: fixme - GetSingleNodeValue is returning property not found - even though it exists in the webidl?
+#if PORTFF60
             return new WebIDL.XPathResult(_window.Instance, _xpathResult.Instance as nsISupports).IterateNext().Wrap(GeckoNode.Create);
+#endif
+            throw new NotImplementedException();
         }
 
         public IEnumerable<GeckoNode> GetNodes()

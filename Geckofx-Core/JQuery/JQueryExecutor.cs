@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -40,7 +41,10 @@ namespace Gecko.JQuery
                 var element = Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(nativeComObject);
                 if (element != null)
                 {
+#if PORTFF60
                     return GeckoHtmlElement.Create(element);
+#endif
+                    throw new NotImplementedException();
                 }
 
                 if (!SpiderMonkey.JS_HasProperty(autoContext.ContextPointer, jsValue.AsPtr, "length"))
@@ -92,7 +96,10 @@ namespace Gecko.JQuery
                 return null;
             }
 
+#if PORTFF60
             return GeckoHtmlElement.Create(element);
+#endif
+            throw new NotImplementedException();
         }
     }
 }

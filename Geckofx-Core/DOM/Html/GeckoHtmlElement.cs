@@ -11,14 +11,14 @@ namespace Gecko
     public class GeckoHtmlElement
         : GeckoElement
     {
-        private /* nsIDOMHTMLElement */nsISupports _domHtmlElement;
+        private /* nsIDOMHTMLElement */nsIDOMElement _domHtmlElement;
 
         //nsIDOMElement DomNSElement;
 
         #region ctor
 
-        internal GeckoHtmlElement(/* nsIDOMHTMLElement */nsISupports element)
-            : base(element)
+        internal GeckoHtmlElement(nsISupports window, /* nsIDOMHTMLElement */nsIDOMElement element)
+            : base(window, element)
         {
             _domHtmlElement = element;
             //this.DomNSElement = (nsIDOMElement)element;
@@ -27,25 +27,28 @@ namespace Gecko
         internal GeckoHtmlElement(object element)
             : base(element)
         {
-            if (element is /* nsIDOMHTMLElement */nsISupports)
-                _domHtmlElement = (/* nsIDOMHTMLElement */nsISupports) element;
+            if (element is /* nsIDOMHTMLElement */nsIDOMElement)
+                _domHtmlElement = (/* nsIDOMHTMLElement */nsIDOMElement) element;
             else
-                throw new ArgumentException("element is not a /* nsIDOMHTMLElement */nsISupports");
+                throw new ArgumentException("element is not a nsIDOMElement ");
         }
 
-        internal static GeckoHtmlElement Create(/* nsIDOMHTMLElement */nsISupports element)
+        internal static GeckoHtmlElement Create(nsISupports window, /* nsIDOMHTMLElement */nsISupports element)
         {
-            return (element == null) ? null : DOM.DOMSelector.GetClassFor(element);
+            return (element == null) ? null : DOM.DOMSelector.GetClassFor(window, element);
         }
 
         internal static T Create<T>(/* nsIDOMHTMLElement */nsISupports element) where T : GeckoHtmlElement
         {
+#if PORTFF60
             return (element == null) ? null : DOM.DOMSelector.GetClassFor<T>(element);
+#endif
+            throw new NotImplementedException();
         }
 
-        #endregion
+#endregion
 
-        public /* nsIDOMHTMLElement */nsISupports DOMHtmlElement
+        public /* nsIDOMHTMLElement */nsIDOMElement DOMHtmlElement
         {
             get { return _domHtmlElement; }
         }

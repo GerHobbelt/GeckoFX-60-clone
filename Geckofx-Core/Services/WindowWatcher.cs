@@ -42,11 +42,11 @@ namespace Gecko.Services
 
         public static GeckoWindow ActiveWindow
         {
-            get { return _watcher.Instance.GetActiveWindowAttribute().Wrap(x => new GeckoWindow(x)); }
+            get { return _watcher.Instance.GetActiveWindowAttribute().Wrap((nsISupports)_watcher.Instance.GetActiveWindowAttribute(), (x,y) => new GeckoWindow(y)); }
             set
             {
                 if (value != null)
-                    _watcher.Instance.SetActiveWindowAttribute(value.DomWindow);                
+                    _watcher.Instance.SetActiveWindowAttribute((mozIDOMWindowProxy)value.DomWindow);                
             }
         }
 

@@ -6,11 +6,21 @@ namespace Gecko.WebIDL
     public class Window : WebIDLBase
     {
         
-        public Window(mozIDOMWindowProxy globalWindow, nsISupports thisObject) : 
+        public Window(nsISupports globalWindow, nsISupports thisObject) : 
                 base(globalWindow, thisObject)
         {
         }
-        
+
+        public Window(mozIDOMWindowProxy globalWindow, nsISupports thisObject) :
+                base((nsISupports)globalWindow, thisObject)
+        {
+        }
+
+        public Window(mozIDOMWindow globalWindow, nsISupports thisObject) :
+                base((nsISupports)globalWindow, thisObject)
+        {
+        }
+
         public nsIDOMWindow WindowAttribute
         {
             get
@@ -155,11 +165,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public mozIDOMWindowProxy Top
+        public mozIDOMWindow Top
         {
             get
             {
-                return this.GetProperty<mozIDOMWindowProxy>("top");
+                return this.GetProperty<mozIDOMWindow>("top");
             }
         }
         

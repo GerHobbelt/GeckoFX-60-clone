@@ -60,7 +60,7 @@ namespace Gecko
             if (height == 0)
                 throw new ArgumentException("height");
 
-            return Xpcom.ChromeContext.DrawWindow(m_browser.Window.DomWindow, xOffset, yOffset, width, height);
+            return Xpcom.ChromeContext.DrawWindow((mozIDOMWindow)m_browser.Window.DomWindow, xOffset, yOffset, width, height);
         }
 
         public byte[] CanvasGetPngImage(uint width, uint height)

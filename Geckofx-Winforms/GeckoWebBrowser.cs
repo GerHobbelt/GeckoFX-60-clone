@@ -70,9 +70,8 @@ namespace Gecko
         nsISHistoryListener,
         nsITooltipListener,
         nsIObserver,
-        nsIHttpActivityObserver
-        // Disabling this for FF 60.
-        //nsISupportsWeakReference
+        nsIHttpActivityObserver,
+        nsISupportsWeakReference
         //nsIWindowProvider,
     {
         #region Fields
@@ -87,8 +86,9 @@ namespace Gecko
         /// <summary>
         /// nsIWebBrowser instance
         /// </summary>
-        private nsIWebBrowser WebBrowser;
-
+        /// TODO: PORTFF60 - this shouldn't be public..
+        public nsIWebBrowser WebBrowser;
+        
         /// <summary>
         /// nsIWebBrowser casted to nsIBaseWindow
         /// </summary>
@@ -1022,7 +1022,7 @@ namespace Gecko
                         return _Window;
                     _Window.Dispose();
                 }
-                _Window = WebBrowser.GetContentDOMWindowAttribute().Wrap(x => new GeckoWindow(x));
+                _Window = WebBrowser.GetContentDOMWindowAttribute().Wrap((nsISupports)WebBrowser.GetContentDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
                 return _Window;
             }
         }
@@ -1631,7 +1631,7 @@ namespace Gecko
 
                 Uri destUri = null;
                 Uri.TryCreate(request.Name, UriKind.Absolute, out destUri);
-                var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap(x => new GeckoWindow(x));
+                var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap((nsISupports)aWebProgress.GetDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
 
                 /* This flag indicates that the state transition is for a request, which includes but is not limited to document requests.
 				 * Other types of requests, such as requests for inline content (for example images and stylesheets) are considered normal requests.
@@ -1860,7 +1860,7 @@ namespace Gecko
             if (IsDisposed) return;
 
             Uri uri = new Uri(nsString.Get(aLocation.GetSpecAttribute));
-            using (var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap(x => new GeckoWindow(x)))
+            using (var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap((nsISupports)aWebProgress.GetDOMWindowAttribute(), (x,y) => new GeckoWindow(y)))
             {
                 bool sameDocument = (flags & nsIWebProgressListenerConstants.LOCATION_CHANGE_SAME_DOCUMENT) != 0;
                 bool errorPage = (flags & nsIWebProgressListenerConstants.LOCATION_CHANGE_ERROR_PAGE) != 0;

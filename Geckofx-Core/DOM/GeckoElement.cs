@@ -49,13 +49,15 @@ namespace Gecko
     public class GeckoElement
         : GeckoNode
     {
+        private readonly nsISupports _window;
         private nsIDOMElement _domElement;
 
         private string m_cachedTagName;
 
-        internal GeckoElement(nsIDOMElement domElement)
+        internal GeckoElement(nsISupports window, nsIDOMElement domElement)
             : base(domElement)
         {
+            _window = window;
             _domElement = domElement;
         }
 
@@ -84,8 +86,7 @@ namespace Gecko
                 if (m_cachedTagName != null)
                     return m_cachedTagName;
 
-                //return m_cachedTagName = nsString.Get(_domElement.GetTagNameAttribute);
-                throw new NotImplementedException();
+                return m_cachedTagName = new WebIDL.Element((mozIDOMWindowProxy) _window, (nsISupports)_domElement).TagName;
             }
         }
 
@@ -106,8 +107,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
-            //return nsString.Get(_domElement.GetAttribute, attributeName);
-            throw new NotImplementedException();
+            return new WebIDL.Element((mozIDOMWindowProxy)_window, (nsISupports)_domElement).GetAttribute(attributeName);           
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace Gecko
         }
 
 
-        public static GeckoElement CreateDomElementWrapper(nsIDOMElement element)
+        public static GeckoElement CreateDomElementWrapper(nsISupports window, nsIDOMElement element)
         {
             if (element == null)
                 return null;
@@ -331,7 +331,7 @@ namespace Gecko
             if (htmlElement != null)
             {
                 Marshal.ReleaseComObject(htmlElement);
-                return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) element);
+                return GeckoHtmlElement.Create(window, (/* nsIDOMHTMLElement */nsISupports) element);
             }
             var svgElement = Xpcom.QueryInterface</* nsIDOMSVGElement */ nsISupports>(element);
             if (svgElement != null)
@@ -350,7 +350,10 @@ namespace Gecko
 
         public GeckoElement QuerySelector(string selectors)
         {
+#if PORTFF60
             return nsString.Pass(_domElement.QuerySelector, selectors).Wrap(CreateDomElementWrapper);
+#endif
+            throw new NotImplementedException();
         }
     }
 }

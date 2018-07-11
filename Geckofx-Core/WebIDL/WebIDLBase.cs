@@ -8,16 +8,28 @@ namespace Gecko.WebIDL
     public class WebIDLBase
     {
         private readonly nsISupports _thisObject;
-        private readonly mozIDOMWindowProxy _globalWindowProxy;
+        private readonly nsISupports _globalWindowProxy;
 
         public WebIDLBase(nsIDOMWindow globalWindow, nsISupports thisObject)
         {
             throw new NotImplementedException();
         }
 
-        public WebIDLBase(mozIDOMWindowProxy globalWindow, nsISupports thisObject)
+        public WebIDLBase(nsISupports globalWindow, nsISupports thisObject)
         {
             _globalWindowProxy = globalWindow;
+            _thisObject = thisObject;
+        }
+
+        public WebIDLBase(mozIDOMWindowProxy globalWindow, nsISupports thisObject)
+        {
+            _globalWindowProxy = (nsISupports)globalWindow;
+            _thisObject = thisObject;
+        }
+
+        public WebIDLBase(mozIDOMWindow globalWindow, nsISupports thisObject)
+        {
+            _globalWindowProxy = (nsISupports)globalWindow;
             _thisObject = thisObject;
         }
 

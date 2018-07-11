@@ -29,24 +29,30 @@ namespace Gecko
                 if (index < 0 || index >= Length)
                     throw new ArgumentOutOfRangeException("index");
 
+#if PORTFF60
                 return GeckoNode.Create(List.Item((uint) index));
+#endif
+                throw new NotImplementedException();
             }
         }
 
-        #region IEnumerable<GeckoNode> Members
+#region IEnumerable<GeckoNode> Members
 
         public virtual IEnumerator<GeckoNode> GetEnumerator()
         {
             int length = Length;
             for (int i = 0; i < length; i++)
             {
+                #if PORTFF60
                 yield return GeckoNode.Create(List.Item((uint) i));
+                #endif
             }
+            throw new NotImplementedException();
         }
 
-        #endregion
+#endregion
 
-        #region IEnumerable Members
+#region IEnumerable Members
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
@@ -54,7 +60,7 @@ namespace Gecko
                 yield return element;
         }
 
-        #endregion
+#endregion
 
         internal static GeckoNodeCollection Create(nsIDOMNodeList list)
         {
