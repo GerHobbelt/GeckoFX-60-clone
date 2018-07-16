@@ -648,10 +648,11 @@ namespace Gecko
 
         public void Dispose()
         {
+// add xul entry point NS_StringContainerFinish + NS_CStringContainerFinish
 #if PORTFF60
             NS_CStringContainerFinish(this);
-            GC.SuppressFinalize(this);
 #endif
+            GC.SuppressFinalize(this);
         }
     }
 
@@ -771,14 +772,17 @@ namespace Gecko
 
         public void Dispose()
         {
+// add xul entry point NS_StringContainerFinish + NS_CStringContainerFinish            
+#if PORTFF60
             NS_CStringContainerFinish(this);
+#endif
             GC.SuppressFinalize(this);
         }
     }
 
-    #endregion
+#endregion
 
-    #region nsAString
+#region nsAString
 
     public abstract class nsAStringBase
         : IString, IDisposable
@@ -905,13 +909,15 @@ namespace Gecko
             {
                 if (IsDisposed)
                     return;
-                // TODO: add entry point to xul
-                //NS_StringContainerFinish(this.Container);
+// add xul entry point NS_StringContainerFinish + NS_CStringContainerFinish
+#if PORTFF60
+                NS_StringContainerFinish(this.Container);
+#endif
                 Xpcom.Free(this.Container);
                 base.Dispose(disposing);
             }
         }
     }
 
-    #endregion
+#endregion
 }
