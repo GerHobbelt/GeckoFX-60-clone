@@ -1046,7 +1046,7 @@ namespace Gecko
                     // therefore we have to create a new one.
                     _Document.Dispose();
                 }
-                _Document = GeckoDomDocument.CreateDomDocumentWraper(domDocument.Instance);
+                _Document = GeckoDomDocument.CreateDomDocumentWraper(Window.DomWindow, domDocument.Instance);
                 return _Document;
             }
         }

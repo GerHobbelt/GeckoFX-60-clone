@@ -7,16 +7,16 @@ namespace Gecko.DOM
 {
     public class GeckoCanvasElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLCanvasElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLCanvasElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoCanvasElement(/* nsIDOMHTMLCanvasElement */ nsISupports element) : base(element)
+        internal GeckoCanvasElement(nsISupports window, /* nsIDOMHTMLCanvasElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
         }
 
         public GeckoCanvasElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
         {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLCanvasElement */ nsISupports;
+            throw new NotImplementedException("use other constructor");
         }
 
         public uint Width
@@ -27,7 +27,10 @@ namespace Gecko.DOM
 
         public uint Height
         {
-            get { /*return DOMHTMLElement.GetHeightAttribute();*/throw new NotImplementedException(); }
+            get
+            {
+                return (uint)new WebIDL.HTMLElement((mozIDOMWindowProxy)_window, (nsISupports)DOMHTMLElement).OffsetHeight;
+            }
             set { /*DOMHTMLElement.SetHeightAttribute(value);*/throw new NotImplementedException(); }
         }
 

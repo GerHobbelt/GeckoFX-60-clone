@@ -49,7 +49,8 @@ namespace Gecko
     public class GeckoElement
         : GeckoNode
     {
-        private readonly nsISupports _window;
+        // TODO: PORTFF60 this should be in GeckoNode
+        protected readonly nsISupports _window;
         private nsIDOMElement _domElement;
 
         private string m_cachedTagName;

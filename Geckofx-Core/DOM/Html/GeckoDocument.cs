@@ -11,14 +11,14 @@ namespace Gecko
     {
         private /* nsIDOMHTMLDocument */nsIDOMDocument _domHtmlDocument;
 
-        internal GeckoDocument(/* nsIDOMHTMLDocument */nsIDOMDocument document) : base(document)
+        internal GeckoDocument(nsISupports window,/* nsIDOMHTMLDocument */nsIDOMDocument document) : base(window, document)
         {
             this._domHtmlDocument = document;
         }
 
-        internal static GeckoDocument Create(/* nsIDOMHTMLDocument */nsIDOMDocument document)
+        internal static GeckoDocument Create(nsISupports window, /* nsIDOMHTMLDocument */nsIDOMDocument document)
         {
-            return (document == null) ? null : new GeckoDocument(document);
+            return (document == null) ? null : new GeckoDocument(window, document);
         }
 
         public override GeckoDocument OwnerDocument
@@ -33,12 +33,9 @@ namespace Gecko
         {
             get
             {
-#if PORTFF60
                 return (_domHtmlDocument == null)
                     ? null
-                    : GeckoHtmlElement.Create<GeckoHeadElement>((/* nsIDOMHTMLElement */nsISupports) _domHtmlDocument.GetHeadAttribute());
-#endif
-                throw new NotImplementedException();
+                    : GeckoHtmlElement.Create<GeckoHeadElement>(new WebIDL.HTMLDocument((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument).Head);
             }
         }
 
@@ -49,12 +46,10 @@ namespace Gecko
         {
             get
             {
-#if PORTFF60
+
                 return (_domHtmlDocument == null)
                     ? null
-                    : GeckoHtmlElement.Create<GeckoHtmlElement>(_domHtmlDocument.GetBodyAttribute());
-#endif
-                throw new NotImplementedException();
+                    : GeckoHtmlElement.Create<GeckoHtmlElement>(new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument).Body);
             }
         }
 

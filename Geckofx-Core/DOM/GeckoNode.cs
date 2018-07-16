@@ -56,6 +56,11 @@ namespace Gecko
             return m_nodeCache.Get(window, domObject);
         }
 
+        internal static GeckoNode Create(nsISupports window, nsIDOMElement domObject)
+        {
+            return m_nodeCache.Get(window, domObject);
+        }
+
         #endregion
 
         #region Properties for Native XPCOM objects access

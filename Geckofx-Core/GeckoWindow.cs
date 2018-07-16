@@ -69,7 +69,7 @@ namespace Gecko
             get
             {
                 return
-                    new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Document.Wrap(
+                    new WebIDL.Window(_domWindowProxy.Instance, _domWindowProxy.Instance).Document.Wrap(_domWindowProxy.Instance,
                         GeckoDomDocument.CreateDomDocumentWraper);
             }
         }

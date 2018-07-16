@@ -66,8 +66,9 @@ namespace Gecko
             if (!_isInitialized)
             {
                 _isInitialized = true;
+                // TODO: PORTFF60 - don't pass null 
                 GeckoDomDocument doc = webNav.Instance.GetDocumentAttribute()
-                    .Wrap(GeckoDocument.CreateDomDocumentWraper);
+                    .Wrap(null, GeckoDocument.CreateDomDocumentWraper);
                 GeckoElement rootElement = doc.DocumentElement;
                 while (rootElement.FirstChild != null)
                     rootElement.RemoveChild(rootElement.FirstChild);

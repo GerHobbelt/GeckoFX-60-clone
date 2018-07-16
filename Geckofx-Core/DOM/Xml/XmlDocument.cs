@@ -11,7 +11,8 @@ namespace Gecko.DOM.Xml
         private nsIDOMXMLDocument _xmlDocument;
 
         internal XmlDocument(nsIDOMXMLDocument document)
-            : base((nsIDOMDocument)document)
+            // TODO: PORTFF60 - don't pass null
+            : base(null, (nsIDOMDocument)document)
         {
             _xmlDocument = document;
         }

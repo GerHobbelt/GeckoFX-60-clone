@@ -78,7 +78,7 @@ namespace Gecko.DOM
                 TagName = "canvas",
                 InterfaceType = typeof (/* nsIDOMHTMLCanvasElement */ nsISupports),
                 GeckoElement = typeof (GeckoCanvasElement),
-                CreationMethod = (window,x) => new GeckoCanvasElement((/* nsIDOMHTMLCanvasElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoCanvasElement(window, (/* nsIDOMHTMLCanvasElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -350,20 +350,22 @@ namespace Gecko.DOM
         {
             // if null -> return null
             if (domObject == null) return null;
-#if PORTFF60
-            var nodeType = (NodeType) domObject.GetNodeTypeAttribute();
+            var nodeType = (NodeType)new WebIDL.Node((mozIDOMWindowProxy)window, (nsISupports)domObject).NodeType;
+
             // by nodeType we can find proper wrapper faster, than perform QueryInterface
             switch (nodeType)
             {
                 case NodeType.Element:
                     /* /* nsIDOMHTMLElement*/nsISupports htmlElement = Xpcom.QueryInterface</* /* nsIDOMHTMLElement*/nsISupports>(domObject);
-                    if (htmlElement != null) return GeckoHtmlElement.Create(htmlElement);
+                    if (htmlElement != null) return GeckoHtmlElement.Create(window, htmlElement);
                     nsIDOMElement element = Xpcom.QueryInterface<nsIDOMElement>(domObject);
-                    if (element != null) return GeckoElement.CreateDomElementWrapper(element);
+                    if (element != null) return GeckoElement.CreateDomElementWrapper(window, element);
                     break;
                 case NodeType.Attribute:
+#if PORTFF60
                     nsIDOMAttr attr = Xpcom.QueryInterface<nsIDOMAttr>(domObject);
                     if (attr != null) return GeckoAttribute.CreateAttributeWrapper(attr);
+#endif
                     break;
                 case NodeType.Comment:
                     nsIDOMComment comment = Xpcom.QueryInterface<nsIDOMComment>(domObject);
@@ -376,8 +378,6 @@ namespace Gecko.DOM
             }
             // if we don't handle this type - just create GeckoNode
             return new GeckoNode(domObject);
-#endif
-            throw new NotImplementedException();
         }
 
         internal static GeckoHtmlElement CreateDomHtmlElementWrapper(nsISupports window, /* /* nsIDOMHTMLElement*/nsISupports instance)

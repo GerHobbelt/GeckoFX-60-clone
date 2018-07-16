@@ -23,7 +23,8 @@ namespace Gecko.DOM
         /// <returns></returns>
         public GeckoDomDocument ParseFromString(string str, string contentType = "text/html")
         {
-            return _domParser.Instance.ParseFromString(str, contentType).Wrap(GeckoDomDocument.CreateDomDocumentWraper);
+            // TODO: PORTFF60 - don't pass null
+            return _domParser.Instance.ParseFromString(str, contentType).Wrap(null, GeckoDomDocument.CreateDomDocumentWraper);
         }
 
         /// <summary>
@@ -35,9 +36,10 @@ namespace Gecko.DOM
         /// <returns></returns>
         public GeckoDomDocument ParseFromBuffer(byte[] buffer, int count, string contentType = "text/html")
         {
+            // TODO: PORTFF60 - don't pass null
             return
                 _domParser.Instance.ParseFromBuffer(buffer, (uint) count, contentType)
-                    .Wrap(GeckoDomDocument.CreateDomDocumentWraper);
+                    .Wrap(null, GeckoDomDocument.CreateDomDocumentWraper);
         }
 
         /// <summary>
@@ -48,8 +50,9 @@ namespace Gecko.DOM
         /// <returns></returns>
         public GeckoDomDocument ParseFromBuffer(byte[] buffer, string contentType = "text/html")
         {
+            // TODO: PORTFF60 - don't pass null
             return _domParser.Instance.ParseFromBuffer(buffer, (uint) buffer.Length, contentType)
-                .Wrap(GeckoDomDocument.CreateDomDocumentWraper);
+                .Wrap(null, GeckoDomDocument.CreateDomDocumentWraper);
         }
 
         // not needed in .NET

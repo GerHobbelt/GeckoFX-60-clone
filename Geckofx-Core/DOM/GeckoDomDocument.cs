@@ -12,11 +12,13 @@ namespace Gecko
     public class GeckoDomDocument
         : GeckoNode
     {
+        protected readonly nsISupports _window;
         internal nsIDOMDocument _domDocument;
 
-        internal GeckoDomDocument(nsIDOMDocument document)
+        internal GeckoDomDocument(nsISupports window, nsIDOMDocument document)
             : base(document)
         {
+            _window = window;
             _domDocument = document;
         }
 
@@ -242,11 +244,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(id))
                 return null;
 
-            throw new NotImplementedException();
-#if PORTFF60
-            return (GeckoHtmlElement) nsString.Pass<nsIDOMElement>(_domDocument.GetElementById, id)
-                .Wrap(Create);
-#endif
+            return (GeckoHtmlElement)new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domDocument).GetElementById(id).Wrap(_window, Create);
         }
 
         public string InputEncoding
@@ -607,10 +605,10 @@ namespace Gecko
         }
 
 
-        public static GeckoDomDocument CreateDomDocumentWraper(nsIDOMDocument domDocument)
+        public static GeckoDomDocument CreateDomDocumentWraper(nsISupports window, nsIDOMDocument domDocument)
         {
-            // REVIEW: PORTFF60 - shoudl we cache this?
-            return new GeckoDomDocument(domDocument);
+            // REVIEW: PORTFF60 - should we cache this?
+            return new GeckoDocument(window, domDocument);
         }
     }
 }
