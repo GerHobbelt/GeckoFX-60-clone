@@ -77,13 +77,13 @@ namespace GeckofxUnitTests
 				throw new NotImplementedException();
 			}
 
-			public uint Write(IntPtr aBuf, uint aCount)
-			{
-				_result.Append(Marshal.PtrToStringAnsi(aBuf));				
-				return aCount;
-			}
+            public uint Write(string aBuf, uint aCount)
+            {
+                _result.Append(aBuf);
+                return aCount;
+            }
 
-			public uint WriteFrom(nsIInputStream aFromStream, uint aCount)
+            public uint WriteFrom(nsIInputStream aFromStream, uint aCount)
 			{
 				throw new NotImplementedException();
 			}
@@ -97,11 +97,6 @@ namespace GeckofxUnitTests
 			{
 				throw new NotImplementedException();
 			}
-
-		    public uint Write(string aBuf, uint aCount)
-		    {
-		        throw new NotImplementedException();
-		    }
 		}
 
 		[Test]
