@@ -9,27 +9,24 @@ namespace Gecko
 {
     public static class IOService
     {
-        private static ComPtr</* nsIIOService2 */ nsISupports> _service;
+        private static readonly ComPtr<nsIIOService> _service;
 
         static IOService()
         {
-            _service = Xpcom.GetService2</* nsIIOService2 */ nsISupports>(Contracts.NetworkIOService);
+            _service = Xpcom.GetService2<nsIIOService>(Contracts.NetworkIOService);
         }
 
         public static bool Offline
         {
-            get { /*return _service.Instance.GetOfflineAttribute();*/throw new NotImplementedException(); }
-            set { /*_service.Instance.SetOfflineAttribute(value);*/throw new NotImplementedException(); }
+            get { return _service.Instance.GetOfflineAttribute(); }
+            set { _service.Instance.SetOfflineAttribute(value); }
         }
 
         public static nsIURI CreateNsIUri(string url)
         {
             nsIURI ret;
             using (var str = new nsAUTF8String(url))
-            {
-                //ret = _service.Instance.NewURI(str, null, null);
-                throw new NotImplementedException();
-            }
+                ret = _service.Instance.NewURI(str, null, null);
             return ret;
         }
 
@@ -41,28 +38,24 @@ namespace Gecko
             return ret;
         }
 
-        //public static nsURI Create(string url)
-        //{
-        //    return new nsURI(CreateNsIUri(url));
-        //}
-
         public static nsIChannel NewChannelFromUri(nsIURI uri)
         {
-            //return _service.Instance.NewChannelFromURI(uri);
-            throw new NotImplementedException();
+            return _service.Instance.NewChannelFromURI(uri);
         }
 
         public static nsIChannel NewChannelFromUriWithProxyFlags(nsIURI uri, nsIURI proxyUri, uint proxyFlags)
         {
+#if PORTFF60
             //return _service.Instance.NewChannelFromURIWithProxyFlags(uri, proxyUri, proxyFlags);
+#else
             throw new NotImplementedException();
+#endif
         }
-
 
         public static bool ManageOfflineStatus
         {
-            get { /*return _service.Instance.GetManageOfflineStatusAttribute();*/throw new NotImplementedException(); }
-            set { /*_service.Instance.SetManageOfflineStatusAttribute(value);*/throw new NotImplementedException(); }
+            get { return _service.Instance.GetManageOfflineStatusAttribute(); }
+            set { _service.Instance.SetManageOfflineStatusAttribute(value); }
         }
     }
 }
