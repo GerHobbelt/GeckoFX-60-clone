@@ -19,7 +19,6 @@ namespace GeckofxUnitTests
 		[SetUp]
 		public void BeforeEachTestSetup()
 		{
-			Xpcom.Initialize(XpComTests.XulRunnerLocation);
 			_browser = new GeckoWebBrowser();
 			var unused = _browser.Handle;
 			Assert.IsNotNull(_browser);
