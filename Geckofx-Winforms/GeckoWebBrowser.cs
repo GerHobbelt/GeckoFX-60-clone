@@ -181,10 +181,9 @@ namespace Gecko
             get
             {
                 var editingSession = Xpcom.CreateInstance<nsIEditingSession>("@mozilla.org/editor/editingsession;1");
-                //var returnValue = editingSession.GetEditorForWindow((nsIDOMWindow) Window.DomWindow);
-                //Marshal.ReleaseComObject(editingSession);
-                //return returnValue;
-                throw new NotImplementedException();
+                var returnValue = editingSession.GetEditorForWindow((mozIDOMWindowProxy) Window.DomWindow);
+                Marshal.ReleaseComObject(editingSession);
+                return returnValue;
             }
         }
 

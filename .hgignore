@@ -28,3 +28,5 @@ nuget.exe
 packages/
 Geckofx-Winforms/Firefox*/**
 .idea/
+Geckofx.VC.db
+Geckofx.VC.VC.opendb
