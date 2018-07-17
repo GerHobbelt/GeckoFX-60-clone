@@ -27,13 +27,14 @@ namespace Gecko
         internal GeckoHtmlElement(object element)
             : base(element)
         {
+            throw new NotImplementedException("use other constructor");
             if (element is /* nsIDOMHTMLElement */nsIDOMElement)
                 _domHtmlElement = (/* nsIDOMHTMLElement */nsIDOMElement) element;
             else
                 throw new ArgumentException("element is not a nsIDOMElement ");
         }
 
-        internal static GeckoHtmlElement Create(nsISupports window, /* nsIDOMHTMLElement */nsISupports element)
+        internal static GeckoHtmlElement Create(nsISupports window, /* nsIDOMHTMLElement */nsIDOMElement element)
         {
             return (element == null) ? null : DOM.DOMSelector.GetClassFor(window, element);
         }

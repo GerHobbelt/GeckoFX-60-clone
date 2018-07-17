@@ -226,11 +226,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(id))
                 return null;
 
-            throw new NotImplementedException();
-#if PORTFF60
-            return nsString.Pass<nsIDOMElement>(_domDocument.GetElementById, id)
-                .Wrap(GeckoElement.CreateDomElementWrapper);
-#endif
+            return (GeckoElement)new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domDocument).GetElementById(id).Wrap(_window, Create);
         }
 
         /// <summary>

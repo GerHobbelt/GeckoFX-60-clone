@@ -328,11 +328,11 @@ namespace Gecko.DOM
         private static GeckoWrapperCache</* nsIDOMHTMLElement */nsISupports, GeckoHtmlElement> m_cache =
             new GeckoWrapperCache</* nsIDOMHTMLElement*/nsISupports, GeckoHtmlElement>(CreateDomHtmlElementWrapper);
 
-        internal static GeckoHtmlElement GetClassFor(nsISupports window,  /* nsIDOMHTMLElement*/nsISupports element)
+        internal static GeckoHtmlElement GetClassFor(nsISupports window,  /* nsIDOMHTMLElement*/nsIDOMElement element)
         {
-            GeckoHtmlElement ret = GetClassFor<GeckoHtmlElement>(window, element);
+            GeckoHtmlElement ret = GetClassFor<GeckoHtmlElement>(window, (nsISupports)element);
             if (ret == null)
-                ret = new GeckoHtmlElement(element);
+                ret = new GeckoHtmlElement(window, element);
             return ret;
         }
 
@@ -356,7 +356,7 @@ namespace Gecko.DOM
             switch (nodeType)
             {
                 case NodeType.Element:
-                    /* /* nsIDOMHTMLElement*/nsISupports htmlElement = Xpcom.QueryInterface</* /* nsIDOMHTMLElement*/nsISupports>(domObject);
+                    /* /* nsIDOMHTMLElement*/nsIDOMElement htmlElement = Xpcom.QueryInterface</* /* nsIDOMHTMLElement*/nsIDOMElement>(domObject);
                     if (htmlElement != null) return GeckoHtmlElement.Create(window, htmlElement);
                     nsIDOMElement element = Xpcom.QueryInterface<nsIDOMElement>(domObject);
                     if (element != null) return GeckoElement.CreateDomElementWrapper(window, element);

@@ -58,6 +58,8 @@ namespace Gecko
         internal GeckoElement(nsISupports window, nsIDOMElement domElement)
             : base(domElement)
         {
+            if (window == null)
+                throw new ArgumentNullException(nameof(window));
             _window = window;
             _domElement = domElement;
         }
@@ -65,6 +67,7 @@ namespace Gecko
         internal GeckoElement(object domElement)
             : base(domElement)
         {
+            throw new NotImplementedException("use other constructor");
             if (domElement is nsIDOMElement)
                 _domElement = (nsIDOMElement) domElement;
             else
@@ -332,7 +335,7 @@ namespace Gecko
             if (htmlElement != null)
             {
                 Marshal.ReleaseComObject(htmlElement);
-                return GeckoHtmlElement.Create(window, (/* nsIDOMHTMLElement */nsISupports) element);
+                return GeckoHtmlElement.Create(window, /* (nsIDOMHTMLElement) */ element);
             }
             var svgElement = Xpcom.QueryInterface</* nsIDOMSVGElement */ nsISupports>(element);
             if (svgElement != null)

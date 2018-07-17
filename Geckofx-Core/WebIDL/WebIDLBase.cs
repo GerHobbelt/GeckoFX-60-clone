@@ -17,12 +17,16 @@ namespace Gecko.WebIDL
 
         public WebIDLBase(nsISupports globalWindow, nsISupports thisObject)
         {
+            if (globalWindow == null)
+                throw new ArgumentNullException(nameof(globalWindow));
             _globalWindowProxy = globalWindow;
             _thisObject = thisObject;
         }
 
         public WebIDLBase(mozIDOMWindowProxy globalWindow, nsISupports thisObject)
         {
+            if (globalWindow == null)
+                throw new ArgumentNullException(nameof(globalWindow));
             _globalWindowProxy = (nsISupports)globalWindow;
             _thisObject = thisObject;
         }
