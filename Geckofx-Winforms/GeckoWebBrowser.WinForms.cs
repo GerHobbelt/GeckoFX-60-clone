@@ -185,7 +185,6 @@ namespace Gecko
 #endif
 
                     }
-// not working yet
 #if PORTFF60
                     WindowMediator.RegisterWindow(this);
 #endif
@@ -303,7 +302,9 @@ namespace Gecko
             {
                 this.Stop();
 
+#if PORTFF60
                 WindowMediator.UnregisterWindow(this);
+#endif
 
                 if (_weakRef != null)
                 {

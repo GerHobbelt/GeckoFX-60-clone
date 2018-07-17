@@ -35,7 +35,7 @@ namespace Gecko
             {
                 return (_domHtmlDocument == null)
                     ? null
-                    : GeckoHtmlElement.Create<GeckoHeadElement>(new WebIDL.HTMLDocument((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument).Head);
+                    : GeckoHtmlElement.Create<GeckoHeadElement>(_window, new WebIDL.HTMLDocument((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument).Head);
             }
         }
 
@@ -49,7 +49,7 @@ namespace Gecko
 
                 return (_domHtmlDocument == null)
                     ? null
-                    : GeckoHtmlElement.Create<GeckoHtmlElement>(new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument).Body);
+                    : GeckoHtmlElement.Create<GeckoHtmlElement>(_window, new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument).Body);
             }
         }
 

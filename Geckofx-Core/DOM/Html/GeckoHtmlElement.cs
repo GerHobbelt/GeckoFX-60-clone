@@ -38,12 +38,9 @@ namespace Gecko
             return (element == null) ? null : DOM.DOMSelector.GetClassFor(window, element);
         }
 
-        internal static T Create<T>(/* nsIDOMHTMLElement */nsISupports element) where T : GeckoHtmlElement
+        internal static T Create<T>(nsISupports window,/* nsIDOMHTMLElement */nsISupports element) where T : GeckoHtmlElement
         {
-#if PORTFF60
-            return (element == null) ? null : DOM.DOMSelector.GetClassFor<T>(element);
-#endif
-            throw new NotImplementedException();
+            return (element == null) ? null : DOM.DOMSelector.GetClassFor<T>(window, element);
         }
 
 #endregion
