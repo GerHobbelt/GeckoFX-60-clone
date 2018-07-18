@@ -43,7 +43,7 @@ namespace Gecko
 
         private void EnterCompartment()
         {
-            _oldCompartment = SpiderMonkey.JS_EnterCompartment(_cx, _obj);
+            _oldCompartment = SpiderMonkey.JS_RequestEnterCompartment(_cx, _obj);
         }
 
         public IntPtr ScopeObject
@@ -60,7 +60,7 @@ namespace Gecko
             _isDisposed = true;
             if (_cx != IntPtr.Zero)
             {
-                SpiderMonkey.JS_LeaveCompartment(_cx, _oldCompartment);
+                SpiderMonkey.JS_RequestLeaveCompartment(_cx, _oldCompartment);
             }
             GC.SuppressFinalize(this);
         }

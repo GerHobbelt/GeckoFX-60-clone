@@ -11,10 +11,14 @@ namespace GeckofxUnitTests
 	[TestFixture]
 	public class JsValTests
 	{
-		[SetUp]
+        private GeckoWebBrowser _gwb;
+
+        [SetUp]
 		public void BeforeEachTestSetup()
 		{
-		}
+            _gwb = new GeckoWebBrowser();
+            _gwb.CreateControl();
+        }
 
 		[TearDown]
 		public void AfterEachTestTearDown()
@@ -24,49 +28,49 @@ namespace GeckofxUnitTests
 		[Test]
 		public void ToString_OnStringJsVal_ReturnsStringContents()
 		{
-			JsVal stringJsVal = SpiderMonkeyTests.CreateStringJsVal("hello world");
+			JsVal stringJsVal = SpiderMonkeyTests.CreateStringJsVal(_gwb.Window, "hello world");
 			Assert.AreEqual("hello world", stringJsVal.ToString());
 		}
 
 		[Test]
 		public void ToString_OnNumberJsVal_ReturnsNumberContentsConvertedToAString()
 		{
-			JsVal stringJsVal = SpiderMonkeyTests.CreateNumberJsVal(23);
+			JsVal stringJsVal = SpiderMonkeyTests.CreateNumberJsVal(_gwb.Window, 23);
 			Assert.AreEqual("23", stringJsVal.ToString());
 		}
 
 		[Test]
 		public void ToString_OnBoolJsVal_ReturnsNumberContentsConvertedToAString()
 		{
-			JsVal stringJsVal = SpiderMonkeyTests.CreateBoolJsVal(false);
+			JsVal stringJsVal = SpiderMonkeyTests.CreateBoolJsVal(_gwb.Window, false);
 			Assert.AreEqual("false", stringJsVal.ToString());
 		}
 
 		[Test]
 		public void Type_OnStringJsVal_RetrunsStringType()
 		{
-			JsVal stringJsVal = SpiderMonkeyTests.CreateStringJsVal("hello world");
+			JsVal stringJsVal = SpiderMonkeyTests.CreateStringJsVal(_gwb.Window, "hello world");
 			Assert.AreEqual(JSType.JSTYPE_STRING, stringJsVal.Type);
 		}
 
 		[Test]
 		public void Type_OnNumberJsVal_ReturnsNumberType()
 		{
-			JsVal numberJsVal = SpiderMonkeyTests.CreateNumberJsVal(23);
+			JsVal numberJsVal = SpiderMonkeyTests.CreateNumberJsVal(_gwb.Window, 23);
 			Assert.AreEqual(JSType.JSTYPE_NUMBER, numberJsVal.Type);
 		}
 
 		[Test]
 		public void IsString_OnStringJsVal_RetrunsTrue()
 		{
-			JsVal stringJsVal = SpiderMonkeyTests.CreateStringJsVal("hello world");
+			JsVal stringJsVal = SpiderMonkeyTests.CreateStringJsVal(_gwb.Window, "hello world");
 			Assert.IsTrue(stringJsVal.IsString);
 		}
 
 		[Test]
 		public void IsString_OnNumberJsVal_RetrunsFalse()
 		{
-			JsVal numberJsVal = SpiderMonkeyTests.CreateNumberJsVal(23);
+			JsVal numberJsVal = SpiderMonkeyTests.CreateNumberJsVal(_gwb.Window, 23);
 			Assert.IsFalse(numberJsVal.IsString);
 		}
 

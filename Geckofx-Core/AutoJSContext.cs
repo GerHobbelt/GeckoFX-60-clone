@@ -203,6 +203,7 @@ namespace Gecko
 
             using (new JSAutoCompartment(ContextPointer, globalObject))
             {
+#if PORTFF60
                 var old = SpiderMonkey.JS_SetErrorReporter(SpiderMonkey.JS_GetRuntime(ContextPointer),
                     (cx, message, report) =>
                     {
@@ -211,6 +212,7 @@ namespace Gecko
                             exceptionJsVal = JsVal.FromPtr(exception);
                         msg = message;
                     });
+#endif
                 try
                 {
                     var retJsVal = new JsVal();
@@ -219,7 +221,7 @@ namespace Gecko
                     if (window != scope)
                     {
                         var scopeJSVal = JsVal.FromPtr(ConvertCOMObjectToJSObject(scope));
-                        if (!SpiderMonkey.JS_SetProperty(ContextPointer, globalObject, "__RequestedScope", scopeJSVal))
+                        if (!SpiderMonkey.JS_SetProperty(ContextPointer, ref globalObject, "__RequestedScope", ref scopeJSVal))
                             throw new GeckoException("Failed to set __RequestedScope Property.");
 
                         javascript = InsertReturnStatement(javascript);
@@ -242,7 +244,9 @@ namespace Gecko
                 }
                 finally
                 {
+#if PORTFF60
                     SpiderMonkey.JS_SetErrorReporter(SpiderMonkey.JS_GetRuntime(ContextPointer), old);
+#endif
                 }
             }
         }
@@ -281,9 +285,9 @@ namespace Gecko
             return true;
         }
 
-        #endregion
+#endregion
 
-        #region static methods
+#region static methods
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false)]
         private static extern IntPtr NS_GetSafeJSContext();
@@ -354,7 +358,7 @@ namespace Gecko
             // NOTE: This fallback isn't ideal and may cause unicode replacement chars to appear.
 
             IntPtr jsp = SpiderMonkey.ToStringSlow(ContextPointer, value);
-            var utf8StrPtr = SpiderMonkey.JS_EncodeStringToUTF8(ContextPointer, jsp);
+            var utf8StrPtr = SpiderMonkey.JS_EncodeStringToUTF8(ContextPointer, ref jsp);
             if (utf8StrPtr != IntPtr.Zero)
             {
                 try
@@ -413,7 +417,7 @@ namespace Gecko
             if (!exceptionJsVal.IsObject)
                 return String.Empty;
 
-            if (!SpiderMonkey.JS_SetProperty(ContextPointer, globalObject, "__RequestedScope", exceptionJsVal))
+            if (!SpiderMonkey.JS_SetProperty(ContextPointer, ref globalObject, "__RequestedScope", ref exceptionJsVal))
                 throw new GeckoException("Failed to set __RequestedScope Property.");
 
             const string s = "(function() { " + "return this.stack" + " }).call(this.__RequestedScope)";

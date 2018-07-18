@@ -56,9 +56,10 @@ namespace Gecko.WebIDL
             using (var context = new AutoJSContext(_globalWindowProxy))
             {
                 var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
+                var types = ConvertTypes(new[] {value}, context).First();
                 if (
-                    !SpiderMonkey.JS_SetProperty(context.ContextPointer, jsObject, propertyName,
-                        ConvertTypes(new[] {value}, context).First()))
+                    !SpiderMonkey.JS_SetProperty(context.ContextPointer, ref jsObject, propertyName,
+                        ref types))
                     throw new GeckoException(String.Format("Property '{0}' of value '{1}' could not be set on object",
                         propertyName, value));
             }
