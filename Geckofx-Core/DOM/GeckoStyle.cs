@@ -38,6 +38,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -49,16 +50,20 @@ namespace Gecko
     /// </summary>
     public class GeckoStyle
     {
-        private /* /* nsIDOMCSSStyleDeclaration s */nsISupports StyleDelcaration;
+        private readonly nsISupports _window;
+        private readonly /* /* nsIDOMCSSStyleDeclaration s */nsISupports _styleDelcaration;
+        Lazy<CSSStyleDeclaration> _style;
 
-        internal GeckoStyle(/* /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
+        internal GeckoStyle(nsISupports window, /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
         {
-            StyleDelcaration = styleDeclaration;
+            _window = window;
+            _styleDelcaration = styleDeclaration;
+            _style = new Lazy<CSSStyleDeclaration>(() => new CSSStyleDeclaration((mozIDOMWindowProxy)window, _styleDelcaration));
         }
 
         internal static GeckoStyle Create(nsISupports window, /* /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
         {
-            return (styleDeclaration == null) ? null : new GeckoStyle(styleDeclaration);
+            return (styleDeclaration == null) ? null : new GeckoStyle(window, styleDeclaration);
         }
 
         /// <summary>
@@ -67,17 +72,14 @@ namespace Gecko
         /// </summary>
         public string CssText
         {
-            get { /*return nsString.Get(StyleDelcaration.GetCssTextAttribute);*/ throw new NotImplementedException();  }
-            set {/* nsString.Set(StyleDelcaration.SetCssTextAttribute, value);*/ throw new NotImplementedException(); }
+            get { return _style.Value.CssText; }
+            set { _style.Value.CssText = value; }
         }
 
         /// <summary>
         /// Get the number of CSS properties. 
         /// </summary>
-        public uint Length
-        {
-            get { /*return StyleDelcaration.GetLengthAttribute();*/ throw new NotImplementedException(); }
-        }
+        public uint Length => _style.Value.Length;
 
         /// <summary>
         /// Get property name by index
@@ -86,10 +88,13 @@ namespace Gecko
         {
             get
             {
+#if PORTFF60
                 var retval = new nsAString();
-                //StyleDelcaration.Item((uint) index, retval);
-                throw new NotImplementedException();
+                _styleDelcaration.Item((uint) index, retval);
                 return retval.ToString();
+#else
+                throw new NotImplementedException();
+#endif
             }
         }
 
@@ -98,10 +103,7 @@ namespace Gecko
         /// </summary>		
         public string GetPropertyValue(string propertyName)
         {
-            var retval = new nsAString();
-            //StyleDelcaration.GetPropertyValue(new nsAString(propertyName), retval);
-            throw new NotImplementedException();
-            return retval.ToString();
+           return _style.Value.GetPropertyValue(propertyName);
         }
 
         /// <summary>
@@ -109,8 +111,7 @@ namespace Gecko
         /// </summary>		
         public void SetPropertyValue(string propertyName, string value)
         {
-            //StyleDelcaration.SetProperty(new nsAString(propertyName), new nsAString(value), new nsAString());
-            throw new NotImplementedException();
+            _style.Value.SetProperty(propertyName, value);
         }
 
         /// <summary>
@@ -118,8 +119,7 @@ namespace Gecko
         /// </summary>          
         public void SetPropertyValue(string propertyName, string value, string priority)
         {
-            //StyleDelcaration.SetProperty(new nsAString(propertyName), new nsAString(value), new nsAString(priority));
-            throw new NotImplementedException();
+            _style.Value.SetProperty(propertyName, value, priority);
         }
     }
 
@@ -215,7 +215,7 @@ namespace Gecko
         /// Represents a collection of rules in a style sheet.
         /// </summary>
 
-        #region public class StyleRuleCollection : IEnumerable<GeckoStyleRule>
+#region public class StyleRuleCollection : IEnumerable<GeckoStyleRule>
         public class StyleRuleCollection : IEnumerable<GeckoStyleRule>
         {
             internal StyleRuleCollection(GeckoStyleSheet styleSheet)
