@@ -47,7 +47,7 @@ namespace Gecko.DOM.Xul
                         (nsISupports) OwnerDocument.DefaultView.DomWindow);
                     style = window.GetComputedStyle(element.Instance);
                 }
-                return GeckoStyle.Create(style);
+                return GeckoStyle.Create(_window, style);
             }
         }
     }

@@ -180,7 +180,7 @@ namespace Gecko.DOM
                 TagName = "input",
                 InterfaceType = typeof (nsIDOMHTMLInputElement),
                 GeckoElement = typeof (GeckoInputElement),
-                CreationMethod = (window,x) => new GeckoInputElement((nsIDOMHTMLInputElement) x)
+                CreationMethod = (window,x) => new GeckoInputElement(window, (nsIDOMHTMLInputElement) x)
             });
             Add(new GeckoClassDesc()
             {

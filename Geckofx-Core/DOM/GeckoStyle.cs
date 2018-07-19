@@ -56,7 +56,7 @@ namespace Gecko
             StyleDelcaration = styleDeclaration;
         }
 
-        internal static GeckoStyle Create(/* /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
+        internal static GeckoStyle Create(nsISupports window, /* /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
         {
             return (styleDeclaration == null) ? null : new GeckoStyle(styleDeclaration);
         }

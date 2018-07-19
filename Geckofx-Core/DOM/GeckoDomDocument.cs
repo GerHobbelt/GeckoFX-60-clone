@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 using Gecko.DOM;
 using Gecko.DOM.Svg;
 using Gecko.Interop;
+using Gecko.WebIDL;
+using DocumentFragment = Gecko.DOM.DocumentFragment;
+using Location = Gecko.DOM.Location;
 
 namespace Gecko
 {
@@ -14,10 +17,13 @@ namespace Gecko
     {
         internal nsIDOMDocument _domDocument;
 
+        private Lazy<WebIDL.Document> _document;
+
         internal GeckoDomDocument(nsISupports window, nsIDOMDocument document)
             : base(window, document)
         {
             _domDocument = document;
+            _document = new Lazy<Document>(() => new WebIDL.Document((mozIDOMWindowProxy)window, (nsISupports)document));
         }
 
         /// <summary>
@@ -264,8 +270,7 @@ namespace Gecko
         /// <returns></returns>
         public GeckoRange CreateRange()
         {
-            //return new GeckoRange(_domDocument.CreateRange()); 
-            throw new NotImplementedException();
+            return new GeckoRange((nsIDOMRange)_document.Value.CreateRange()); 
         }
 
         //[return: MarshalAs(UnmanagedType.Interface)]

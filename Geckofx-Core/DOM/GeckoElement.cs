@@ -53,12 +53,15 @@ namespace Gecko
 
         private string m_cachedTagName;
 
+        protected Lazy<WebIDL.Element> _element;
+
         internal GeckoElement(nsISupports window, nsIDOMElement domElement)
             : base(window, domElement)
         {
             if (window == null)
                 throw new ArgumentNullException(nameof(window));
             _domElement = domElement;
+            _element = new Lazy<WebIDL.Element>(() => new WebIDL.Element((mozIDOMWindowProxy)window, (nsISupports)domElement));
         }
 
         internal GeckoElement(object domElement)
@@ -87,7 +90,7 @@ namespace Gecko
                 if (m_cachedTagName != null)
                     return m_cachedTagName;
 
-                return m_cachedTagName = new WebIDL.Element((mozIDOMWindowProxy) _window, (nsISupports)_domElement).TagName;
+                return m_cachedTagName = _element.Value.TagName;
             }
         }
 
@@ -108,7 +111,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
-            return new WebIDL.Element((mozIDOMWindowProxy)_window, (nsISupports)_domElement).GetAttribute(attributeName);           
+            return _element.Value.GetAttribute(attributeName);           
         }
 
         /// <summary>

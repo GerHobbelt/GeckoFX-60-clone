@@ -56,7 +56,7 @@ namespace Gecko
             get
             {
                 var utils = Xpcom.QueryInterface<nsIDOMWindowUtils>(DomWindow);
-                return utils.Wrap(WindowUtils.Create);
+                return utils.Wrap(DomWindow, WindowUtils.Create);
             }
         }
 
@@ -199,7 +199,7 @@ namespace Gecko
             {
                 return
                     GeckoSelection.Create(
-                        new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).GetSelection());
+                        new WebIDL.Window(_domWindowProxy.Instance, _domWindowProxy.Instance).GetSelection());
             }
         }
 

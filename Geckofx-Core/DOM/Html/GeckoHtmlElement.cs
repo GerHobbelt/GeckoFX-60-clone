@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Gecko.Interop;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -13,7 +14,7 @@ namespace Gecko
     {
         private /* nsIDOMHTMLElement */nsIDOMElement _domHtmlElement;
 
-        //nsIDOMElement DomNSElement;
+        protected Lazy<WebIDL.HTMLElement> _htmlElement;
 
         #region ctor
 
@@ -21,7 +22,7 @@ namespace Gecko
             : base(window, element)
         {
             _domHtmlElement = element;
-            //this.DomNSElement = (nsIDOMElement)element;
+            _htmlElement = new Lazy<HTMLElement>(() => new WebIDL.HTMLElement((mozIDOMWindowProxy)window, (nsISupports)element));
         }
 
         internal GeckoHtmlElement(object element)
@@ -55,18 +56,7 @@ namespace Gecko
         /// <summary>
         /// Gets the inline style of the GeckoElement. 
         /// </summary>
-        public GeckoStyle Style
-        {
-            get
-            {
-                //var cssInlineStyle = Xpcom.QueryInterface<nsIDOMElementCSSInlineStyle>(DomObject);
-                //if (cssInlineStyle == null) return null;
-                //var ret = cssInlineStyle.GetStyleAttribute().Wrap(GeckoStyle.Create);
-                //Marshal.ReleaseComObject(cssInlineStyle);
-                //return ret;
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoStyle Style => _htmlElement.Value.Style.Wrap(_window, GeckoStyle.Create);
 
         /// <summary>
         /// Gets style of the GeckoElement. 
@@ -82,24 +72,14 @@ namespace Gecko
                         (nsISupports) OwnerDocument.DefaultView.DomWindow);
                     style = window.GetComputedStyle(element.Instance);
                 }
-                return GeckoStyle.Create(style);
+                return GeckoStyle.Create(_window, style);
             }
         }
 
         /// <summary>
         /// Gets the parent element of this one.
         /// </summary>
-        public GeckoHtmlElement Parent
-        {
-            get
-            {
-                // note: the parent node could also be the document
-                //return
-                //    GeckoHtmlElement.Create(
-                //        Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(_domHtmlElement.GetParentNodeAttribute()));
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoHtmlElement Parent => GeckoHtmlElement.Create(_window, _node.Value.ParentElement);
 
 
         /// <summary>
@@ -107,14 +87,13 @@ namespace Gecko
         /// </summary>
         public string Id
         {
-            get {/* return nsString.Get(_domHtmlElement.GetIdAttribute);*/throw new NotImplementedException(); }
+            get { return _element.Value.Id; }
             set
             {
-                //if (string.IsNullOrEmpty(value))
-                //    this.RemoveAttribute("id");
-                //else
-                //    nsString.Set(_domHtmlElement.SetIdAttribute, value);
-                throw new NotImplementedException();
+                if (string.IsNullOrEmpty(value))
+                    this.RemoveAttribute("id");
+                else
+                    _element.Value.Id = value;
             }
         }
 
@@ -123,39 +102,35 @@ namespace Gecko
         /// </summary>
         public string ClassName
         {
-            get {/* return nsString.Get(_domHtmlElement.GetClassNameAttribute);*/throw new NotImplementedException(); }
+            get { return _element.Value.ClassName; }
             set
             {
-                //if (string.IsNullOrEmpty(value))
-                //    this.RemoveAttribute("class");
-                //else
-                //    nsString.Set(_domHtmlElement.SetClassNameAttribute, value);
-                throw new NotImplementedException();
+                if (string.IsNullOrEmpty(value))
+                    this.RemoveAttribute("class");
+                else
+                    _element.Value.ClassName = value;
             }
         }
 
         public void Blur()
         {
-            //_domHtmlElement.Blur();
-            throw new NotImplementedException();
+            _htmlElement.Value.Blur();
         }
 
         public string AccessKey
         {
-            get { /*return nsString.Get(_domHtmlElement.GetAccessKeyAttribute);*/throw new NotImplementedException(); }
-            set {/* _domHtmlElement.SetAccessKeyAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _htmlElement.Value.AccessKey; }
+            set { _htmlElement.Value.AccessKey = value; }
         }
 
         public void Focus()
         {
-            //_domHtmlElement.Focus();
-            throw new NotImplementedException();
+            _htmlElement.Value.Focus();
         }
 
         public void Click()
         {
-            //_domHtmlElement.Click();
-            throw new NotImplementedException();
+            _htmlElement.Value.Click();
         }
 
         public bool Draggable
@@ -169,28 +144,27 @@ namespace Gecko
         /// </summary>
         public string ContentEditable
         {
-            get { /*return nsString.Get(_domHtmlElement.GetContentEditableAttribute);*/throw new NotImplementedException(); }
-            set {/* nsString.Set(_domHtmlElement.GetContentEditableAttribute, value);*/throw new NotImplementedException(); }
+            get { return _htmlElement.Value.ContentEditable;  }
+            set { _htmlElement.Value.ContentEditable = value; }
         }
 
         public System.Drawing.Rectangle[] ClientRects
         {
             get
             {
-                //nsIDOMClientRectList domRects = DOMHtmlElement.GetClientRects();
-                //uint count = domRects.GetLengthAttribute();
-                //Rectangle[] rects = new Rectangle[count];
-                //for (uint i = 0; i < count; i++)
-                //{
-                //    nsIDOMClientRect domRect = domRects.Item(i);
-                //    rects[i] = new Rectangle(
-                //        (int) Math.Round(domRect.GetLeftAttribute()),
-                //        (int) Math.Round(domRect.GetTopAttribute()),
-                //        (int) Math.Round(domRect.GetWidthAttribute()),
-                //        (int) Math.Round(domRect.GetHeightAttribute()));
-                //}
-                //return rects;
-                throw new NotImplementedException();
+                nsIDOMClientRectList domRects = (nsIDOMClientRectList)_element.Value.GetClientRects();
+                uint count = domRects.GetLengthAttribute();
+                Rectangle[] rects = new Rectangle[count];
+                for (uint i = 0; i < count; i++)
+                {
+                    nsIDOMClientRect domRect = domRects.Item(i);
+                    rects[i] = new Rectangle(
+                        (int)Math.Round(domRect.GetLeftAttribute()),
+                        (int)Math.Round(domRect.GetTopAttribute()),
+                        (int)Math.Round(domRect.GetWidthAttribute()),
+                        (int)Math.Round(domRect.GetHeightAttribute()));
+                }
+                return rects;
             }
         }
 
