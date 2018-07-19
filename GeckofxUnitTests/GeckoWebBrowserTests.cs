@@ -234,8 +234,7 @@ namespace GeckofxUnitTests
             Assert.NotNull(eventArgs);
             Assert.IsNotEmpty(eventArgs.Message);
             // Error messages changes based upon locale. (color/colour)
-            Assert.IsTrue(eventArgs.Message.Contains("JavaScript Warning: \"Expected"), eventArgs.Message);
-            Assert.IsTrue(eventArgs.Message.Contains("but found 'bluse'"), eventArgs.Message);
+            Assert.IsTrue(eventArgs.Message.Contains(@"JavaScript Warning: ""Error in parsing value for ‘background’.  Declaration dropped."), eventArgs.Message);
         }
 
         [Test]
