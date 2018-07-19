@@ -12,7 +12,7 @@ using Gecko.DOM;
 namespace GeckofxUnitTests
 {
 	[TestFixture]
-	internal class GeckoCancasElementTests
+	internal class GeckoCanvasElementTests
 	{
 		private GeckoWebBrowser browser;
 
