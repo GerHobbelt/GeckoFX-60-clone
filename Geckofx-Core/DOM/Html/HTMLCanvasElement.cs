@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoCanvasElement : GeckoHtmlElement
     {
         private /* nsIDOMHTMLCanvasElement */ nsIDOMElement DOMHTMLElement;
+        private Lazy<HTMLCanvasElement> _canvasElement;
 
         internal GeckoCanvasElement(nsISupports window, /* nsIDOMHTMLCanvasElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
+            _canvasElement = new Lazy<HTMLCanvasElement>(() => new HTMLCanvasElement((mozIDOMWindowProxy)window, (nsISupports)DOMHTMLElement));
         }
 
         public GeckoCanvasElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
@@ -21,29 +24,19 @@ namespace Gecko.DOM
 
         public uint Width
         {
-            get { /*return DOMHTMLElement.GetWidthAttribute();*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetWidthAttribute(value);*/throw new NotImplementedException(); }
+            get { return _canvasElement.Value.Width; }
+            set { _canvasElement.Value.Width = value; }
         }
 
         public uint Height
         {
-            get
-            {
-                return (uint)new WebIDL.HTMLElement((mozIDOMWindowProxy)_window, (nsISupports)DOMHTMLElement).OffsetHeight;
-            }
-            set { /*DOMHTMLElement.SetHeightAttribute(value);*/throw new NotImplementedException(); }
+            get { return _canvasElement.Value.Height; }
+            set { _canvasElement.Value.Height = value; }
         }
 
         public string ToDataURL(string type)
         {
-            using (var context = new AutoJSContext(AutoJSContext.SafeJSContext))
-            using (nsAString retval = new nsAString(), param = new nsAString(type))
-            {
-                JsVal js = default(JsVal);
-                //DOMHTMLElement.ToDataURL(param, ref js, context.ContextPointer, retval);
-                throw new NotImplementedException();
-                return retval.ToString();
-            }
+            return _canvasElement.Value.ToDataURL(type);
         }
     }
 }
