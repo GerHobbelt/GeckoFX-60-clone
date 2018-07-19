@@ -401,14 +401,11 @@ namespace Gecko
 
         /// <summary>
         /// Loads supplied html string.
-        /// Note: LoadHtml isn't intended to load complex Html Documents.		
-        /// In order to find out when LoadHtml has finished attach a handler to DocumentCompleted Event.
         /// </summary>
         /// <param name="htmlDocument"></param>
-        [ObsoleteAttribute("LoadHtml(string) isn't intended to load complex Html Documents. Use LoadHtml(string,string) instead")]
         public void LoadHtml(string htmlDocument)
         {
-            LoadBase64EncodedData("text/html", htmlDocument);
+            LoadHtml(htmlDocument, null);
         }
 
         /// <summary>

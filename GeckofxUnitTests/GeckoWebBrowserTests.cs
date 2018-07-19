@@ -24,9 +24,12 @@ namespace GeckofxUnitTests
             Xpcom.Initialize(XpComTests.XulRunnerLocation);
             //affecting browser.Realod()/GoForward()/GoBackward() of error page
             GeckoPreferences.User["browser.xul.error_pages.enabled"] = true;
+            var f = new Form();
+            
             browser = new GeckoWebBrowser();
-            var unused = browser.Handle;
-            Assert.IsNotNull(browser);
+            browser.Dock = DockStyle.Fill;
+            f.Controls.Add(browser);
+            f.Show();
         }
 
         [TearDown]
@@ -87,12 +90,13 @@ namespace GeckofxUnitTests
 
             browser.NavigateFinishedNotifier.NavigateFinished += (sender, e) =>
                                                                      {
-                                                                         Assert.AreEqual(browser.Document.Body.InnerHtml, innerHtml);
+                                                                         Assert.AreEqual(innerHtml, browser.Document.Body.InnerHtml);
                                                                      };
 
             browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
-            Assert.AreEqual(browser.Document.Body.InnerHtml, innerHtml);
+
+            Assert.AreEqual(innerHtml, browser.Document.Body.InnerHtml);
         }
 
         [Test]

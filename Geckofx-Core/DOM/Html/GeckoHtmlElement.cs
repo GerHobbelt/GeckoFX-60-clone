@@ -135,8 +135,8 @@ namespace Gecko
 
         public bool Draggable
         {
-            get { /*return _domHtmlElement.GetDraggableAttribute();*/throw new NotImplementedException(); }
-            set {/* _domHtmlElement.SetDraggableAttribute(value);*/throw new NotImplementedException(); }
+            get { return _htmlElement.Value.Draggable; }
+            set { _htmlElement.Value.Draggable = value; }
         }
 
         /// <summary>
@@ -168,79 +168,52 @@ namespace Gecko
             }
         }
 
-        public int OffsetLeft
-        {
-            get {/* return _domHtmlElement.GetOffsetLeftAttribute();*/throw new NotImplementedException(); }
-        }
+        public int OffsetLeft => _htmlElement.Value.OffsetLeft;
 
-        public int OffsetTop
-        {
-            get { /*return _domHtmlElement.GetOffsetTopAttribute();*/throw new NotImplementedException(); }
-        }
+        public int OffsetTop => _htmlElement.Value.OffsetTop;
 
-        public int OffsetWidth
-        {
-            get { /*return _domHtmlElement.GetOffsetWidthAttribute();*/throw new NotImplementedException(); }
-        }
+        public int OffsetWidth => _htmlElement.Value.OffsetWidth;
 
-        public int OffsetHeight
-        {
-            get {/* return _domHtmlElement.GetOffsetHeightAttribute();*/throw new NotImplementedException(); }
-        }
+        public int OffsetHeight => _htmlElement.Value.OffsetHeight;
 
 
-        public GeckoHtmlElement OffsetParent
-        {
-            get
-            {
-                //return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) _domHtmlElement.GetOffsetParentAttribute());
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoHtmlElement OffsetParent => GeckoHtmlElement.Create(_window, _htmlElement.Value.OffsetParent);
 
         public void ScrollIntoView(bool top)
         {
-            //_domHtmlElement.ScrollIntoView(top, 1);
-            throw new NotImplementedException();
+            // TODO: FIXME - PORTFF60 - ignores top param. (don't know how to call other ScrollIntoView overload.)
+            _element.Value.ScrollIntoView();
         }
 
 
         public bool Spellcheck
         {
-            get { /*return _domHtmlElement.GetSpellcheckAttribute();*/throw new NotImplementedException(); }
-            set { /*_domHtmlElement.SetSpellcheckAttribute(value);*/throw new NotImplementedException(); }
+            get { return _htmlElement.Value.Spellcheck; }
+            set { _htmlElement.Value.Spellcheck = value; }
         }
 
         public string InnerHtml
         {
-            get { /*return nsString.Get(_domHtmlElement.GetInnerHTMLAttribute);*/throw new NotImplementedException(); }
-            set {/* nsString.Set(_domHtmlElement.SetInnerHTMLAttribute, value);*/throw new NotImplementedException(); }
+            get { return _element.Value.InnerHTML; }
+            set { _element.Value.InnerHTML = value; }
         }
 
-        public virtual string OuterHtml
-        {
-            get { /*return nsString.Get(_domHtmlElement.GetOuterHTMLAttribute); */throw new NotImplementedException(); }
-        }
+        public virtual string OuterHtml => _element.Value.OuterHTML;
 
         public int TabIndex
         {
-            get { /*return _domHtmlElement.GetTabIndexAttribute();*/throw new NotImplementedException(); }
-            set { /*_domHtmlElement.SetTabIndexAttribute(value);*/throw new NotImplementedException(); }
+            get { return _htmlElement.Value.TabIndex; }
+            set { _htmlElement.Value.TabIndex = value; }
         }
 
         public void InsertAdjacentHTML(string position, string text)
         {
-            using (nsAString tempPos = new nsAString(position), tempText = new nsAString(text))
-            {
-                //_domHtmlElement.InsertAdjacentHTML(tempPos, tempText);
-                throw new NotImplementedException();
-            }
+            _element.Value.InsertAdjacentHTML(position, text);
         }
 
         public void MozRequestFullScreen()
         {
-            //_domHtmlElement.MozRequestFullScreen();
-            throw new NotImplementedException();
+            _element.Value.RequestFullscreen();
         }
     }
 }
