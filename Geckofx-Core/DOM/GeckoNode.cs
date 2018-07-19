@@ -93,16 +93,6 @@ namespace Gecko
         public override int GetHashCode()
         {
             return _domNode.GetHashCode();
-            //IntPtr pUnk = Marshal.GetIUnknownForObject(this._domNode);
-            //try
-            //{
-            //    return pUnk.GetHashCode();
-            //}
-            //finally
-            //{
-            //    if (pUnk != IntPtr.Zero)
-            //        Marshal.Release(pUnk);
-            //}
         }
 
         /// <summary>
@@ -119,119 +109,88 @@ namespace Gecko
         /// </summary>
         public string NodeValue
         {
-            get { /*return nsString.Get(_domNode.Instance.GetNodeValueAttribute);*/  throw new NotImplementedException(); }
-            set {/* nsString.Set(_domNode.Instance.SetNodeValueAttribute, value);*/  throw new NotImplementedException(); }
+            get{ return _node.Value.NodeValue; }
+            set { _node.Value.NodeValue = value; }
         }
 
-        public string NodeName
-        {
-            get { /*return nsString.Get(_domNode.Instance.GetNodeNameAttribute);*/  throw new NotImplementedException(); }
-        }
+        public string NodeName => _node.Value.NodeName;
 
         /// <summary>
         /// Gets a collection containing all child nodes of this node.
         /// </summary>
-        public GeckoNodeCollection ChildNodes
-        {
-            get { /*return _domNode.Instance.GetChildNodesAttribute().Wrap(GeckoNodeCollection.Create);*/  throw new NotImplementedException(); }
-        }
+        public GeckoNodeCollection ChildNodes => _node.Value.ChildNodes.Wrap(_window, GeckoNodeCollection.Create);
 
-        public GeckoNode FirstChild
-        {
-            get { /*return _domNode.Instance.GetFirstChildAttribute().Wrap(Create);*/  throw new NotImplementedException(); }
-        }
+        public GeckoNode FirstChild => _node.Value.FirstChild.Wrap(_window, Create);
 
-        public GeckoNode LastChild
-        {
-            get { /*return _domNode.Instance.GetLastChildAttribute().Wrap(Create); */  throw new NotImplementedException(); }
-        }
+        public GeckoNode LastChild => _node.Value.LastChild.Wrap(_window, Create);
 
-        public GeckoNode NextSibling
-        {
-            get {/* return _domNode.Instance.GetNextSiblingAttribute().Wrap(Create);*/  throw new NotImplementedException(); }
-        }
+        public GeckoNode NextSibling => _node.Value.NextSibling.Wrap(_window, Create);
 
-        public GeckoNode PreviousSibling
-        {
-            get { /*return _domNode.Instance.GetPreviousSiblingAttribute().Wrap(Create);*/   throw new NotImplementedException(); }
-        }
+        public GeckoNode PreviousSibling => _node.Value.PreviousSibling.Wrap(_window, Create);
 
-        public bool HasChildNodes
-        {
-            get { /*return _domNode.Instance.HasChildNodes();*/  throw new NotImplementedException(); }
-        }
+        public bool HasChildNodes => _node.Value.HasChildNodes();
 
-        public virtual GeckoDocument OwnerDocument
-        {
-            get
-            {
-                //return
-                //    GeckoDocument.Create(
-                //        Xpcom.QueryInterface<nsIDOMHTMLDocument>(_domNode.Instance.GetOwnerDocumentAttribute()));
-                throw new NotImplementedException();
-            }
-        }
+        public virtual GeckoDocument OwnerDocument => GeckoDocument.Create(_window, _node.Value.OwnerDocument);
 
         public GeckoNode AppendChild(GeckoNode node)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
-            //_domNode.Instance.AppendChild(node._domNode.Instance);
-            throw new NotImplementedException();
+            _node.Value.AppendChild(node._domNode.Instance);
+
             return node;
         }
 
         public GeckoNode CloneNode(bool deep)
         {
-            //return GeckoNode.Create(_domNode.Instance.CloneNode(deep, 1));
-            throw new NotImplementedException();
+            return Create(_window, _node.Value.CloneNode(deep));
         }
 
         public GeckoNode InsertBefore(GeckoNode newChild, GeckoNode before)
         {
             if (newChild == null)
-                throw new ArgumentNullException("newChild");
+                throw new ArgumentNullException(nameof(newChild));
             if (before == null)
-                throw new ArgumentNullException("before");
+                throw new ArgumentNullException(nameof(before));
 
-            //_domNode.Instance.InsertBefore(newChild._domNode.Instance, before._domNode.Instance);
-            throw new NotImplementedException();
+            _node.Value.InsertBefore(newChild._domNode.Instance, before._domNode.Instance);
             return newChild;
         }
 
         public GeckoNode RemoveChild(GeckoNode node)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
-            //_domNode.Instance.RemoveChild(node._domNode.Instance);
-            throw new NotImplementedException();
+            _node.Value.RemoveChild(node._domNode.Instance);
             return node;
         }
 
         public GeckoNode ReplaceChild(GeckoNode newChild, GeckoNode oldChild)
         {
             if (newChild == null)
-                throw new ArgumentNullException("newChild");
+                throw new ArgumentNullException(nameof(newChild));
             if (oldChild == null)
-                throw new ArgumentNullException("oldChild");
+                throw new ArgumentNullException(nameof(oldChild));
 
-            //_domNode.Instance.ReplaceChild(newChild._domNode.Instance, oldChild._domNode.Instance);
-            throw new NotImplementedException();
+            _node.Value.ReplaceChild(newChild._domNode.Instance, oldChild._domNode.Instance);
             return newChild;
         }
 
+        // TODO: FFPORT60 move NamespaceURI to GeckoElement
         public string NamespaceURI
         {
             get { /*return nsString.Get(_domNode.Instance.GetNamespaceURIAttribute);*/ throw new NotImplementedException(); }
         }
 
+        // TODO: FFPORT60 move Prefix to GeckoElement
         public string Prefix
         {
             get { /*return nsString.Get(_domNode.Instance.GetPrefixAttribute);*/ throw new NotImplementedException(); }
         }
 
+        // TODO: FFPORT60 move LocalName to GeckoElement
         public string LocalName
         {
             get { /*return nsString.Get(_domNode.Instance.GetLocalNameAttribute);*/ throw new NotImplementedException(); }
@@ -246,8 +205,7 @@ namespace Gecko
                 if (m_cachedType != 0)
                     return m_cachedType;
 
-                //return m_cachedType = (NodeType) _domNode.Instance.GetNodeTypeAttribute();
-                throw new NotImplementedException();
+                return m_cachedType = (NodeType)_node.Value.NodeType;
             }
         }
 
@@ -256,23 +214,7 @@ namespace Gecko
             get { /*return _domNode.Instance.GetParentNodeAttribute().Wrap(Create);*/ throw new NotImplementedException(); }
         }
 
-        public GeckoElement ParentElement
-        {
-            get
-            {
-#if PORTFF60
-                nsIDOMNode node = _domNode.Instance.GetParentNodeAttribute();
-                while (node != null && !(node is nsIDOMElement))
-                {
-                    node = node.GetParentNodeAttribute();
-                }
-                // after cycle node is nsIDOMElement or null
-
-                return ((nsIDOMElement) node).Wrap(GeckoElement.CreateDomElementWrapper);
-#endif
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoElement ParentElement => _node.Value.ParentElement.Wrap(_window, GeckoElement.CreateDomElementWrapper);
 
 
         private nsIXPathResult EvaluateXPathInternal(string xpath)

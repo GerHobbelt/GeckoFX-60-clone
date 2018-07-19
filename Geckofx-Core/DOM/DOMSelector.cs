@@ -60,7 +60,7 @@ namespace Gecko.DOM
                 TagName = "body",
                 InterfaceType = typeof (/* nsIDOMHTMLBodyElement */ nsISupports),
                 GeckoElement = typeof (GeckoBodyElement),
-                CreationMethod = (window,x) => new GeckoBodyElement((/* nsIDOMHTMLBodyElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoBodyElement(window,(/* nsIDOMHTMLBodyElement */ nsIDOMElement) x)
             });
 #if NO_LONGER_EXISTS_GECKO45
 			Add(new GeckoClassDesc() { TagName = "br", InterfaceType = typeof(nsIDOMHTMLBRElement), GeckoElement = typeof(GeckoBRElement), 

@@ -62,9 +62,12 @@ namespace Gecko
 
 #endregion
 
-        internal static GeckoNodeCollection Create(nsIDOMNodeList list)
+        internal static GeckoNodeCollection Create(nsISupports window, nsISupports list)
         {
+#if PORTFF60
             return list == null ? null : new GeckoNodeCollection(list);
+#endif
+            throw new NotImplementedException();
         }
     }
 }

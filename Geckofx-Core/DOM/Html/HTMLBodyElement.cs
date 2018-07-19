@@ -8,10 +8,10 @@ namespace Gecko.DOM
     public class GeckoBodyElement
         : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLBodyElement */ nsISupports _domHtmlBodyElement;
+        private /* nsIDOMHTMLBodyElement */ nsIDOMElement _domHtmlBodyElement;
 
-        internal GeckoBodyElement(/* nsIDOMHTMLBodyElement */ nsISupports element)
-            : base(element)
+        internal GeckoBodyElement(nsISupports window, /* nsIDOMHTMLBodyElement */ nsIDOMElement element)
+            : base(window, element)
         {
             _domHtmlBodyElement = element;
         }
