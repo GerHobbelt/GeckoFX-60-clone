@@ -50,7 +50,7 @@ namespace Gecko
         /// </summary>
         private static string GetUnicodePref(nsIPrefBranch branch, string name)
         {
-            var iid = typeof (nsISupportsString).GUID;
+            var iid = typeof (nsIPrefLocalizedString).GUID;
             IntPtr pStr = branch.GetComplexValue(name, ref iid);
             if (pStr == IntPtr.Zero)
                 return null;
@@ -64,7 +64,7 @@ namespace Gecko
         /// </summary>
         private static void SetUnicodePref(nsIPrefBranch branch, string name, string value)
         {
-            var iid = typeof (nsISupportsString).GUID;
+            var iid = typeof (nsIPrefLocalizedString).GUID;
             var str = Xpcom.CreateInstance<nsISupportsString>(Contracts.SupportsString);
             nsString.Set(str.SetDataAttribute, value);
             branch.SetComplexValue(name, ref iid, Xpcom.QueryInterface<nsISupports>(str));
