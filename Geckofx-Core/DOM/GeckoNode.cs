@@ -21,15 +21,19 @@ namespace Gecko
         #region fields
 
         private ComPtr<nsIDOMNode> _domNode;
+        protected readonly nsISupports _window;
+        protected Lazy<WebIDL.Node> _node;
 
         #endregion
 
         #region ctor & creation methods
 
-        internal GeckoNode(nsIDOMNode domObject)
+        internal GeckoNode(nsISupports window, nsIDOMNode domObject)
         {
             //ComDebug.WriteDebugInfo( domObject );
             _domNode = new ComPtr<nsIDOMNode>(domObject);
+            _window = window;
+            _node = new Lazy<Node>(() => new Node((mozIDOMWindowProxy)_window, (nsISupports) _domNode.Instance));
         }
 
         internal GeckoNode(object domObject)
@@ -106,8 +110,8 @@ namespace Gecko
         /// </summary>
         public string TextContent
         {
-            get { /*return nsString.Get(_domNode.Instance.GetTextContentAttribute);*/  throw new NotImplementedException(); }
-            set { /*nsString.Set(_domNode.Instance.SetTextContentAttribute, value);*/   throw new NotImplementedException(); }
+            get{ return _node.Value.TextContent; }
+            set { _node.Value.TextContent = value; }
         }
 
         /// <summary>

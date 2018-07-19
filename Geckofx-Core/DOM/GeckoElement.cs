@@ -49,18 +49,15 @@ namespace Gecko
     public class GeckoElement
         : GeckoNode
     {
-        // TODO: PORTFF60 this should be in GeckoNode
-        protected readonly nsISupports _window;
         private nsIDOMElement _domElement;
 
         private string m_cachedTagName;
 
         internal GeckoElement(nsISupports window, nsIDOMElement domElement)
-            : base(domElement)
+            : base(window, domElement)
         {
             if (window == null)
                 throw new ArgumentNullException(nameof(window));
-            _window = window;
             _domElement = domElement;
         }
 
