@@ -38,10 +38,7 @@ namespace Gecko
 
         internal GeckoNode(object domObject)
         {
-            if (domObject is nsIDOMNode)
-                _domNode = new ComPtr<nsIDOMNode>((nsIDOMNode) domObject);
-            else
-                throw new ArgumentException("domObject is not a nsIDOMNode");
+           throw new NotImplementedException("use other constructor");
         }
 
         ~GeckoNode()

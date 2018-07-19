@@ -12,13 +12,11 @@ namespace Gecko
     public class GeckoDomDocument
         : GeckoNode
     {
-        protected readonly nsISupports _window;
         internal nsIDOMDocument _domDocument;
 
         internal GeckoDomDocument(nsISupports window, nsIDOMDocument document)
-            : base(document)
+            : base(window, document)
         {
-            _window = window;
             _domDocument = document;
         }
 
