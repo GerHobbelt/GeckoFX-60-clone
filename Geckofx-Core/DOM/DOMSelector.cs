@@ -377,7 +377,7 @@ namespace Gecko.DOM
                     break;
             }
             // if we don't handle this type - just create GeckoNode
-            return new GeckoNode(domObject);
+            return new GeckoNode(window, domObject);
         }
 
         internal static GeckoHtmlElement CreateDomHtmlElementWrapper(nsISupports window, /* /* nsIDOMHTMLElement*/nsISupports instance)
