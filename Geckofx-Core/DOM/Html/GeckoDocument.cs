@@ -211,8 +211,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            //return new GeckoElementCollection(_domHtmlDocument.GetElementsByName(new nsAString(name)));
-            throw new NotImplementedException();
+            return new GeckoElementCollection((nsIDOMNodeList)_document.Value.GetElementsByName(name));
         }
     }
 }

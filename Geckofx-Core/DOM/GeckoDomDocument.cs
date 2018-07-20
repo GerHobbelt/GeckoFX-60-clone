@@ -17,7 +17,7 @@ namespace Gecko
     {
         internal nsIDOMDocument _domDocument;
 
-        private Lazy<WebIDL.Document> _document;
+        protected Lazy<WebIDL.Document> _document;
 
         internal GeckoDomDocument(nsISupports window, nsIDOMDocument document)
             : base(window, document)
