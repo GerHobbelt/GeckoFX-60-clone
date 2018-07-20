@@ -203,51 +203,36 @@ namespace Gecko
 
             using (new JSAutoCompartment(ContextPointer, globalObject))
             {
-#if PORTFF60
-                var old = SpiderMonkey.JS_SetErrorReporter(SpiderMonkey.JS_GetRuntime(ContextPointer),
-                    (cx, message, report) =>
-                    {
-                        var exception = SpiderMonkey.JS_GetPendingException(ContextPointer);
-                        if (exception != IntPtr.Zero)
-                            exceptionJsVal = JsVal.FromPtr(exception);
-                        msg = message;
-                    });
-#endif
-                try
+                var retJsVal = new JsVal();
+                bool ret;
+                // If not running in window scope.
+                if (window != scope)
                 {
-                    var retJsVal = new JsVal();
-                    bool ret;
-                    // If not running in window scope.
-                    if (window != scope)
-                    {
-                        var scopeJSVal = JsVal.FromPtr(ConvertCOMObjectToJSObject(scope));
-                        if (!SpiderMonkey.JS_SetProperty(ContextPointer, ref globalObject, "__RequestedScope", ref scopeJSVal))
-                            throw new GeckoException("Failed to set __RequestedScope Property.");
+                    var scopeJSVal = JsVal.FromPtr(ConvertCOMObjectToJSObject(scope));
+                    if (!SpiderMonkey.JS_SetProperty(ContextPointer, ref globalObject, "__RequestedScope", ref scopeJSVal))
+                        throw new GeckoException("Failed to set __RequestedScope Property.");
 
-                        javascript = InsertReturnStatement(javascript);
-                        string s = "(function() { " + javascript + " }).call(this.__RequestedScope)";
+                    javascript = InsertReturnStatement(javascript);
+                    string s = "(function() { " + javascript + " }).call(this.__RequestedScope)";
 
-                        ret = SpiderMonkey.JS_EvaluateScript(ContextPointer, s, (uint) s.Length, "script", 1,
-                            ref retJsVal);
-                    }
-                    else
-                    {
-                        ret = SpiderMonkey.JS_EvaluateScript(ContextPointer, javascript, (uint) javascript.Length,
-                            "script", 1, ref retJsVal);
-                    }
-
-                    if (ret) 
-                        return retJsVal;
-
-                    msg += GetStackTrace(globalObject, exceptionJsVal);
-                    throw new GeckoJavaScriptException(String.Format("JSError : {0}", msg));
+                    ret = SpiderMonkey.JS_EvaluateScript(ContextPointer, s, (uint) s.Length, "script", 1,
+                        ref retJsVal);
                 }
-                finally
+                else
                 {
-#if PORTFF60
-                    SpiderMonkey.JS_SetErrorReporter(SpiderMonkey.JS_GetRuntime(ContextPointer), old);
-#endif
+                    ret = SpiderMonkey.JS_EvaluateScript(ContextPointer, javascript, (uint) javascript.Length,
+                        "script", 1, ref retJsVal);
                 }
+
+                if (ret) 
+                    return retJsVal;
+
+                var exception = SpiderMonkey.JS_GetPendingException(ContextPointer);
+                if (exception != IntPtr.Zero)
+                    exceptionJsVal = JsVal.FromPtr(exception);
+                msg += exceptionJsVal.ToString();
+                msg += GetStackTrace(globalObject, exceptionJsVal);
+                throw new GeckoJavaScriptException(String.Format("JSError : {0}", msg));
             }
         }
 
