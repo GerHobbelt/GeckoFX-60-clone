@@ -50,12 +50,6 @@ namespace Gecko
             {
                 return DomUIEventArgs.Create((nsIDOMUIEvent) ev);
             }
-#if PORTFF60
-            if (ev is nsIDOMMessageEvent)
-            {
-                return DomMessageEventArgs.Create((nsIDOMMessageEvent) ev);
-            }
-#endif
 
             return new DomEventArgs(ev);
         }

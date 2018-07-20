@@ -2105,7 +2105,6 @@
     <Compile Include="Net\UploadChannel.cs" />
     <Compile Include="nsCancelable.cs" />
     <Compile Include="nsSupportsPrimitives.cs" />
-    <Compile Include="DOM\Events\DomMessageEventArgs.cs" />
     <Compile Include="ConsoleMessageEventArgs.cs" />
     <Compile Include="Net\CookieManager.cs" />
     <Compile Include="DOM\DOMSelector.cs" />
