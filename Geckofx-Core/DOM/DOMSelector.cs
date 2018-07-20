@@ -124,7 +124,7 @@ namespace Gecko.DOM
                 TagName = "frameset",
                 InterfaceType = typeof (/* nsIDOMHTMLFrameSetElement */ nsISupports),
                 GeckoElement = typeof (GeckoFrameSetElement),
-                CreationMethod = (window,x) => new GeckoFrameSetElement((/* nsIDOMHTMLFrameSetElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoFrameSetElement(window, (/* nsIDOMHTMLFrameSetElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
