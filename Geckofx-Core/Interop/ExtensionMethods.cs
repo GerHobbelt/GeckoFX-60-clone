@@ -7,6 +7,7 @@ namespace Gecko.Interop
 {
     public static class ExtensionMethods
     {
+        // TODO: FIXME: PORTFF60 - I'm pretty sure that nsISupport window here should be typed mozIDOMWindowProxy
         /// <summary>
         /// Function that check if object is null -> then call wrapper creator
         /// </summary>

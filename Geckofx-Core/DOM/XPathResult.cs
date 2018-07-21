@@ -57,11 +57,7 @@ namespace Gecko.DOM
 
         public GeckoNode GetSingleNodeValue()
         {
-            // TODO: fixme - GetSingleNodeValue is returning property not found - even though it exists in the webidl?
-#if PORTFF60
-            return new WebIDL.XPathResult(_window.Instance, _xpathResult.Instance as nsISupports).IterateNext().Wrap(GeckoNode.Create);
-#endif
-            throw new NotImplementedException();
+            return new WebIDL.XPathResult(_proxy, _xpathResult.Instance as nsISupports).IterateNext().Wrap((nsISupports)_proxy, GeckoNode.Create);
         }
 
         public IEnumerable<GeckoNode> GetNodes()
