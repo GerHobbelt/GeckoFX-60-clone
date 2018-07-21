@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gecko.Interop;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -9,10 +10,12 @@ namespace Gecko
     /// </summary>
     internal class GeckoNodeEnumerable : IEnumerable<GeckoNode>
     {
+        private readonly nsISupports _window;
         private readonly WebIDL.XPathResult _xpathResult;
 
-        internal GeckoNodeEnumerable(WebIDL.XPathResult xpathResult)
+        internal GeckoNodeEnumerable(nsISupports window, WebIDL.XPathResult xpathResult)
         {
+            _window = window;
             _xpathResult = xpathResult;
         }
 
@@ -20,16 +23,14 @@ namespace Gecko
 
         public IEnumerator<GeckoNode> GetEnumerator()
         {
-#if PORTFF60
-            while (!_xpathResult.InvalidIteratorState)
+            var xpathResult = new XPathResult((mozIDOMWindowProxy) _window, (nsISupports)_xpathResult.Object);
+            while (!xpathResult.InvalidIteratorState)
             {
-                var result = _xpathResult.IterateNext().Wrap(GeckoNode.Create);
+                var result = xpathResult.IterateNext().Wrap(_window, GeckoNode.Create);
                 if (result == null)
                     yield break;
                 yield return result;
             }
-#endif
-            throw new NotImplementedException();
         }
 
 #endregion

@@ -8,12 +8,12 @@ namespace Gecko.DOM
 {
     public class XPathResult
     {
-        private ComPtr<mozIDOMWindow> _window;
+        private readonly mozIDOMWindowProxy _proxy;
         private ComPtr<nsIXPathResult> _xpathResult = null;
 
-        internal XPathResult(mozIDOMWindow window, nsIXPathResult xpathResult)
+        internal XPathResult(mozIDOMWindowProxy proxy, nsIXPathResult xpathResult)
         {
-            _window = new ComPtr<mozIDOMWindow>(window);
+            _proxy = proxy;
             _xpathResult = new ComPtr<nsIXPathResult>(xpathResult);
         }
 
@@ -67,7 +67,7 @@ namespace Gecko.DOM
         public IEnumerable<GeckoNode> GetNodes()
         {
             // TODO: fixme this should return a new copy of the results.
-            return new GeckoNodeEnumerable(new WebIDL.XPathResult(_window.Instance, _xpathResult.Instance as nsISupports));
+            return new GeckoNodeEnumerable((nsISupports)_proxy, new WebIDL.XPathResult(_proxy, _xpathResult.Instance as nsISupports));
         }
     }
 

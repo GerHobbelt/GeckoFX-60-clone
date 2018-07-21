@@ -217,19 +217,8 @@ namespace Gecko
         private nsIXPathResult EvaluateXPathInternal(string xpath)
         {
             nsIXPathResult result;
-#if PORTFF60
-            using (var evaluator = Xpcom.CreateInstance2<nsIDOMXPathEvaluator>(Contracts.XPathEvaluator))
-            {
-                var node = DomObject;
-                var resolver =
-                    new WebIDL.XPathEvaluator(this.OwnerDocument.DefaultView.DomWindow, (nsISupports)this.OwnerDocument.DomObject)
-                        .CreateNSResolver(node);
-                result = (nsIXPathResult) evaluator.Instance.Evaluate(new nsAString(xpath), node, resolver, 0, null);
-            }
-
-            return result;
-#endif
-            throw new NotImplementedException();
+            var evaluator = new XPathEvaluator((mozIDOMWindowProxy)_window, (nsISupports)this.OwnerDocument.DomObject);
+            return (nsIXPathResult)evaluator.Evaluate(xpath, DomObject, (nsISupports)evaluator.CreateNSResolver(DomObject), 0, null);
         }
 
         /// <summary>
@@ -240,7 +229,7 @@ namespace Gecko
         public XPathResult EvaluateXPath(string xpath)
         {
             var r = EvaluateXPathInternal(xpath);
-            return new XPathResult((mozIDOMWindow)OwnerDocument.DefaultView.DomWindow, r);
+            return new XPathResult((mozIDOMWindowProxy)_window, r);
         }
 
 

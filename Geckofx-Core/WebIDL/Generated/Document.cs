@@ -301,11 +301,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public mozIDOMWindowProxy DefaultView
+        public mozIDOMWindow DefaultView
         {
             get
             {
-                return this.GetProperty<mozIDOMWindowProxy>("defaultView");
+                return this.GetProperty<mozIDOMWindow>("defaultView");
             }
         }
         

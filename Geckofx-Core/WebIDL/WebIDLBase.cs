@@ -15,6 +15,8 @@ namespace Gecko.WebIDL
             throw new NotImplementedException();
         }
 
+        internal nsISupports Object => _thisObject;
+
         public WebIDLBase(nsISupports globalWindow, nsISupports thisObject)
         {
             if (globalWindow == null)
@@ -117,7 +119,7 @@ namespace Gecko.WebIDL
                     val = JsVal.FromDouble(Convert.ToDouble(p));
                 }
                 else
-                    SpiderMonkey.JS_ExecuteScript(context.ContextPointer, p.ToString(), out val);
+                    SpiderMonkey.JS_ExecuteScript(context.ContextPointer, (p ?? "null").ToString(), out val);
                 collection.Add(val);
             }
             return collection;

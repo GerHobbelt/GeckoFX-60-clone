@@ -131,7 +131,7 @@ namespace Gecko.DOM
                 TagName = "head",
                 InterfaceType = typeof (/* nsIDOMHTMLHeadElement */ nsISupports),
                 GeckoElement = typeof (GeckoHeadElement),
-                CreationMethod = (window,x) => new GeckoHeadElement((/* nsIDOMHTMLHeadElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoHeadElement(window, (/* nsIDOMHTMLHeadElement */ nsIDOMElement) x)
             });
 #if NO_LONGER_EXISTS_GECKO45
 			Add(new GeckoClassDesc() { TagName = "h1", InterfaceType = typeof(nsIDOMHTMLHeadingElement), GeckoElement = typeof(GeckoHeadingElement), 
@@ -159,7 +159,7 @@ namespace Gecko.DOM
                 TagName = "html",
                 InterfaceType = typeof (/* nsIDOMHTMLHtmlElement */ nsISupports),
                 GeckoElement = typeof (GeckoHtmlHtmlElement),
-                CreationMethod = (window,x) => new GeckoHtmlHtmlElement((/* nsIDOMHTMLHtmlElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoHtmlHtmlElement(window, (/* nsIDOMHTMLHtmlElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -222,7 +222,7 @@ namespace Gecko.DOM
                 TagName = "meta",
                 InterfaceType = typeof (/* nsIDOMHTMLMetaElement */ nsISupports),
                 GeckoElement = typeof (GeckoMetaElement),
-                CreationMethod = (window,x) => new GeckoMetaElement((/* nsIDOMHTMLMetaElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoMetaElement(window, /* nsIDOMHTMLMetaElement */ (nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
