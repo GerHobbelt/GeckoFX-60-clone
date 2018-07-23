@@ -110,7 +110,7 @@ namespace Gecko.DOM
                 TagName = "form",
                 InterfaceType = typeof (nsIDOMHTMLFormElement),
                 GeckoElement = typeof (GeckoFormElement),
-                CreationMethod = (window,x) => new GeckoFormElement((nsIDOMHTMLFormElement) x)
+                CreationMethod = (window,x) => new GeckoFormElement(window, (nsIDOMHTMLFormElement) x)
             });
             Add(new GeckoClassDesc()
             {

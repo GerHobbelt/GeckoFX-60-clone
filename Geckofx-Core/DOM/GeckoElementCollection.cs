@@ -10,10 +10,12 @@ namespace Gecko
     public class GeckoElementCollection
         : IGeckoArray<GeckoHtmlElement>, IEnumerable<GeckoHtmlElement>
     {
+        private readonly nsISupports _window;
         private nsIDOMNodeList List;
 
-        internal GeckoElementCollection(nsIDOMNodeList list)
+        internal GeckoElementCollection(nsISupports window, nsIDOMNodeList list)
         {
+            _window = window;
             this.List = list;
         }
 
@@ -29,10 +31,7 @@ namespace Gecko
                 if (index < 0 || index >= Length)
                     throw new ArgumentOutOfRangeException("index");
 
-#if PORTFF60
-                return GeckoHtmlElement.Create((/*  nsIDOMHTMLElement */nsISupports) List.Item((uint) index));
-#endif
-                throw new NotImplementedException();
+                return (GeckoHtmlElement)GeckoNode.Create(_window, List.Item((uint) index));
             }
         }
 

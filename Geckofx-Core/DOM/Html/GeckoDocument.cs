@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gecko.DOM;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -10,10 +11,12 @@ namespace Gecko
     public class GeckoDocument : GeckoDomDocument
     {
         private /* nsIDOMHTMLDocument */nsIDOMDocument _domHtmlDocument;
+        protected Lazy<WebIDL.HTMLDocument> _htmlDocument;
 
         internal GeckoDocument(nsISupports window,/* nsIDOMHTMLDocument */nsIDOMDocument document) : base(window, document)
         {
             this._domHtmlDocument = document;
+            _htmlDocument = new Lazy<HTMLDocument>(() => new WebIDL.HTMLDocument((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument));
         }
 
         internal static GeckoDocument Create(nsISupports window, /* nsIDOMHTMLDocument */nsIDOMDocument document)
@@ -35,7 +38,7 @@ namespace Gecko
             {
                 return (_domHtmlDocument == null)
                     ? null
-                    : GeckoHtmlElement.Create<GeckoHeadElement>(_window, new WebIDL.HTMLDocument((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument).Head);
+                    : GeckoHtmlElement.Create<GeckoHeadElement>(_window, _htmlDocument.Value.Head);
             }
         }
 
@@ -134,16 +137,7 @@ namespace Gecko
             get { /*return (_domHtmlDocument == null) ? null : new Uri(nsString.Get(_domHtmlDocument.GetURLAttribute));*/throw new NotImplementedException(); }
         }
 
-        public GeckoElementCollection Forms
-        {
-            get
-            {
-                //return (_domHtmlDocument == null)
-                //    ? null
-                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetFormsAttribute());
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoElementCollection Forms => new GeckoElementCollection(_window, (nsIDOMNodeList)_htmlDocument.Value.Forms);
 
         public GeckoElementCollection Images
         {
@@ -211,7 +205,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            return new GeckoElementCollection((nsIDOMNodeList)_document.Value.GetElementsByName(name));
+            return new GeckoElementCollection(_window, (nsIDOMNodeList)_document.Value.GetElementsByName(name));
         }
     }
 }

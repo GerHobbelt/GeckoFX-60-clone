@@ -9,7 +9,7 @@ namespace Gecko.DOM
     {
         private nsIDOMHTMLFormElement DOMHTMLElement;
 
-        internal GeckoFormElement(nsIDOMHTMLFormElement element) : base(element)
+        internal GeckoFormElement(nsISupports window, nsIDOMHTMLFormElement element) : base(window, (nsIDOMElement)element)
         {
             this.DOMHTMLElement = element;
         }

@@ -6,7 +6,7 @@ namespace Gecko
     public class GeckoHtmlElementCollection
         : GeckoElementCollection
     {
-        internal GeckoHtmlElementCollection(/* nsIDOMHTMLCollection */nsISupports col) : base(null)
+        internal GeckoHtmlElementCollection(nsISupports window, /* nsIDOMHTMLCollection */nsISupports col) : base(window, null)
         {
             this.Collection = col;
         }
