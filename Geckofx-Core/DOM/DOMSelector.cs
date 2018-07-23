@@ -257,7 +257,7 @@ namespace Gecko.DOM
                 TagName = "p",
                 InterfaceType = typeof (/* nsIDOMHTMLParagraphElement */ nsISupports),
                 GeckoElement = typeof (GeckoParagraphElement),
-                CreationMethod = (window,x) => new GeckoParagraphElement((/* nsIDOMHTMLParagraphElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoParagraphElement(window, (/* nsIDOMHTMLParagraphElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
