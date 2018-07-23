@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoInputElement : GeckoHtmlElement
     {
         private nsIDOMHTMLInputElement DOMHTMLElement;
+        private Lazy<HTMLInputElement> _inputElement;
 
         internal GeckoInputElement(nsISupports window, nsIDOMHTMLInputElement element) : base(window, (nsIDOMElement)element)
         {
             this.DOMHTMLElement = element;
+            _inputElement = new Lazy<HTMLInputElement>(() => new HTMLInputElement((mozIDOMWindowProxy)window, (nsISupports)element));
         }
 
         public GeckoInputElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
@@ -21,124 +24,111 @@ namespace Gecko.DOM
 
         public string DefaultValue
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetDefaultValueAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetDefaultValueAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.DefaultValue; }
+            set { _inputElement.Value.DefaultValue = value; }
         }
 
         public bool DefaultChecked
         {
-            get { /*return DOMHTMLElement.GetDefaultCheckedAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetDefaultCheckedAttribute(value);*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.DefaultChecked; }
+            set { _inputElement.Value.DefaultChecked = value; }
         }
 
-        public GeckoFormElement Form
-        {
-            get
-            {
-                //nsIDOMHTMLFormElement formElement = DOMHTMLElement.GetFormAttribute();
-
-                //if (formElement == null)
-                //    return null;
-                //else
-                //    return new GeckoFormElement(formElement);
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoFormElement Form => new GeckoFormElement(_window, (nsIDOMHTMLFormElement) _inputElement.Value.Form);
 
         public string Accept
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetAcceptAttribute);*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetAcceptAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.Accept; }
+            set { _inputElement.Value.Accept = value; }
         }
 
         public string Align
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetAlignAttribute);*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetAlignAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.Align; }
+            set { _inputElement.Value.Align = value; }
         }
 
         public string Alt
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetAltAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetAltAttribute(new nsAString(value));*/ throw new NotImplementedException(); }
+            get { return _inputElement.Value.Alt; }
+            set { _inputElement.Value.Alt = value; }
         }
 
         public bool Checked
         {
-            get { /*return DOMHTMLElement.GetCheckedAttribute();*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetCheckedAttribute(value);*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.Checked; }
+            set { _inputElement.Value.Checked = value; }
         }
 
         public bool Disabled
         {
-            get {/* return DOMHTMLElement.GetDisabledAttribute();*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetDisabledAttribute(value);*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.Disabled; }
+            set { _inputElement.Value.Disabled = value; }
         }
 
         public int MaxLength
         {
-            get { /*return DOMHTMLElement.GetMaxLengthAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetMaxLengthAttribute(value);*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.MaxLength; }
+            set { _inputElement.Value.MaxLength = value; }
         }
 
         public string Name
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetNameAttribute);*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetNameAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.Name; }
+            set { _inputElement.Value.Name = value; }
         }
 
         public bool ReadOnly
         {
-            get { /*return DOMHTMLElement.GetReadOnlyAttribute(); */throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetReadOnlyAttribute(value);*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.ReadOnly; }
+            set { _inputElement.Value.ReadOnly = value; }
         }
 
         public uint Size
         {
-            get { /*return DOMHTMLElement.GetSizeAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSizeAttribute(value);*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.Size; }
+            set { _inputElement.Value.Size = value; }
         }
 
         public string Src
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetSrcAttribute);*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetSrcAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.Src; }
+            set { _inputElement.Value.Src = value; }
         }
 
         public string Type
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetTypeAttribute); */throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetTypeAttribute(new nsAString(value)); */throw new NotImplementedException(); }
+            get { return _inputElement.Value.Type; }
+            set { _inputElement.Value.Type = value; }
         }
 
         public string UseMap
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetUseMapAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetUseMapAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.UseMap; }
+            set { _inputElement.Value.UseMap = value; }
         }
 
         public string Value
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetValueAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetValueAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _inputElement.Value.Value; }
+            set { _inputElement.Value.Value = value; }
         }
 
         public int SelectionStart
         {
-            get { /*return DOMHTMLElement.GetSelectionStartAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSelectionStartAttribute(value);*/throw new NotImplementedException(); }
+            get { return (int)(_inputElement.Value.SelectionStart ?? 0); }
+            set { _inputElement.Value.SelectionStart = (uint)value; }
         }
 
         public int SelectionEnd
         {
-            get {/* return DOMHTMLElement.GetSelectionEndAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSelectionEndAttribute(value);*/throw new NotImplementedException(); }
+            get { return (int)( _inputElement.Value.SelectionEnd ?? 0); }
+            set { _inputElement.Value.SelectionEnd = (uint)value; }
         }
 
-        public void select()
+        public void Select()
         {
-            //DOMHTMLElement.Select();
-            throw new NotImplementedException();
+            _inputElement.Value.Select();
         }
     }
 }

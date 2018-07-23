@@ -127,8 +127,9 @@ namespace Gecko.WebIDL
 
         private T ConvertObject<T>(object o)
         {
-            if (typeof (T).IsValueType)
-                return (T) Convert.ChangeType(o, typeof (T));
+            var t = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+            if (t.IsValueType)
+                return (T) Convert.ChangeType(o, t);
             else
                 return (T) o;
         }

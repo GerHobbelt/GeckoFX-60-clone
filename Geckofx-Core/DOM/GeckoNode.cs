@@ -329,10 +329,8 @@ namespace Gecko
         public DomEventTarget GetEventTarget()
         {
             var eventTarget = Xpcom.QueryInterface<nsIDOMEventTarget>(_domNode.Instance);
-#if PORTFF60
-            return eventTarget.Wrap(DomEventTarget.Create);
-#endif
-            throw new NotImplementedException();
+
+            return eventTarget.Wrap(_window, DomEventTarget.Create);
         }
     }
 }
