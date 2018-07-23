@@ -236,15 +236,9 @@ namespace Gecko
             return (GeckoHtmlElement)new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domDocument).GetElementById(id).Wrap(_window, Create);
         }
 
-        public string InputEncoding
-        {
-            get { /*return nsString.Get(_domDocument.GetInputEncodingAttribute);*/ throw new NotImplementedException(); }
-        }
+        public string InputEncoding => _document.Value.InputEncoding;
 
-        public string Uri
-        {
-            get { /*return nsString.Get(_domDocument.GetDocumentURIAttribute);*/  throw new NotImplementedException(); }
-        }
+        public string Uri => _document.Value.URL;
 
         ///// <summary>
         ///// Introduced in DOM Level 3:

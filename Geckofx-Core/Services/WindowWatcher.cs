@@ -52,7 +52,7 @@ namespace Gecko.Services
 
         public static IEnumerator<GeckoWindow> GetWindowEnumerator()
         {
-            return new Collections.GeckoEnumerator<GeckoWindow, nsIDOMWindow>(
+            return new Collections.GeckoEnumerator<GeckoWindow, mozIDOMWindowProxy>(
                 _watcher.Instance.GetWindowEnumerator(),
                 x => new GeckoWindow(x));
         }

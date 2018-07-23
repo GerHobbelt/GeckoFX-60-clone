@@ -58,13 +58,12 @@ namespace Gecko
         /// <param name="type">Window type. non-empty-string: for xul pages, should be equal to "windowtype" attribute of the root element.
         /// ""/null: for normal html pages.</param>
         /// <returns></returns>
-        public static nsIDOMWindow GetMostRecentWindow(string type)
+        public static mozIDOMWindowProxy GetMostRecentWindow(string type)
         {
             if (Disable)
                 return null;
 
-            //return _windowMediator.Instance.GetMostRecentWindow(type);
-            throw new NotImplementedException();
+            return _windowMediator.Instance.GetMostRecentWindow(type);
         }
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace Gecko
             if (Disable)
                 return null;
 
-            return new Collections.GeckoEnumerator<GeckoWindow, nsIDOMWindow>(
+            return new Collections.GeckoEnumerator<GeckoWindow, mozIDOMWindowProxy>(
                 _windowMediator.Instance.GetEnumerator(type),
                 x => new GeckoWindow(x));
         }

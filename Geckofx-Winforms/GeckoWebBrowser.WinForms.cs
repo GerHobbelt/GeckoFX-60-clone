@@ -180,14 +180,11 @@ namespace Gecko
                     // history
                     {
                         var sessionHistory = WebNav.GetSessionHistoryAttribute();
-#if WILL_PROLLY_WORK_AFTER_REGENERATING_INTERFACES
-                        if (sessionHistory != null) sessionHistory.AddSHistoryListener(this);
-#endif
+                        if (sessionHistory != null)
+                            sessionHistory.AddSHistoryListener(this);
 
                     }
-#if PORTFF60
                     WindowMediator.RegisterWindow(this);
-#endif
                 }
 
 #if !GTK
@@ -302,9 +299,7 @@ namespace Gecko
             {
                 this.Stop();
 
-#if PORTFF60
                 WindowMediator.UnregisterWindow(this);
-#endif
 
                 if (_weakRef != null)
                 {
