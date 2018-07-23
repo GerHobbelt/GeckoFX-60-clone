@@ -4,28 +4,27 @@ using System.Linq;
 using System.Text;
 using Gecko.Collections;
 using Gecko.Interop;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoNamedNodeMap
         : IGeckoArray<GeckoNode>, IEnumerable<GeckoNode>
     {
-        private ComPtr</* nsIDOMMozNamedAttrMap */nsISupports> _map;
+        private readonly nsISupports _window;
+        private readonly Lazy<WebIDL.NamedNodeMap> _namedNodeMap;
 
-        public GeckoNamedNodeMap(/* nsIDOMMozNamedAttrMap */nsISupports map)
+        public GeckoNamedNodeMap(nsISupports window, /* nsIDOMMozNamedAttrMap */nsISupports map)
         {
-            // map should be not null
-            this._map = new ComPtr</* nsIDOMMozNamedAttrMap */nsISupports>(map);
+            _window = window;
+            _namedNodeMap = new Lazy<NamedNodeMap>(() => new WebIDL.NamedNodeMap((mozIDOMWindowProxy)_window, map));
         }
 
 
         /// <summary>
         /// Gets the number of items in the map.
         /// </summary>
-        public int Length
-        {
-            get { /*return (int) _map.Instance.GetLengthAttribute();*/ throw new NotImplementedException(); }
-        }
+        public int Length => (int) _namedNodeMap.Value.Length;
 
         public GeckoNode this[int index]
         {
@@ -41,7 +40,10 @@ namespace Gecko.DOM
 
         public GeckoNode this[string name]
         {
-            get { /*return nsString.Pass(_map.Instance.GetNamedItem, name).Wrap(GeckoNode.Create);*/ throw new NotImplementedException(); }
+            get
+            {
+                return ((nsIDOMNode)_namedNodeMap.Value.GetNamedItem(name)).Wrap(_window, GeckoNode.Create);               
+            }
         }
 
         public GeckoNode this[string namespaceUri, string localName]
@@ -60,11 +62,10 @@ namespace Gecko.DOM
 
         public IEnumerator<GeckoNode> GetEnumerator()
         {
-            throw new NotImplementedException();
             int length = Length;
             for (int i = 0; i < length; i++)
             {
-                //yield return GeckoNode.Create(_map.Instance.Item((uint) i));
+                yield return GeckoNode.Create(_window, (nsIDOMNode)_namedNodeMap.Value.Item((uint) i));
             }
         }
 

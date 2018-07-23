@@ -96,10 +96,7 @@ namespace Gecko
 
         #region Attribute
 
-        public GeckoNamedNodeMap Attributes
-        {
-            get { return _domElement.GetAttributesAttribute().Wrap(x => new GeckoNamedNodeMap(x)); }
-        }
+        public GeckoNamedNodeMap Attributes => _element.Value.Attributes.Wrap(_window, (window, x) => new GeckoNamedNodeMap(window, x));
 
         /// <summary>
         /// Gets the value of an attribute on this element with the specified name.
@@ -124,7 +121,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
-            return nsString.Pass<bool>(_domElement.HasAttribute, attributeName);
+           return  _element.Value.HasAttribute(attributeName);
         }
 
         /// <summary>
@@ -137,8 +134,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
-            //nsString.Set(_domElement.SetAttribute, attributeName, value);
-            throw new NotImplementedException();
+            _element.Value.SetAttribute(attributeName, value);
         }
 
         /// <summary>
@@ -150,9 +146,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
-
-            //nsString.Set(_domElement.RemoveAttribute, attributeName);
-            throw new NotImplementedException();
+            _element.Value.RemoveAttribute(attributeName);
         }
 
         #endregion
