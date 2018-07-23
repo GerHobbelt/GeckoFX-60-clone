@@ -192,11 +192,9 @@ namespace Gecko
 
         public DomEventArgs CreateEvent(string name)
         {
-            throw new NotImplementedException();
-#if PORTFF60
-            var target = nsString.Pass(_domDocument.CreateEvent, name);
-            return target.Wrap(DomEventArgs.Create);
-#endif
+            var e = _document.Value.CreateEvent(name);
+
+            return e.Wrap(_window, (x,y) => DomEventArgs.Create(y));
         }
 
 

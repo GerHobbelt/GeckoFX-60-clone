@@ -152,7 +152,7 @@ namespace GeckofxUnitTests
         }
 
         [TestCase("MouseEvent", typeof(DomMouseEventArgs))]
-        [TestCase("KeyEvents", typeof(DomKeyEventArgs))]
+        [TestCase("KeyEvents", typeof(DomUIEventArgs))]
 	    public void CreateEvent_VariousEvents_ExpectedWrapperTypesProduced(string eventName, Type expectedWrapperType)
 	    {
             browser.TestLoadHtml("hello world");
