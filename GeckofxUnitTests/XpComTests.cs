@@ -121,13 +121,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingFormData_ReturnsValidInstance()
-		{
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/files/formdata;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingDomParser_ReturnsValidInstance()
@@ -145,13 +138,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingXmlHttpRequest_ReturnsValidInstance()
-		{
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/xmlextras/xmlhttprequest;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingCspService_ReturnsValidInstance()
@@ -199,14 +185,6 @@ namespace GeckofxUnitTests
 		public void CreateInstance_CreatingXPathNameSpace_ThrowsClassNotRegistered()
 		{
 			Assert.Throws<COMException>(() => Xpcom.CreateInstance<nsISupports>("@mozilla.org/transformiix/xpath-namespace;1"));			
-		}
-
-		[Test]
-		public void CreateInstance_CreatingXsltDocumentTransformer_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/document-transformer;1?type=xslt");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
 		}
 
 		[Test]
@@ -276,13 +254,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingXPathEvaluator_ReturnsValidInstance()
-		{
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/dom/xpath-evaluator;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingFocusManager_ReturnsValidInstance()
@@ -300,20 +271,7 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingEntropy_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/security/entropy;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingContentPrefService_ThrowsFail()
-		{
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/content-pref/service;1");
-			Assert.IsNotNull(instance);			
-		}
 
 		[Test]
 		public void CreateInstance_CreatingHostnameGrouper_ReturnsValidInstance()
@@ -347,13 +305,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingSpellcheckerInline_ReturnsValidInstance()
-		{				
-			var instance = Xpcom.CreateInstance<nsIInlineSpellChecker>("@mozilla.org/spellchecker-inline;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingSpellChecker_ReturnsValidInstance()
@@ -476,13 +427,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingCookiePrompt_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/embedcomp/cookieprompt-service;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingContentBlocker_ReturnsValidInstance()
@@ -533,21 +477,7 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingLocaleService_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/nslocaleservice;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingScriptableDateFormat_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/scriptabledateformat;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingCollation_ReturnsValidInstance()
@@ -565,37 +495,9 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingDateTimeFormat_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/datetimeformat;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingLanguageAtomService_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/nslanguageatomservice;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);		
-		}
 
-		[Test]
-		public void CreateInstance_CreatingLbek_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/lbrk;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingWbrk_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/wbrk;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingStringBundle_ReturnsValidInstance()
@@ -621,13 +523,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingPlatformCharset_ReturnsValidInstance()
-		{
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/platformcharset;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingUtf8ConverterService_ReturnsValidInstance()
@@ -645,53 +540,11 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingUnideDecoderWindows1252_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/unicode/decoder;1?charset=windows-1252");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingUnicodeDecoderISO8859_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/unicode/decoder;1?charset=ISO-8859-1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingEntityConverter_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/entityconverter;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingSaveAsCharset_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/saveascharset;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingUnicodeNormalizer_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/unicodenormalizer;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingUniCharUtil_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/intl/unicharutil;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingSciptError_ReturnsValidInstance()
@@ -830,21 +683,7 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingParserService_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/parser/parser-service;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
-		[Test]
-		public void CreateInstance_CreatingSaxParserAttributes_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISAXAttributes>("@mozilla.org/saxparser/attributes;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingSaxParserXmlReader_ReturnsValidInstance()
@@ -870,13 +709,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingCertPickDialog_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/nsCertPickDialogs;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingAlertsService_ReturnsValidInstance()
@@ -1105,13 +937,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingAtomService_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/atom-service;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}		
 
 		[Test]
 		public void CreateInstance_CreatingIniParserFactory_ReturnsValidInstance()
@@ -1129,13 +954,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-		[Test]
-		public void CreateInstance_CreatingSupportsArray_ReturnsValidInstance()
-		{			
-			var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/supports-array;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
 
 		[Test]
 		public void CreateInstance_CreatingVariant_ReturnsValidInstance()
@@ -1282,13 +1100,6 @@ namespace GeckofxUnitTests
 			Marshal.ReleaseComObject(instance);
 		}
 
-        [Test]
-        public void CreateInstance_CreatingDomUtils_ReturnsValidInstance()
-        {
-            var instance = Xpcom.CreateInstance<nsISupports>("@mozilla.org/inspector/dom-utils;1");
-            Assert.IsNotNull(instance);
-            Marshal.ReleaseComObject(instance);
-        }
 
 	    [Test]
 	    public void CreateInstance_CreatingCacheStorageService_ReturnsValidInstance()
@@ -1361,14 +1172,6 @@ namespace GeckofxUnitTests
 		public void GetConsoleService_CleanXpComInstance_ReturnsValidInstance()
 		{
 			var instance = Xpcom.GetService<nsIConsoleService>("@mozilla.org/consoleservice;1");
-			Assert.IsNotNull(instance);
-			Marshal.ReleaseComObject(instance);
-		}
-
-		[Test]
-		public void GetDownloadManager_CleanXpComInstance_ReturnsValidInstance()
-		{
-			var instance = Xpcom.GetService<nsISupports>("@mozilla.org/download-manager;1");
 			Assert.IsNotNull(instance);
 			Marshal.ReleaseComObject(instance);
 		}
