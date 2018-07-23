@@ -208,9 +208,7 @@ namespace Gecko.DOM
         {
             using (nsAString type = new nsAString(aType))
             {
-                //_windowUtils.Instance.SendMouseEvent(type, aX, aY, (int) aButton, aClickCount, aModifiers,
-                //    aIgnoreRootScrollFrame, aPressure, aInputSourceArg, false, 10);
-                throw new NotImplementedException();
+                _windowUtils.Instance.SendMouseEvent(type, aX, aY, (int) aButton, aClickCount, aModifiers, aIgnoreRootScrollFrame, aPressure, aInputSourceArg, false, false,0, 0, 13); 
             }
         }
 
@@ -224,9 +222,7 @@ namespace Gecko.DOM
         {
             using (nsAString type = new nsAString(aType))
             {
-                //_windowUtils.Instance.SendMouseEventToWindow(type, aX, aY, (int) aButton, aClickCount, aModifiers,
-                //    aIgnoreRootScrollFrame, aPressure, aInputSourceArg, false, 10);
-                throw new NotImplementedException();
+                _windowUtils.Instance.SendMouseEventToWindow(type, aX, aY, (int) aButton, aClickCount, aModifiers, aIgnoreRootScrollFrame, aPressure, aInputSourceArg, false, false, 0, 0, 14);
             }
         }
 
