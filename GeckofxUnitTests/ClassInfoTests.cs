@@ -19,18 +19,6 @@ namespace GeckofxUnitTests
 
 		[Test]
 		[Category(ClassInfoTestsCategory)]
-		public void TestClassInfoException()
-		{
-			var item = Xpcom.CreateInstance2<nsIException>(Contracts.Exception);
-			
-			var classInfo= item.GetClassInfo();
-
-			Assert.IsNotNull( classInfo );
-
-		}
-
-		[Test]
-		[Category(ClassInfoTestsCategory)]
 		public void TestClassInfoSystemPrincipal()
 		{
 			var item = Xpcom.CreateInstance2<nsIPrincipal>(Contracts.SystemPrincipal);
