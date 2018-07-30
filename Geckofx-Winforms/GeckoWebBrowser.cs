@@ -2503,33 +2503,33 @@ namespace Gecko
 
         void nsISHistoryListener.OnLengthChanged(int aCount)
         {
-            throw new NotImplementedException();
+           
         }
 
         void nsISHistoryListener.OnIndexChanged(int aIndex)
         {
-            throw new NotImplementedException();
+            
         }
 
         IntPtr nsIXULWindow.GetLiveResizeListeners()
         {
-            throw new NotImplementedException();
+            return IntPtr.Zero;
         }
 
         nsIXULWindow nsIXULWindow.CreateNewWindow(int aChromeFlags, nsITabParent aOpeningTab, IntPtr aOpener,
             ulong aNextTabParentId)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         void nsIXULWindow.SizeShellToWithLimit(int aDesiredWidth, int aDesiredHeight, int shellItemWidth, int shellItemHeight)
         {
-            throw new NotImplementedException();
+            
         }
 
         ulong nsIXULWindow.GetNextTabParentIdAttribute()
         {
-            throw new NotImplementedException();
+            return 0;
         }
     }
 
