@@ -17,13 +17,16 @@ namespace Gecko
     {
         internal nsIDOMDocument _domDocument;
 
-        protected Lazy<WebIDL.Document> _document;
+        // TODO: FIXME: remove internal add readonly props.
+        protected internal Lazy<WebIDL.Document> _document;
+        protected internal Lazy<WebIDL.DocumentOrShadowRoot> _documentOrShadowRoot;
 
         internal GeckoDomDocument(nsISupports window, nsIDOMDocument document)
             : base(window, document)
         {
             _domDocument = document;
             _document = new Lazy<Document>(() => new WebIDL.Document((mozIDOMWindowProxy)window, (nsISupports)document));
+            _documentOrShadowRoot = new Lazy<DocumentOrShadowRoot>(() => new WebIDL.DocumentOrShadowRoot((mozIDOMWindowProxy)window, (nsISupports)document));
         }
 
         /// <summary>

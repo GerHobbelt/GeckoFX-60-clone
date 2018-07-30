@@ -61,21 +61,20 @@ namespace Gecko
         /// </summary>
         public class StyleSheetCollection : IEnumerable<GeckoStyleSheet>
         {
-            internal StyleSheetCollection(GeckoDocument document)
+            private readonly nsISupports _window;
+            private Lazy<StyleSheetList> _list;
+            
+            internal StyleSheetCollection(nsISupports window, GeckoDocument document)
             {
-                //this.List = document._domHtmlDocument.GetStyleSheetsAttribute();
-                throw new NotImplementedException();
+                _window = window;
+                _list = new Lazy<StyleSheetList>(() => new StyleSheetList((mozIDOMWindowProxy)_window, document._documentOrShadowRoot.Value.StyleSheets));
             }
 
-            private /* nsIDOMStyleSheetList */nsISupports List;
 
             /// <summary>
             /// Gets the number of items in the collection.
             /// </summary>
-            public int Count
-            {
-                get {/* return (List == null) ? 0 : (int) List.GetLengthAttribute();*/throw new NotImplementedException(); }
-            }
+            public uint Count => _list.Value.Length;
 
             /// <summary>
             /// Gets the item at the specified index in the collection.
@@ -102,12 +101,12 @@ namespace Gecko
             /// <returns></returns>
             public IEnumerator<GeckoStyleSheet> GetEnumerator()
             {
-                int length = Count;
-                //for (int i = 0; i < length; i++)
-                //{
-                //    yield return GeckoStyleSheet.Create((nsIDOMCSSStyleSheet) List.Item((uint) i));
-                //}
-                throw new NotImplementedException();
+                uint length = Count;
+                for (uint i = 0; i < length; i++)
+                {
+                    yield return GeckoStyleSheet.Create(_window, _list.Value.Item(i));
+                }
+                
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -124,7 +123,7 @@ namespace Gecko
         /// </summary>
         public StyleSheetCollection StyleSheets
         {
-            get { return (_StyleSheets == null) ? (_StyleSheets = new StyleSheetCollection(this)) : _StyleSheets; }
+            get { return (_StyleSheets == null) ? (_StyleSheets = new StyleSheetCollection(_window, this)) : _StyleSheets; }
         }
 
         private StyleSheetCollection _StyleSheets;

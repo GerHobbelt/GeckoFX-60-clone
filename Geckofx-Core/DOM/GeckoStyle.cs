@@ -58,7 +58,7 @@ namespace Gecko
         {
             _window = window;
             _styleDelcaration = styleDeclaration;
-            _style = new Lazy<CSSStyleDeclaration>(() => new CSSStyleDeclaration((mozIDOMWindowProxy)window, _styleDelcaration));
+            _style = new Lazy<CSSStyleDeclaration>(() => new CSSStyleDeclaration((mozIDOMWindowProxy)_window, _styleDelcaration));            
         }
 
         internal static GeckoStyle Create(nsISupports window, /* /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
@@ -84,17 +84,11 @@ namespace Gecko
         /// <summary>
         /// Get property name by index
         /// </summary>		
-        public string this[int index]
+        public string this[uint index]
         {
             get
             {
-#if PORTFF60
-                var retval = new nsAString();
-                _styleDelcaration.Item((uint) index, retval);
-                return retval.ToString();
-#else
-                throw new NotImplementedException();
-#endif
+                return _style.Value.Item(index);
             }
         }
 
@@ -128,24 +122,26 @@ namespace Gecko
     /// </summary>
     public class GeckoStyleSheet
     {
-        private GeckoStyleSheet(/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
+        private GeckoStyleSheet(nsISupports window,/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
         {
+            _window = window;
             _DomStyleSheet = styleSheet;
         }
 
-        internal static GeckoStyleSheet Create(/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
+        internal static GeckoStyleSheet Create(nsISupports window, /* nsIDOMCSSStyleSheet */nsISupports styleSheet)
         {
-            return (styleSheet == null) ? null : new GeckoStyleSheet(styleSheet);
+            return (styleSheet == null) ? null : new GeckoStyleSheet(window, styleSheet);
         }
 
         /// <summary>
         /// Gets the underlying XPCOM object.
         /// </summary>
-        public object DomStyleSheet
+        public nsISupports DomStyleSheet
         {
             get { return _DomStyleSheet; }
         }
 
+        private readonly nsISupports _window;
         private /* nsIDOMCSSStyleSheet */nsISupports _DomStyleSheet;
 
         /// <summary>
@@ -206,7 +202,7 @@ namespace Gecko
         /// </summary>
         public StyleRuleCollection CssRules
         {
-            get { return (_CssRules == null) ? (_CssRules = new StyleRuleCollection(this)) : _CssRules; }
+            get { return (_CssRules == null) ? (_CssRules = new StyleRuleCollection(_window, this)) : _CssRules; }
         }
 
         private StyleRuleCollection _CssRules;
@@ -218,45 +214,29 @@ namespace Gecko
 #region public class StyleRuleCollection : IEnumerable<GeckoStyleRule>
         public class StyleRuleCollection : IEnumerable<GeckoStyleRule>
         {
-            internal StyleRuleCollection(GeckoStyleSheet styleSheet)
+            private Lazy<WebIDL.CSSStyleSheet> _styleSheet;
+            private Lazy<CSSRuleList> _ruleList;
+            
+            internal StyleRuleCollection(nsISupports window, GeckoStyleSheet styleSheet)
             {
+
                 StyleSheet = styleSheet;
-                this.List = GetRuleList();
+                _window = window;
+                _styleSheet = new Lazy<WebIDL.CSSStyleSheet>(() => new WebIDL.CSSStyleSheet((mozIDOMWindowProxy)window, styleSheet.DomStyleSheet));
+                _ruleList = new Lazy<CSSRuleList>(() => new CSSRuleList((mozIDOMWindowProxy)_window, _styleSheet.Value.CssRules));
+                this.List = _styleSheet.Value.CssRules;
             }
 
             private GeckoStyleSheet StyleSheet;
             private /* nsIDOMCSSRuleList */nsISupports List;
-            private mozIDOMWindow _window;
-
-            private /* nsIDOMCSSRuleList */nsISupports GetRuleList()
-            {
-                using (AutoJSContext context = new AutoJSContext(GetGlobalWindow()))
-                {
-                    var window = GetGlobalWindow();
-                    var val = context.EvaluateScript("this.document.styleSheets[0].cssRules;", window);
-                    return (/* nsIDOMCSSRuleList */nsISupports) val.ToObject();
-                }
-            }
-
-            private mozIDOMWindow GetGlobalWindow()
-            {
-                if (_window == null)
-                {
-                    //_window =
-                    //    StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
-                    //        .GetOwnerDocumentAttribute()
-                    //        .GetDefaultViewAttribute();
-                    throw new NotImplementedException();
-                }
-                return _window;
-            }
+            private nsISupports _window;
 
             /// <summary>
             /// Attempts to reload the rule list.
             /// </summary>
             public void Reload()
             {
-                this.List = GetRuleList();
+                this.List = _styleSheet.Value.CssRules;
             }
 
             /// <summary>
@@ -270,10 +250,7 @@ namespace Gecko
             /// <summary>
             /// Gets the number of items in the collection.
             /// </summary>
-            public int Count
-            {
-                get { /*return (List == null) ? 0 : (int) List.GetLengthAttribute();*/throw new NotImplementedException(); }
-            }
+            public uint Count => _ruleList.Value.Length;
 
             /// <summary>
             /// Returns the <see cref="GeckoStyleRule"/> at a given index in the collection.
@@ -307,7 +284,7 @@ namespace Gecko
             /// </summary>
             /// <param name="index"></param>
             /// <param name="rule"></param>
-            public int Insert(int index, string rule)
+            public int Insert(uint index, string rule)
             {
                 if (IsReadOnly)
                     throw new InvalidOperationException("This collection is read-only.");
@@ -316,48 +293,21 @@ namespace Gecko
                 else if (string.IsNullOrEmpty(rule))
                     return -1;
 
-                const int NS_ERROR_DOM_SYNTAX_ERR = unchecked((int) 0x8053000c);
-
-                using (AutoJSContext context = new AutoJSContext(GetGlobalWindow()))
-                {
-#if PORTFF60
-                    var window =
-                        StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
-                            .GetOwnerDocumentAttribute()
-                            .GetDefaultViewAttribute();
-                    var val =
-                        context.EvaluateScript(
-                            String.Format("this.document.styleSheets[0].insertRule('{0}',{1});", rule, index), window);
-                    return val.ToInteger();
-#endif
-                    throw new NotImplementedException();
-                }
-
-                return index;
+                return (int)_styleSheet.Value.InsertRule(rule, index);
             }
 
             /// <summary>
             /// Removes a specific rule from the collection.
             /// </summary>
             /// <param name="index"></param>
-            public void RemoveAt(int index)
+            public void RemoveAt(uint index)
             {
                 if (IsReadOnly)
                     throw new InvalidOperationException("This collection is read-only.");
                 else if (index < 0 || index >= Count)
-                    throw new ArgumentOutOfRangeException("index");
+                    throw new ArgumentOutOfRangeException(nameof(index));
 
-                using (AutoJSContext context = new AutoJSContext(GetGlobalWindow()))
-                {
-#if PORTFF60
-                    var window =
-                        StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
-                            .GetOwnerDocumentAttribute()
-                            .GetDefaultViewAttribute();
-                    context.EvaluateScript(String.Format("this.document.styleSheets[0].deleteRule({0});", index), window);
-#endif
-                    throw new NotImplementedException();
-                }
+                _styleSheet.Value.DeleteRule(index);
             }
 
             /// <summary>
@@ -368,18 +318,8 @@ namespace Gecko
                 if (IsReadOnly && Count > 0)
                     throw new InvalidOperationException("This collection is read-only.");
 
-                using (AutoJSContext context = new AutoJSContext(GetGlobalWindow()))
-                {
-#if PORTFF60
-                    var window =
-                        StyleSheet._DomStyleSheet.GetOwnerNodeAttribute()
-                            .GetOwnerDocumentAttribute()
-                            .GetDefaultViewAttribute();
-                    for (int i = Count - 1; i >= 0; i--)
-                        context.EvaluateScript(String.Format("this.document.styleSheets[0].deleteRule({0});", i), window);
-#endif
-                    throw new NotImplementedException();
-                }
+                for (uint i = Count; i > 0; i--)
+                    _styleSheet.Value.DeleteRule(0);
             }
 
 #region IEnumerable<GeckoStyleRule> Members
@@ -390,7 +330,7 @@ namespace Gecko
             /// <returns></returns>
             public IEnumerator<GeckoStyleRule> GetEnumerator()
             {           
-                int length = Count;
+                uint length = Count;
 #if PORTFF60
                 for (int i = 0; i < length; i++)
                 {
