@@ -2,21 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoFrameElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLFrameElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLFrameElement */ nsIDOMElement DOMHTMLElement;
+        private Lazy<WebIDL.HTMLIFrameElement> _htmlFrame;
 
-        internal GeckoFrameElement(/* nsIDOMHTMLFrameElement */ nsISupports element) : base(element)
+        internal GeckoFrameElement(nsISupports window,/* nsIDOMHTMLFrameElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoFrameElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLFrameElement */ nsISupports;
+            _htmlFrame = new Lazy<HTMLIFrameElement>(() => new WebIDL.HTMLIFrameElement((mozIDOMWindowProxy)window, (nsISupports)element));
         }
 
         public string FrameBorder
@@ -81,9 +79,8 @@ namespace Gecko.DOM
         {
             get
             {
-                //var window = DOMHTMLElement.GetContentWindowAttribute();
-                //return (window == null) ? null : new GeckoWindow(window);
-                throw new NotImplementedException();
+                var window = _htmlFrame.Value.ContentWindow;
+                return window == null ? null : new GeckoWindow(window);               
             }
         }
     }

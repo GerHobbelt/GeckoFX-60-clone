@@ -115,9 +115,9 @@ namespace Gecko.DOM
             Add(new GeckoClassDesc()
             {
                 TagName = "frame",
-                InterfaceType = typeof (/* nsIDOMHTMLFrameElement */ nsISupports),
+                InterfaceType = typeof (/* nsIDOMHTMLFrameElement */ nsIDOMElement),
                 GeckoElement = typeof (GeckoFrameElement),
-                CreationMethod = (window,x) => new GeckoFrameElement((/* nsIDOMHTMLFrameElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoFrameElement(window,/* nsIDOMHTMLFrameElement */ (nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {

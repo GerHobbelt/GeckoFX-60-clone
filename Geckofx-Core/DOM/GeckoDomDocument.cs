@@ -135,11 +135,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 return null;
 
-            throw new NotImplementedException();
-#if PORTFF60
-            return nsString.Pass<nsIDOMNodeList>(_domDocument.GetElementsByTagName, tagName)
-                .Wrap(x => new GeckoElementCollection(x));
-#endif
+            return _document.Value.GetElementsByTagName(tagName).Wrap(_window, (window, x) => new GeckoElementCollection(_window, (nsIDOMNodeList)x));
         }
 
         public GeckoNode ImportNode(GeckoNode node, bool deep)
