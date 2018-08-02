@@ -47,15 +47,6 @@ namespace GeckofxUnitTests
 		}
 
 		[Test]
-		public void GetCursorType()
-		{
-			// enums defined in nsWidget.h
-			const int eCursor_none = 34;
-			
-			Assert.AreEqual(eCursor_none, browser.Window.WindowUtils.GetCursorType());
-		}
-
-		[Test]
 		public void GetDocumentMetadata()
 		{
 			Assert.AreEqual(String.Empty, browser.Window.WindowUtils.GetDocumentMetadata("var"));

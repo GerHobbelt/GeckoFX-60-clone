@@ -54,17 +54,6 @@ namespace Gecko.DOM
         }
 
         /// <summary>
-        /// Get current cursor type from this window
-        /// @return the current value of nsCursor
-        /// </summary>
-        public short GetCursorType()
-        {
-            //return _windowUtils.Instance.GetCursorType();
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
         /// Function to get metadata associated with the window's current document
         /// @param aName the name of the metadata.  This should be all lowercase.
         /// @return the value of the metadata, or the empty string if it's not set
