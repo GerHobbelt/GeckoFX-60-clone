@@ -382,21 +382,6 @@ namespace Gecko.DOM
 
         internal static GeckoHtmlElement CreateDomHtmlElementWrapper(nsISupports window, /* /* nsIDOMHTMLElement*/nsISupports instance)
         {
-#if PORTFF60
-            var lowerTagName = nsString.Get(instance.GetTagNameAttribute).ToLowerInvariant();
-            GeckoClassDesc desc;
-
-            if (_dictionary.TryGetValue(lowerTagName, out desc))
-            {
-                object HTMLElement = Xpcom.QueryInterface(instance, desc.InterfaceType.GUID);
-                if (HTMLElement != null)
-                {
-                    GeckoHtmlElement e = desc.CreationMethod(HTMLElement);
-                    return e;
-                }
-            }
-            return null;
-#else
             var lowerTagName = new WebIDL.Element((mozIDOMWindowProxy)window, instance).TagName.ToLowerInvariant();
             GeckoClassDesc desc;
 
@@ -410,7 +395,6 @@ namespace Gecko.DOM
                 }
             }
             return null;
-#endif
         }
     }
 }
