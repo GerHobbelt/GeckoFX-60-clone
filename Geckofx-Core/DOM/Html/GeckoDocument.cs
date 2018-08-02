@@ -81,15 +81,14 @@ namespace Gecko
             /// </summary>
             /// <param name="index"></param>
             /// <returns></returns>
-            public GeckoStyleSheet this[int index]
+            public GeckoStyleSheet this[uint index]
             {
                 get
                 {
-                    if (index < 0 || index >= Count)
-                        throw new ArgumentOutOfRangeException("index");
+                    if (index >= Count)
+                        throw new ArgumentOutOfRangeException(nameof(index));
 
-                    //return GeckoStyleSheet.Create((nsIDOMCSSStyleSheet) List.Item((uint) index));
-                    throw new NotImplementedException();
+                    return GeckoStyleSheet.Create(_window, _list.Value.Item(index));                    
                 }
             }
 
