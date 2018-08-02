@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Geckofx45</id>
+    <id>Geckofx60</id>
     <version>$version$</version>
-    <title>geckofx-45 Windows 32bit</title>
+    <title>geckofx-60 Windows 32bit</title>
     <authors>geckofx</authors>
     <owners>geckofx</owners>
     <projectUrl>https://bitbucket.org/geckofx/</projectUrl>
