@@ -56,7 +56,7 @@ namespace Gecko
         /// <summary>
         /// Gets the inline style of the GeckoElement. 
         /// </summary>
-        public GeckoStyle Style => _htmlElement.Value.Style.Wrap(_window, GeckoStyle.Create);
+        public GeckoStyle Style => _htmlElement.Value.Style.Wrap(Window, GeckoStyle.Create);
 
         /// <summary>
         /// Gets style of the GeckoElement. 
@@ -72,14 +72,14 @@ namespace Gecko
                         (nsISupports) OwnerDocument.DefaultView.DomWindow);
                     style = window.GetComputedStyle(element.Instance);
                 }
-                return GeckoStyle.Create(_window, style);
+                return GeckoStyle.Create(Window, style);
             }
         }
 
         /// <summary>
         /// Gets the parent element of this one.
         /// </summary>
-        public GeckoHtmlElement Parent => GeckoHtmlElement.Create(_window, _node.Value.ParentElement);
+        public GeckoHtmlElement Parent => GeckoHtmlElement.Create(Window, _node.Value.ParentElement);
 
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace Gecko
         public int OffsetHeight => _htmlElement.Value.OffsetHeight;
 
 
-        public GeckoHtmlElement OffsetParent => GeckoHtmlElement.Create(_window, _htmlElement.Value.OffsetParent);
+        public GeckoHtmlElement OffsetParent => GeckoHtmlElement.Create(Window, _htmlElement.Value.OffsetParent);
 
         public void ScrollIntoView(bool top)
         {

@@ -96,7 +96,7 @@ namespace Gecko
 
         #region Attribute
 
-        public GeckoNamedNodeMap Attributes => _element.Value.Attributes.Wrap(_window, (window, x) => new GeckoNamedNodeMap(window, x));
+        public GeckoNamedNodeMap Attributes => _element.Value.Attributes.Wrap(Window, (window, x) => new GeckoNamedNodeMap(window, x));
 
         /// <summary>
         /// Gets the value of an attribute on this element with the specified name.

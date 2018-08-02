@@ -68,7 +68,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 throw new ArgumentException("tagName");
 
-            return GeckoHtmlElement.Create(_window, _document.Value.CreateElement(tagName));
+            return GeckoHtmlElement.Create(Window, _document.Value.CreateElement(tagName));
         }
 
         public GeckoElement CreateElement(string tagName)
@@ -76,7 +76,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 throw new ArgumentException("tagName");
 
-            return GeckoElement.CreateDomElementWrapper(_window, _document.Value.CreateElement(tagName));
+            return GeckoElement.CreateDomElementWrapper(Window, _document.Value.CreateElement(tagName));
         }
 
         public DocumentFragment CreateDocumentFragment()
@@ -135,7 +135,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 return null;
 
-            return _document.Value.GetElementsByTagName(tagName).Wrap(_window, (window, x) => new GeckoElementCollection(_window, (nsIDOMNodeList)x));
+            return _document.Value.GetElementsByTagName(tagName).Wrap(Window, (window, x) => new GeckoElementCollection(Window, (nsIDOMNodeList)x));
         }
 
         public GeckoNode ImportNode(GeckoNode node, bool deep)
@@ -184,7 +184,7 @@ namespace Gecko
         {
             var e = _document.Value.CreateEvent(name);
 
-            return e.Wrap(_window, (x,y) => DomEventArgs.Create(y));
+            return e.Wrap(Window, (x,y) => DomEventArgs.Create(y));
         }
 
 
@@ -218,7 +218,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(id))
                 return null;
 
-            return (GeckoElement)new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domDocument).GetElementById(id).Wrap(_window, Create);
+            return (GeckoElement)new WebIDL.Document((mozIDOMWindowProxy)Window, (nsISupports)_domDocument).GetElementById(id).Wrap(Window, Create);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(id))
                 return null;
 
-            return (GeckoHtmlElement)new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domDocument).GetElementById(id).Wrap(_window, Create);
+            return (GeckoHtmlElement)new WebIDL.Document((mozIDOMWindowProxy)Window, (nsISupports)_domDocument).GetElementById(id).Wrap(Window, Create);
         }
 
         public string InputEncoding => _document.Value.InputEncoding;
@@ -271,7 +271,7 @@ namespace Gecko
         /// The window associated with this document.
         /// <see cref="http://www.whatwg.org/html/#dom-document-defaultview"/>
         /// </summary>
-        public GeckoWindow DefaultView => _document.Value.DefaultView.Wrap(_window, (window, x) => new GeckoWindow(x));
+        public GeckoWindow DefaultView => _document.Value.DefaultView.Wrap(Window, (window, x) => new GeckoWindow(x));
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-characterset"/>
@@ -286,8 +286,8 @@ namespace Gecko
         /// </summary>
         public string Dir
         {
-            get { /*return nsString.Get(_domDocument.GetDirAttribute); */ throw new NotImplementedException(); }
-            set {/* nsString.Set(_domDocument.SetDirAttribute, value);*/ throw new NotImplementedException(); }
+            get { return _document.Value.Dir; }
+            set { _document.Value.Dir = value; }
         }
 
 

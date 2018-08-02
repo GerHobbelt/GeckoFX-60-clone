@@ -10,16 +10,10 @@ namespace Gecko.DOM
     {
         private nsIDOMHTMLInputElement DOMHTMLElement;
         private Lazy<HTMLInputElement> _inputElement;
-
         internal GeckoInputElement(nsISupports window, nsIDOMHTMLInputElement element) : base(window, (nsIDOMElement)element)
         {
             this.DOMHTMLElement = element;
             _inputElement = new Lazy<HTMLInputElement>(() => new HTMLInputElement((mozIDOMWindowProxy)window, (nsISupports)element));
-        }
-
-        public GeckoInputElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as nsIDOMHTMLInputElement;
         }
 
         public string DefaultValue
@@ -34,7 +28,7 @@ namespace Gecko.DOM
             set { _inputElement.Value.DefaultChecked = value; }
         }
 
-        public GeckoFormElement Form => new GeckoFormElement(_window, (nsIDOMHTMLFormElement) _inputElement.Value.Form);
+        public GeckoFormElement Form => new GeckoFormElement(Window, (nsIDOMHTMLFormElement) _inputElement.Value.Form);
 
         public string Accept
         {

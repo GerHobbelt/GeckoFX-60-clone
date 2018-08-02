@@ -16,7 +16,7 @@ namespace Gecko
         internal GeckoDocument(nsISupports window,/* nsIDOMHTMLDocument */nsIDOMDocument document) : base(window, document)
         {
             this._domHtmlDocument = document;
-            _htmlDocument = new Lazy<HTMLDocument>(() => new WebIDL.HTMLDocument((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument));
+            _htmlDocument = new Lazy<HTMLDocument>(() => new WebIDL.HTMLDocument((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument));
         }
 
         internal static GeckoDocument Create(nsISupports window, /* nsIDOMHTMLDocument */nsIDOMDocument document)
@@ -38,7 +38,7 @@ namespace Gecko
             {
                 return (_domHtmlDocument == null)
                     ? null
-                    : GeckoHtmlElement.Create<GeckoHeadElement>(_window, _htmlDocument.Value.Head);
+                    : GeckoHtmlElement.Create<GeckoHeadElement>(Window, _htmlDocument.Value.Head);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Gecko
 
                 return (_domHtmlDocument == null)
                     ? null
-                    : GeckoHtmlElement.Create<GeckoHtmlElement>(_window, new WebIDL.Document((mozIDOMWindowProxy)_window, (nsISupports)_domHtmlDocument).Body);
+                    : GeckoHtmlElement.Create<GeckoHtmlElement>(Window, new WebIDL.Document((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument).Body);
             }
         }
 
@@ -123,7 +123,7 @@ namespace Gecko
         /// </summary>
         public StyleSheetCollection StyleSheets
         {
-            get { return (_StyleSheets == null) ? (_StyleSheets = new StyleSheetCollection(_window, this)) : _StyleSheets; }
+            get { return (_StyleSheets == null) ? (_StyleSheets = new StyleSheetCollection(Window, this)) : _StyleSheets; }
         }
 
         private StyleSheetCollection _StyleSheets;
@@ -136,7 +136,7 @@ namespace Gecko
             get { /*return (_domHtmlDocument == null) ? null : new Uri(nsString.Get(_domHtmlDocument.GetURLAttribute));*/throw new NotImplementedException(); }
         }
 
-        public GeckoElementCollection Forms => new GeckoElementCollection(_window, (nsIDOMNodeList)_htmlDocument.Value.Forms);
+        public GeckoElementCollection Forms => new GeckoElementCollection(Window, (nsIDOMNodeList)_htmlDocument.Value.Forms);
 
         public GeckoElementCollection Images
         {
@@ -204,7 +204,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            return new GeckoElementCollection(_window, (nsIDOMNodeList)_document.Value.GetElementsByName(name));
+            return new GeckoElementCollection(Window, (nsIDOMNodeList)_document.Value.GetElementsByName(name));
         }
     }
 }

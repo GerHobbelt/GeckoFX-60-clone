@@ -21,8 +21,10 @@ namespace Gecko
         #region fields
 
         private ComPtr<nsIDOMNode> _domNode;
-        protected readonly nsISupports _window;
+        private readonly nsISupports _window;
         protected Lazy<WebIDL.Node> _node;
+
+        public nsISupports Window => _window;
 
         #endregion
 
@@ -212,7 +214,6 @@ namespace Gecko
         }
 
         public GeckoElement ParentElement => _node.Value.ParentElement.Wrap(_window, GeckoElement.CreateDomElementWrapper);
-
 
         public int CompareDocumentPosition(GeckoNode other)
         {
