@@ -1994,7 +1994,9 @@ namespace Gecko
         {
             if (e == null) return;
 
-            OnHandleDomEvent(DomEventArgs.Create(e));
+            var domEventArg = DomEventArgs.Create(e);
+            domEventArg.Window = WebBrowser.GetContentDOMWindowAttribute();
+            OnHandleDomEvent(domEventArg);
         }
 
         protected virtual void OnHandleDomEvent(DomEventArgs e)

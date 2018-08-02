@@ -255,24 +255,20 @@ namespace GeckoFxTest
 		/// </summary>
 		private void StopLinksNavigating( object sender, DomEventArgs e )
 		{
-			if ( sender == null ) return;
-			if ( e == null ) return;
-                        e.Window = ((GeckoWebBrowser) sender).WebBrowser.GetContentDOMWindowAttribute();
-			if ( e.Target == null ) return;
+            if (sender == null || e?.Target == null)
+                return;
 
-			var element = e.Target.CastToGeckoElement();
+            var element = e.Target.CastToGeckoElement();
 
-			GeckoHtmlElement clicked = element as GeckoHtmlElement;
-			if ( clicked == null ) return;
+            GeckoHtmlElement clicked = element as GeckoHtmlElement;
+            if ( clicked == null ) return;
 
-			// prevent clicking on Links from navigation to the
-			if ( clicked.TagName == "A" )
-			{
-				e.Handled = true;
-				MessageBox.Show( sender as IWin32Window, String.Format( "You clicked on Link {0}", clicked.GetAttribute( "href" ) ) );
-			}
-
-
+            // prevent clicking on Links from navigation to the
+            if ( clicked.TagName == "A" )
+            {
+	            e.Handled = true;
+	            MessageBox.Show( sender as IWin32Window, String.Format( "You clicked on Link {0}", clicked.GetAttribute( "href" ) ) );
+            }
 		}
 
 		protected void AddToolbarAndBrowserToTab(TabPage tabPage, GeckoWebBrowser browser)
