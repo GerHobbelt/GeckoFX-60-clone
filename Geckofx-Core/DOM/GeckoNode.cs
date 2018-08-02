@@ -214,6 +214,11 @@ namespace Gecko
         public GeckoElement ParentElement => _node.Value.ParentElement.Wrap(_window, GeckoElement.CreateDomElementWrapper);
 
 
+        public int CompareDocumentPosition(GeckoNode other)
+        {
+            return _node.Value.CompareDocumentPosition(other.DomObject);
+        }
+
         private nsIXPathResult EvaluateXPathInternal(string xpath)
         {
             nsIXPathResult result;
