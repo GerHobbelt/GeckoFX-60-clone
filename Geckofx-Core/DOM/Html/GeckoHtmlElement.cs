@@ -76,6 +76,12 @@ namespace Gecko
             }
         }
 
+        public string Dir
+        {
+            get { return _htmlElement.Value.Dir; }
+            set { _htmlElement.Value.Dir = value; }
+        }
+
         /// <summary>
         /// Gets the parent element of this one.
         /// </summary>
