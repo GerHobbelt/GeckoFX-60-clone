@@ -109,7 +109,7 @@ namespace Gecko
         /// <returns></returns>
         public GeckoRange GetRangeAt(int index)
         {
-            return new GeckoRange(Selection.GetRangeAt(index));
+            return new GeckoRange(_window, Selection.GetRangeAt(index));
         }
 
         /// <summary>
@@ -272,9 +272,14 @@ namespace Gecko
     /// </summary>
     public class GeckoRange : ICloneable
     {
-        internal GeckoRange(nsIDOMRange range)
+        private readonly nsISupports _window;
+        private Lazy<Range> _range;
+
+        internal GeckoRange(nsISupports window, nsIDOMRange range)
         {
+            _window = window;
             this.DomRange = range;
+            _range = new Lazy<Range>(() => new Range((mozIDOMWindowProxy) _window, (nsISupports) range));
         }
 
         /// <summary>
@@ -282,70 +287,26 @@ namespace Gecko
         /// </summary>
         public nsIDOMRange DomRange { get; protected set; }
 
-        public GeckoNode StartContainer
+        public GeckoNode StartContainer => GeckoNode.Create(_window, _range.Value.StartContainer);
+
+        public uint StartOffset => _range.Value.StartOffset;
+
+        public GeckoNode EndContainer => GeckoNode.Create(_window, _range.Value.EndContainer);
+     
+        public uint EndOffset => _range.Value.EndOffset;
+
+        public bool Collapsed => _range.Value.Collapsed;
+     
+        public GeckoNode CommonAncestorContainer => GeckoNode.Create(_window, _range.Value.CommonAncestorContainer);
+
+        public void SetStart(GeckoNode node, uint offset)
         {
-            get
-            {
-#if PORTFF60
-                return GeckoNode.Create(DomRange.GetStartContainerAttribute());
-#endif
-                throw new NotImplementedException();
-            }
+            _range.Value.SetStart(node.DomObject, offset);
         }
 
-        public int StartOffset
+        public void SetEnd(GeckoNode node, uint offset)
         {
-            get { /*return DomRange.GetStartOffsetAttribute();*/throw new NotImplementedException(); }
-        }
-
-        public GeckoNode EndContainer
-        {
-            get
-            {
-#if PORTFF60
-                return GeckoNode.Create(DomRange.GetEndContainerAttribute());
-#endif
-                throw new NotImplementedException();
-            }
-        }
-
-        public int EndOffset
-        {
-            get { /*return DomRange.GetEndOffsetAttribute();*/throw new NotImplementedException(); }
-        }
-
-        public bool Collapsed
-        {
-            get
-            {
-#if PORTFF60
-                return DomRange.GetCollapsedAttribute();
-#endif
-                throw new NotImplementedException();
-            }
-        }
-
-        public GeckoNode CommonAncestorContainer
-        {
-            get
-            {
-#if PORTFF60
-                return GeckoNode.Create(DomRange.GetCommonAncestorContainerAttribute());
-#endif
-                throw new NotImplementedException();
-            }
-        }
-
-        public void SetStart(GeckoNode node, int offset)
-        {
-            //DomRange.SetStart((nsIDOMNode) node.DomObject, offset);
-            throw new NotImplementedException();
-        }
-
-        public void SetEnd(GeckoNode node, int offset)
-        {
-            //DomRange.SetEnd((nsIDOMNode) node.DomObject, offset);
-            throw new NotImplementedException();
+            _range.Value.SetEnd(node.DomObject, offset);
         }
 
         public void SetStartBefore(GeckoNode node)
@@ -395,18 +356,13 @@ namespace Gecko
 
         public GeckoNode ExtractContents()
         {
-#if PORTFF60
-            return GeckoNode.Create(DomRange.ExtractContents());
-#endif
-            throw new NotImplementedException();
+
+            return GeckoNode.Create(_window, (nsIDOMNode)_range.Value.ExtractContents());
         }
 
         public GeckoNode CloneContents()
         {
-#if PORTFF60
-            return GeckoNode.Create(DomRange.CloneContents());
-#endif
-            throw new NotImplementedException();
+            return GeckoNode.Create(_window, (nsIDOMNode)_range.Value.CloneContents());
         }
 
         public void InsertNode(GeckoNode newNode)
@@ -426,7 +382,7 @@ namespace Gecko
 
         public GeckoRange CloneRange()
         {
-            return new GeckoRange(DomRange.CloneRange());
+            return new GeckoRange(_window, DomRange.CloneRange());
         }
 
         public override string ToString()

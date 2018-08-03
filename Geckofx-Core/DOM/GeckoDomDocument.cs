@@ -252,7 +252,7 @@ namespace Gecko
         /// <returns></returns>
         public GeckoRange CreateRange()
         {
-            return new GeckoRange((nsIDOMRange)_document.Value.CreateRange()); 
+            return new GeckoRange(Window, (nsIDOMRange)_document.Value.CreateRange()); 
         }
 
         //[return: MarshalAs(UnmanagedType.Interface)]
