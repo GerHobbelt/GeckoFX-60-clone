@@ -207,8 +207,9 @@ namespace Gecko
         /// </summary>
         public void StartBatchChanges()
         {
+            // TODO: renable: https://trello.com/c/Od8VeHVj/38-find-a-replacement-for-startbatchchanges-and-endbatchchanges
             //((nsISelectionPrivate) Selection).StartBatchChanges();
-            throw new NotImplementedException();
+
         }
 
         /// <summary>
@@ -216,8 +217,8 @@ namespace Gecko
         /// </summary>
         public void EndBatchChanges()
         {
-            //((nsISelectionPrivate) Selection).EndBatchChanges();
-            throw new NotImplementedException();
+            // TODO: renable: https://trello.com/c/Od8VeHVj/38-find-a-replacement-for-startbatchchanges-and-endbatchchanges
+            //((nsISelectionPrivate) Selection).EndBatchChanges();            
         }
 
         /// <summary>
