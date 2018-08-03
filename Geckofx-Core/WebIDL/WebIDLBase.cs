@@ -90,6 +90,11 @@ namespace Gecko.WebIDL
             }
         }
 
+        private static string EscapeStringForJS(string str)
+        {
+            return str.Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "\\r");
+        }
+
         private static List<JsVal> ConvertTypes(object[] paramObjects, AutoJSContext context)
         {
             var collection = new List<JsVal>();
@@ -97,7 +102,7 @@ namespace Gecko.WebIDL
             {
                 JsVal val;
                 if (p is nsAString || p is nsACString || p is nsAUTF8String || p is String)
-                    SpiderMonkey.JS_ExecuteScript(context.ContextPointer, '"' + p.ToString() + '"', out val);
+                    SpiderMonkey.JS_ExecuteScript(context.ContextPointer, '"' + EscapeStringForJS(p.ToString()) + '"', out val);
                 else if (p is nsISupports)
                 {
                     // This returns a  [xpconnect wrapped nsISupports] - why may or may not be good enought - if not could try and access the objects wrappedJSObject property?

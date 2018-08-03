@@ -146,6 +146,7 @@
     <Compile Include="SpiderMonkeyTests.cs" />
     <Compile Include="UserInfoTests.cs" />
     <Compile Include="WebBrowserPersistTests.cs" />
+    <Compile Include="webidl\WebIDLBaseTests.cs" />
     <Compile Include="WindowUtilsTests.cs" />
     <Compile Include="XpComTests.cs" />
     <Compile Include="XPConnectTests.cs" />
