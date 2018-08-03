@@ -8,16 +8,11 @@ namespace Gecko.DOM
 {
     public class GeckoIFrameElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLIFrameElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLIFrameElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoIFrameElement(/* nsIDOMHTMLIFrameElement */ nsISupports element) : base(element)
+        internal GeckoIFrameElement(nsISupports window, /* nsIDOMHTMLIFrameElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoIFrameElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLIFrameElement */ nsISupports;
         }
 
         public string Align

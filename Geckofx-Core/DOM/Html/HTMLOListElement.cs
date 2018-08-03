@@ -7,16 +7,11 @@ namespace Gecko.DOM
 {
     public class GeckoOListElement : GeckoHtmlElement
     {
-        private /* /* nsIDOMHTMLOListElement*/ nsISupports DOMHTMLElement;
+        private /* /* nsIDOMHTMLOListElement*/ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoOListElement(/* /* nsIDOMHTMLOListElement*/ nsISupports element) : base(element)
+        internal GeckoOListElement(nsISupports window, /* /* nsIDOMHTMLOListElement*/ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoOListElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* /* nsIDOMHTMLOListElement*/ nsISupports;
         }
 
         public bool Compact

@@ -193,15 +193,8 @@ namespace Gecko
             Marshal.ReleaseComObject(print);
         }
 
-        public GeckoSelection Selection
-        {
-            get
-            {
-                return
-                    GeckoSelection.Create(
-                        new WebIDL.Window(_domWindowProxy.Instance, _domWindowProxy.Instance).GetSelection());
-            }
-        }
+        public GeckoSelection Selection => GeckoSelection.Create(_domWindowProxy.Instance,
+            new WebIDL.Window(_domWindowProxy.Instance, _domWindowProxy.Instance).GetSelection());
 
         // The WebIDL Window interfaces doesn't seem to have a Frames apptribute that returns a WindowCollection (rather just a window proxy? is it QI-able?)
 #if false

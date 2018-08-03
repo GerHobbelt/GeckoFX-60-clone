@@ -17,11 +17,6 @@ namespace Gecko.DOM
             _canvasElement = new Lazy<HTMLCanvasElement>(() => new HTMLCanvasElement((mozIDOMWindowProxy)window, (nsISupports)DOMHTMLElement));
         }
 
-        public GeckoCanvasElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            throw new NotImplementedException("use other constructor");
-        }
-
         public uint Width
         {
             get { return _canvasElement.Value.Width; }

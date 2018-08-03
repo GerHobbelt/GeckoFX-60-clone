@@ -7,16 +7,11 @@ namespace Gecko.DOM
 {
     public class GeckoQuoteElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLQuoteElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLQuoteElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoQuoteElement(/* nsIDOMHTMLQuoteElement */ nsISupports element) : base(element)
+        internal GeckoQuoteElement(nsISupports window, /* nsIDOMHTMLQuoteElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoQuoteElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLQuoteElement */ nsISupports;
         }
 
         public string Cite

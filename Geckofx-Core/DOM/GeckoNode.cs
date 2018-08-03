@@ -38,11 +38,6 @@ namespace Gecko
             _node = new Lazy<Node>(() => new Node((mozIDOMWindowProxy)_window, (nsISupports) _domNode.Instance));
         }
 
-        internal GeckoNode(object domObject)
-        {
-           throw new NotImplementedException("use other constructor");
-        }
-
         ~GeckoNode()
         {
             Xpcom.DisposeObject(ref _domNode);

@@ -14,11 +14,6 @@ namespace Gecko.DOM
             this.DOMHTMLElement = element;
         }
 
-        public GeckoFrameSetElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            throw new NotImplementedException("use other constructor.");
-        }
-
         public string Cols
         {
             get { /*return nsString.Get(DOMHTMLElement.GetColsAttribute);*/throw new NotImplementedException(); }

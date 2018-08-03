@@ -39,21 +39,21 @@ namespace Gecko.DOM
                 TagName = "applet",
                 InterfaceType = typeof (/* nsIDOMHTMLAppletElement */ nsISupports),
                 GeckoElement = typeof (GeckoAppletElement),
-                CreationMethod = (window,x) => new GeckoAppletElement((/* nsIDOMHTMLAppletElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoAppletElement(window, (/* nsIDOMHTMLAppletElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "area",
                 InterfaceType = typeof (/* nsIDOMHTMLAreaElement */ nsISupports),
                 GeckoElement = typeof (GeckoAreaElement),
-                CreationMethod = (window,x) => new GeckoAreaElement((/* nsIDOMHTMLAreaElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoAreaElement(window, (/* nsIDOMHTMLAreaElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "base",
                 InterfaceType = typeof (/* nsIDOMHTMLBaseElement */ nsISupports),
                 GeckoElement = typeof (GeckoBaseElement),
-                CreationMethod = (window,x) => new GeckoBaseElement((/* nsIDOMHTMLBaseElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoBaseElement(window, (/* nsIDOMHTMLBaseElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -71,7 +71,7 @@ namespace Gecko.DOM
                 TagName = "button",
                 InterfaceType = typeof (/* nsIDOMHTMLButtonElement */ nsISupports),
                 GeckoElement = typeof (GeckoButtonElement),
-                CreationMethod = (window,x) => new GeckoButtonElement((/* nsIDOMHTMLButtonElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoButtonElement(window, (/* nsIDOMHTMLButtonElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -85,25 +85,21 @@ namespace Gecko.DOM
                 TagName = "dir",
                 InterfaceType = typeof (/* nsIDOMHTMLDirectoryElement */ nsISupports),
                 GeckoElement = typeof (GeckoDirectoryElement),
-                CreationMethod = (window,x) => new GeckoDirectoryElement((/* nsIDOMHTMLDirectoryElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoDirectoryElement(window, (/* nsIDOMHTMLDirectoryElement */ nsIDOMElement) x)
             });
-#if NO_LONGER_EXISTS_GECKO45
-			Add(new GeckoClassDesc() { TagName = "div", InterfaceType = typeof(nsIDOMHTMLDivElement), GeckoElement = typeof(GeckoDivElement), 
-				CreationMethod = (window,x) => new GeckoDivElement((nsIDOMHTMLDivElement)x) });
-#endif
             Add(new GeckoClassDesc()
             {
                 TagName = "embed",
                 InterfaceType = typeof (/* nsIDOMHTMLEmbedElement */ nsISupports),
                 GeckoElement = typeof (GeckoEmbedElement),
-                CreationMethod = (window,x) => new GeckoEmbedElement((/* nsIDOMHTMLEmbedElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoEmbedElement(window, (/* nsIDOMHTMLEmbedElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "fieldset",
                 InterfaceType = typeof (/* nsIDOMHTMLFieldSetElement */ nsISupports),
                 GeckoElement = typeof (GeckoFieldSetElement),
-                CreationMethod = (window,x) => new GeckoFieldSetElement((/* nsIDOMHTMLFieldSetElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoFieldSetElement(window, (/* nsIDOMHTMLFieldSetElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -133,26 +129,12 @@ namespace Gecko.DOM
                 GeckoElement = typeof (GeckoHeadElement),
                 CreationMethod = (window,x) => new GeckoHeadElement(window, (/* nsIDOMHTMLHeadElement */ nsIDOMElement) x)
             });
-#if NO_LONGER_EXISTS_GECKO45
-			Add(new GeckoClassDesc() { TagName = "h1", InterfaceType = typeof(nsIDOMHTMLHeadingElement), GeckoElement = typeof(GeckoHeadingElement), 
-				CreationMethod = (window,x) => new GeckoHeadingElement((nsIDOMHTMLHeadingElement)x) });
-			Add(new GeckoClassDesc() { TagName = "h2", InterfaceType = typeof(nsIDOMHTMLHeadingElement), GeckoElement = typeof(GeckoHeadingElement), 
-				CreationMethod = (window,x) => new GeckoHeadingElement((nsIDOMHTMLHeadingElement)x) });
-			Add(new GeckoClassDesc() { TagName = "h3", InterfaceType = typeof(nsIDOMHTMLHeadingElement), GeckoElement = typeof(GeckoHeadingElement), 
-				CreationMethod = (window,x) => new GeckoHeadingElement((nsIDOMHTMLHeadingElement)x) });
-			Add(new GeckoClassDesc() { TagName = "h4", InterfaceType = typeof(nsIDOMHTMLHeadingElement), GeckoElement = typeof(GeckoHeadingElement), 
-				CreationMethod = (window,x) => new GeckoHeadingElement((nsIDOMHTMLHeadingElement)x) });
-			Add(new GeckoClassDesc() { TagName = "h5", InterfaceType = typeof(nsIDOMHTMLHeadingElement), GeckoElement = typeof(GeckoHeadingElement), 
-				CreationMethod = (window,x) => new GeckoHeadingElement((nsIDOMHTMLHeadingElement)x) });
-			Add(new GeckoClassDesc() { TagName = "h6", InterfaceType = typeof(nsIDOMHTMLHeadingElement), GeckoElement = typeof(GeckoHeadingElement), 
-				CreationMethod = (window,x) => new GeckoHeadingElement((nsIDOMHTMLHeadingElement)x) });
-#endif
             Add(new GeckoClassDesc()
             {
                 TagName = "hr",
                 InterfaceType = typeof (/* nsIDOMHTMLHRElement */ nsISupports),
                 GeckoElement = typeof (GeckoHRElement),
-                CreationMethod = (window,x) => new GeckoHRElement((/* nsIDOMHTMLHRElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoHRElement(window, (/* nsIDOMHTMLHRElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -166,14 +148,14 @@ namespace Gecko.DOM
                 TagName = "iframe",
                 InterfaceType = typeof (/* nsIDOMHTMLIFrameElement */ nsISupports),
                 GeckoElement = typeof (GeckoIFrameElement),
-                CreationMethod = (window,x) => new GeckoIFrameElement((/* nsIDOMHTMLIFrameElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoIFrameElement(window, (/* nsIDOMHTMLIFrameElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "img",
                 InterfaceType = typeof (/* nsIDOMHTMLImageElement */ nsISupports),
                 GeckoElement = typeof (GeckoImageElement),
-                CreationMethod = (window,x) => new GeckoImageElement((/* nsIDOMHTMLImageElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoImageElement(window, (/* nsIDOMHTMLImageElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -187,35 +169,35 @@ namespace Gecko.DOM
                 TagName = "label",
                 InterfaceType = typeof (/* nsIDOMHTMLLabelElement */ nsISupports),
                 GeckoElement = typeof (GeckoLabelElement),
-                CreationMethod = (window,x) => new GeckoLabelElement((/* nsIDOMHTMLLabelElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoLabelElement(window, (/* nsIDOMHTMLLabelElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "li",
                 InterfaceType = typeof (/* nsIDOMHTMLLIElement */ nsISupports),
                 GeckoElement = typeof (GeckoLIElement),
-                CreationMethod = (window,x) => new GeckoLIElement((/* nsIDOMHTMLLIElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoLIElement(window, (/* nsIDOMHTMLLIElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "link",
                 InterfaceType = typeof (/* nsIDOMHTMLLinkElement */ nsISupports),
                 GeckoElement = typeof (GeckoLinkElement),
-                CreationMethod = (window,x) => new GeckoLinkElement((/* nsIDOMHTMLLinkElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoLinkElement(window, (/* nsIDOMHTMLLinkElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "map",
                 InterfaceType = typeof (/* nsIDOMHTMLMapElement */ nsISupports),
                 GeckoElement = typeof (GeckoMapElement),
-                CreationMethod = (window,x) => new GeckoMapElement((/* nsIDOMHTMLMapElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoMapElement(window, (/* nsIDOMHTMLMapElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "menu",
                 InterfaceType = typeof (/* nsIDOMHTMLMenuElement */ nsISupports),
                 GeckoElement = typeof (GeckoMenuElement),
-                CreationMethod = (window,x) => new GeckoMenuElement((/* nsIDOMHTMLMenuElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoMenuElement(window, (/* nsIDOMHTMLMenuElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -229,28 +211,28 @@ namespace Gecko.DOM
                 TagName = "object",
                 InterfaceType = typeof (/* nsIDOMHTMLObjectElement */ nsISupports),
                 GeckoElement = typeof (GeckoObjectElement),
-                CreationMethod = (window,x) => new GeckoObjectElement((/* nsIDOMHTMLObjectElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoObjectElement(window, (/* nsIDOMHTMLObjectElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "ol",
                 InterfaceType = typeof (/* /* nsIDOMHTMLOListElement*/ nsISupports),
                 GeckoElement = typeof (GeckoOListElement),
-                CreationMethod = (window,x) => new GeckoOListElement((/* /* nsIDOMHTMLOListElement*/ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoOListElement(window, (/* /* nsIDOMHTMLOListElement*/ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "optgroup",
                 InterfaceType = typeof (/* nsIDOMHTMLOptGroupElement*/ nsISupports),
                 GeckoElement = typeof (GeckoOptGroupElement),
-                CreationMethod = (window,x) => new GeckoOptGroupElement((/* nsIDOMHTMLOptGroupElement*/ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoOptGroupElement(window, (/* nsIDOMHTMLOptGroupElement*/ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "option",
                 InterfaceType = typeof (/* nsIDOMHTMLOptionElement */ nsISupports),
                 GeckoElement = typeof (GeckoOptionElement),
-                CreationMethod = (window,x) => new GeckoOptionElement((/* nsIDOMHTMLOptionElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoOptionElement(window, (/* nsIDOMHTMLOptionElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
@@ -264,64 +246,56 @@ namespace Gecko.DOM
                 TagName = "pre",
                 InterfaceType = typeof (/* nsIDOMHTMLPreElement */ nsISupports),
                 GeckoElement = typeof (GeckoPreElement),
-                CreationMethod = (window,x) => new GeckoPreElement((/* nsIDOMHTMLPreElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoPreElement(window, (/* nsIDOMHTMLPreElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "q",
                 InterfaceType = typeof (/* nsIDOMHTMLQuoteElement */ nsISupports),
                 GeckoElement = typeof (GeckoQuoteElement),
-                CreationMethod = (window,x) => new GeckoQuoteElement((/* nsIDOMHTMLQuoteElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoQuoteElement(window, (/* nsIDOMHTMLQuoteElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "script",
                 InterfaceType = typeof (/* nsIDOMHTMLScriptElement */ nsISupports),
                 GeckoElement = typeof (GeckoScriptElement),
-                CreationMethod = (window,x) => new GeckoScriptElement((/* nsIDOMHTMLScriptElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoScriptElement(window, (/* nsIDOMHTMLScriptElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "select",
                 InterfaceType = typeof (/* nsIDOMHTMLSelectElement */ nsISupports),
                 GeckoElement = typeof (GeckoSelectElement),
-                CreationMethod = (window,x) => new GeckoSelectElement((/* nsIDOMHTMLSelectElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoSelectElement(window, (/* nsIDOMHTMLSelectElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "style",
                 InterfaceType = typeof (/* nsIDOMHTMLStyleElement */ nsISupports),
                 GeckoElement = typeof (GeckoStyleElement),
-                CreationMethod = (window,x) => new GeckoStyleElement((/* nsIDOMHTMLStyleElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoStyleElement(window, (/* nsIDOMHTMLStyleElement */ nsIDOMElement) x)
             });
-#if NONO_LONGER_EXISTS_IN_GECKO45
-			Add(new GeckoClassDesc() { TagName = "caption", InterfaceType = typeof(nsIDOMHTMLTableCaptionElement), GeckoElement = typeof(GeckoTableCaptionElement),
-				CreationMethod = (window,x) => new GeckoTableCaptionElement((nsIDOMHTMLTableCaptionElement)x) });
-#endif
             Add(new GeckoClassDesc()
             {
                 TagName = "td",
                 InterfaceType = typeof (/* nsIDOMHTMLTableCellElement */ nsISupports),
                 GeckoElement = typeof (GeckoTableCellElement),
-                CreationMethod = (window,x) => new GeckoTableCellElement((/* nsIDOMHTMLTableCellElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoTableCellElement(window, (/* nsIDOMHTMLTableCellElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {
                 TagName = "textarea",
                 InterfaceType = typeof (/* nsIDOMHTMLTextAreaElement */ nsISupports),
                 GeckoElement = typeof (GeckoTextAreaElement),
-                CreationMethod = (window,x) => new GeckoTextAreaElement((/* nsIDOMHTMLTextAreaElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoTextAreaElement(window, (/* nsIDOMHTMLTextAreaElement */ nsIDOMElement) x)
             });
-#if NO_LONGER_EXISTS_IN_GECKO45
-			Add(new GeckoClassDesc() { TagName = "title", InterfaceType = typeof(nsIDOMHTMLTitleElement), GeckoElement = typeof(GeckoTitleElement), 
-				CreationMethod = (window,x) => new GeckoTitleElement((nsIDOMHTMLTitleElement)x) });
-#endif
             Add(new GeckoClassDesc()
             {
                 TagName = "ul",
                 InterfaceType = typeof (/* nsIDOMHTMLUListElement */ nsISupports),
                 GeckoElement = typeof (GeckoUListElement),
-                CreationMethod = (window,x) => new GeckoUListElement((/* nsIDOMHTMLUListElement */ nsISupports) x)
+                CreationMethod = (window,x) => new GeckoUListElement(window, (/* nsIDOMHTMLUListElement */ nsIDOMElement) x)
             });
         }
 
@@ -369,11 +343,11 @@ namespace Gecko.DOM
                     break;
                 case NodeType.Comment:
                     nsIDOMComment comment = Xpcom.QueryInterface<nsIDOMComment>(domObject);
-                    if (comment != null) return GeckoComment.CreateCommentWrapper(comment);
+                    if (comment != null) return GeckoComment.CreateCommentWrapper(window, comment);
                     break;
                 case NodeType.DocumentFragment:
                     nsIDOMDocumentFragment fragment = Xpcom.QueryInterface<nsIDOMDocumentFragment>(domObject);
-                    if (fragment != null) return DOM.DocumentFragment.CreateDocumentFragmentWrapper(fragment);
+                    if (fragment != null) return DOM.DocumentFragment.CreateDocumentFragmentWrapper(window, fragment);
                     break;
             }
             // if we don't handle this type - just create GeckoNode

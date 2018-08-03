@@ -7,16 +7,11 @@ namespace Gecko.DOM
 {
     public class GeckoHRElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLHRElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLHRElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoHRElement(/* nsIDOMHTMLHRElement */ nsISupports element) : base(element)
+        internal GeckoHRElement(nsISupports window, /* nsIDOMHTMLHRElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoHRElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLHRElement */ nsISupports;
         }
 
         public string Align

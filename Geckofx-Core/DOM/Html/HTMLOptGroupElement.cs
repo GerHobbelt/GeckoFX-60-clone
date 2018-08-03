@@ -7,16 +7,11 @@ namespace Gecko.DOM
 {
     public class GeckoOptGroupElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLOListElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLOListElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoOptGroupElement(/* nsIDOMHTMLOptGroupElement*/ nsISupports element) : base(element)
+        internal GeckoOptGroupElement(nsISupports window, /* nsIDOMHTMLOptGroupElement*/ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoOptGroupElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLOptGroupElement*/ nsISupports;
         }
 
         public bool Disabled

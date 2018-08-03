@@ -10,8 +10,8 @@ namespace Gecko.DOM
     {
         private nsIDOMCharacterData _domCharacterData;
 
-        internal DomCharacterData(nsIDOMCharacterData domCharacterData)
-            : base(domCharacterData)
+        internal DomCharacterData(nsISupports window, nsIDOMCharacterData domCharacterData)
+            : base(window, domCharacterData)
         {
             _domCharacterData = domCharacterData;
         }

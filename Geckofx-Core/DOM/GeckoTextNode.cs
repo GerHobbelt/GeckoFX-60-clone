@@ -7,21 +7,21 @@ namespace Gecko.DOM
     {
         private nsIDOMText _domText;
 
-        private GeckoTextNode(nsIDOMText domText)
-            : base(domText)
+        private GeckoTextNode(nsISupports window, nsIDOMText domText)
+            : base(window, domText)
         {
             _domText = domText;
         }
 
-        public static GeckoTextNode CreateTextNodeWrapper(nsIDOMText domText)
+        public static GeckoTextNode CreateTextNodeWrapper(nsISupports window, nsIDOMText domText)
         {
-            return new GeckoTextNode(domText);
+            return new GeckoTextNode(window, domText);
         }
 
 
         public GeckoTextNode SplitText(uint offset)
         {
-            return _domText.SplitText(offset).Wrap(CreateTextNodeWrapper);
+            return _domText.SplitText(offset).Wrap(Window, CreateTextNodeWrapper);
         }
 
 

@@ -3,14 +3,14 @@ namespace Gecko.DOM.Svg
     public class SvgSvgElement
         : SvgElement
     {
-        protected SvgSvgElement(/* nsIDOMSVGElement */ nsISupports svgSvgElement)
-            : base(svgSvgElement)
+        protected SvgSvgElement(nsISupports window,/* nsIDOMSVGElement */ nsIDOMElement svgSvgElement)
+            : base(window, svgSvgElement)
         {
         }
 
-        public static SvgSvgElement CreateSvgSvgElementWrapper(/* nsIDOMSVGElement */ nsISupports svgSvgElement)
+        public static SvgSvgElement CreateSvgSvgElementWrapper(nsISupports window, /* nsIDOMSVGElement */ nsIDOMElement svgSvgElement)
         {
-            return svgSvgElement == null ? null : new SvgSvgElement(svgSvgElement);
+            return svgSvgElement == null ? null : new SvgSvgElement(window, svgSvgElement);
         }
     }
 }

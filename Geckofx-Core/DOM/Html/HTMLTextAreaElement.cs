@@ -7,16 +7,11 @@ namespace Gecko.DOM
 {
     public class GeckoTextAreaElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLTextAreaElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLTextAreaElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoTextAreaElement(/* nsIDOMHTMLTextAreaElement */ nsISupports element) : base(element)
+        internal GeckoTextAreaElement(nsISupports window, /* nsIDOMHTMLTextAreaElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoTextAreaElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLTextAreaElement */ nsISupports;
         }
 
         #region /* nsIDOMHTMLTextAreaElement */ nsISupports members

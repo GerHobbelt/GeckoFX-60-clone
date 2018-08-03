@@ -122,10 +122,13 @@ namespace Gecko
     /// </summary>
     public class GeckoStyleSheet
     {
+        private Lazy<WebIDL.StyleSheet> _styleSheet;
+
         private GeckoStyleSheet(nsISupports window,/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
         {
             _window = window;
             _DomStyleSheet = styleSheet;
+            _styleSheet = new Lazy<WebIDL.StyleSheet>(() => new WebIDL.StyleSheet((mozIDOMWindowProxy)_window, styleSheet));
         }
 
         internal static GeckoStyleSheet Create(nsISupports window, /* nsIDOMCSSStyleSheet */nsISupports styleSheet)
@@ -183,14 +186,12 @@ namespace Gecko
             get { /*return GeckoStyleRule.Create((nsIDOMCSSRule) _DomStyleSheet.GetOwnerRuleAttribute());*/throw new NotImplementedException(); }
         }
 
+        // TODO: add unittest
         /// <summary>
         /// Gets the <see cref="GeckoNode"/> of the DOM element which imported this style
         /// sheet.  Typically, this is a LINK tag.
         /// </summary>
-        public GeckoNode OwnerNode
-        {
-            get { /*return GeckoNode.Create(_DomStyleSheet.GetOwnerNodeAttribute());*/ throw new NotImplementedException(); }
-        }
+        public GeckoNode OwnerNode => GeckoNode.Create(_window, _styleSheet.Value.OwnerNode);
 
         public override string ToString()
         {
@@ -200,10 +201,7 @@ namespace Gecko
         /// <summary>
         /// Gets the collection of rules in the style sheet.
         /// </summary>
-        public StyleRuleCollection CssRules
-        {
-            get { return (_CssRules == null) ? (_CssRules = new StyleRuleCollection(_window, this)) : _CssRules; }
-        }
+        public StyleRuleCollection CssRules => _CssRules ?? (_CssRules = new StyleRuleCollection(_window, this));
 
         private StyleRuleCollection _CssRules;
 

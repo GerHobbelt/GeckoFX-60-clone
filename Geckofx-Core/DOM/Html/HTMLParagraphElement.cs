@@ -14,11 +14,6 @@ namespace Gecko.DOM
             this.DOMHTMLElement = element;
         }
 
-        public GeckoParagraphElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLParagraphElement */ nsIDOMElement;
-        }
-
         public string Align
         {
             get { /*return nsString.Get(DOMHTMLElement.GetAlignAttribute);*/throw new NotImplementedException(); }

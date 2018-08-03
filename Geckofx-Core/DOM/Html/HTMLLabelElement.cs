@@ -7,16 +7,11 @@ namespace Gecko.DOM
 {
     public class GeckoLabelElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLLabelElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLLabelElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoLabelElement(/* nsIDOMHTMLLabelElement */ nsISupports element) : base(element)
+        internal GeckoLabelElement(nsISupports window, /* nsIDOMHTMLLabelElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoLabelElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLLabelElement */ nsISupports;
         }
 
         public GeckoFormElement Form

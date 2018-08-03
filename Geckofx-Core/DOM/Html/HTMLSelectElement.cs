@@ -7,16 +7,11 @@ namespace Gecko.DOM
 {
     public class GeckoSelectElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLSelectElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLSelectElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoSelectElement(/* nsIDOMHTMLSelectElement */ nsISupports element) : base(element)
+        internal GeckoSelectElement(nsISupports window, /* nsIDOMHTMLSelectElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoSelectElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLSelectElement */ nsISupports;
         }
 
         public string Type

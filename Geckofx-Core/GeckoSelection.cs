@@ -38,6 +38,7 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -46,18 +47,18 @@ namespace Gecko
     /// </summary>
     public class GeckoSelection
     {
-        private GeckoSelection(nsISelection selection)
-        {
-            // selection is always NOT null, when we use Create function
-            //if (selection == null)
-            //	throw new ArgumentException("selection");
+        private readonly Lazy<Selection> _selection;
 
+        private GeckoSelection(nsISupports window, nsISelection selection)
+        {
+            _window = window;
+            _selection = new Lazy<Selection>(() => new WebIDL.Selection((mozIDOMWindowProxy)_window, (nsISupports)selection));
             this.Selection = selection;
         }
 
-        internal static GeckoSelection Create(nsISelection selection)
+        internal static GeckoSelection Create(nsISupports window, nsISelection selection)
         {
-            return selection == null ? null : new GeckoSelection(selection);
+            return selection == null ? null : new GeckoSelection(window, selection);
         }
 
         /// <summary>
@@ -68,65 +69,38 @@ namespace Gecko
             get { return Selection; }
         }
 
+        private readonly nsISupports _window;
         private nsISelection Selection;
 
         /// <summary>
         /// Gets the node in which the selection begins.
         /// </summary>
-        public GeckoNode AnchorNode
-        {
-            get
-            {
-#if PORTFF60
-                return GeckoNode.Create(Selection.GetAnchorNodeAttribute());
-#endif
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoNode AnchorNode => GeckoNode.Create(_window, _selection.Value.AnchorNode);
 
         /// <summary>
         /// Gets the offset within the (text) node where the selection begins.
         /// </summary>
-        public int AnchorOffset
-        {
-            get { return Selection.GetAnchorOffsetAttribute(); }
-        }
+        public int AnchorOffset => Selection.GetAnchorOffsetAttribute();
 
         /// <summary>
         /// Gets the node in which the selection ends.
         /// </summary>
-        public GeckoNode FocusNode
-        {
-#if PORTFF60
-            get { return GeckoNode.Create(Selection.GetFocusNodeAttribute()); }
-#endif
-            get { throw new NotImplementedException(); }
-
-        }
+        public GeckoNode FocusNode => GeckoNode.Create(_window, _selection.Value.FocusNode);
 
         /// <summary>
         /// Gets the offset within the (text) node where the selection ends.
         /// </summary>
-        public int FocusOffset
-        {
-            get { return Selection.GetFocusOffsetAttribute(); }
-        }
+        public int FocusOffset => Selection.GetFocusOffsetAttribute();
 
         /// <summary>
         /// Gets whether the selection is collapsed or not.
         /// </summary>
-        public bool IsCollapsed
-        {
-            get { return Selection.GetIsCollapsedAttribute(); }
-        }
+        public bool IsCollapsed => Selection.GetIsCollapsedAttribute();
 
         /// <summary>
         /// Gets the number of ranges in the selection.
         /// </summary>
-        public int RangeCount
-        {
-            get { return Selection.GetRangeCountAttribute(); }
-        }
+        public int RangeCount => Selection.GetRangeCountAttribute();
 
         /// <summary>
         /// Returns the range at the specified index.

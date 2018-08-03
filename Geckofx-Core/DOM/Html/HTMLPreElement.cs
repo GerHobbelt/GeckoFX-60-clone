@@ -7,16 +7,11 @@ namespace Gecko.DOM
 {
     public class GeckoPreElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLPreElement */ nsISupports DOMHTMLElement;
+        private /* nsIDOMHTMLPreElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoPreElement(/* nsIDOMHTMLPreElement */ nsISupports element) : base(element)
+        internal GeckoPreElement(nsISupports window, /* nsIDOMHTMLPreElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
-        }
-
-        public GeckoPreElement(object element) : base(element as /* /* nsIDOMHTMLElement*/nsISupports)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLPreElement */ nsISupports;
         }
 
         public int Width

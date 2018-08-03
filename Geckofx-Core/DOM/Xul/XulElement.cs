@@ -9,15 +9,15 @@ namespace Gecko.DOM.Xul
     public class XulElement
         : GeckoElement
     {
-        protected XulElement(nsIDOMXULElement xulElement)
-            : base(xulElement)
+        protected XulElement(nsISupports window, nsIDOMXULElement xulElement)
+            : base(window, xulElement)
         {
         }
 
 
-        public static XulElement CreateXulElementWrapper(nsIDOMXULElement xulElement)
+        public static XulElement CreateXulElementWrapper(nsISupports window, nsIDOMXULElement xulElement)
         {
-            return xulElement == null ? null : new XulElement(xulElement);
+            return xulElement == null ? null : new XulElement(window, xulElement);
         }
 
         /// <summary>

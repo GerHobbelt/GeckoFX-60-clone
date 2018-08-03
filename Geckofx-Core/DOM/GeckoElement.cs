@@ -64,21 +64,7 @@ namespace Gecko
             _element = new Lazy<WebIDL.Element>(() => new WebIDL.Element((mozIDOMWindowProxy)window, (nsISupports)domElement));
         }
 
-        internal GeckoElement(object domElement)
-            : base(domElement)
-        {
-            throw new NotImplementedException("use other constructor");
-            if (domElement is nsIDOMElement)
-                _domElement = (nsIDOMElement) domElement;
-            else
-                throw new ArgumentException("domDlement is not a nsIDOMElement");
-        }
-
-        public nsIDOMElement DOMElement
-        {
-            get { return _domElement; }
-        }
-
+        public nsIDOMElement DOMElement => _domElement;
 
         /// <summary>
         /// Gets the name of the tag.
@@ -155,8 +141,8 @@ namespace Gecko
 
         public GeckoAttribute GetAttributeNode(string name)
         {
-            var ret = nsString.Pass</*nsIDOMAttr*/ nsISupports>(_domElement.GetAttributeNode, name);
-            return (ret == null) ? null : new GeckoAttribute(ret);
+            var ret = (nsIDOMElement)nsString.Pass</*nsIDOMAttr*/ nsISupports>(_domElement.GetAttributeNode, name);
+            return (ret == null) ? null : new GeckoAttribute(this.Window,  ret);
         }
 
         public GeckoAttribute SetAttributeNode(GeckoAttribute newAttr)
@@ -242,14 +228,14 @@ namespace Gecko
             if (string.IsNullOrEmpty(namespaceUri))
                 return GetAttributeNode(localName);
 
-            var ret = nsString.Pass</*nsIDOMAttr*/ nsISupports>(_domElement.GetAttributeNodeNS, namespaceUri, localName);
-            return (ret == null) ? null : new GeckoAttribute(ret);
+            var ret = (nsIDOMElement)nsString.Pass</*nsIDOMAttr*/ nsISupports>(_domElement.GetAttributeNodeNS, namespaceUri, localName);
+            return (ret == null) ? null : new GeckoAttribute(Window, ret);
         }
 
         public GeckoAttribute SetAttributeNodeNS(GeckoAttribute attribute)
         {
-            var ret = _domElement.SetAttributeNodeNS(attribute.DomAttr);
-            return (ret == null) ? null : new GeckoAttribute(ret);
+            var ret = (nsIDOMElement)_domElement.SetAttributeNodeNS((nsISupports)attribute.DomAttr);
+            return (ret == null) ? null : new GeckoAttribute(Window, ret);
         }
 
         #endregion
@@ -335,15 +321,15 @@ namespace Gecko
             if (svgElement != null)
             {
                 Marshal.ReleaseComObject(svgElement);
-                return DOM.Svg.SvgElement.CreateSvgElementWrapper((/* nsIDOMSVGElement */ nsISupports) element);
+                return DOM.Svg.SvgElement.CreateSvgElementWrapper(window, /* nsIDOMSVGElement */ element);
             }
             var xulElement = Xpcom.QueryInterface<nsIDOMXULElement>(element);
             if (xulElement != null)
             {
                 Marshal.ReleaseComObject(xulElement);
-                return DOM.Xul.XulElement.CreateXulElementWrapper((nsIDOMXULElement) element);
+                return DOM.Xul.XulElement.CreateXulElementWrapper(window, (nsIDOMXULElement) element);
             }
-            return new GeckoElement(element);
+            return new GeckoElement(window, element);
         }
 
         public GeckoElement QuerySelector(string selectors)

@@ -9,10 +9,10 @@ namespace Gecko.DOM.Svg
     public class SvgElement
         : GeckoElement
     {
-        private /* nsIDOMSVGElement */ nsISupports _svgElement;
+        private /* nsIDOMSVGElement */ nsIDOMElement _svgElement;
 
-        protected SvgElement(/* nsIDOMSVGElement */ nsISupports svgElement)
-            : base(svgElement)
+        protected SvgElement(nsISupports window, /* nsIDOMSVGElement */ nsIDOMElement svgElement)
+            : base(window, svgElement)
         {
             _svgElement = svgElement;
         }
@@ -33,9 +33,9 @@ namespace Gecko.DOM.Svg
             get { /*return _svgElement.GetViewportElementAttribute().Wrap(CreateSvgElementWrapper);*/throw new NotImplementedException(); }
         }
 
-        public static SvgElement CreateSvgElementWrapper(/* nsIDOMSVGElement */ nsISupports svgElement)
+        public static SvgElement CreateSvgElementWrapper(nsISupports window,/* nsIDOMSVGElement */ nsIDOMElement svgElement)
         {
-            return svgElement == null ? null : new SvgElement(svgElement);
+            return svgElement == null ? null : new SvgElement(window, svgElement);
         }
     }
 }
