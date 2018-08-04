@@ -203,10 +203,7 @@ namespace Gecko
             }
         }
 
-        public GeckoNode ParentNode
-        {
-            get { /*return _domNode.Instance.GetParentNodeAttribute().Wrap(Create);*/ throw new NotImplementedException(); }
-        }
+        public GeckoNode ParentNode => _node.Value.ParentNode.Wrap(_window, Create);
 
         public GeckoElement ParentElement => _node.Value.ParentElement.Wrap(_window, GeckoElement.CreateDomElementWrapper);
 
@@ -217,7 +214,6 @@ namespace Gecko
 
         private nsIXPathResult EvaluateXPathInternal(string xpath)
         {
-            nsIXPathResult result;
             var evaluator = new XPathEvaluator((mozIDOMWindowProxy)_window, (nsISupports)this.OwnerDocument.DomObject);
             return (nsIXPathResult)evaluator.Evaluate(xpath, DomObject, (nsISupports)evaluator.CreateNSResolver(DomObject), 0, null);
         }

@@ -164,7 +164,6 @@
     <Compile Include="Events\GeckoNavigationErrorEventArgs.cs" />
     <Compile Include="Events\GeckoNSSErrorEventArgs.cs" />
     <Compile Include="Events\GeckoRetargetedEventArgs.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="GeckoError.cs" />
     <Compile Include="Generated\amIAddonManager.cs" />
     <Compile Include="Generated\amIAddonManagerStartup.cs" />
@@ -2223,6 +2222,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Extensions\" />
     <Folder Include="Generated\Components\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -91,7 +91,7 @@ namespace Gecko
         {
             jsval = default(JsVal);
             var scriptHandle = new MutableHandle();
-            if (!JS_CompileScript(cx, script, script.Length, GetCompileOptions(cx), ref scriptHandle))
+            if (!JS_CompileUCScript(cx, script, script.Length, GetCompileOptions(cx), ref scriptHandle))
                 throw new GeckoException("Failed to compile script.");
             var val = new MutableHandleValue();
             var handle = scriptHandle.Handle;
@@ -310,7 +310,7 @@ namespace Gecko
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.U1)]
-        internal static extern bool JS_CompileScript(IntPtr cx, string str, int strlen, IntPtr compileOptions,
+        internal static extern bool JS_CompileUCScript(IntPtr cx, [MarshalAs(UnmanagedType.LPWStr)] string str, int strlen, IntPtr compileOptions,
             ref MutableHandle jsValue);
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl)]

@@ -42,7 +42,6 @@ using System.Diagnostics;
 using Gecko.Collections;
 using Gecko.DOM;
 using Gecko.Interop;
-using Gecko.Extensions;
 
 namespace Gecko
 {
@@ -141,7 +140,7 @@ namespace Gecko
 
         public GeckoAttribute GetAttributeNode(string name)
         {
-            var ret = (nsIDOMElement)nsString.Pass</*nsIDOMAttr*/ nsISupports>(_domElement.GetAttributeNode, name);
+            var ret = (nsIDOMElement)_element.Value.GetAttributeNode(name);            
             return (ret == null) ? null : new GeckoAttribute(this.Window,  ret);
         }
 
@@ -159,10 +158,7 @@ namespace Gecko
             throw new NotImplementedException();
         }
 
-        public bool HasAttributes
-        {
-            get { return _domElement.HasAttributes(); }
-        }
+        public bool HasAttributes => _element.Value.HasAttributes();
 
         #endregion
 
@@ -192,9 +188,8 @@ namespace Gecko
 
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
-            nsAString retval = new nsAString();
-            _domElement.GetAttributeNS(new nsAString(namespaceUri), new nsAString(attributeName), retval);
-            return retval.ToString();
+
+            return _element.Value.GetAttributeNS(namespaceUri, attributeName);
         }
 
         /// <summary>
@@ -228,50 +223,35 @@ namespace Gecko
             if (string.IsNullOrEmpty(namespaceUri))
                 return GetAttributeNode(localName);
 
-            var ret = (nsIDOMElement)nsString.Pass</*nsIDOMAttr*/ nsISupports>(_domElement.GetAttributeNodeNS, namespaceUri, localName);
-            return (ret == null) ? null : new GeckoAttribute(Window, ret);
+            return GeckoAttribute.CreateAttributeWrapper(Window, (nsIDOMElement) _element.Value.GetAttributeNodeNS(namespaceUri, localName));
         }
 
         public GeckoAttribute SetAttributeNodeNS(GeckoAttribute attribute)
         {
-            var ret = (nsIDOMElement)_domElement.SetAttributeNodeNS((nsISupports)attribute.DomAttr);
-            return (ret == null) ? null : new GeckoAttribute(Window, ret);
+            return GeckoAttribute.CreateAttributeWrapper(Window, (nsIDOMElement)_element.Value.SetAttributeNodeNS((nsISupports) attribute.DomAttr));            
         }
 
         #endregion
 
         public int ScrollLeft
         {
-            get { return _domElement.GetScrollLeftAttribute(); }
-            set { _domElement.SetScrollLeftAttribute(value); }
+            get { return _element.Value.ScrollLeft; }
+            set { _element.Value.ScrollLeft = value; }
         }
 
         public int ScrollTop
         {
-            get { return _domElement.GetScrollTopAttribute(); }
-            set { _domElement.SetScrollTopAttribute(value); }
+            get { return _element.Value.ScrollTop; }
+            set { _element.Value.ScrollTop = value; }
         }
 
-        public int ScrollWidth
-        {
-            get { return _domElement.GetScrollWidthAttribute(); }
-        }
+        public int ScrollWidth => _element.Value.ScrollWidth;
 
-        public int ScrollHeight
-        {
-            get { return _domElement.GetScrollHeightAttribute(); }
-        }
+        public int ScrollHeight => _element.Value.ScrollHeight;
 
-        public int ClientWidth
-        {
-            get { return _domElement.GetClientWidthAttribute(); }
-        }
+        public int ClientWidth => _element.Value.ClientWidth;
 
-        public int ClientHeight
-        {
-            get { return _domElement.GetClientHeightAttribute(); }
-        }
-
+        public int ClientHeight => _element.Value.ClientHeight;
 
         /// <summary>
         /// Returns a collection containing the child elements of this element with a given tag name.

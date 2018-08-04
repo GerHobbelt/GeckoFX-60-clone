@@ -92,7 +92,7 @@ namespace Gecko.WebIDL
 
         private static string EscapeStringForJS(string str)
         {
-            return str.Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "\\r");
+            return str.Replace(@"\", @"\\").Replace(@"""", @"\""").Replace("\n", "\\n").Replace("\r", "\\r");
         }
 
         private static List<JsVal> ConvertTypes(object[] paramObjects, AutoJSContext context)
