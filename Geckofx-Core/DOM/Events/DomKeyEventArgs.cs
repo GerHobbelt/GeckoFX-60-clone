@@ -38,6 +38,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -49,10 +50,13 @@ namespace Gecko
     {
         private /* nsIDOMKeyEvent */nsIDOMUIEvent _Event;
 
+        private Lazy<KeyboardEvent> _keyEvent;
+
         protected DomKeyEventArgs(/* nsIDOMKeyEvent */nsIDOMUIEvent ev)
             : base(ev)
         {
             _Event = ev;
+            _keyEvent = new Lazy<KeyboardEvent>(() => new KeyboardEvent(Window, (nsISupports)ev));
         }
 
         public static DomKeyEventArgs Create(/* nsIDOMKeyEvent */nsIDOMUIEvent ev)
@@ -60,29 +64,14 @@ namespace Gecko
             return new DomKeyEventArgs(ev);
         }
 
-        public uint KeyChar
-        {
-            get { /*return _Event.GetCharCodeAttribute();*/ throw new NotImplementedException(); }
-        }
+        public uint KeyChar => _keyEvent.Value.CharCode;        
 
-        public uint KeyCode
-        {
-            get { /*return _Event.GetKeyCodeAttribute();*/  throw new NotImplementedException(); }
-        }
+        public uint KeyCode => _keyEvent.Value.KeyCode;
 
-        public bool AltKey
-        {
-            get { /*return _Event.GetAltKeyAttribute();*/  throw new NotImplementedException(); }
-        }
+        public bool AltKey => _keyEvent.Value.AltKey;
 
-        public bool CtrlKey
-        {
-            get { /*return _Event.GetCtrlKeyAttribute();*/  throw new NotImplementedException(); }
-        }
+        public bool CtrlKey => _keyEvent.Value.CtrlKey;
 
-        public bool ShiftKey
-        {
-            get {/* return _Event.GetShiftKeyAttribute();*/  throw new NotImplementedException(); }
-        }
+        public bool ShiftKey => _keyEvent.Value.ShiftKey;        
     }
 }
