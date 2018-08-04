@@ -19,19 +19,16 @@ namespace Gecko
             this.List = list;
         }
 
-        public virtual int Length
-        {
-            get { return (List == null) ? 0 : (int) List.GetLengthAttribute(); }
-        }
+        public virtual uint Length => List?.GetLengthAttribute() ?? 0;
 
-        public virtual GeckoHtmlElement this[int index]
+        public virtual GeckoHtmlElement this[uint index]
         {
             get
             {
-                if (index < 0 || index >= Length)
-                    throw new ArgumentOutOfRangeException("index");
+                if (index >= Length)
+                    throw new ArgumentOutOfRangeException(nameof(index));
 
-                return (GeckoHtmlElement)GeckoNode.Create(_window, List.Item((uint) index));
+                return (GeckoHtmlElement)GeckoNode.Create(_window, List.Item(index));
             }
         }
 

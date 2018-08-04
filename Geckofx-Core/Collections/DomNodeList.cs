@@ -26,12 +26,9 @@ namespace Gecko.Collections
             _translator = translator;
         }
 
-        public int Length
-        {
-            get { return (int) _list.GetLengthAttribute(); }
-        }
+        public uint Length => _list.GetLengthAttribute();
 
-        public TWrapper this[int index]
+        public TWrapper this[uint index]
         {
             get
             {
@@ -71,12 +68,12 @@ namespace Gecko.Collections
             _translator = translator;
         }
 
-        public int Length
+        public uint Length
         {
             get {/* return (int) _collection.GetLengthAttribute();*/ throw new NotImplementedException(); }
         }
 
-        public TWrapper this[int index]
+        public TWrapper this[uint index]
         {
             get
             {

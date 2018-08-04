@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gecko.Collections;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -10,29 +11,28 @@ namespace Gecko
     public class GeckoNodeCollection
         : IGeckoArray<GeckoNode>, IEnumerable<GeckoNode>
     {
-        protected GeckoNodeCollection(nsIDOMNodeList list)
+        private Lazy<NodeList> _nodeList;
+
+        protected GeckoNodeCollection(nsISupports window, nsIDOMNodeList list)
         {
+            _window = window;
+            _nodeList = new Lazy<NodeList>(() => new NodeList((mozIDOMWindowProxy) window, (nsISupports) list));
             this.List = list;
         }
 
+        private readonly nsISupports _window;
         private nsIDOMNodeList List;
 
-        public virtual int Length
-        {
-            get { return (int) List.GetLengthAttribute(); }
-        }
+        public virtual uint Length => List.GetLengthAttribute();
 
-        public virtual GeckoNode this[int index]
+        public virtual GeckoNode this[uint index]
         {
             get
             {
-                if (index < 0 || index >= Length)
-                    throw new ArgumentOutOfRangeException("index");
+                if (index >= Length)
+                    throw new ArgumentOutOfRangeException(nameof(index));
 
-#if PORTFF60
-                return GeckoNode.Create(List.Item((uint) index));
-#endif
-                throw new NotImplementedException();
+                return GeckoNode.Create(_window, (nsIDOMNode)_nodeList.Value.Item(index));
             }
         }
 
@@ -40,14 +40,11 @@ namespace Gecko
 
         public virtual IEnumerator<GeckoNode> GetEnumerator()
         {
-            int length = Length;
-            for (int i = 0; i < length; i++)
+            uint length = Length;
+            for (uint i = 0; i < length; i++)
             {
-                #if PORTFF60
-                yield return GeckoNode.Create(List.Item((uint) i));
-                #endif
+                yield return GeckoNode.Create(_window, (nsIDOMNode)_nodeList.Value.Item(i));
             }
-            throw new NotImplementedException();
         }
 
 #endregion
@@ -64,7 +61,7 @@ namespace Gecko
 
         internal static GeckoNodeCollection Create(nsISupports window, nsISupports list)
         {
-            return list == null ? null : new GeckoNodeCollection((nsIDOMNodeList)list);
+            return list == null ? null : new GeckoNodeCollection(window, (nsIDOMNodeList)list);
         }
     }
 }

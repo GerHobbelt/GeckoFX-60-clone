@@ -63,7 +63,7 @@ namespace Gecko.Windows
             if (ret)
             {
                 removedItems = new JumpListItem[array.GetLengthAttribute()];
-                for (int i = 0; i < removedItems.Length; i++)
+                for (uint i = 0; i < removedItems.Length; i++)
                 {
                     removedItems[i] = new JumpListItem(array.GetElementAs<nsIJumpListItem>(i));
                 }

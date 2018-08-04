@@ -25,12 +25,9 @@ namespace Gecko.Collections
             _translator = translator;
         }
 
-        public int Length
-        {
-            get { return (int) _array.GetLengthAttribute(); }
-        }
+        public uint Length => _array.GetLengthAttribute();
 
-        public TWrapper this[int index]
+        public TWrapper this[uint index]
         {
             get
             {
@@ -59,7 +56,7 @@ namespace Gecko.Collections
     public interface IGeckoArray<T>
         : IEnumerable<T>
     {
-        T this[int index] { get; }
-        int Length { get; }
+        T this[uint index] { get; }
+        uint Length { get; }
     }
 }

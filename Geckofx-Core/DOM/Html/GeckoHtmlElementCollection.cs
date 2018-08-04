@@ -13,12 +13,12 @@ namespace Gecko
 
         private /* nsIDOMHTMLCollection */nsISupports Collection;
 
-        public override int Length
+        public override uint Length
         {
             get { /*return (Collection == null) ? 0 : (int) Collection.GetLengthAttribute();*/throw new NotImplementedException(); }
         }
 
-        public override GeckoHtmlElement this[int index]
+        public override GeckoHtmlElement this[uint index]
         {
             get
             {
@@ -32,7 +32,7 @@ namespace Gecko
 
         public override IEnumerator<GeckoHtmlElement> GetEnumerator()
         {
-            int length = Length;
+            uint length = Length;
             //for (int i = 0; i < length; i++)
             //{
             //    yield return GeckoHtmlElement.Create((/* nsIDOMHTMLElement */nsISupports) Collection.Item((uint) i));

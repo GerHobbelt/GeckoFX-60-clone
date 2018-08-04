@@ -9,10 +9,10 @@ namespace Gecko.Collections
             return Xpcom.CreateInstance<nsIMutableArray>(Contracts.Array);
         }
 
-        internal static T GetElementAs<T>(this nsIArray array, int index)
+        internal static T GetElementAs<T>(this nsIArray array, uint index)
         {
             Guid uid = typeof (T).GUID;
-            var ptr = array.QueryElementAt((uint) index, ref uid);
+            var ptr = array.QueryElementAt(index, ref uid);
             var obj = (T) Xpcom.GetObjectForIUnknown(ptr);
             return obj;
         }
