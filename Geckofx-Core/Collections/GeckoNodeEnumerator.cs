@@ -17,23 +17,25 @@ namespace Gecko.Collections
         where TGeckoNode : class, nsIDOMNode
         where TWrapper : class
     {
+        private readonly nsISupports _window;
         private Wrapper _wrapper;
         private uint _position;
         private TGeckoNode _current;
-        private Func<TGeckoNode, TWrapper> _translator;
+        private Func<nsISupports, TGeckoNode, TWrapper> _translator;
 
-        internal GeckoNodeEnumerator(nsIDOMNodeList list, Func<TGeckoNode, TWrapper> translator)
-            : this(new Wrapper1(list), translator)
+        internal GeckoNodeEnumerator(nsISupports window, nsIDOMNodeList list, Func<nsISupports, TGeckoNode, TWrapper> translator)
+            : this(window, new Wrapper1(window, list), translator)
         {
+            _window = window;
         }
 
 
-        public GeckoNodeEnumerator(/* nsIDOMHTMLCollection */nsISupports collection, Func<TGeckoNode, TWrapper> translator)
-            : this(new Wrapper2(collection), translator)
+        public GeckoNodeEnumerator(nsISupports window,/* nsIDOMHTMLCollection */nsISupports collection, Func<nsISupports, TGeckoNode, TWrapper> translator)
+            : this(window, new Wrapper2(collection), translator)
         {
         }
 
-        private GeckoNodeEnumerator(Wrapper wrapper, Func<TGeckoNode, TWrapper> translator)
+        private GeckoNodeEnumerator(nsISupports window, Wrapper wrapper, Func<nsISupports, TGeckoNode, TWrapper> translator)
         {
             _wrapper = wrapper;
             _translator = translator;
@@ -75,7 +77,7 @@ namespace Gecko.Collections
 
         public TWrapper Current
         {
-            get { return _translator(_current); }
+            get { return _translator(_window, _current); }
         }
 
         object IEnumerator.Current
@@ -96,7 +98,7 @@ namespace Gecko.Collections
             private nsIDOMNodeList _list;
             private int _length;
 
-            internal Wrapper1(nsIDOMNodeList list)
+            internal Wrapper1(nsISupports window, nsIDOMNodeList list)
             {
                 _list = list;
                 _length = (int) list.GetLengthAttribute();

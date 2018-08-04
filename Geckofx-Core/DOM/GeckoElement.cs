@@ -260,19 +260,20 @@ namespace Gecko
         /// <returns></returns>
         public IDomHtmlCollection<GeckoElement> GetElementsByTagName(string tagName)
         {
-#if PORTFF60
             if (string.IsNullOrEmpty(tagName))
                 return null;
-            //return new GeckoHtmlElementCollection(_domElement.GetElementsByTagName(new nsAString(tagName)));
-            return nsString.Pass</*nsIDOMHTMLCollection*/nsISupports>(_domElement.GetElementsByTagName, tagName)
-                .Wrap(x => new DomHtmlCollection<GeckoElement, /* nsIDOMHTMLElement */nsISupports>(x, CreateDomElementWrapper));
-#endif
-            throw new NotImplementedException();
+
+            return _element.Value.GetElementsByTagName(tagName)
+                .Wrap(Window,
+                    (window, x) =>
+                        new DomHtmlCollection<GeckoElement, /* nsIDOMHTMLElement */ nsIDOMElement>(window, (nsIDOMNodeList)x,
+                            CreateDomElementWrapper));
         }
 
         public IDomHtmlCollection<GeckoElement> GetElementsByTagNameNS(string namespaceURI, string localName)
         {
-            if (string.IsNullOrEmpty(namespaceURI)) return GetElementsByTagName(localName);
+            if (string.IsNullOrEmpty(namespaceURI))
+                return GetElementsByTagName(localName);
 
             if (string.IsNullOrEmpty(localName))
                 return null;
@@ -314,10 +315,7 @@ namespace Gecko
 
         public GeckoElement QuerySelector(string selectors)
         {
-#if PORTFF60
-            return nsString.Pass(_domElement.QuerySelector, selectors).Wrap(CreateDomElementWrapper);
-#endif
-            throw new NotImplementedException();
+            return _element.Value.QuerySelector(selectors).Wrap(Window, CreateDomElementWrapper);
         }
     }
 }

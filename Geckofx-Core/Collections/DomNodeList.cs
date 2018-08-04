@@ -17,11 +17,13 @@ namespace Gecko.Collections
         where TWrapper : GeckoNode
         where TGeckoNode : class, nsIDOMNode
     {
+        private readonly nsISupports _window;
         private nsIDOMNodeList _list;
-        private Func<TGeckoNode, TWrapper> _translator;
+        private Func<nsISupports, TGeckoNode, TWrapper> _translator;
 
-        internal DomNodeList(nsIDOMNodeList list, Func<TGeckoNode, TWrapper> translator)
+        internal DomNodeList(nsISupports window, nsIDOMNodeList list, Func<nsISupports, TGeckoNode, TWrapper> translator)
         {
+            _window = window;
             _list = list;
             _translator = translator;
         }
@@ -35,7 +37,7 @@ namespace Gecko.Collections
                 var item = _list.Item((uint) index);
                 if (item is TGeckoNode)
                 {
-                    return ((TGeckoNode) item).Wrap(_translator);
+                    return ((TGeckoNode) item).Wrap(_window, _translator);
                 }
                 return null;
             }
@@ -44,7 +46,7 @@ namespace Gecko.Collections
 
         public IEnumerator<TWrapper> GetEnumerator()
         {
-            return new GeckoNodeEnumerator<TWrapper, TGeckoNode>(_list, _translator);
+            return new GeckoNodeEnumerator<TWrapper, TGeckoNode>(_window, _list, _translator);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -59,11 +61,13 @@ namespace Gecko.Collections
         where TWrapper : GeckoNode
         where TGeckoNode : class, nsIDOMNode
     {
-        private /*nsIDOMHTMLCollection*/nsISupports _collection;
-        private Func<TGeckoNode, TWrapper> _translator;
+        private readonly nsISupports _window;
+        private /*nsIDOMHTMLCollection*/nsIDOMNodeList _collection;
+        private Func<nsISupports, TGeckoNode, TWrapper> _translator;
 
-        public DomHtmlCollection(/*nsIDOMHTMLCollection*/nsISupports collection, Func<TGeckoNode, TWrapper> translator)
+        public DomHtmlCollection(nsISupports window, /*nsIDOMHTMLCollection*/nsIDOMNodeList collection, Func<nsISupports, TGeckoNode, TWrapper> translator)
         {
+            _window = window;
             _collection = collection;
             _translator = translator;
         }
@@ -104,7 +108,7 @@ namespace Gecko.Collections
 
         public IEnumerator<TWrapper> GetEnumerator()
         {
-            return new GeckoNodeEnumerator<TWrapper, TGeckoNode>(_collection, _translator);
+            return new GeckoNodeEnumerator<TWrapper, TGeckoNode>(_window, _collection, _translator);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
