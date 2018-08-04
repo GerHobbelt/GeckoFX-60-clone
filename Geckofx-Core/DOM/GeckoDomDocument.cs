@@ -54,12 +54,7 @@ namespace Gecko
         {
             get
             {
-                throw new NotImplementedException();
-#if PORTFF60
-                nsIDOMElement domElement = _domDocument.GetDocumentElementAttribute();
-
-                return domElement.Wrap(GeckoElement.CreateDomElementWrapper);
-#endif
+                return _document.Value.DocumentElement.Wrap(Window, GeckoElement.CreateDomElementWrapper);
             }
         }
 
@@ -347,10 +342,7 @@ namespace Gecko
         /// <summary>
         /// Gets the currently focused element.
         /// </summary>
-        public GeckoHtmlElement ActiveElement
-        {
-            get { /*return (GeckoHtmlElement) _domDocument.GetActiveElementAttribute().Wrap(Create);*/ throw new NotImplementedException(); }
-        }
+        public GeckoHtmlElement ActiveElement => (GeckoHtmlElement) _documentOrShadowRoot.Value.ActiveElement.Wrap(Window, Create);
 
         /// <summary>
         /// Returns a set of elements with the given class name. When called on the document object, the complete document is searched, including the root node.
@@ -359,9 +351,8 @@ namespace Gecko
         /// <returns></returns>
         public GeckoNodeCollection GetElementsByClassName(string classes)
         {
-            //nsIDOMNodeList list = nsString.Pass<nsIDOMNodeList>(_domDocument.GetElementsByClassName, classes);
-            //return GeckoNodeCollection.Create(list);
-            throw new NotImplementedException();
+            var list = (nsIDOMNodeList)_document.Value.GetElementsByClassName(classes);
+            return GeckoNodeCollection.Create(Window, (nsISupports)list);
         }
 
         ///// <summary>
