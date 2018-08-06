@@ -32,31 +32,20 @@ namespace Gecko
         /// <summary>
         /// for tests
         /// </summary>
-        public nsIDOMDocument NativeDomDocument
-        {
-            get { return _domDocument; }
-        }
-
+        public nsIDOMDocument NativeDomDocument => _domDocument;
 
         public DOM.DomDocumentType Doctype
         {
-            get { /*return _domDocument.GetDoctypeAttribute().Wrap(DomDocumentType.Create);*/throw new NotImplementedException(); }
+            get
+            {
+                return ((nsIDOMDocumentType) _document.Value.Doctype).Wrap(Window, DomDocumentType.Create);                
+            }
         }
-
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMDOMImplementation GetImplementationAttribute();
 
         /// <summary>
         /// Gets the top-level document element (for HTML documents, this is the html tag).
         /// </summary>
-        public GeckoElement DocumentElement
-        {
-            get
-            {
-                return _document.Value.DocumentElement.Wrap(Window, GeckoElement.CreateDomElementWrapper);
-            }
-        }
+        public GeckoElement DocumentElement => _document.Value.DocumentElement.Wrap(Window, GeckoElement.CreateDomElementWrapper);
 
         public GeckoHtmlElement CreateHtmlElement(string tagName)
         {
@@ -76,48 +65,25 @@ namespace Gecko
 
         public DocumentFragment CreateDocumentFragment()
         {
-            throw new NotImplementedException();
-#if PORTFF60
-            return _domDocument.CreateDocumentFragment()
-                .Wrap(DocumentFragment.CreateDocumentFragmentWrapper);
-#endif
+            return ((nsIDOMDocumentFragment)_document.Value.CreateDocumentFragment()).Wrap(Window, DocumentFragment.CreateDocumentFragmentWrapper);
         }
 
         public GeckoTextNode CreateTextNode(string data)
         {
-            throw new NotImplementedException();
-#if PORTFF60
-            return nsString.Pass<nsIDOMText>(_domDocument.CreateTextNode, data)
-                .Wrap(DOM.GeckoTextNode.CreateTextNodeWrapper);
-#endif
+            return _document.Value.CreateTextNode(data).Wrap(Window, GeckoTextNode.CreateTextNodeWrapper);           
         }
 
         public GeckoComment CreateComment(string data)
         {
-            throw new NotImplementedException();
-#if PORTFF60
-            return nsString.Pass<nsIDOMComment>(_domDocument.CreateComment, data)
-                .Wrap(GeckoComment.CreateCommentWrapper);
-#endif
+            return ((nsIDOMComment)_document.Value.CreateComment(data)).Wrap(Window, GeckoComment.CreateCommentWrapper);
         }
-
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMCDATASection CreateCDATASection([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase data);
-
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMProcessingInstruction CreateProcessingInstruction([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase target, [MarshalAs(UnmanagedType.LPStruct)] nsAStringBase data);
 
         public GeckoAttribute CreateAttribute(string name)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentException("name");
-            throw new NotImplementedException();
-#if PORTFF60
-            return nsString.Pass</* nsIDOMAttr */nsISupports>(_domDocument.CreateAttribute, name)
-                .Wrap(GeckoAttribute.CreateAttributeWrapper);
-#endif
+                throw new ArgumentException(nameof(name));
+
+            return ((nsIDOMElement)_document.Value.CreateAttribute(name)).Wrap(Window, GeckoAttribute.CreateAttributeWrapper);
         }
 
         /// <summary>
@@ -136,43 +102,30 @@ namespace Gecko
         public GeckoNode ImportNode(GeckoNode node, bool deep)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
-            throw new NotImplementedException();
-#if PORTFF60
-            return _domDocument.ImportNode(node.DomObject, deep, 1)
-                .Wrap(Create);
-#endif
+            return _document.Value.ImportNode(node.DomObject, deep).Wrap(Window, Create);           
         }
-
 
         public GeckoHtmlElement CreateElement(string namespaceUri, string qualifiedName)
         {
             if (string.IsNullOrEmpty(namespaceUri))
-                throw new ArgumentException("namespaceUri");
+                throw new ArgumentException(nameof(namespaceUri));
             if (string.IsNullOrEmpty(qualifiedName))
-                throw new ArgumentException("qualifiedName");
+                throw new ArgumentException(nameof(qualifiedName));
 
-            throw new NotImplementedException();
-#if PORTFF60
-            var native = nsString.Pass<nsIDOMElement>(_domDocument.CreateElementNS, namespaceUri, qualifiedName);
-
-            return GeckoHtmlElement.Create((/* nsIDOMHTMLElement **/nsISupports) native);
-#endif
+            return GeckoHtmlElement.Create(Window, _document.Value.CreateElementNS(namespaceUri, qualifiedName));
         }
 
         public GeckoAttribute CreateAttribute(string namespaceUri, string qualifiedName)
         {
             if (string.IsNullOrEmpty(namespaceUri))
-                throw new ArgumentException("namespaceUri");
+                throw new ArgumentException(nameof(namespaceUri));
             if (string.IsNullOrEmpty(qualifiedName))
-                throw new ArgumentException("qualifiedName");
+                throw new ArgumentException(nameof(qualifiedName));
 
-            throw new NotImplementedException();
-#if PORTFF60
-            return nsString.Pass</* nsIDOMAttr */nsISupports>(_domDocument.CreateAttributeNS, namespaceUri, qualifiedName)
-                .Wrap(GeckoAttribute.CreateAttributeWrapper);
-#endif
+            return ((nsIDOMElement) _document.Value.CreateAttributeNS(namespaceUri, qualifiedName)).Wrap(Window,
+                GeckoAttribute.CreateAttributeWrapper);
         }
 
         public DomEventArgs CreateEvent(string name)
@@ -182,7 +135,6 @@ namespace Gecko
             return e.Wrap(Window, (x,y) => DomEventArgs.Create(y));
         }
 
-
         /// <summary>
         /// Returns a collection containing all elements in the document with a given namespaceUri & localName.
         /// </summary>
@@ -190,16 +142,12 @@ namespace Gecko
         public GeckoElementCollection GetElementsByTagNameNS(string namespaceUri, string localName)
         {
             if (string.IsNullOrEmpty(namespaceUri))
-                throw new ArgumentException("namespaceUri");
+                throw new ArgumentException(nameof(namespaceUri));
             if (string.IsNullOrEmpty(localName))
-                throw new ArgumentException("localName");
+                throw new ArgumentException(nameof(localName));
 
-            throw new NotImplementedException();
-#if PORTFF60
-            var native = nsString.Pass<nsIDOMNodeList>(_domDocument.GetElementsByTagNameNS, namespaceUri, localName);
-
-            return new GeckoElementCollection(native);
-#endif
+            return new GeckoElementCollection(Window,
+                (nsIDOMNodeList) _document.Value.GetElementsByTagNameNS(namespaceUri, localName));
         }
 
 
@@ -234,13 +182,6 @@ namespace Gecko
 
         public string Uri => _document.Value.URL;
 
-        ///// <summary>
-        ///// Introduced in DOM Level 3:
-        ///// </summary>
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMNode AdoptNode([MarshalAs(UnmanagedType.Interface)] nsIDOMNode source);
-
         /// <summary>
         /// <see cref="http://html5.org/specs/dom-range.html#dom-document-createrange"/>
         /// </summary>
@@ -249,18 +190,6 @@ namespace Gecko
         {
             return new GeckoRange(Window, (nsIDOMRange)_document.Value.CreateRange()); 
         }
-
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMNodeIterator CreateNodeIterator([MarshalAs(UnmanagedType.Interface)] nsIDOMNode root, uint whatToShow, [MarshalAs(UnmanagedType.Interface)] nsIDOMNodeFilter filter, [MarshalAs(UnmanagedType.U1)] bool entityReferenceExpansion);
-
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMTreeWalker CreateTreeWalker([MarshalAs(UnmanagedType.Interface)] nsIDOMNode root, uint whatToShow, [MarshalAs(UnmanagedType.Interface)] nsIDOMNodeFilter filter, [MarshalAs(UnmanagedType.U1)] bool entityReferenceExpansion);
-
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMEvent CreateEvent([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase eventType);
 
         /// <summary>
         /// The window associated with this document.
@@ -271,10 +200,7 @@ namespace Gecko
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-characterset"/>
         /// </summary>
-        public string CharacterSet
-        {
-            get { /*return nsString.Get(_domDocument.GetCharacterSetAttribute);*/ throw new NotImplementedException(); }
-        }
+        public string CharacterSet => _document.Value.CharacterSet;
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-dir"/>
@@ -289,55 +215,31 @@ namespace Gecko
         /// <summary>
         /// @see <http://www.whatwg.org/html/#dom-document-location>
         /// </summary>
-        public Location Location
-        {
-            get { /*return _domDocument.GetLocationAttribute().Wrap(Location.Create);*/ throw new NotImplementedException(); }
-        }
+        public Location Location => _document.Value.Location.Wrap(Window, Location.Create);
 
         /// <summary>
         /// Gets the document title.
         /// </summary>
         public string Title
         {
-            get { /*return nsString.Get(_domDocument.GetTitleAttribute);*/ throw new NotImplementedException(); }
-            set { /*nsString.Set(_domDocument.SetTitleAttribute, value);*/ throw new NotImplementedException(); }
+            get { return _document.Value.Title; }
+            set { _document.Value.Title = value; }
         }
-
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-readystate"/>
         /// </summary>
-        public string ReadyState
-        {
-            get { /*return nsString.Get(_domDocument.GetReadyStateAttribute);*/ throw new NotImplementedException(); }
-        }
+        public string ReadyState => _document.Value.ReadyState;
 
-        ///// <summary>
-        ///// @see <http://www.whatwg.org/html/#dom-document-lastmodified>
-        ///// </summary>
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //void GetLastModifiedAttribute([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aLastModified);
-
-        public string Referrer
-        {
-            get {/* return nsString.Get(_domDocument.GetReferrerAttribute); */ throw new NotImplementedException(); }
-        }
+        public string Referrer => _document.Value.Referrer;
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-hasfocus"/>
         /// </summary>
         public bool HasFocus()
         {
-            //return _domDocument.HasFocus();
-            throw new NotImplementedException();
+            return _document.Value.HasFocus();            
         }
-
-        ///// <summary>
-        ///// @see <http://www.whatwg.org/html/#dom-document-activeelement>
-        ///// </summary>
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMElement GetActiveElementAttribute();
 
         /// <summary>
         /// Gets the currently focused element.
@@ -355,52 +257,24 @@ namespace Gecko
             return GeckoNodeCollection.Create(Window, (nsISupports)list);
         }
 
-        ///// <summary>
-        ///// @see <http://dev.w3.org/csswg/cssom/#dom-document-stylesheets>
-        ///// </summary>
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMStyleSheetList GetStyleSheetsAttribute();
-
         /// <summary>
         /// <see cref="http://dev.w3.org/csswg/cssom/#dom-document-preferredStyleSheetSet"/>
         /// </summary>
-        public string PreferredStyleSheetSet
-        {
-            get { /*return nsString.Get(_domDocument.GetPreferredStyleSheetSetAttribute);*/ throw new NotImplementedException(); }
-        }
+        public string PreferredStyleSheetSet => _document.Value.PreferredStyleSheetSet;
 
         /// <summary>
         /// <see cref="http://dev.w3.org/csswg/cssom/#dom-document-selectedStyleSheetSet"/>
         /// </summary>
         public string SelectedStyleSheetSet
         {
-            get { /*return nsString.Get(_domDocument.GetSelectedStyleSheetSetAttribute);*/ throw new NotImplementedException(); }
-            set { /*nsString.Set(_domDocument.SetSelectedStyleSheetSetAttribute, value);*/ throw new NotImplementedException(); }
+            get { return _document.Value.SelectedStyleSheetSet; }
+            set { _document.Value.SelectedStyleSheetSet = value; }
         }
 
         /// <summary>
         /// <see cref="http://dev.w3.org/csswg/cssom/#dom-document-lastStyleSheetSet"/>
         /// </summary>
-        public string LastStyleSheetSet
-        {
-            get { /*return nsString.Get(_domDocument.GetLastStyleSheetSetAttribute);*/ throw new NotImplementedException(); }
-        }
-
-
-        ///// <summary>
-        ///// This must return the live list of the currently available style sheet
-        ///// sets. This list is constructed by enumerating all the style sheets for
-        ///// this document available to the implementation, in the order they are
-        ///// listed in the styleSheets attribute, adding the title of each style sheet
-        ///// with a title to the list, avoiding duplicates by dropping titles that
-        ///// match (case-sensitively) titles that have already been added to the
-        ///// list.
-        /////
-        ///// @see <http://dev.w3.org/csswg/cssom/#dom-document-styleSheetSets>
-        ///// </summary>
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //System.IntPtr GetStyleSheetSetsAttribute();
+        public string LastStyleSheetSet => _document.Value.LastStyleSheetSet;
 
         /// <summary>
         /// <see cref="http://dev.w3.org/csswg/cssom/#dom-document-enableStyleSheetsForSet"/>
@@ -408,8 +282,7 @@ namespace Gecko
         /// <param name="name"></param>
         public void EnableStyleSheetsForSet(string name)
         {
-            //nsString.Set(_domDocument.EnableStyleSheetsForSet, name);
-            throw new NotImplementedException();
+            _document.Value.EnableStyleSheetsForSet(name);            
         }
 
         /// <summary>
@@ -420,88 +293,31 @@ namespace Gecko
         /// <returns></returns>
         public GeckoElement ElementFromPoint(int x, int y)
         {
-            //return _domDocument.ElementFromPoint(x, y).Wrap(GeckoElement.CreateDomElementWrapper);
-            throw new NotImplementedException();
+            return _documentOrShadowRoot.Value.ElementFromPoint(x, y).Wrap(Window, GeckoElement.CreateDomElementWrapper);            
         }
 
-        public string ContentType
-        {
-            get { /*return nsString.Get(_domDocument.GetContentTypeAttribute);*/  throw new NotImplementedException(); }
-        }
+        public string ContentType => _document.Value.ContentType;
 
         /// <summary>
         /// True if this document is synthetic : stand alone image, video, audio file,
         /// etc.
         /// </summary>
-        public bool MozSyntheticDocument
-        {
-            get {/* return _domDocument.GetMozSyntheticDocumentAttribute();*/  throw new NotImplementedException(); }
-        }
+        public bool MozSyntheticDocument => _document.Value.MozSyntheticDocument;
 
         ///// <summary>
         ///// Returns the script element whose script is currently being processed.
         /////
         ///// @see <https://developer.mozilla.org/en/DOM/document.currentScript>
         ///// </summary>
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //nsIDOMElement GetCurrentScriptAttribute();
-
-        public GeckoNode CurrentScript
-        {
-            get { /*return _domDocument.GetCurrentScriptAttribute().Wrap(Create);*/  throw new NotImplementedException(); }
-        }
-
+        public GeckoNode CurrentScript => _document.Value.CurrentScript.Wrap(Window, Create);
+        
         /// <summary>
         /// <see cref="https://developer.mozilla.org/en/DOM/document.releaseCapture"/>
         /// </summary>
         public void ReleaseCapture()
         {
-            //_domDocument.ReleaseCapture();
-            throw new NotImplementedException();
+            _document.Value.ReleaseCapture();            
         }
-
-        ///// <summary>
-        ///// Use the given DOM element as the source image of target |-moz-element()|.
-        /////
-        ///// This function introduces a new special ID (called "image element ID"),
-        ///// which is only used by |-moz-element()|, and associates it with the given
-        ///// DOM element.  Image elements ID's have the higher precedence than general
-        ///// HTML id's, so if |document.mozSetImageElement(<id>, <element>)| is called,
-        ///// |-moz-element(#<id>)| uses |<element>| as the source image even if there
-        ///// is another element with id attribute = |<id>|.  To unregister an image
-        ///// element ID |<id>|, call |document.mozSetImageElement(<id>, null)|.
-        /////
-        ///// Example:
-        ///// <script>
-        ///// canvas = document.createElement("canvas");
-        ///// canvas.setAttribute("width", 100);
-        ///// canvas.setAttribute("height", 100);
-        ///// // draw to canvas
-        ///// document.mozSetImageElement("canvasbg", canvas);
-        ///// </script>
-        ///// <div style="background-image: -moz-element(#canvasbg);"></div>
-        /////
-        ///// @param aImageElementId an image element ID to associate with
-        ///// |aImageElement|
-        ///// @param aImageElement a DOM element to be used as the source image of
-        ///// |-moz-element(#aImageElementId)|. If this is null, the function will
-        ///// unregister the image element ID |aImageElementId|.
-        /////
-        ///// @see <https://developer.mozilla.org/en/DOM/document.mozSetImageElement>
-        ///// </summary>
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //void MozSetImageElement([MarshalAs(UnmanagedType.LPStruct)] nsAStringBase aImageElementId, [MarshalAs(UnmanagedType.Interface)] nsIDOMElement aImageElement);
-
-        ///// <summary>
-        ///// Element which is currently the full-screen element as per the DOM
-        ///// full-screen api.
-        /////
-        ///// @see <https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI>
-        ///// </summary>
-        //[return: MarshalAs(UnmanagedType.Interface)]
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        ///* /* nsIDOMHTMLElement*/nsISupports GetMozFullScreenElementAttribute();
 
         /// <summary>
         /// Causes the document to leave DOM full-screen mode, if it's in
@@ -510,8 +326,7 @@ namespace Gecko
         /// </summary>
         public void MozCancelFullScreen()
         {
-            //_domDocument.MozCancelFullScreen();
-            throw new NotImplementedException();
+            _document.Value.MozCancelFullScreen();            
         }
 
         /// <summary>
@@ -519,11 +334,7 @@ namespace Gecko
         /// full-screen api.
         /// <see cref="https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI"/>
         /// </summary>
-        public bool MozFullScreen
-        {
-            get { /*return _domDocument.GetMozFullScreenAttribute();*/  throw new NotImplementedException(); }
-        }
-
+        public bool MozFullScreen => _document.Value.MozFullScreen;
 
         /// <summary>
         /// Denotes whether the full-screen-api.enabled is true, no windowed
@@ -531,49 +342,8 @@ namespace Gecko
         /// mozallowfullscreen attribute set.
         /// <see cref="https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI"/>
         /// </summary>
-        public bool MozFullScreenEnabled
-        {
-            get { /*return _domDocument.GetMozFullScreenEnabledAttribute(); */  throw new NotImplementedException(); }
-        }
-
-        ///// <summary>
-        ///// Inline event handler for readystatechange events.
-        ///// </summary>
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //System.IntPtr GetOnreadystatechangeAttribute(System.IntPtr jsContext);
-
-        ///// <summary>
-        ///// Inline event handler for readystatechange events.
-        ///// </summary>
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //void SetOnreadystatechangeAttribute(System.IntPtr aOnreadystatechange, System.IntPtr jsContext);
-
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //System.IntPtr GetOnmouseenterAttribute(System.IntPtr jsContext);
-
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //void SetOnmouseenterAttribute(System.IntPtr aOnmouseenter, System.IntPtr jsContext);
-
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //System.IntPtr GetOnmouseleaveAttribute(System.IntPtr jsContext);
-
-        //[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        //void SetOnmouseleaveAttribute(System.IntPtr aOnmouseleave, System.IntPtr jsContext);
-
-        /// <summary>
-        /// Visibility API implementation.
-        /// </summary>
-        public bool MozHidden
-        {
-            get { /*return _domDocument.GetMozHiddenAttribute(); */  throw new NotImplementedException(); }
-        }
-
-        public string MozVisibilityState
-        {
-            get { /*return nsString.Get(_domDocument.GetMozVisibilityStateAttribute);*/  throw new NotImplementedException(); }
-        }
-
-
+        public bool MozFullScreenEnabled => _document.Value.MozFullScreenEnabled;
+        
         public static GeckoDomDocument CreateDomDocumentWraper(nsISupports window, nsIDOMDocument domDocument)
         {
             // REVIEW: PORTFF60 - should we cache this?

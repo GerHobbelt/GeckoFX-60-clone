@@ -5,16 +5,18 @@ namespace Gecko.DOM
 {
     public sealed class Location
     {
+        private readonly nsISupports _window;
         private ComPtr</* nsIDOMLocation */ nsISupports> _location;
 
-        private Location(/* nsIDOMLocation */ nsISupports location)
+        private Location(nsISupports window,/* nsIDOMLocation */ nsISupports location)
         {
+            _window = window;
             _location = new ComPtr</* nsIDOMLocation */ nsISupports>(location);
         }
 
-        public static Location Create(/* nsIDOMLocation */ nsISupports location)
+        public static Location Create(nsISupports window,/* nsIDOMLocation */ nsISupports location)
         {
-            return new Location(location);
+            return new Location(window, location);
         }
 
         public string Hash
