@@ -1,23 +1,21 @@
 ﻿using System;
 using Gecko.Interop;
-using System.Runtime.InteropServices;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
     internal sealed class ChromeContext : IDisposable
     {
         private bool _isInitialized;
-        private ComPtr<nsIWebNavigation> webNav;
-        private ComPtr<nsIDOMXULElement> command;
+        private ComPtr<nsIWindowlessBrowser> _webNav;
+        private ComPtr<nsIDOMElement> _command;
 
         public ChromeContext()
         {
-            using (var appShallSvc = Xpcom.GetService2<nsIAppShellService>(Contracts.AppShellService))
-            {
-                // TODO: this doesn't work yet..
-                //webNav = appShallSvc.Instance.CreateWindowlessBrowser(true).AsComPtr();
-                //webNav.Instance.LoadURI("chrome://global/content/alerts/alert.xul", 0, null, null, null);
-            }
+            var appShell = Xpcom.GetService2<nsIAppShellService>(Contracts.AppShellService);
+            _webNav = appShell.Instance.CreateWindowlessBrowser(true).AsComPtr();
+            // Load a chrome page so we get permission to use canvas.drawWindow
+            _webNav.Instance.LoadURI("chrome://global/content/reader/aboutReader.html", 0, null, null, null, null);
         }
 
         #region IDisposable implementation
@@ -48,14 +46,14 @@ namespace Gecko
             if (fDisposing && !IsDisposed)
             {
                 // dispose managed and unmanaged objects
-                if (webNav != null)
-                    webNav.Dispose();
-                if (command != null)
-                    command.Dispose();
+                if (_webNav != null)
+                    _webNav.Dispose();
+                if (_command != null)
+                    _command.Dispose();
                 _isInitialized = false;
             }
-            webNav = null;
-            command = null;
+            _webNav = null;
+            _command = null;
             IsDisposed = true;
         }
 
@@ -63,89 +61,72 @@ namespace Gecko
 
         private void Init()
         {
-            if (!_isInitialized)
-            {
-                _isInitialized = true;
-                // TODO: PORTFF60 - don't pass null 
-                GeckoDomDocument doc = webNav.Instance.GetDocumentAttribute()
-                    .Wrap(null, GeckoDocument.CreateDomDocumentWraper);
-                GeckoElement rootElement = doc.DocumentElement;
-                while (rootElement.FirstChild != null)
-                    rootElement.RemoveChild(rootElement.FirstChild);
+            if (_isInitialized)
+                return;
 
+            _isInitialized = true;
+            var proxy = (mozIDOMWindowProxy)Xpcom.QueryInterface(_webNav.Instance, typeof(mozIDOMWindowProxy).GUID);
 
-                // Use of the canvas technique was inspired by: the abduction! firefox plugin by Rowan Lewis
-                // https://addons.mozilla.org/en-US/firefox/addon/abduction/
+            GeckoDomDocument doc = _webNav.Instance.GetDocumentAttribute()
+                .Wrap((nsISupports)proxy, GeckoDomDocument.CreateDomDocumentWraper);
+            GeckoElement rootElement = doc.DocumentElement;
+            while (rootElement.FirstChild != null)
+                rootElement.RemoveChild(rootElement.FirstChild);
 
-                throw new NotImplementedException();
-#if PORTFF60
-                uint flags = (uint)(nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DO_NOT_FLUSH
-                                     //| nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DRAW_VIEW
-                                     | nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_ASYNC_DECODE_IMAGES
-                                     | nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_USE_WIDGET_LAYERS);
+            // Use of the canvas technique was inspired by: the abduction! firefox plugin by Rowan Lewis
+            // https://addons.mozilla.org/en-US/firefox/addon/abduction/
 
-                string func = @"
-function drawWindow(window, x, y, w, h, canvas, ctx)
+            uint flags = /*nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DO_NOT_FLUSH*/2
+                        //| nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_DRAW_VIEW 4
+                        | /*nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_ASYNC_DECODE_IMAGES*/16
+                        | /*nsIDOMCanvasRenderingContext2DConsts.DRAWWINDOW_USE_WIDGET_LAYERS*/8;
+
+            string func = @"
+function drawWindow(window, document, x, y, w, h, canvas)
 {
 	try {
-		canvas = window.document.createElement('canvas');
+		canvas = document.createElement('canvas');
 		canvas.width = w;
 		canvas.height = h;
 		ctx = canvas.getContext('2d');
-		ctx.drawWindow(window, x, y, w, h, 'rgb(255,255,255)', " + flags.ToString() + @");
-		return canvas.toDataURL('image/png');
+		ctx.drawWindow(window, x, y, w, h, 'rgb(255,255,255)', " + flags + @");
+        return canvas.toDataURL('image/png');
 	} catch(e) {
-		return e + ''
+		return e + '' + 'window = ' + window + ' x = ' + x;
 	}
 }
 ";
 
-                var button = doc.CreateElement("button");
-                button.SetAttribute("oncommand",
-                    func +
-                    @"this.setUserData('drawResult', drawWindow(this.getUserData('window'), this.getUserData('x'), this.getUserData('y'), this.getUserData('w'), this.getUserData('h')), null)");
-                rootElement.AppendChild(button);
+            var button = doc.CreateElement("button");
+            button.SetAttribute("onclick",
+                func +
+                @"this.dataset.drawResult = drawWindow(this.sourceWin, this.ownerDocument, this.x, this.y, this.w, this.h)");
+            rootElement.AppendChild(button);
 
-                command = Xpcom.QueryInterface<nsIDOMXULElement>(button.DOMElement).AsComPtr();
-#endif
-            }
+            _command = Xpcom.QueryInterface<nsIDOMElement>(button.DOMElement).AsComPtr();
         }
 
-        internal byte[] DrawWindow(mozIDOMWindow window, uint x, uint y, uint w, uint h)
+        internal byte[] DrawWindow(mozIDOMWindowProxy window, uint x, uint y, uint w, uint h)
         {
             Xpcom.AssertCorrectThread();
             Init();
 
-            SetValue("x", x);
-            SetValue("y", y);
-            SetValue("w", w);
-            SetValue("h", h);
+            var proxy = (mozIDOMWindowProxy)Xpcom.QueryInterface(_webNav.Instance, typeof(mozIDOMWindowProxy).GUID);
 
-            using (var data = Xpcom.CreateInstance2<nsIWritableVariant>("@mozilla.org/variant;1"))
-            {
-                data.Instance.SetAsISupports((nsISupports) window);
-                using (var key = new nsAString("window"))
-                {
-#if PORTFF60
-                    object comObj = command.Instance.SetUserData(key, data.Instance);
-                    Xpcom.FreeComObject(ref comObj);
-                    command.Instance.DoCommand();
-                    comObj = command.Instance.SetUserData(key, null);
-                    Xpcom.FreeComObject(ref comObj);
-#endif
-                }
-            }
+            SetValue(proxy, "x", x);
+            SetValue(proxy, "y", y);
+            SetValue(proxy, "w", w);
+            SetValue(proxy, "h", h);
+
+            new HTMLElement(proxy, (nsISupports)_command.Instance).SetProperty("sourceWin", window);
+            var element = new HTMLElement(proxy, (nsISupports)_command.Instance);
+            element.Click();
             string base64Image = null;
-            using (var key = new nsAString("drawResult"))
-            {
-#if PORTFF60
-                using (var drawResult = command.Instance.SetUserData(key, null).AsComPtr())
-                {
-                    if (drawResult != null)
-                        base64Image = drawResult.Instance.GetAsWString();
-                }
-#endif
-            }
+            var dataSet = new DOMStringMap(proxy, new HTMLElement(proxy, (nsISupports)_command.Instance).Dataset);
+            var drawResult = dataSet.GetProperty<string>("drawResult");
+
+            if (drawResult != null)
+                base64Image = drawResult;
 
             if (base64Image == null)
                 throw new InvalidOperationException();
@@ -156,54 +137,13 @@ function drawWindow(window, x, y, w, h, canvas, ctx)
             return bytes;
         }
 
-        private void SetValue(string name, uint value)
+        private void SetValue(mozIDOMWindowProxy proxy, string name, uint value)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
-            using (var data = Xpcom.CreateInstance2<nsIWritableVariant>("@mozilla.org/variant;1"))
-            {
-                data.Instance.SetAsUint32(value);
-                using (var key = new nsAString(name))
-                {
-#if PORTFF60
-                    object comObj = command.Instance.SetUserData(key, data.Instance);
-                    Xpcom.FreeComObject(ref comObj);
-#endif
-                }
-            }
-        }
-
-        private void SetValue(string name, nsISupports value)
-        {
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            using (var data = Xpcom.CreateInstance2<nsIWritableVariant>("@mozilla.org/variant;1"))
-            {
-                data.Instance.SetAsISupports(value);
-                using (var key = new nsAString(name))
-                {
-#if PORTFF60
-                    object comObj = command.Instance.SetUserData(key, data.Instance);
-                    Xpcom.FreeComObject(ref comObj);
-#endif
-                }
-            }
-        }
-
-        private void ClearValue(string name)
-        {
-            if (name == null)
-                throw new ArgumentNullException("name");
-
-            using (var key = new nsAString(name))
-            {
-#if PORTFF60
-                object comObj = command.Instance.SetUserData(key, null);
-                Xpcom.FreeComObject(ref comObj);
-#endif
-            }
+            var element = new HTMLElement(proxy, (nsISupports)_command.Instance);
+            element.SetProperty(name, value);
         }
     }
 }
