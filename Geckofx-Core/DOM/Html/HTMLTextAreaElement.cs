@@ -2,157 +2,141 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoTextAreaElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLTextAreaElement */ nsIDOMElement DOMHTMLElement;
+        private readonly nsISupports _window;
+        private Lazy<HTMLTextAreaElement> _textArea;
 
         internal GeckoTextAreaElement(nsISupports window, /* nsIDOMHTMLTextAreaElement */ nsIDOMElement element) : base(window, element)
         {
-            this.DOMHTMLElement = element;
+            _window = window;
+            _textArea = new Lazy<HTMLTextAreaElement>(() => new HTMLTextAreaElement((mozIDOMWindowProxy)_window, (nsISupports)element));
         }
 
         #region /* nsIDOMHTMLTextAreaElement */ nsISupports members
 
         public bool Autofocus
         {
-            get { /*return DOMHTMLElement.GetAutofocusAttribute(); */throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetAutofocusAttribute(value); */throw new NotImplementedException(); }
+            get { return _textArea.Value.Autofocus; }
+            set { _textArea.Value.Autofocus = value; }
         }
 
         public uint Cols
         {
-            get { /*return DOMHTMLElement.GetColsAttribute(); */throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetColsAttribute(value); */throw new NotImplementedException(); }
+            get { return _textArea.Value.Cols; }
+            set { _textArea.Value.Cols = value; }
         }
 
         public bool Disabled
         {
-            get { /*return DOMHTMLElement.GetDisabledAttribute(); */throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetDisabledAttribute(value); */throw new NotImplementedException(); }
+            get { return _textArea.Value.Disabled; }
+            set { _textArea.Value.Disabled = value; }
         }
 
-        public GeckoFormElement Form
-        {
-            get { /*return new GeckoFormElement(DOMHTMLElement.GetFormAttribute()); */throw new NotImplementedException(); }
-        }
+        public GeckoFormElement Form => new GeckoFormElement(_window, (nsIDOMHTMLFormElement)_textArea.Value.Form);
 
         public int MaxLength
         {
-            get { /*return DOMHTMLElement.GetMaxLengthAttribute(); */throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetMaxLengthAttribute(value); */throw new NotImplementedException(); }
+            get { return _textArea.Value.MaxLength; }
+            set { _textArea.Value.MaxLength = value; }
         }
 
         public string Name
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetNameAttribute); */throw new NotImplementedException(); }
-            set { /*nsString.Set(DOMHTMLElement.SetNameAttribute, value); */throw new NotImplementedException(); }
+            get { return _textArea.Value.Name; }
+            set { _textArea.Value.Name = value; }
         }
 
         public string Placeholder
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetPlaceholderAttribute);*/throw new NotImplementedException(); }
-            set { /*nsString.Set(DOMHTMLElement.SetPlaceholderAttribute, value);*/throw new NotImplementedException(); }
+            get { return _textArea.Value.Placeholder; }
+            set { _textArea.Value.Placeholder = value; }
         }
 
         public bool ReadOnly
         {
-            get { /*return DOMHTMLElement.GetReadOnlyAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetReadOnlyAttribute(value); */throw new NotImplementedException(); }
+            get { return _textArea.Value.ReadOnly; }
+            set { _textArea.Value.ReadOnly = value; }
         }
 
         public bool Required
         {
-            get { /*return DOMHTMLElement.GetRequiredAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetRequiredAttribute(value);*/throw new NotImplementedException(); }
+            get { return _textArea.Value.Required; }
+            set { _textArea.Value.Required = value; }
         }
 
         public uint Rows
         {
-            get { /*return DOMHTMLElement.GetRowsAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetRowsAttribute(value);*/throw new NotImplementedException(); }
+            get { return _textArea.Value.Rows; }
+            set { _textArea.Value.Rows = value; }
         }
 
         public string Wrap
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetWrapAttribute);*/throw new NotImplementedException(); }
-            set { /*nsString.Set(DOMHTMLElement.SetWrapAttribute, value);*/throw new NotImplementedException(); }
+            get { return _textArea.Value.Wrap; }
+            set { _textArea.Value.Wrap = value; }
         }
 
-        public string Type
-        {
-            get { /*return nsString.Get(DOMHTMLElement.GetTypeAttribute);*/throw new NotImplementedException(); }
-        }
+        public string Type => _textArea.Value.Type;
 
         public string DefaultValue
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetDefaultValueAttribute);*/throw new NotImplementedException(); }
-            set { /*nsString.Set(DOMHTMLElement.SetDefaultValueAttribute, value);*/throw new NotImplementedException(); }
+            get { return _textArea.Value.DefaultValue; }
+            set { _textArea.Value.DefaultValue = value; }
         }
 
         public string Value
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetValueAttribute);*/throw new NotImplementedException(); }
-            set { /*nsString.Set(DOMHTMLElement.SetValueAttribute, value);*/throw new NotImplementedException(); }
+            get { return _textArea.Value.Value; }
+            set { _textArea.Value.Value = value; }
         }
 
-        public int TextLength
-        {
-            get { /*return DOMHTMLElement.GetTextLengthAttribute();*/throw new NotImplementedException(); }
-        }
+        public uint TextLength => _textArea.Value.TextLength;
 
-        public bool WillValidate
-        {
-            get { /*return DOMHTMLElement.GetWillValidateAttribute();*/throw new NotImplementedException(); }
-        }
+        public bool WillValidate => _textArea.Value.WillValidate;
 
-        public string ValidationMessage
-        {
-            get { /*return nsString.Get(DOMHTMLElement.GetValidationMessageAttribute);*/throw new NotImplementedException(); }
-        }
+        public string ValidationMessage => _textArea.Value.ValidationMessage;
 
         public bool CheckValidity()
         {
-            //return DOMHTMLElement.CheckValidity();
-            throw new NotImplementedException();
+            return _textArea.Value.CheckValidity();            
         }
 
         public void SetCustomValidity(string error)
         {
-            //DOMHTMLElement.SetCustomValidity(new nsAString(error));
-            throw new NotImplementedException();
+            _textArea.Value.SetCustomValidity(error);            
         }
 
         public void Select()
         {
-            //DOMHTMLElement.Select();
-            throw new NotImplementedException();
+            _textArea.Value.Select();            
         }
 
-        public int SelectionStart
+        public uint SelectionStart
         {
-            get { /*return DOMHTMLElement.GetSelectionStartAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSelectionStartAttribute(value);*/throw new NotImplementedException(); }
+            get { return (uint) _textArea.Value.SelectionStart; }
+            set { _textArea.Value.SelectionStart = value; }
         }
 
-        public int SelectionEnd
+        public uint SelectionEnd
         {
-            get { /*return DOMHTMLElement.GetSelectionEndAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSelectionEndAttribute(value);*/throw new NotImplementedException(); }
+            get { return (uint) _textArea.Value.SelectionEnd; }
+            set { _textArea.Value.SelectionEnd = value; }
         }
 
-        public void SetSelectionRange(int selectionStart, int selectionEnd, string direction)
+        public void SetSelectionRange(uint selectionStart, uint selectionEnd, string direction)
         {
-            //DOMHTMLElement.SetSelectionRange(selectionStart, selectionEnd, new nsAString(direction));
-            throw new NotImplementedException();
+            _textArea.Value.SetSelectionRange(selectionStart, selectionEnd, direction);            
         }
 
         public string SelectionDirection
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetSelectionDirectionAttribute);*/throw new NotImplementedException(); }
-            set { /*nsString.Set(DOMHTMLElement.SetSelectionDirectionAttribute, value);*/throw new NotImplementedException(); }
+            get { return _textArea.Value.SelectionDirection; }
+            set { _textArea.Value.SelectionDirection = value; }
         }
 
         #endregion
