@@ -35,7 +35,7 @@ namespace Gecko
                 case "contextmenu":
                     return DomMouseEventArgs.Create((nsIDOMMouseEvent) ev);
                 case "dommousescroll":
-                    return DomMouseScrollEventArgs.Create((nsIDOMMouseScrollEvent) ev);
+                    return DomMouseScrollEventArgs.Create((nsIDOMMouseEvent) ev);
                 case "dragstart":
                 case "dragenter":
                 case "dragover":

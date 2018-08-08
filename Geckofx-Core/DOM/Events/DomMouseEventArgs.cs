@@ -23,7 +23,7 @@ namespace Gecko
         {
             if (ev is nsIDOMMouseScrollEvent)
             {
-                return DomMouseScrollEventArgs.Create((nsIDOMMouseScrollEvent) ev);
+                return DomMouseScrollEventArgs.Create((nsIDOMMouseEvent) ev);
             }
             if (ev is nsIDOMDragEvent)
             {
