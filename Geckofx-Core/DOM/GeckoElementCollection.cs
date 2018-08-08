@@ -36,14 +36,11 @@ namespace Gecko
 
         public virtual IEnumerator<GeckoHtmlElement> GetEnumerator()
         {
-#if PORTFF60
-            int length = Length;
+            uint length = Length;
             for (int i = 0; i < length; i++)
             {
-                yield return GeckoHtmlElement.Create((/*  nsIDOMHTMLElement */nsISupports) List.Item((uint) i));
+                yield return GeckoHtmlElement.Create(_window, (/*  nsIDOMHTMLElement */nsIDOMElement) List.Item((uint) i));
             }
-#endif
-            throw new NotImplementedException();
         }
 
 #endregion
