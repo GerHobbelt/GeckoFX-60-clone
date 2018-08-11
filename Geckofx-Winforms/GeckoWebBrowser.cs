@@ -2001,6 +2001,10 @@ namespace Gecko
 
         protected virtual void OnHandleDomEvent(DomEventArgs e)
         {
+            // If disposed.
+            if (_messageEventListeners == null)
+                return;
+
             switch (e.Type)
             {
                 case "keydown":
