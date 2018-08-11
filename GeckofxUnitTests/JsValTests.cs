@@ -83,18 +83,18 @@ namespace GeckofxUnitTests
             browser.TestLoadHtml("hello world.");
             Assert.Null(browser.Editor);
 
-	        using (var context = new AutoJSContext(browser.Window))
-	        {
-	            var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) browser.Document.DomObject);
-	            var jsVal = JsVal.FromPtr(jsObject);
+            using (var context = new AutoJSContext(browser.Window))
+            using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)browser.Document.DomObject, false))
+            {
+                var jsVal = JsVal.FromPtr(jsObject.JSObject);
 
                 Assert.IsTrue(jsVal.IsObject);
                 Assert.AreEqual(JSType.JSTYPE_OBJECT, jsVal.Type);
                 Assert.AreEqual("[object HTMLDocument]", jsVal.ToString());
                 // Verify that converting back to ComObject yields expected object.
-	            var documentObject = (nsIDOMDocument)jsVal.ToObject();
+                var documentObject = (nsIDOMDocument)jsVal.ToObject();
                 Assert.AreEqual(browser.Document.TextContent, new GeckoDocument((nsISupports)browser.Window.DomWindow, documentObject).TextContent);
-	        }
+            }
 
             browser.Dispose();
 	    }

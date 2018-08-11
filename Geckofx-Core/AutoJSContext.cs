@@ -40,6 +40,7 @@ using System.Collections;
 using System.Runtime.InteropServices;
 using Gecko.Interop;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -198,25 +199,29 @@ namespace Gecko
         {
             string msg = String.Empty;
             JsVal exceptionJsVal = default(JsVal);
-
-            IntPtr globalObject = ConvertCOMObjectToJSObject(window);
-
-            using (new JSAutoCompartment(ContextPointer, globalObject))
+            
+            using (var globalObject = ConvertCOMObjectToJSObject(window))
+            using (new JSAutoCompartment(ContextPointer, globalObject.JSObject))
             {
                 var retJsVal = new JsVal();
                 bool ret;
                 // If not running in window scope.
                 if (window != scope)
                 {
-                    var scopeJSVal = JsVal.FromPtr(ConvertCOMObjectToJSObject(scope));
-                    if (!SpiderMonkey.JS_SetProperty(ContextPointer, ref globalObject, "__RequestedScope", ref scopeJSVal))
-                        throw new GeckoException("Failed to set __RequestedScope Property.");
+                    using (var scopeObject = ConvertCOMObjectToJSObject(scope))
+                    {
+                        var scopeJSVal = JsVal.FromPtr(scopeObject.JSObject);
+                        var go = globalObject.JSObject;
+                        if (!SpiderMonkey.JS_SetProperty(ContextPointer, ref go, "__RequestedScope",
+                                ref scopeJSVal))
+                            throw new GeckoException("Failed to set __RequestedScope Property.");
 
-                    javascript = InsertReturnStatement(javascript);
-                    string s = "(function() { " + javascript + " }).call(this.__RequestedScope)";
+                        javascript = InsertReturnStatement(javascript);
+                        string s = "(function() { " + javascript + " }).call(this.__RequestedScope)";
 
-                    ret = SpiderMonkey.JS_EvaluateScript(ContextPointer, s, (uint) s.Length, "script", 1,
-                        ref retJsVal);
+                        ret = SpiderMonkey.JS_EvaluateScript(ContextPointer, s, (uint) s.Length, "script", 1,
+                            ref retJsVal);
+                    }
                 }
                 else
                 {
@@ -231,7 +236,7 @@ namespace Gecko
                 if (exception != IntPtr.Zero)
                     exceptionJsVal = JsVal.FromPtr(exception);
                 msg += exceptionJsVal.ToString();
-                msg += GetStackTrace(globalObject, exceptionJsVal);
+                msg += GetStackTrace(globalObject.JSObject, exceptionJsVal);
                 throw new GeckoJavaScriptException(String.Format("JSError : {0}", msg));
             }
         }
@@ -361,7 +366,42 @@ namespace Gecko
             return null;
         }
 
-        internal IntPtr ConvertCOMObjectToJSObject(nsISupports obj)
+        // TODO: move to own class + file.
+        public sealed class JSObjectWrapper : IDisposable
+        {
+            private readonly IntPtr _iunknown;
+            private bool disposed;
+
+            internal JSObjectWrapper(IntPtr iunknown)
+            {
+                _iunknown = iunknown;
+            }
+
+            public IntPtr JSObject { get; internal set; }
+
+            public void Dispose()
+            {
+                disposed = true;
+                GC.SuppressFinalize(this);
+
+                if (_iunknown == IntPtr.Zero)
+                    return;
+
+                Marshal.Release(_iunknown);                
+            }
+
+            ~JSObjectWrapper()
+            {
+                if (disposed)
+                    return;
+
+                Debug.Fail("Missing dispose!");
+                Dispose();
+
+            }
+        }
+
+        internal JSObjectWrapper ConvertCOMObjectToJSObject(nsISupports obj, bool holdRef=true)
         {
             Guid guid = typeof (nsISupports).GUID;
 
@@ -370,7 +410,16 @@ namespace Gecko
                 throw new GeckoException("Can't call WrapNative on Wrapped JSObject.");
 
             // In geckofx 45 the WrapNative no longer returns a 'holder'
-            return Xpcom.XPConnect.Instance.WrapNative(ContextPointer, globalObject, obj, ref guid);
+
+            // Calling GetIUnknownForObject for the addref.
+            if (holdRef)
+                Marshal.GetIUnknownForObject(obj);
+            var ret = new JSObjectWrapper(Marshal.GetIUnknownForObject(obj))
+            {
+                JSObject = Xpcom.XPConnect.Instance.WrapNative(ContextPointer, globalObject, obj, ref guid)
+            };
+
+            return ret;
         }
 
         /// <summary>

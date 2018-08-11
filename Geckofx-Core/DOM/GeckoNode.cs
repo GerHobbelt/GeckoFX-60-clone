@@ -241,11 +241,10 @@ namespace Gecko
 
             nsIDOMNode singleNode = null;
             using (var context = new AutoJSContext())
+            using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)r))
             {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) r);
-
                 // TODO: (Idenally I would generate these calls via a webidl-> C# compiler but for now just do it via manually written spidermonkey calls..)
-                var resultType = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "resultType").ToInteger();
+                var resultType = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "resultType").ToInteger();
 
 #if PORTFF60
                 switch (resultType)
@@ -280,11 +279,10 @@ namespace Gecko
 
             nsIDOMNode singleNode = null;
             using (var context = new AutoJSContext())
-            {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) r);
-
+            using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)r))
+            {               
                 // TODO: (Idenally I would generate these calls via a webidl-> C# compiler but for now just do it via manually written spidermonkey calls..)
-                var resultType = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "resultType").ToInteger();
+                var resultType = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "resultType").ToInteger();
 
 #if PORTFF60
                 switch (resultType)

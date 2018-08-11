@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,12 +43,12 @@ namespace Gecko.WebIDL
         public T GetProperty<T>(string propertyName)
         {
             using (var context = new AutoJSContext(_globalWindowProxy))
+            using (var jsObject = context.ConvertCOMObjectToJSObject(_thisObject, true))
             {
-                var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
-                var result = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, propertyName);
+                var result = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, propertyName);
                 if (result.IsUndefined)
                     throw new GeckoException(String.Format("Property '{0}' of type '{1}' does not exist on object",
-                        propertyName, typeof (T).Name));
+                        propertyName, typeof(T).Name));
                 var retObject = result.ToObject();
                 return ConvertObject<T>(retObject);
             }
@@ -56,36 +57,49 @@ namespace Gecko.WebIDL
         public void SetProperty(string propertyName, object value)
         {
             using (var context = new AutoJSContext(_globalWindowProxy))
+            using (var jsObject = context.ConvertCOMObjectToJSObject(_thisObject, true))
             {
-                var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
-                var types = ConvertTypes(new[] {value}, context).First();
-                if (
-                    !SpiderMonkey.JS_SetProperty(context.ContextPointer, ref jsObject, propertyName,
+                DisposablCollection disposablCollection;
+                var types = ConvertTypes(new[] { value }, context, out disposablCollection).First();
+                var jso = jsObject.JSObject;
+                try
+                {
+                    if (!SpiderMonkey.JS_SetProperty(context.ContextPointer, ref jso, propertyName,
                         ref types))
-                    throw new GeckoException(String.Format("Property '{0}' of value '{1}' could not be set on object",
-                        propertyName, value));
+                        throw new GeckoException(
+                            String.Format("Property '{0}' of value '{1}' could not be set on object",
+                                propertyName, value));
+                }
+                finally
+                {
+                    disposablCollection.Dispose();
+                }
             }
         }
 
         public void CallVoidMethod(string methodName, params object[] paramObjects)
         {
             using (var context = new AutoJSContext(_globalWindowProxy))
+            using (var jsObject = context.ConvertCOMObjectToJSObject(_thisObject, true))
             {
-                var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
-                var collection = ConvertTypes(paramObjects, context);
-                SpiderMonkey.JS_CallFunctionName(context.ContextPointer, jsObject, methodName, collection.ToArray());
+                DisposablCollection disposablCollection;
+                var collection = ConvertTypes(paramObjects, context, out disposablCollection);
+                SpiderMonkey.JS_CallFunctionName(context.ContextPointer, jsObject.JSObject, methodName, collection.ToArray());
+                disposablCollection.Dispose();
             }
         }
 
         public T CallMethod<T>(string methodName, params object[] paramObjects)
         {
             using (var context = new AutoJSContext(_globalWindowProxy))
+            using (var jsObject = context.ConvertCOMObjectToJSObject(_thisObject, true))
             {
-                var jsObject = context.ConvertCOMObjectToJSObject(_thisObject);
-                var collection = ConvertTypes(paramObjects, context);
+                DisposablCollection disposablCollection;
+                var collection = ConvertTypes(paramObjects, context, out disposablCollection);
                 var retObject =
-                    SpiderMonkey.JS_CallFunctionName(context.ContextPointer, jsObject, methodName, collection.ToArray())
+                    SpiderMonkey.JS_CallFunctionName(context.ContextPointer, jsObject.JSObject, methodName, collection.ToArray())
                         .ToObject();
+                disposablCollection.Dispose();                
                 return ConvertObject<T>(retObject);
             }
         }
@@ -95,8 +109,29 @@ namespace Gecko.WebIDL
             return str.Replace(@"\", @"\\").Replace(@"""", @"\""").Replace("\n", "\\n").Replace("\r", "\\r");
         }
 
-        private static List<JsVal> ConvertTypes(object[] paramObjects, AutoJSContext context)
+        // TODO: move to own class and file
+        public class DisposablCollection : IDisposable
         {
+            private readonly IEnumerable<IDisposable> _disposables;
+
+            public DisposablCollection(IEnumerable<IDisposable> disposables)
+            {
+                _disposables = disposables;
+            }
+                 
+            public void Dispose()
+            {
+                foreach (var toDispose in _disposables)
+                {
+                    toDispose.Dispose();
+                }
+            }
+        }
+
+        private static List<JsVal> ConvertTypes(object[] paramObjects, AutoJSContext context, out DisposablCollection toDispose)
+        {
+            List<IDisposable> list = new List<IDisposable>();
+            toDispose = new DisposablCollection(list);
             var collection = new List<JsVal>();
             foreach (var p in paramObjects)
             {
@@ -108,7 +143,9 @@ namespace Gecko.WebIDL
                     // This returns a  [xpconnect wrapped nsISupports] - why may or may not be good enought - if not could try and access the objects wrappedJSObject property?
                     // val = SpiderMonkey.JS_CallFunctionName(context.ContextPointer, jsObject, "valueOf");
                     // Replaced CallFunctionName 'valueOf' method with 'managed convert' (for speed reasons)
-                    val = JsVal.FromPtr(context.ConvertCOMObjectToJSObject((nsISupports) p));
+                    var jso = context.ConvertCOMObjectToJSObject((nsISupports) p, false);
+                    list.Add(jso);
+                    val = JsVal.FromPtr(jso.JSObject);
                 }
                 else if (p is bool)
                 {

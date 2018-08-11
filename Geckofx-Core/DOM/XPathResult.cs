@@ -20,38 +20,38 @@ namespace Gecko.DOM
         public XPathResultType GetResultType()
         {
             using (var context = new AutoJSContext())
-            {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) _xpathResult.Instance);
+            using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
+            {                
                 return
                     (XPathResultType)
-                        SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "resultType").ToInteger();
+                        SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "resultType").ToInteger();
             }
         }
 
         public double GetNumberValue()
         {
             using (var context = new AutoJSContext())
-            {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) _xpathResult.Instance);
-                return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "numberValue").ToDouble();
+            using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
+            {                
+                return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "numberValue").ToDouble();
             }
         }
 
         public string GetStringValue()
         {
             using (var context = new AutoJSContext())
-            {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) _xpathResult.Instance);
-                return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "stringValue").ToString();
+            using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
+            {                
+                return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "stringValue").ToString();
             }
         }
 
         public bool GetBooleanValue()
         {
             using (var context = new AutoJSContext())
-            {
-                var jsObject = context.ConvertCOMObjectToJSObject((nsISupports) _xpathResult.Instance);
-                return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject, "booleanValue").ToBoolean();
+            using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
+            {                
+                return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "booleanValue").ToBoolean();
             }
         }
 
