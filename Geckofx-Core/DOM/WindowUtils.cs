@@ -382,8 +382,7 @@ namespace Gecko.DOM
         /// </summary>		
         public void CycleCollect(nsICycleCollectorListener aListener, int aExtraForgetSkippableCalls)
         {
-            //_windowUtils.Instance.GarbageCollect(aListener, aExtraForgetSkippableCalls);
-            throw new NotImplementedException();
+            _windowUtils.Instance.GarbageCollect(aListener);            
         }
 
         /// <summary>
