@@ -398,6 +398,13 @@ namespace Gecko
                 // which causes segfault on Paint.
                 GeckoPreferences.User["layers.offmainthreadcomposition.enabled"] = false;
             }
+
+            // speclative content security pollicy crashes geckofx 60,
+            // because principal->EnsurePreloadCSP(domDoc, getter_AddRefs(preloadCsp));
+            // returns null preloadCsp
+            // which isn't checked for.
+            // So we just disable CSP for now.
+            GeckoPreferences.User["security.csp.enable"] = false;
         }
 
         public static void InitChromeContext()
