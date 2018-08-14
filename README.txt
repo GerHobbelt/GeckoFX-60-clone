@@ -2,6 +2,12 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.1 ==
+
+This build is an Alpha version.
+
+1. Initial version supporting firefox v60.0
+
 == v45.0-0.34 ==
 
 1. Upgrade harfbuzz 1.7.2 + icu 56->58. also update: intl/unicharutil 
