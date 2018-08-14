@@ -21,11 +21,6 @@ namespace Gecko.DOM
             _linkElement = new Lazy<HTMLLinkElement>(() => new HTMLLinkElement((mozIDOMWindowProxy)_window, (nsISupports)element));
         }
 
-        public GeckoAnchorElement(nsISupports window, object element) : base(window, element as /* nsIDOMHTMLElement */nsIDOMElement)
-        {
-            this.DOMHTMLElement = element as /* nsIDOMHTMLAnchorElement */ nsIDOMElement;
-        }
-
         public string Charset
         {
             get { return _anchorElement.Value.Charset; }

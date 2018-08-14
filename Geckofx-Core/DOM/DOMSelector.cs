@@ -32,7 +32,7 @@ namespace Gecko.DOM
                 TagName = "a",
                 InterfaceType = typeof (/* nsIDOMHTMLAnchorElement */ nsISupports),
                 GeckoElement = typeof (GeckoAnchorElement),
-                CreationMethod = (window, x) => new GeckoAnchorElement(window, (/* nsIDOMHTMLAnchorElement */ nsISupports) x)
+                CreationMethod = (window, x) => new GeckoAnchorElement(window, (/* nsIDOMHTMLAnchorElement */ nsIDOMElement) x)
             });
             Add(new GeckoClassDesc()
             {

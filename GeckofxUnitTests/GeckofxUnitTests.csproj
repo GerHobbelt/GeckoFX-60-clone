@@ -106,6 +106,7 @@
     <Compile Include="CrossLanguageTests.cs" />
     <Compile Include="DomParserTests.cs" />
     <Compile Include="DOMWindowTests.cs" />
+    <Compile Include="dom\GeckoAnchorElementTests.cs" />
     <Compile Include="ExtensionMethods\GeckoWebBrowserExtensions.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="FocusManagerTests.cs" />
