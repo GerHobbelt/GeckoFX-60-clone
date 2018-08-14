@@ -2,95 +2,81 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoSelectElement : GeckoHtmlElement
     {
+        private readonly nsISupports _window;
         private /* nsIDOMHTMLSelectElement */ nsIDOMElement DOMHTMLElement;
+        private Lazy<WebIDL.HTMLSelectElement> _selectElement;
 
         internal GeckoSelectElement(nsISupports window, /* nsIDOMHTMLSelectElement */ nsIDOMElement element) : base(window, element)
         {
+            _window = window;
             this.DOMHTMLElement = element;
+            _selectElement = new Lazy<HTMLSelectElement>(() => new HTMLSelectElement((mozIDOMWindowProxy)_window, (nsISupports)element));
         }
 
-        public string Type
-        {
-            get { /*return nsString.Get(DOMHTMLElement.GetTypeAttribute);*/throw new NotImplementedException(); }
-        }
+        public string Type => _selectElement.Value.Type;
 
         public int SelectedIndex
         {
-            get { /*return DOMHTMLElement.GetSelectedIndexAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSelectedIndexAttribute(value);*/throw new NotImplementedException(); }
+            get { return _selectElement.Value.SelectedIndex; }
+            set { _selectElement.Value.SelectedIndex = value; }
         }
 
         public string Value
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetValueAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetValueAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _selectElement.Value.Value; }
+            set { _selectElement.Value.Value = value; }
         }
 
         public uint Length
         {
-            get { /*return DOMHTMLElement.GetLengthAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetLengthAttribute(value);*/throw new NotImplementedException(); }
+            get { return _selectElement.Value.Length; }
+            set { _selectElement.Value.Length = value; }
         }
 
-        public GeckoFormElement Form
-        {
-            get
-            {
-                //var formAttr = DOMHTMLElement.GetFormAttribute();
-                //return formAttr == null ? null : new GeckoFormElement(formAttr);
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoFormElement Form => new GeckoFormElement(_window, (nsIDOMHTMLFormElement)_selectElement.Value.Form);
 
-        public GeckoOptionsCollection Options
-        {
-            get
-            {
-                //var optionsAttr = DOMHTMLElement.GetOptionsAttribute();
-                //return optionsAttr == null ? null : new GeckoOptionsCollection(optionsAttr);
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoOptionsCollection Options => new GeckoOptionsCollection(_selectElement.Value.Options);
 
         public bool Disabled
         {
-            get { /*return DOMHTMLElement.GetDisabledAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetDisabledAttribute(value);*/throw new NotImplementedException(); }
+            get { return _selectElement.Value.Disabled; }
+            set { _selectElement.Value.Disabled = value; }
         }
 
         public bool Multiple
         {
-            get { /*return DOMHTMLElement.GetMultipleAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetMultipleAttribute(value);*/throw new NotImplementedException(); }
+            get { return _selectElement.Value.Multiple; }
+            set { _selectElement.Value.Multiple = value; }
         }
 
         public string Name
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetNameAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetNameAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _selectElement.Value.Name; }
+            set { _selectElement.Value.Name = value; }
         }
 
         public uint Size
         {
-            get { /*return DOMHTMLElement.GetSizeAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSizeAttribute(value);*/throw new NotImplementedException(); }
+            get { return _selectElement.Value.Size; }
+            set { _selectElement.Value.Size = value; }
         }
 
-        public void add(GeckoHtmlElement element, GeckoHtmlElement before)
+        public void Add(GeckoHtmlElement element, GeckoHtmlElement before)
         {
+            // TODO: FIXME: need to be able to use WebIDLUnion to use this method. PORTFF60
             //DOMHTMLElement.Add(element.DomObject as /* /* nsIDOMHTMLElement*/nsISupports, before.DomObject as nsIVariant);
             throw new NotImplementedException();
         }
 
-        public void remove(int index)
+        public void Remove(int index)
         {
-            //DOMHTMLElement.Remove(index);
-            throw new NotImplementedException();
+            _selectElement.Value.Remove(index);            
         }
     }
 }

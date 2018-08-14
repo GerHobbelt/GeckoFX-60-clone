@@ -10,17 +10,8 @@ using NUnit.Framework;
 namespace GeckofxUnitTests.dom
 {
     [TestFixture]
-    class GeckoAnchorElementTests
+    class GeckoAnchorElementTests : BaseElementWrapperTests
     {
-        private GeckoWebBrowser _browser;
-
-        [SetUp]
-        public void BeforeEachTestSetup()
-        {
-            _browser = new GeckoWebBrowser();
-            var unused = _browser.Handle;
-            Assert.IsNotNull(_browser);
-        }
 
         [Test]
         public void Href_AnchorContainsNormalLink_LinkIsReturnedByHref()
