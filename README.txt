@@ -8,6 +8,8 @@ This build is an Alpha version.
 
 1. Fix GeckoAnchorElement
 2. Fix nuget targets.
+3. Implment HtmlSelectElement wrapper.
+4. Fix PromptFactory::GetPrompt implemetation
 
 == v60.0-0.1 ==
 
