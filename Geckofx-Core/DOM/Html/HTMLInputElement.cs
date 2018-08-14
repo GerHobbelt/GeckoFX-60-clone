@@ -108,16 +108,16 @@ namespace Gecko.DOM
             set { _inputElement.Value.Value = value; }
         }
 
-        public int SelectionStart
+        public uint SelectionStart
         {
-            get { return (int)(_inputElement.Value.SelectionStart ?? 0); }
-            set { _inputElement.Value.SelectionStart = (uint)value; }
+            get { return _inputElement.Value.SelectionStart ?? 0; }
+            set { _inputElement.Value.SelectionStart = value; }
         }
 
-        public int SelectionEnd
+        public uint SelectionEnd
         {
-            get { return (int)( _inputElement.Value.SelectionEnd ?? 0); }
-            set { _inputElement.Value.SelectionEnd = (uint)value; }
+            get { return  _inputElement.Value.SelectionEnd ?? 0; }
+            set { _inputElement.Value.SelectionEnd = value; }
         }
 
         public void Select()
