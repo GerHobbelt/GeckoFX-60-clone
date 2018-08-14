@@ -119,6 +119,11 @@ namespace Gecko
             if (string.IsNullOrEmpty(attributeName))
                 throw new ArgumentException("attributeName");
 
+            // This is to preserve geckofx 45 and before behavior in geckofx 60
+            // The normal behavior now is to write null.toString() to the attribute value when passed null.
+            if (value == null)
+                value = String.Empty;
+
             _element.Value.SetAttribute(attributeName, value);
         }
 

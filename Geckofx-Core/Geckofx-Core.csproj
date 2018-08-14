@@ -143,9 +143,13 @@
     <Compile Include="DOM\Events\DomEventArgs.cs" />
     <Compile Include="DOM\Events\DomMouseEventArgs.cs" />
     <Compile Include="DOM\Events\DomUIEventArgs.cs" />
+    <Compile Include="DOM\GeckoMediaList.cs" />
     <Compile Include="DOM\GeckoNamedNodeMap.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DOM\GeckoRuleType.cs" />
+    <Compile Include="DOM\GeckoStyleRule.cs" />
+    <Compile Include="DOM\GeckoStyleSheet.cs" />
     <Compile Include="DOM\Svg\SvgElement.cs" />
     <Compile Include="DOM\Svg\SvgSvgElement.cs" />
     <Compile Include="DOM\Svg\SvgLength.cs" />
