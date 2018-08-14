@@ -2,6 +2,13 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.2 ==
+
+This build is an Alpha version.
+
+1. Fix GeckoAnchorElement
+2. Fix nuget targets.
+
 == v60.0-0.1 ==
 
 This build is an Alpha version.
