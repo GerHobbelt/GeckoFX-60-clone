@@ -23,7 +23,7 @@ public class MySetUpClass
     public void RunBeforeAnyTestInAssembly()
     {
 #if !DEBUG
-        if (Platform.IsWindows && Xpcom.Is32Bit)
+        if (Xpcom.IsWindows && Xpcom.Is32Bit)
         {
             var proc = System.Diagnostics.Process.GetCurrentProcess();
             var assembly = Assembly.LoadFrom(proc.MainModule.FileName);
