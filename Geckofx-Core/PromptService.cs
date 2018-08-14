@@ -129,18 +129,13 @@ namespace Gecko
         /// </summary>
         public static Func<object> PromptServiceCreator { get; set; }
 
-        public IntPtr GetPrompt(nsIDOMWindow aParent, ref Guid iid)
+        public IntPtr GetPrompt(mozIDOMWindowProxy aParent, ref Guid iid)
         {
-            IntPtr result = IntPtr.Zero;
+            IntPtr result;
             IntPtr iUnknownForObject = Marshal.GetIUnknownForObject(PromptServiceCreator());
             Marshal.QueryInterface(iUnknownForObject, ref iid, out result);
             Marshal.Release(iUnknownForObject);
             return result;
-        }
-
-        public IntPtr GetPrompt(mozIDOMWindowProxy aParent, ref Guid iid)
-        {
-            throw new NotImplementedException();
         }
     }
 
