@@ -130,10 +130,7 @@ namespace Gecko
         /// <summary>
         /// Gets the URL of the document.
         /// </summary>
-        public Uri Url
-        {
-            get { /*return (_domHtmlDocument == null) ? null : new Uri(nsString.Get(_domHtmlDocument.GetURLAttribute));*/throw new NotImplementedException(); }
-        }
+        public Uri Url => new Uri(_document.Value.URL);
 
         public GeckoElementCollection Forms => new GeckoElementCollection(Window, (nsIDOMNodeList)_htmlDocument.Value.Forms);
 

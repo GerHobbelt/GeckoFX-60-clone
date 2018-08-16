@@ -3,85 +3,89 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using Gecko.Interop;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoIFrameElement : GeckoHtmlElement
     {
+        private readonly nsISupports _window;
         private /* nsIDOMHTMLIFrameElement */ nsIDOMElement DOMHTMLElement;
+        private Lazy<HTMLIFrameElement> _frameElement;
 
         internal GeckoIFrameElement(nsISupports window, /* nsIDOMHTMLIFrameElement */ nsIDOMElement element) : base(window, element)
         {
+            _window = window;
             this.DOMHTMLElement = element;
+            _frameElement = new Lazy<HTMLIFrameElement>(() => new HTMLIFrameElement((mozIDOMWindowProxy)_window, (nsISupports)element));
         }
 
         public string Align
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetAlignAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetAlignAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.Align; }
+            set { _frameElement.Value.Align = value; }
         }
 
         public string FrameBorder
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetFrameBorderAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetFrameBorderAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.FrameBorder; }
+            set { _frameElement.Value.FrameBorder = value; }
         }
 
         public string Height
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetHeightAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetHeightAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.Height; }
+            set { _frameElement.Value.Height = value; }
         }
 
         public string LongDesc
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetLongDescAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetLongDescAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.LongDesc; }
+            set { _frameElement.Value.LongDesc = value; }
         }
 
         public string MarginHeight
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetMarginHeightAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetMarginHeightAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.MarginHeight; }
+            set { _frameElement.Value.MarginHeight = value; }
         }
 
         public string MarginWidth
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetMarginWidthAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetMarginWidthAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.MarginWidth; }
+            set { _frameElement.Value.MarginWidth = value; }
         }
 
         public string Name
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetNameAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetNameAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.Name; }
+            set { _frameElement.Value.Name = value; }
         }
 
         public string Scrolling
         {
-            get {/* return nsString.Get(DOMHTMLElement.GetScrollingAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetScrollingAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.Scrolling; }
+            set { _frameElement.Value.Scrolling = value; }
         }
 
         public string Src
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetSrcAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSrcAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.Src; }
+            set { _frameElement.Value.Src = value; }
         }
 
         public string Width
         {
-            get {/* return nsString.Get(DOMHTMLElement.GetWidthAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetWidthAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _frameElement.Value.Width; }
+            set { _frameElement.Value.Width = value; }
         }
 
         public GeckoDocument ContentDocument
         {
             get
             {
-                //var doc = DOMHTMLElement.GetContentDocumentAttribute() as nsIDOMHTMLDocument;
-                //return (doc == null) ? null : new GeckoDocument(doc);
-                throw new NotImplementedException();
+                var doc = _frameElement.Value.ContentDocument;
+                return doc == null ? null : new GeckoDocument(_window, doc);               
             }
         }
 
@@ -89,9 +93,8 @@ namespace Gecko.DOM
         {
             get
             {
-                //var window = DOMHTMLElement.GetContentWindowAttribute();
-                //return (window == null) ? null : new GeckoWindow(window);
-                throw new NotImplementedException();
+                var window = _frameElement.Value.ContentWindow;
+                return window == null ? null : new GeckoWindow((mozIDOMWindowProxy)_window, window);
             }
         }
     }

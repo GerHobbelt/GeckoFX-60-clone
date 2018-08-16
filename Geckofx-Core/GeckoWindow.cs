@@ -12,6 +12,7 @@ namespace Gecko
         : IEquatable<GeckoWindow>, IDisposable
     {
         private ComPtr<nsISupports> _domWindowProxy;
+        private ComPtr<mozIDOMWindow> _innerWindow;
 
         #region ctor & dtor
 
@@ -28,6 +29,12 @@ namespace Gecko
         public GeckoWindow(mozIDOMWindowProxy window, bool ownRCW = true)
         {
             _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
+        }
+
+        public GeckoWindow(mozIDOMWindowProxy window, mozIDOMWindow innerWindow, bool ownRCW = true)
+        {
+            _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
+            _innerWindow = new ComPtr<mozIDOMWindow>(innerWindow, ownRCW);
         }
 
         ~GeckoWindow()
@@ -68,8 +75,9 @@ namespace Gecko
         {
             get
             {
+                nsISupports innerWindow = (nsISupports)_innerWindow?.Instance;
                 return
-                    new WebIDL.Window(_domWindowProxy.Instance, _domWindowProxy.Instance).Document.Wrap(_domWindowProxy.Instance,
+                    new WebIDL.Window(_domWindowProxy.Instance, innerWindow ?? _domWindowProxy.Instance).Document.Wrap(_domWindowProxy.Instance,
                         GeckoDomDocument.CreateDomDocumentWraper);
             }
         }
