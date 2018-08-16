@@ -2,13 +2,19 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.4 ==
+
+This build is an Alpha version.
+
+1. Improvements to the frame wrappers.
+
 == v60.0-0.3 ==
+
+This build is an Alpha version.
 
 1. Fix not loaded file urls when file is 4096 bytes or less.
 2. Make SetAttribute(..., null), have the traditional geckofx behavior.
 3. Change the sign of some properties on GeckoInputElement
-
-This build is an Alpha version.
 
 == v60.0-0.2 ==
 
