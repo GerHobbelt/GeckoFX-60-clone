@@ -85,7 +85,7 @@ namespace Gecko.DOM
             get
             {
                 var doc = _frameElement.Value.ContentDocument;
-                return doc == null ? null : new GeckoDocument(_window, doc);               
+                return doc == null ? null : new GeckoDocument(_window, doc);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Gecko.DOM
             get
             {
                 var window = _frameElement.Value.ContentWindow;
-                return window == null ? null : new GeckoWindow((mozIDOMWindowProxy)_window, window);
+                return window == null ? null : new GeckoWindow((mozIDOMWindowProxy)_window, (nsISupports)window);
             }
         }
     }
