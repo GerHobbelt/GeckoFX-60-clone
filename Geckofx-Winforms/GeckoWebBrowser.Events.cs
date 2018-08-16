@@ -836,7 +836,43 @@ namespace Gecko
         protected virtual void OnDomContextMenu(DomMouseEventArgs e)
         {
             var evnt = (EventHandler<DomMouseEventArgs>) Events[DomContextMenuEvent];
-            if (evnt != null) evnt(this, e);
+            evnt?.Invoke(this, e);
+
+            var cm = new ContextMenu();
+            var menuArgs = new GeckoContextMenuEventArgs(new Point(e.ClientX, e.ClientY), cm, string.Empty, null, null, e.Target?.CastToGeckoElement());
+            OnShowContextMenu(menuArgs);
+
+            if (menuArgs.ContextMenu == null)
+                return;
+
+            if (menuArgs.ContextMenu.MenuItems.Count == 0)
+                return;
+
+            // REVIEW: PORTFF60 - This GTK code is currently untested.
+#if GTK
+    // When using GTK we can't use SWF to display the context menu: SWF displays
+    // the context menu and then tries to track the mouse so that it knows when to
+    // close the context menu. However, GTK intercepts the mouse click before SWF gets
+    // it, so the menu never closes. Instead we display a GTK menu and translate
+    // the SWF menu items into Gtk.MenuItems.
+    // TODO: currently this code only handles text menu items. Would be nice to also
+    // translate images etc.
+				var popupMenu = new Gtk.Menu();
+
+				foreach (MenuItem swfMenuItem in menuArgs.ContextMenu.MenuItems)
+				{
+					var gtkMenuItem = new Gtk.MenuItem(swfMenuItem.Text);
+					gtkMenuItem.Sensitive = swfMenuItem.Enabled;
+					MenuItem origMenuItem = swfMenuItem;
+					gtkMenuItem.Activated += (sender, ev) => origMenuItem.PerformClick();
+					popupMenu.Append(gtkMenuItem);
+				}
+				popupMenu.ShowAll();
+				popupMenu.Popup();
+#else
+            menuArgs.ContextMenu.Show(this, menuArgs.Location);
+#endif
+
         }
 
         #endregion
