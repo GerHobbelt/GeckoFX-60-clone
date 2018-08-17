@@ -16,10 +16,8 @@ namespace Gecko
         : GeckoNode
     {
         internal nsIDOMDocument _domDocument;
-
-        // TODO: FIXME: remove internal add readonly props.
-        protected internal Lazy<WebIDL.Document> _document;
-        protected internal Lazy<WebIDL.DocumentOrShadowRoot> _documentOrShadowRoot;
+        private Lazy<Document> _document;
+        private Lazy<DocumentOrShadowRoot> _documentOrShadowRoot;
 
         internal GeckoDomDocument(nsISupports window, nsIDOMDocument document)
             : base(window, document)
@@ -38,21 +36,21 @@ namespace Gecko
         {
             get
             {
-                return ((nsIDOMDocumentType) _document.Value.Doctype).Wrap(Window, DomDocumentType.Create);                
+                return ((nsIDOMDocumentType) Doc.Value.Doctype).Wrap(Window, DomDocumentType.Create);                
             }
         }
 
         /// <summary>
         /// Gets the top-level document element (for HTML documents, this is the html tag).
         /// </summary>
-        public GeckoElement DocumentElement => _document.Value.DocumentElement.Wrap(Window, GeckoElement.CreateDomElementWrapper);
+        public GeckoElement DocumentElement => Doc.Value.DocumentElement.Wrap(Window, GeckoElement.CreateDomElementWrapper);
 
         public GeckoHtmlElement CreateHtmlElement(string tagName)
         {
             if (string.IsNullOrEmpty(tagName))
                 throw new ArgumentException("tagName");
 
-            return GeckoHtmlElement.Create(Window, _document.Value.CreateElement(tagName));
+            return GeckoHtmlElement.Create(Window, Doc.Value.CreateElement(tagName));
         }
 
         public GeckoElement CreateElement(string tagName)
@@ -60,22 +58,22 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 throw new ArgumentException("tagName");
 
-            return GeckoElement.CreateDomElementWrapper(Window, _document.Value.CreateElement(tagName));
+            return GeckoElement.CreateDomElementWrapper(Window, Doc.Value.CreateElement(tagName));
         }
 
         public DocumentFragment CreateDocumentFragment()
         {
-            return ((nsIDOMDocumentFragment)_document.Value.CreateDocumentFragment()).Wrap(Window, DocumentFragment.CreateDocumentFragmentWrapper);
+            return ((nsIDOMDocumentFragment)Doc.Value.CreateDocumentFragment()).Wrap(Window, DocumentFragment.CreateDocumentFragmentWrapper);
         }
 
         public GeckoTextNode CreateTextNode(string data)
         {
-            return _document.Value.CreateTextNode(data).Wrap(Window, GeckoTextNode.CreateTextNodeWrapper);           
+            return Doc.Value.CreateTextNode(data).Wrap(Window, GeckoTextNode.CreateTextNodeWrapper);           
         }
 
         public GeckoComment CreateComment(string data)
         {
-            return ((nsIDOMComment)_document.Value.CreateComment(data)).Wrap(Window, GeckoComment.CreateCommentWrapper);
+            return ((nsIDOMComment)Doc.Value.CreateComment(data)).Wrap(Window, GeckoComment.CreateCommentWrapper);
         }
 
         public GeckoAttribute CreateAttribute(string name)
@@ -83,7 +81,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException(nameof(name));
 
-            return ((nsIDOMElement)_document.Value.CreateAttribute(name)).Wrap(Window, GeckoAttribute.CreateAttributeWrapper);
+            return ((nsIDOMElement)Doc.Value.CreateAttribute(name)).Wrap(Window, GeckoAttribute.CreateAttributeWrapper);
         }
 
         /// <summary>
@@ -96,7 +94,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(tagName))
                 return null;
 
-            return _document.Value.GetElementsByTagName(tagName).Wrap(Window, (window, x) => new GeckoElementCollection(Window, (nsIDOMNodeList)x));
+            return Doc.Value.GetElementsByTagName(tagName).Wrap(Window, (window, x) => new GeckoElementCollection(Window, (nsIDOMNodeList)x));
         }
 
         public GeckoNode ImportNode(GeckoNode node, bool deep)
@@ -104,7 +102,7 @@ namespace Gecko
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return _document.Value.ImportNode(node.DomObject, deep).Wrap(Window, Create);           
+            return Doc.Value.ImportNode(node.DomObject, deep).Wrap(Window, Create);           
         }
 
         public GeckoHtmlElement CreateElement(string namespaceUri, string qualifiedName)
@@ -114,7 +112,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(qualifiedName))
                 throw new ArgumentException(nameof(qualifiedName));
 
-            return GeckoHtmlElement.Create(Window, _document.Value.CreateElementNS(namespaceUri, qualifiedName));
+            return GeckoHtmlElement.Create(Window, Doc.Value.CreateElementNS(namespaceUri, qualifiedName));
         }
 
         public GeckoAttribute CreateAttribute(string namespaceUri, string qualifiedName)
@@ -124,13 +122,13 @@ namespace Gecko
             if (string.IsNullOrEmpty(qualifiedName))
                 throw new ArgumentException(nameof(qualifiedName));
 
-            return ((nsIDOMElement) _document.Value.CreateAttributeNS(namespaceUri, qualifiedName)).Wrap(Window,
+            return ((nsIDOMElement) Doc.Value.CreateAttributeNS(namespaceUri, qualifiedName)).Wrap(Window,
                 GeckoAttribute.CreateAttributeWrapper);
         }
 
         public DomEventArgs CreateEvent(string name)
         {
-            var e = _document.Value.CreateEvent(name);
+            var e = Doc.Value.CreateEvent(name);
 
             return e.Wrap(Window, (x,y) => DomEventArgs.Create(y));
         }
@@ -147,7 +145,7 @@ namespace Gecko
                 throw new ArgumentException(nameof(localName));
 
             return new GeckoElementCollection(Window,
-                (nsIDOMNodeList) _document.Value.GetElementsByTagNameNS(namespaceUri, localName));
+                (nsIDOMNodeList) Doc.Value.GetElementsByTagNameNS(namespaceUri, localName));
         }
 
 
@@ -178,9 +176,9 @@ namespace Gecko
             return (GeckoHtmlElement)new WebIDL.Document((mozIDOMWindowProxy)Window, (nsISupports)_domDocument).GetElementById(id).Wrap(Window, Create);
         }
 
-        public string InputEncoding => _document.Value.InputEncoding;
+        public string InputEncoding => Doc.Value.InputEncoding;
 
-        public string Uri => _document.Value.URL;
+        public string Uri => Doc.Value.URL;
 
         /// <summary>
         /// <see cref="http://html5.org/specs/dom-range.html#dom-document-createrange"/>
@@ -188,63 +186,63 @@ namespace Gecko
         /// <returns></returns>
         public GeckoRange CreateRange()
         {
-            return new GeckoRange(Window, (nsIDOMRange)_document.Value.CreateRange()); 
+            return new GeckoRange(Window, (nsIDOMRange)Doc.Value.CreateRange()); 
         }
 
         /// <summary>
         /// The window associated with this document.
         /// <see cref="http://www.whatwg.org/html/#dom-document-defaultview"/>
         /// </summary>
-        public GeckoWindow DefaultView => _document.Value.DefaultView.Wrap(Window, (window, x) => new GeckoWindow(x));
+        public GeckoWindow DefaultView => Doc.Value.DefaultView.Wrap(Window, (window, x) => new GeckoWindow(x));
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-characterset"/>
         /// </summary>
-        public string CharacterSet => _document.Value.CharacterSet;
+        public string CharacterSet => Doc.Value.CharacterSet;
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-dir"/>
         /// </summary>
         public string Dir
         {
-            get { return _document.Value.Dir; }
-            set { _document.Value.Dir = value; }
+            get { return Doc.Value.Dir; }
+            set { Doc.Value.Dir = value; }
         }
 
 
         /// <summary>
         /// @see <http://www.whatwg.org/html/#dom-document-location>
         /// </summary>
-        public Location Location => _document.Value.Location.Wrap(Window, Location.Create);
+        public Location Location => Doc.Value.Location.Wrap(Window, Location.Create);
 
         /// <summary>
         /// Gets the document title.
         /// </summary>
         public string Title
         {
-            get { return _document.Value.Title; }
-            set { _document.Value.Title = value; }
+            get { return Doc.Value.Title; }
+            set { Doc.Value.Title = value; }
         }
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-readystate"/>
         /// </summary>
-        public string ReadyState => _document.Value.ReadyState;
+        public string ReadyState => Doc.Value.ReadyState;
 
-        public string Referrer => _document.Value.Referrer;
+        public string Referrer => Doc.Value.Referrer;
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-hasfocus"/>
         /// </summary>
         public bool HasFocus()
         {
-            return _document.Value.HasFocus();            
+            return Doc.Value.HasFocus();            
         }
 
         /// <summary>
         /// Gets the currently focused element.
         /// </summary>
-        public GeckoHtmlElement ActiveElement => (GeckoHtmlElement) _documentOrShadowRoot.Value.ActiveElement.Wrap(Window, Create);
+        public GeckoHtmlElement ActiveElement => (GeckoHtmlElement) DocumentOrShadowRoot.Value.ActiveElement.Wrap(Window, Create);
 
         /// <summary>
         /// Returns a set of elements with the given class name. When called on the document object, the complete document is searched, including the root node.
@@ -253,28 +251,28 @@ namespace Gecko
         /// <returns></returns>
         public GeckoNodeCollection GetElementsByClassName(string classes)
         {
-            var list = (nsIDOMNodeList)_document.Value.GetElementsByClassName(classes);
+            var list = (nsIDOMNodeList)Doc.Value.GetElementsByClassName(classes);
             return GeckoNodeCollection.Create(Window, (nsISupports)list);
         }
 
         /// <summary>
         /// <see cref="http://dev.w3.org/csswg/cssom/#dom-document-preferredStyleSheetSet"/>
         /// </summary>
-        public string PreferredStyleSheetSet => _document.Value.PreferredStyleSheetSet;
+        public string PreferredStyleSheetSet => Doc.Value.PreferredStyleSheetSet;
 
         /// <summary>
         /// <see cref="http://dev.w3.org/csswg/cssom/#dom-document-selectedStyleSheetSet"/>
         /// </summary>
         public string SelectedStyleSheetSet
         {
-            get { return _document.Value.SelectedStyleSheetSet; }
-            set { _document.Value.SelectedStyleSheetSet = value; }
+            get { return Doc.Value.SelectedStyleSheetSet; }
+            set { Doc.Value.SelectedStyleSheetSet = value; }
         }
 
         /// <summary>
         /// <see cref="http://dev.w3.org/csswg/cssom/#dom-document-lastStyleSheetSet"/>
         /// </summary>
-        public string LastStyleSheetSet => _document.Value.LastStyleSheetSet;
+        public string LastStyleSheetSet => Doc.Value.LastStyleSheetSet;
 
         /// <summary>
         /// <see cref="http://dev.w3.org/csswg/cssom/#dom-document-enableStyleSheetsForSet"/>
@@ -282,7 +280,7 @@ namespace Gecko
         /// <param name="name"></param>
         public void EnableStyleSheetsForSet(string name)
         {
-            _document.Value.EnableStyleSheetsForSet(name);            
+            Doc.Value.EnableStyleSheetsForSet(name);            
         }
 
         /// <summary>
@@ -293,30 +291,30 @@ namespace Gecko
         /// <returns></returns>
         public GeckoElement ElementFromPoint(int x, int y)
         {
-            return _documentOrShadowRoot.Value.ElementFromPoint(x, y).Wrap(Window, GeckoElement.CreateDomElementWrapper);            
+            return DocumentOrShadowRoot.Value.ElementFromPoint(x, y).Wrap(Window, GeckoElement.CreateDomElementWrapper);            
         }
 
-        public string ContentType => _document.Value.ContentType;
+        public string ContentType => Doc.Value.ContentType;
 
         /// <summary>
         /// True if this document is synthetic : stand alone image, video, audio file,
         /// etc.
         /// </summary>
-        public bool MozSyntheticDocument => _document.Value.MozSyntheticDocument;
+        public bool MozSyntheticDocument => Doc.Value.MozSyntheticDocument;
 
         ///// <summary>
         ///// Returns the script element whose script is currently being processed.
         /////
         ///// @see <https://developer.mozilla.org/en/DOM/document.currentScript>
         ///// </summary>
-        public GeckoNode CurrentScript => _document.Value.CurrentScript.Wrap(Window, Create);
+        public GeckoNode CurrentScript => Doc.Value.CurrentScript.Wrap(Window, Create);
         
         /// <summary>
         /// <see cref="https://developer.mozilla.org/en/DOM/document.releaseCapture"/>
         /// </summary>
         public void ReleaseCapture()
         {
-            _document.Value.ReleaseCapture();            
+            Doc.Value.ReleaseCapture();            
         }
 
         /// <summary>
@@ -326,7 +324,7 @@ namespace Gecko
         /// </summary>
         public void MozCancelFullScreen()
         {
-            _document.Value.MozCancelFullScreen();            
+            Doc.Value.MozCancelFullScreen();            
         }
 
         /// <summary>
@@ -334,7 +332,7 @@ namespace Gecko
         /// full-screen api.
         /// <see cref="https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI"/>
         /// </summary>
-        public bool MozFullScreen => _document.Value.MozFullScreen;
+        public bool MozFullScreen => Doc.Value.MozFullScreen;
 
         /// <summary>
         /// Denotes whether the full-screen-api.enabled is true, no windowed
@@ -342,8 +340,12 @@ namespace Gecko
         /// mozallowfullscreen attribute set.
         /// <see cref="https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI"/>
         /// </summary>
-        public bool MozFullScreenEnabled => _document.Value.MozFullScreenEnabled;
-        
+        public bool MozFullScreenEnabled => Doc.Value.MozFullScreenEnabled;
+
+        protected internal Lazy<Document> Doc => _document;
+
+        protected internal Lazy<DocumentOrShadowRoot> DocumentOrShadowRoot => _documentOrShadowRoot;
+
         public static GeckoDomDocument CreateDomDocumentWraper(nsISupports window, nsIDOMDocument domDocument)
         {
             // REVIEW: PORTFF60 - should we cache this?

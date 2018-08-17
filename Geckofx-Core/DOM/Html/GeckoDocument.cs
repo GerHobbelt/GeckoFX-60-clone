@@ -67,7 +67,7 @@ namespace Gecko
             internal StyleSheetCollection(nsISupports window, GeckoDocument document)
             {
                 _window = window;
-                _list = new Lazy<StyleSheetList>(() => new StyleSheetList((mozIDOMWindowProxy)_window, document._documentOrShadowRoot.Value.StyleSheets));
+                _list = new Lazy<StyleSheetList>(() => new StyleSheetList((mozIDOMWindowProxy)_window, document.DocumentOrShadowRoot.Value.StyleSheets));
             }
 
 
@@ -130,7 +130,7 @@ namespace Gecko
         /// <summary>
         /// Gets the URL of the document.
         /// </summary>
-        public Uri Url => new Uri(_document.Value.URL);
+        public Uri Url => new Uri(Doc.Value.URL);
 
         public GeckoElementCollection Forms => new GeckoElementCollection(Window, (nsIDOMNodeList)_htmlDocument.Value.Forms);
 
@@ -200,7 +200,7 @@ namespace Gecko
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            return new GeckoElementCollection(Window, (nsIDOMNodeList)_document.Value.GetElementsByName(name));
+            return new GeckoElementCollection(Window, (nsIDOMNodeList)Doc.Value.GetElementsByName(name));
         }
     }
 }
