@@ -11,23 +11,20 @@ namespace Gecko
     public class GeckoDocument : GeckoDomDocument
     {
         private /* nsIDOMHTMLDocument */nsIDOMDocument _domHtmlDocument;
-        protected Lazy<WebIDL.HTMLDocument> _htmlDocument;
+        protected Lazy<HTMLDocument> _htmlDocument;
 
         internal GeckoDocument(nsISupports window,/* nsIDOMHTMLDocument */nsIDOMDocument document) : base(window, document)
         {
-            this._domHtmlDocument = document;
-            _htmlDocument = new Lazy<HTMLDocument>(() => new WebIDL.HTMLDocument((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument));
+            _domHtmlDocument = document;
+            _htmlDocument = new Lazy<HTMLDocument>(() => new HTMLDocument((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument));
         }
 
         internal static GeckoDocument Create(nsISupports window, /* nsIDOMHTMLDocument */nsIDOMDocument document)
         {
-            return (document == null) ? null : new GeckoDocument(window, document);
+            return document == null ? null : new GeckoDocument(window, document);
         }
 
-        public override GeckoDocument OwnerDocument
-        {
-            get { return this; }
-        }
+        public override GeckoDocument OwnerDocument => this;
 
         /// <summary>
         /// Gets the HTML head element.
@@ -45,16 +42,9 @@ namespace Gecko
         /// <summary>
         /// Gets the HTML body element.
         /// </summary>
-        public GeckoHtmlElement Body
-        {
-            get
-            {
-
-                return (_domHtmlDocument == null)
-                    ? null
-                    : GeckoHtmlElement.Create<GeckoHtmlElement>(Window, new WebIDL.Document((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument).Body);
-            }
-        }
+        public GeckoHtmlElement Body => (_domHtmlDocument == null)
+            ? null
+            : GeckoHtmlElement.Create<GeckoHtmlElement>(Window, new Document((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument).Body);
 
         /// <summary>
         /// Represents a collection of style sheets in a <see cref="GeckoDocument"/>.
@@ -102,16 +92,12 @@ namespace Gecko
             {
                 uint length = Count;
                 for (uint i = 0; i < length; i++)
-                {
-                    yield return GeckoStyleSheet.Create(_window, _list.Value.Item(i));
-                }
-                
+                    yield return GeckoStyleSheet.Create(_window, _list.Value.Item(i));   
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
-                foreach (GeckoStyleSheet element in this)
-                    yield return element;
+                return GetEnumerator();
             }
 
 #endregion
@@ -120,12 +106,9 @@ namespace Gecko
         /// <summary>
         /// Gets the collection of style sheets in the <see cref="GeckoDocument"/>.
         /// </summary>
-        public StyleSheetCollection StyleSheets
-        {
-            get { return (_StyleSheets == null) ? (_StyleSheets = new StyleSheetCollection(Window, this)) : _StyleSheets; }
-        }
+        public StyleSheetCollection StyleSheets => _styleSheets == null ? (_styleSheets = new StyleSheetCollection(Window, this)) : _styleSheets;
 
-        private StyleSheetCollection _StyleSheets;
+        private StyleSheetCollection _styleSheets;
 
         /// <summary>
         /// Gets the URL of the document.
@@ -134,60 +117,21 @@ namespace Gecko
 
         public GeckoElementCollection Forms => new GeckoElementCollection(Window, (nsIDOMNodeList)_htmlDocument.Value.Forms);
 
-        public GeckoElementCollection Images
-        {
-            get
-            {
-                //return (_domHtmlDocument == null)
-                //    ? null
-                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetImagesAttribute());
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoElementCollection Images => new GeckoHtmlElementCollection(Window, _htmlDocument.Value.Images);
 
-        public GeckoElementCollection Anchors
-        {
-            get
-            {
-                //return (_domHtmlDocument == null)
-                //    ? null
-                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetAnchorsAttribute());
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoElementCollection Anchors => new GeckoHtmlElementCollection(Window, _htmlDocument.Value.Anchors);
 
-        public GeckoElementCollection Applets
-        {
-            get
-            {
-                //return (_domHtmlDocument == null)
-                //    ? null
-                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetAppletsAttribute());
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoElementCollection Applets => new GeckoHtmlElementCollection(Window, _htmlDocument.Value.Applets);
 
-        public GeckoElementCollection Links
-        {
-            get
-            {
-                //return (_domHtmlDocument == null)
-                //    ? null
-                //    : new GeckoHtmlElementCollection(_domHtmlDocument.GetLinksAttribute());
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoElementCollection Links => new GeckoHtmlElementCollection(Window, _htmlDocument.Value.Links);
 
         public string Cookie
         {
-            get {/* return (_domHtmlDocument == null) ? null : nsString.Get(_domHtmlDocument.GetCookieAttribute);*/throw new NotImplementedException(); }
-            set { /*nsString.Set(_domHtmlDocument.SetCookieAttribute, value);*/throw new NotImplementedException(); }
+            get { return _htmlDocument.Value.Cookie; }
+            set { _htmlDocument.Value.Cookie = value; }
         }
 
-        public string Domain
-        {
-            get { /*return (_domHtmlDocument == null) ? null : nsString.Get(_domHtmlDocument.GetDomainAttribute);*/throw new NotImplementedException(); }
-        }
+        public string Domain => _htmlDocument.Value.Domain;
 
 
         /// <summary>
