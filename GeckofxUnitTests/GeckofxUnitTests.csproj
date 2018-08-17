@@ -112,6 +112,7 @@
     <Compile Include="dom\GeckoFrameElementTests.cs" />
     <Compile Include="dom\GeckoIFrameElementTests.cs" />
     <Compile Include="dom\GeckoSelectElementTests.cs" />
+    <Compile Include="dom\GeckoStyleSheetTests.cs" />
     <Compile Include="ExtensionMethods\GeckoWebBrowserExtensions.cs" />
     <Compile Include="ExtensionMethods\TaskExtensions.cs" />
     <Compile Include="FocusManagerTests.cs" />

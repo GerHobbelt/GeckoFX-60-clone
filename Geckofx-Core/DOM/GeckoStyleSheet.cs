@@ -10,6 +10,8 @@ namespace Gecko
     public class GeckoStyleSheet
     {
         private Lazy<WebIDL.StyleSheet> _styleSheet;
+        private readonly nsISupports _window;
+        private /* nsIDOMCSSStyleSheet */nsISupports _DomStyleSheet;
 
         private GeckoStyleSheet(nsISupports window,/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
         {
@@ -31,49 +33,36 @@ namespace Gecko
             get { return _DomStyleSheet; }
         }
 
-        private readonly nsISupports _window;
-        private /* nsIDOMCSSStyleSheet */nsISupports _DomStyleSheet;
-
         /// <summary>
         /// Gets or sets whether the style sheet is disabled.
         /// </summary>
         public bool Disabled
         {
-            get { /*return _DomStyleSheet.GetDisabledAttribute();*/throw new NotImplementedException(); }
-            set { /*_DomStyleSheet.SetDisabledAttribute(value); */throw new NotImplementedException(); }
+            get { return _styleSheet.Value.Disabled; }
+            set { _styleSheet.Value.Disabled = value; }
         }
 
         /// <summary>
         /// Gets the HREF of the style sheet.
         /// </summary>
-        public string Href
-        {
-            get { /*return nsString.Get(_DomStyleSheet.GetHrefAttribute);*/throw new NotImplementedException(); }
-        }
+        public string Href => _styleSheet.Value.Href;
 
         /// <summary>
         /// Gets the parent of this style sheet, if it was imported using an @import rule.
         /// </summary>
-        public GeckoStyleSheet ParentStyleSheet
-        {
-            get
-            {
-#if PORTFF60
-                return Create((/* nsIDOMCSSStyleSheet */nsISupports)_DomStyleSheet.GetParentStyleSheetAttribute()); 
-#endif
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoStyleSheet ParentStyleSheet => Create(_window, _styleSheet.Value.ParentStyleSheet);
 
         /// <summary>
         /// Gets the <see cref="GeckoStyleRule"/> which imported this style sheet.
         /// </summary>
         public GeckoStyleRule OwnerRule
         {
-            get { /*return GeckoStyleRule.Create((nsIDOMCSSRule) _DomStyleSheet.GetOwnerRuleAttribute());*/throw new NotImplementedException(); }
+            get
+            {
+                /*return GeckoStyleRule.Create((nsIDOMCSSRule) _DomStyleSheet.GetOwnerRuleAttribute());*/throw new NotImplementedException();
+            }
         }
 
-        // TODO: add unittest
         /// <summary>
         /// Gets the <see cref="GeckoNode"/> of the DOM element which imported this style
         /// sheet.  Typically, this is a LINK tag.
@@ -216,13 +205,8 @@ namespace Gecko
             public IEnumerator<GeckoStyleRule> GetEnumerator()
             {           
                 uint length = Count;
-#if PORTFF60
-                for (int i = 0; i < length; i++)
-                {
-                    yield return GeckoStyleRule.Create((nsIDOMCSSRule) List.Item((uint) i));
-                }
-#endif
-                throw new NotImplementedException();
+                for (uint i = 0; i < length; i++)
+                    yield return GeckoStyleRule.Create(_window, _ruleList.Value.Item(i));
             }
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

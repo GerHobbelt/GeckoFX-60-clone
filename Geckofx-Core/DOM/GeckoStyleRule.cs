@@ -1,4 +1,5 @@
 using System;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -7,25 +8,26 @@ namespace Gecko
     /// </summary>
     public class GeckoStyleRule
     {
-        private GeckoStyleRule(/* nsIDOMCSSRule */nsISupports rule)
+        private /* nsIDOMCSSRule */nsISupports _DomStyleRule;
+        private Lazy<CSSRule> _cssRule;
+        private readonly nsISupports _window;
+
+        private GeckoStyleRule(nsISupports window, /* nsIDOMCSSRule */nsISupports rule)
         {
+            _window = window;
             _DomStyleRule = rule;
+            _cssRule = new Lazy<CSSRule>(() => new CSSRule((mozIDOMWindowProxy)window, rule));
         }
 
-        internal static GeckoStyleRule Create(/* nsIDOMCSSRule */nsISupports rule)
+        internal static GeckoStyleRule Create(nsISupports window, /* nsIDOMCSSRule */nsISupports rule)
         {
-            return (rule == null) ? null : new GeckoStyleRule(rule);
+            return (rule == null) ? null : new GeckoStyleRule(window, rule);
         }
 
         /// <summary>
         /// Gets the underlying XPCOM object.
         /// </summary>
-        public object DomStyleRule
-        {
-            get { return _DomStyleRule; }
-        }
-
-        private /* nsIDOMCSSRule */nsISupports _DomStyleRule;
+        public object DomStyleRule => _DomStyleRule;
 
         /// <summary>
         /// Gets the selector text for this rule, or null if it is not a style rule; otherwise, null.
@@ -49,57 +51,21 @@ namespace Gecko
         /// <summary>
         /// Gets this rule formatted as CSS text.
         /// </summary>
-        public string CssText
-        {
-            get { /*return nsString.Get(_DomStyleRule.GetCssTextAttribute);*/throw new NotImplementedException(); }
-        }
+        public string CssText => _cssRule.Value.CssText;
 
         /// <summary>
         /// Gets or sets the style properties of this rule, if it is a style rule; otherwise, null.
         /// </summary>
         public string StyleCssText
         {
-            get
-            {
-#if PORTFF60
-                nsIDOMCSSStyleRule rule = Xpcom.QueryInterface<nsIDOMCSSStyleRule>(DomStyleRule);
-                if (rule != null)
-                {
-                    return nsString.Get(rule.GetStyleAttribute().GetCssTextAttribute);
-                }
-                return null;
-#endif
-                throw new NotImplementedException();
-            }
-            set
-            {
-#if PORTFF60
-                nsIDOMCSSStyleRule rule = Xpcom.QueryInterface<nsIDOMCSSStyleRule>(DomStyleRule);
-                if (rule != null)
-                {
-                    nsString.Set(rule.GetStyleAttribute().SetCssTextAttribute, value);
-                }
-                else
-                {
-                    throw new InvalidOperationException("This rule does not support StyleCssText.");
-                }
-#endif
-            }
+            get { return _cssRule.Value.CssText; }
+            set { _cssRule.Value.CssText = value; }
         }
 
         /// <summary>
         /// Gets the <see cref="GeckoStyleSheet"/> which contains this rule.
         /// </summary>
-        public GeckoStyleSheet ParentStyleSheet
-        {
-            get
-            {
-#if PORTFF60
-                return GeckoStyleSheet.Create((/* nsIDOMCSSStyleSheet */nsISupports) _DomStyleRule.GetParentStyleSheetAttribute());
-#endif
-                throw new NotImplementedException();
-            }
-        }
+        public GeckoStyleSheet ParentStyleSheet => GeckoStyleSheet.Create(_window, _cssRule.Value.ParentStyleSheet);
 
         /// <summary>
         /// Gets the <see cref="GeckoStyleSheet"/> which this rule imports, if it is an @import rule; otherwise, null.
