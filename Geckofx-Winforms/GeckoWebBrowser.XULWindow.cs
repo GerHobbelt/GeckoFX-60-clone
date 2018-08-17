@@ -10,7 +10,7 @@ namespace Gecko
     {
         public nsIDocShell GetDocShellAttribute()
         {
-            return Xpcom.QueryInterface<nsIDocShell>(this.WebBrowser);
+            return Xpcom.QueryInterface<nsIDocShell>(this.Browser);
         }
 
         public bool GetIntrinsicallySizedAttribute()

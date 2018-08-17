@@ -133,11 +133,11 @@ namespace Gecko
 #endif
 
                     WebBrowser = Xpcom.CreateInstance<nsIWebBrowser>(Contracts.WebBrowser);
-                    WebBrowserFocus = (nsIWebBrowserFocus) WebBrowser;
-                    BaseWindow = (nsIBaseWindow) WebBrowser;
-                    WebNav = (nsIWebNavigation) WebBrowser;
+                    WebBrowserFocus = (nsIWebBrowserFocus) Browser;
+                    BaseWindow = (nsIBaseWindow) Browser;
+                    WebNav = (nsIWebNavigation) Browser;
 
-                    WebBrowser.SetContainerWindowAttribute(this);
+                    Browser.SetContainerWindowAttribute(this);
 #if GTK
     				if (Xpcom.IsMono && m_wrapper != null)
     					BaseWindow.InitWindow(m_wrapper.BrowserWindow.Handle, IntPtr.Zero, 0, 0, this.Width, this.Height);
@@ -157,8 +157,8 @@ namespace Gecko
                     Guid nsIWebProgressListenerGUID = typeof (nsIWebProgressListener).GUID;
                     Guid nsIWebProgressListener2GUID = typeof (nsIWebProgressListener2).GUID;
                     // AddEventListener Doesn't yet work
-                    WebBrowser.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListenerGUID);
-                    WebBrowser.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListener2GUID);
+                    Browser.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListenerGUID);
+                    Browser.AddWebBrowserListener(this.GetWeakReference(), ref nsIWebProgressListener2GUID);
 
                     if (UseHttpActivityObserver)
                     {
@@ -168,7 +168,7 @@ namespace Gecko
 
                     // force inital window initialization. (Events now get added after document navigation.
                     {
-                        var domWindow = WebBrowser.GetContentDOMWindowAttribute();
+                        var domWindow = Browser.GetContentDOMWindowAttribute();
                         EventTarget = ((nsIDOMEventTarget) domWindow).AsComPtr();
                         using (var eventType = new nsAString("somedummyevent"))
                         {
@@ -212,7 +212,7 @@ namespace Gecko
             if (_eventsAttached)
                 return;
 
-            var domWindow = WebBrowser.GetContentDOMWindowAttribute();
+            var domWindow = Browser.GetContentDOMWindowAttribute();
             EventTarget = GetPrivateRoot((nsISupports) domWindow).AsComPtr();
             foreach (string sEventName in this.DefaultEvents)
             {

@@ -86,8 +86,7 @@ namespace Gecko
         /// <summary>
         /// nsIWebBrowser instance
         /// </summary>
-        /// TODO: PORTFF60 - this shouldn't be public..
-        public nsIWebBrowser WebBrowser;
+        private nsIWebBrowser WebBrowser;
         
         /// <summary>
         /// nsIWebBrowser casted to nsIBaseWindow
@@ -451,7 +450,7 @@ namespace Gecko
                         ByteArrayInputStream.Create(
                             System.Text.Encoding.UTF8.GetBytes(content != null ? content : string.Empty));
 
-                    nsIDocShell docShell = Xpcom.QueryInterface<nsIDocShell>(this.WebBrowser);
+                    nsIDocShell docShell = Xpcom.QueryInterface<nsIDocShell>(this.Browser);
                     docShell.LoadStream(inputStream, IOService.CreateNsIUri(url), sContentType, sUtf8, null);
                     Marshal.ReleaseComObject(docShell);
                 }
@@ -694,7 +693,7 @@ namespace Gecko
             get
             {
                 return _ClipboardCommands ??
-                       (_ClipboardCommands = Xpcom.QueryInterface<nsIClipboardCommands>(WebBrowser));
+                       (_ClipboardCommands = Xpcom.QueryInterface<nsIClipboardCommands>(Browser));
             }
         }
 
@@ -887,7 +886,7 @@ namespace Gecko
 
         private nsICommandManager CommandManager
         {
-            get { return _CommandManager ?? (_CommandManager = Xpcom.QueryInterface<nsICommandManager>(WebBrowser)); }
+            get { return _CommandManager ?? (_CommandManager = Xpcom.QueryInterface<nsICommandManager>(Browser)); }
         }
 
         private nsICommandManager _CommandManager;
@@ -1008,17 +1007,17 @@ namespace Gecko
         {
             get
             {
-                if (WebBrowser == null)
+                if (Browser == null)
                     return null;
 
                 if (_Window != null)
                 {
-                    var window = WebBrowser.GetContentDOMWindowAttribute();
+                    var window = Browser.GetContentDOMWindowAttribute();
                     if (_Window.DomWindow == window)
                         return _Window;
                     _Window.Dispose();
                 }
-                _Window = WebBrowser.GetContentDOMWindowAttribute().Wrap((nsISupports)WebBrowser.GetContentDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
+                _Window = Browser.GetContentDOMWindowAttribute().Wrap((nsISupports)Browser.GetContentDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
                 return _Window;
             }
         }
@@ -1031,7 +1030,7 @@ namespace Gecko
         {
             get
             {
-                if (WebBrowser == null)
+                if (Browser == null)
                     return null;
                 var domDocument = new WebIDL.Window(Window.DomWindow, (nsISupports) Window.DomWindow).Document.AsComPtr();
 
@@ -1124,7 +1123,7 @@ namespace Gecko
             }
 
 
-            nsIWebBrowserPersist persist = Xpcom.QueryInterface<nsIWebBrowserPersist>(WebBrowser);
+            nsIWebBrowserPersist persist = Xpcom.QueryInterface<nsIWebBrowserPersist>(Browser);
             if (persist != null)
             {
                 persist.SaveDocument((nsISupports) DomDocument._domDocument,
@@ -1163,7 +1162,7 @@ namespace Gecko
 
         nsIWebBrowser nsIWebBrowserChrome.GetWebBrowserAttribute()
         {
-            return this.WebBrowser;
+            return this.Browser;
         }
 
         void nsIWebBrowserChrome.SetWebBrowserAttribute(nsIWebBrowser webBrowser)
@@ -1233,11 +1232,11 @@ namespace Gecko
 
             // note: when a new window is created, gecko calls GetInterface on the webbrowser to get a DOMWindow in order
             // to set the starting url
-            if (this.WebBrowser != null)
+            if (this.Browser != null)
             {
                 if (uuid == typeof (nsIDOMWindow).GUID)
                 {
-                    obj = this.WebBrowser.GetContentDOMWindowAttribute();
+                    obj = this.Browser.GetContentDOMWindowAttribute();
                 }
                 else if (uuid == typeof (nsIDOMDocument).GUID)
                 {
@@ -1764,7 +1763,7 @@ namespace Gecko
             if (e == null) return;
 
             var domEventArg = DomEventArgs.Create(e);
-            domEventArg.Window = WebBrowser.GetContentDOMWindowAttribute();
+            domEventArg.Window = Browser.GetContentDOMWindowAttribute();
             OnHandleDomEvent(domEventArg);
         }
 
@@ -2154,6 +2153,11 @@ namespace Gecko
         {
             get { return activeNetworkChannelUrls; }
         }
+
+        /// <summary>
+        /// nsIWebBrowser instance
+        /// </summary>
+        public nsIWebBrowser Browser => WebBrowser;
 
         //public void ObserveActivity(nsISupports aHttpChannel, uint aActivityType, uint aActivitySubtype, uint aTimestamp, ulong aExtraSizeData, nsACString aExtraStringData)
         public void ObserveActivity(nsISupports aHttpChannel,
