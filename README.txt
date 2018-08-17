@@ -2,6 +2,13 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.5 ==
+
+This build is an Alpha version.
+
+1. Renable ShowContextMenu event.
+2. Implement CssRules Enumerator.
+
 == v60.0-0.4 ==
 
 This build is an Alpha version.
