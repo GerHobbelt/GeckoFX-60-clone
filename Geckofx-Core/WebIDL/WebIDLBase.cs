@@ -137,7 +137,9 @@ namespace Gecko.WebIDL
             {
                 JsVal val;
                 if (p is nsAString || p is nsACString || p is nsAUTF8String || p is String)
-                    SpiderMonkey.JS_ExecuteScript(context.ContextPointer, '"' + EscapeStringForJS(p.ToString()) + '"', out val);
+                {
+                    val = SpiderMonkey.StringToJsVal(context.ContextPointer, p.ToString());
+                }
                 else if (p is nsISupports)
                 {
                     // This returns a  [xpconnect wrapped nsISupports] - why may or may not be good enought - if not could try and access the objects wrappedJSObject property?

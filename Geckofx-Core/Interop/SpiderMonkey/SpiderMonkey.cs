@@ -112,6 +112,13 @@ namespace Gecko
             return JS_ExecuteScript(cx, src, out jsval);
         }
 
+        public static JsVal StringToJsVal(IntPtr cx, string str)
+        {
+            var val = new MutableJSVal();
+            if (!ToJSValue(cx, str, ref val))
+               return default(JsVal);
+            return val.Val;
+        }
 
         public static IntPtr JS_GetClassObject(IntPtr context, IntPtr proto)
         {
@@ -344,6 +351,11 @@ namespace Gecko
         [return: MarshalAs(UnmanagedType.U1)]
         internal static extern bool JS_ExecuteScript(IntPtr cx, ref IntPtr handleScript,
             ref MutableHandleValue jsValue);
+
+        [DllImport("xul", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        internal static extern bool ToJSValue(IntPtr cx, [MarshalAs(UnmanagedType.LPWStr)] string str,
+            ref MutableJSVal jsValue);
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl)]
         public static extern void JS_Free(IntPtr cx, IntPtr p);
