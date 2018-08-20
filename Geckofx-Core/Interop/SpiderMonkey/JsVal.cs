@@ -150,40 +150,28 @@ namespace Gecko
 
         public object ToObject()
         {
-            if (IsNull)
-            {
-                return null;
-            }
-            if (IsUndefined)
-            {
-                return "Undefined";
-            }
-
-            if (IsBoolean)
-            {
-                return ToBoolean();
-            }
-
-            if (IsInt)
-            {
-                return ToInteger();
-            }
-
-            if (IsDouble)
-            {
-                return ToDouble();
-            }
-
+            // Most likey should appear before less likely.
             if (IsString)
-            {
                 return ToString();
-            }
 
             if (IsObject)
-            {
                 return ToComObjectInternal(IntPtr.Zero);
-            }
 
+            if (IsInt)
+                return ToInteger();
+
+            if (IsBoolean)
+                return ToBoolean();
+
+            if (IsNull)
+                return null;
+
+            if (IsUndefined)
+                return "Undefined";
+            
+            if (IsDouble)
+                return ToDouble();
+           
             return null;
         }
 
