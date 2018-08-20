@@ -26,6 +26,9 @@ namespace Gecko
 
         public nsISupports Window => _window;
 
+        // Node name (Tagname) is called a lot and shouldn't change.
+        private string _cachedNodeName;
+
         #endregion
 
         #region ctor & creation methods
@@ -107,7 +110,15 @@ namespace Gecko
             set { _node.Value.NodeValue = value; }
         }
 
-        public string NodeName => _node.Value.NodeName;
+        public string NodeName
+        {
+            get
+            {
+                if (_cachedNodeName != null)
+                    return _cachedNodeName;
+                return _cachedNodeName = _node.Value.NodeName;
+            }
+        }
 
         /// <summary>
         /// Gets a collection containing all child nodes of this node.
