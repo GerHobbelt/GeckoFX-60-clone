@@ -185,6 +185,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Firefox64\omni.ja" />
+    <None Include="Firefox64\platform.ini" />
     <None Include="Firefox\application.ini" />
     <None Include="Firefox\crashreporter.ini" />
     <None Include="Firefox\dependentlibs.list" />
@@ -207,6 +209,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Firefox64\AccessibleHandler.dll" />
+    <Content Include="Firefox64\AccessibleMarshal.dll" />
+    <Content Include="Firefox64\d3dcompiler_47.dll" />
+    <Content Include="Firefox64\freebl3.dll" />
+    <Content Include="Firefox64\IA2Marshal.dll" />
+    <Content Include="Firefox64\icudt58.dll" />
+    <Content Include="Firefox64\icuin58.dll" />
+    <Content Include="Firefox64\icuuc58.dll" />
+    <Content Include="Firefox64\lgpllibs.dll" />
+    <Content Include="Firefox64\libEGL.dll" />
+    <Content Include="Firefox64\libGLESv2.dll" />
+    <Content Include="Firefox64\mozavcodec.dll" />
+    <Content Include="Firefox64\mozavutil.dll" />
+    <Content Include="Firefox64\mozglue.dll" />
+    <Content Include="Firefox64\nss3.dll" />
+    <Content Include="Firefox64\nssckbi.dll" />
+    <Content Include="Firefox64\nssdbm3.dll" />
+    <Content Include="Firefox64\plugin-container.exe" />
+    <Content Include="Firefox64\plugin-hang-ui.exe" />
+    <Content Include="Firefox64\qipcap64.dll" />
+    <Content Include="Firefox64\sandboxbroker.dll" />
+    <Content Include="Firefox64\softokn3.dll" />
+    <Content Include="Firefox64\xul.dll" />
     <Content Include="Firefox\AccessibleMarshal.dll" />
     <Content Include="Firefox\breakpadinjector.dll" />
     <Content Include="Firefox\crashreporter.exe" />
@@ -284,12 +309,13 @@
     <WebDownload Condition="!Exists('nuget.exe')" Filename="nuget.exe" FileUri="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" />
     <Exec Command="nuget pack Geckofx-Winforms.64.nuspec -Prop Configuration=$(Configuration) -Prop Platform=x64 -Prop Version=$(AssemblyVersionMajor).$(AssemblyVersionMinor).$(AssemblyVersionPatch)$(AssemblyVersionPreRelease) -MinClientVersion 2.5" />
   </Target>
-  <Import Project="..\packages\Geckofx45.64.Windows.0.13.0\build\Geckofx45.64.Windows.targets" Condition="Exists('..\packages\Geckofx45.64.Windows.0.13.0\build\Geckofx45.64.Windows.targets')" />
   <Import Project="..\packages\Geckofx60.32.Windows.0.3.0\build\Geckofx60.32.Windows.targets" Condition="Exists('..\packages\Geckofx60.32.Windows.0.3.0\build\Geckofx60.32.Windows.targets')" />
+  <Import Project="..\packages\Geckofx60.64.Windows.0.3.0\build\Geckofx60.64.Windows.targets" Condition="Exists('..\packages\Geckofx60.64.Windows.0.3.0\build\Geckofx60.64.Windows.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Geckofx60.32.Windows.0.3.0\build\Geckofx60.32.Windows.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Geckofx60.32.Windows.0.3.0\build\Geckofx60.32.Windows.targets'))" />
+    <Error Condition="!Exists('..\packages\Geckofx60.64.Windows.0.3.0\build\Geckofx60.64.Windows.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Geckofx60.64.Windows.0.3.0\build\Geckofx60.64.Windows.targets'))" />
   </Target>
 </Project>
