@@ -318,10 +318,7 @@ namespace Gecko
                             try
                             {
                                 var w = new WebIDL.Window(window, (nsISupports) window);
-#if PORTFF60
-                                // Closed is returning COMObject even though its typed as boolean in the webidl? WHY?
                                 if (!w.Closed)
-#endif
                                     w.Close();
                             }
                             finally
