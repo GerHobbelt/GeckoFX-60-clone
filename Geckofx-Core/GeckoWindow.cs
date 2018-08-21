@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Gecko.DOM;
 using Gecko.Interop;
+using Gecko.WebIDL;
 
 namespace Gecko
 {
@@ -13,12 +14,14 @@ namespace Gecko
     {
         private ComPtr<nsISupports> _domWindowProxy;
         private ComPtr<nsISupports> _innerWindow;
+        private Lazy<WebIDL.Window> _window;
 
         #region ctor & dtor
 
         public GeckoWindow(mozIDOMWindow window, bool ownRCW = true)
         {
             _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
+            _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? _domWindowProxy.Instance));
         }
 
         public GeckoWindow(nsIDOMWindow window, bool ownRCW = true)
@@ -29,12 +32,14 @@ namespace Gecko
         public GeckoWindow(mozIDOMWindowProxy window, bool ownRCW = true)
         {
             _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
+            _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? _domWindowProxy.Instance));
         }
 
         public GeckoWindow(mozIDOMWindowProxy window, nsISupports innerWindow, bool ownRCW = true)
         {
             _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
             _innerWindow = new ComPtr<nsISupports>(innerWindow, ownRCW);
+            _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? _domWindowProxy.Instance));
         }
 
         ~GeckoWindow()
@@ -68,83 +73,49 @@ namespace Gecko
         /// <summary>
         /// Gets the document displayed in the window.
         /// </summary>
-        public GeckoDomDocument Document
-        {
-            get
-            {
-                nsISupports innerWindow = (nsISupports)_innerWindow?.Instance;
-                return
-                    new WebIDL.Window(_domWindowProxy.Instance, innerWindow ?? _domWindowProxy.Instance).Document.Wrap(_domWindowProxy.Instance,
-                        GeckoDomDocument.CreateDomDocumentWraper);
-            }
-        }
+        public GeckoDomDocument Document => _window.Value.Document.Wrap(_domWindowProxy.Instance,
+            GeckoDomDocument.CreateDomDocumentWraper);
 
         /// <summary>
         /// Gets the parent window of this one.
         /// </summary>
-        public GeckoWindow Parent
-        {
-            get
-            {
-                return
-                    new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Parent.Wrap(
-                        x => new GeckoWindow(x));
-            }
-        }
+        public GeckoWindow Parent => _window.Value.Parent.Wrap(x => new GeckoWindow(x));
 
-        public double ScrollX
-        {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollX; }
-        }
+        public double ScrollX => _window.Value.ScrollX;
 
-        public double ScrollY
-        {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollY; }
-        }
+        public double ScrollY => _window.Value.ScrollY;
 
-        public int ScrollMinX
-        {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollMinX; }
-        }
+        public int ScrollMinX => _window.Value.ScrollMinX;
 
-        public int ScrollMinY
-        {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollMinY; }
-        }
+        public int ScrollMinY => _window.Value.ScrollMinY;
 
-        public int ScrollMaxX
-        {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollMaxX; }
-        }
+        public int ScrollMaxX => _window.Value.ScrollMaxX;
 
-        public int ScrollMaxY
-        {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollMaxY; }
-        }
+        public int ScrollMaxY => _window.Value.ScrollMaxY;
 
         public void ScrollTo(int xScroll, int yScroll)
         {
-            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollTo(xScroll, yScroll);
+            _window.Value.ScrollTo(xScroll, yScroll);
         }
 
         public void ScrollBy(double xScrollDif, double yScrollDif)
         {
-            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollBy(xScrollDif, yScrollDif);
+            _window.Value.ScrollBy(xScrollDif, yScrollDif);
         }
 
         public void ScrollByLines(int numLines)
         {
-            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollByLines(numLines);
+            _window.Value.ScrollByLines(numLines);
         }
 
         public void ScrollByPages(int numPages)
         {
-            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).ScrollByPages(numPages);
+            _window.Value.ScrollByPages(numPages);
         }
 
         public void SizeToContent()
         {
-            new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).SizeToContent();
+            _window.Value.SizeToContent();
         }
 
         public GeckoWindow Top
@@ -152,31 +123,31 @@ namespace Gecko
             get
             {
                 return
-                    new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Top.Wrap(_domWindowProxy.Instance,
+                    _window.Value.Top.Wrap(_domWindowProxy.Instance,
                         (x,y) => new GeckoWindow(y));
             }
         }
 
         public string Name
         {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Name; }
-            set { new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Name = value; }
+            get { return _window.Value.Name; }
+            set { _window.Value.Name = value; }
         }
 
         public ulong MozPaintCount
         {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).MozPaintCount; }
+            get { return _window.Value.MozPaintCount; }
         }
 
         public object Content
         {
-            get { return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Content; }
+            get { return _window.Value.Content; }
         }
 
         public bool Find(string str, bool caseSensitive, bool backwards, bool wrapAround, bool wholeWord,
             bool searchInFrames, bool showDialog)
         {
-            return new WebIDL.Window(_domWindowProxy.Instance, (nsISupports) _domWindowProxy.Instance).Find(str, caseSensitive,
+            return _window.Value.Find(str, caseSensitive,
                 backwards, wrapAround, wholeWord, searchInFrames, showDialog);
         }
 
@@ -199,7 +170,7 @@ namespace Gecko
         }
 
         public GeckoSelection Selection => GeckoSelection.Create(_domWindowProxy.Instance,
-            new WebIDL.Window(_domWindowProxy.Instance, _domWindowProxy.Instance).GetSelection());
+            _window.Value.GetSelection());
 
         // The WebIDL Window interfaces doesn't seem to have a Frames apptribute that returns a WindowCollection (rather just a window proxy? is it QI-able?)
 #if false
