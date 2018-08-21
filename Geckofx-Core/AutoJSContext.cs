@@ -294,6 +294,11 @@ namespace Gecko
             }
         }
 
+        public nsISupports Window
+        {
+            get { return _window; }
+        }
+
         /// <summary>
         /// Helper method which attempts to find the global object in a Context.
         /// </summary>

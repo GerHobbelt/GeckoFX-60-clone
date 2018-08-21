@@ -38,13 +38,10 @@ namespace Gecko.JQuery
                 }
 
                 var nativeComObject = jsValue.ToComObject(autoContext.ContextPointer);
-                var element = Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(nativeComObject);
+                var element = Xpcom.QueryInterface</* nsIDOMHTMLElement */nsIDOMElement>(nativeComObject);
                 if (element != null)
                 {
-#if PORTFF60
-                    return GeckoHtmlElement.Create(element);
-#endif
-                    throw new NotImplementedException();
+                    return GeckoHtmlElement.Create(_window.DomWindow, element);
                 }
 
                 if (!SpiderMonkey.JS_HasProperty(autoContext.ContextPointer, jsValue.AsPtr, "length"))
@@ -90,16 +87,8 @@ namespace Gecko.JQuery
             var elementIndexString = elementIndex.ToString(CultureInfo.InvariantCulture);
             var firstNativeDom = SpiderMonkey.JS_GetProperty(autoContext.ContextPointer, jsValue.AsPtr, elementIndexString).ToComObject(autoContext.ContextPointer);
 
-            var element = Xpcom.QueryInterface</* nsIDOMHTMLElement */nsISupports>(firstNativeDom);
-            if (element == null)
-            {
-                return null;
-            }
-
-#if PORTFF60
-            return GeckoHtmlElement.Create(element);
-#endif
-            throw new NotImplementedException();
+            var element = Xpcom.QueryInterface</* nsIDOMHTMLElement */nsIDOMElement>(firstNativeDom);
+            return element == null ? null : GeckoHtmlElement.Create(autoContext.Window, element);
         }
     }
 }
