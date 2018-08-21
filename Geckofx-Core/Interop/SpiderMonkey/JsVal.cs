@@ -148,6 +148,49 @@ namespace Gecko
             }
         }
 
+        public object ToObject<T>()
+        {
+            if (typeof(T).IsValueType)
+            {
+                if (IsBoolean)
+                {
+                    return ToBoolean();
+                }
+
+                if (IsInt)
+                {
+                    return ToInteger();
+                }
+
+                if (IsDouble)
+                {
+                    return ToDouble();
+                }
+            }
+
+            if (IsNull)
+            {
+                return null;
+            }
+
+            if (IsUndefined)
+            {
+                return "Undefined";
+            }
+
+            if (IsString)
+            {
+                return ToString();
+            }
+
+            if (IsObject)
+            {
+                return ToComObjectInternal(IntPtr.Zero);
+            }
+
+            return null;
+        }
+
         public object ToObject()
         {
             if (IsNull)

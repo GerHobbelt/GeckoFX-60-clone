@@ -49,7 +49,7 @@ namespace Gecko.WebIDL
                 if (result.IsUndefined)
                     throw new GeckoException(String.Format("Property '{0}' of type '{1}' does not exist on object",
                         propertyName, typeof(T).Name));
-                var retObject = result.ToObject();
+                var retObject = result.ToObject<T>();
                 return ConvertObject<T>(retObject);
             }
         }
