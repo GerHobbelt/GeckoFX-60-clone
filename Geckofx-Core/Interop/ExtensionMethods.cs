@@ -27,7 +27,7 @@ namespace Gecko.Interop
             where TGeckoObject : class
             where TWrapper : class
         {
-            throw new NotImplementedException("need to pass a window with object now..");
+            return obj == null ? null : wrapper(obj);
         }
 
         /// <summary>
