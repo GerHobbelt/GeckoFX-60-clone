@@ -2,6 +2,12 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.7 ==
+
+v60.0-0.6 is very broken.
+
+== v60.0-0.6 ==
+
 This build is an Alpha version.
 
 1. Fix GeckoWebBrowser::FrameEventsPropagateToMainWindow 
