@@ -126,10 +126,10 @@ namespace Gecko
 			do
 			{
 				dir = dir.Parent;
-				var fullPath = Path.Combine(dir.FullName, Path.Combine("packages", "Geckofx45." + extraInfo, "content", "Firefox"));
+				var fullPath = Path.Combine(dir.FullName, Path.Combine("packages", "Geckofx60." + extraInfo, "content", "Firefox"));
 				if (Directory.Exists(fullPath))
 					return fullPath;
-				fullPath = Path.Combine(dir.FullName, Path.Combine("packages", "Geckofx45." + extraInfo.TrimEnd('0').TrimEnd('.'), "content", "Firefox"));
+				fullPath = Path.Combine(dir.FullName, Path.Combine("packages", "Geckofx60." + extraInfo.TrimEnd('0').TrimEnd('.'), "content", "Firefox"));
 				if (Directory.Exists(fullPath))
 					return fullPath;
 			} while (dir.Parent != null);

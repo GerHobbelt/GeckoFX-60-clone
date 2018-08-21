@@ -40,7 +40,8 @@ public class MySetUpClass
 
         // Needed when single unittests are run
         var xulrunnerPath = XpComTests.XulRunnerLocation;
-        xulrunnerPath = @"C:\mozilla-release\obj-i686-pc-mingw32\dist\bin";
+        // The following line is useful to Tom Please don't delete.
+        //xulrunnerPath = @"C:\mozilla-release\obj-i686-pc-mingw32\dist\bin";
         Xpcom.Initialize(xulrunnerPath);
     }
 
