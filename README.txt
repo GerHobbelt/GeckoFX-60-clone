@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+This build is an Alpha version.
+
+1. Fix GeckoWebBrowser::FrameEventsPropagateToMainWindow 
+2. Some optmizations
+
 == v60.0-0.5 ==
 
 This build is an Alpha version.
