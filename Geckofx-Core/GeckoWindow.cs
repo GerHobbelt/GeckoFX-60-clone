@@ -53,10 +53,7 @@ namespace Gecko
         /// <summary>
         /// Gets the underlying unmanaged DOM object.
         /// </summary>
-        public nsISupports DomWindow
-        {
-            get { return _domWindowProxy.Instance; }
-        }
+        public nsISupports DomWindow => _innerWindow?.Instance ?? _domWindowProxy?.Instance;
 
         public WindowUtils WindowUtils
         {
