@@ -46,25 +46,5 @@ namespace GeckofxUnitTests
 
 			Assert.IsTrue(ReadGeckoMIMEInputStreamAsUTF8(stream).Contains(simpleData));			
 		}
-
-		[Test]
-		public void AddContentLength_ToTrue_HeaderContainsContentLength()
-		{
-			MimeInputStream stream = MimeInputStream.Create();
-			stream.AddContentLength = true;
-
-			Assert.IsTrue(ReadGeckoMIMEInputStreamAsUTF8(stream).Contains("Content-Length"));
-		}
-
-		[Test]
-		public void AddHeader_AddValidHeaderEntry_HeaderContainsHeaderEntry()
-		{
-			MimeInputStream stream = MimeInputStream.Create();
-			stream.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-
-			string header = ReadGeckoMIMEInputStreamAsUTF8(stream);
-			Assert.IsTrue(header.Contains("Content-Type"));
-			Assert.IsTrue(header.Contains("application/x-www-form-urlencoded"));
-		}
 	}
 }
