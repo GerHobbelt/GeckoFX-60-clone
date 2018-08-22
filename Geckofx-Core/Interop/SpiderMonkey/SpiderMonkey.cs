@@ -22,6 +22,21 @@ namespace Gecko
             return JS_SetProperty(cx, ref jsObject, name, ref value);
         }
 
+        private static void HandleInvokeFailure(IntPtr cx, string name)
+        {
+            var exception = SpiderMonkey.JS_GetPendingException(cx);
+            if (exception != IntPtr.Zero)
+            {
+                var exceptionJsVal = JsVal.FromPtr(exception);
+                var msg = exceptionJsVal.ToString();
+                // TODO: add stack trace to exception
+                //msg += GetStackTrace(globalObject.JSObject, exceptionJsVal);
+                throw new GeckoException($"Calling function '{name}' failed: '{msg}'");
+            }
+
+            throw new GeckoException($"Failed to call function '{name}'");
+        }
+
         /// <summary>
         /// JS_CallFunctionName without args
         /// </summary>
@@ -36,22 +51,17 @@ namespace Gecko
             int parameterCount = 0;
             var mutableHandle = new MutableHandleValue();
             if (!JS_CallFunctionName(cx, ref jsObject, name, ref parameterCount, ref mutableHandle))
-                throw new GeckoException(String.Format("Failed to call function {0}", name));
+                HandleInvokeFailure(cx, name);
 
-            value = JsVal.FromPtr(mutableHandle.Handle);
-            result = true;
-
-            if (!result)
-                throw new GeckoException("Function does not exist!");
+            value = JsVal.FromPtr(mutableHandle.Handle);            
+            
             return value;
         }
 
         public static JsVal JS_CallFunctionName(IntPtr cx, IntPtr jsObject, string name, JsVal[] args)
         {
             if ((args == null) || (args.Length == 0))
-            {
                 return JS_CallFunctionName(cx, jsObject, name);
-            }
 
             bool result;
             JsVal value = default(JsVal);
@@ -64,7 +74,8 @@ namespace Gecko
             }
 
             if (!result)
-                throw new GeckoException("Function does not exist!");
+                HandleInvokeFailure(cx, name);
+
             return value;
         }
 
@@ -77,7 +88,9 @@ namespace Gecko
             if (success)
                 return JsVal.FromPtr(mutableHandle.Handle);
 
-            throw new GeckoException("failed to call function.");
+            HandleInvokeFailure(cx, func.ToString());
+
+            throw new Exception("HandleInvokeFailure always throws execption, so this line is never reached.");
         }
 
 
