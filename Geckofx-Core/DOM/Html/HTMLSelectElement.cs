@@ -41,7 +41,7 @@ namespace Gecko.DOM
 
         public GeckoFormElement Form => new GeckoFormElement(_window, (nsIDOMHTMLFormElement)_selectElement.Value.Form);
 
-        public GeckoOptionsCollection Options => new GeckoOptionsCollection(_selectElement.Value.Options);
+        public GeckoOptionsCollection Options => new GeckoOptionsCollection(_window, _selectElement.Value.Options);
 
         public bool Disabled
         {
@@ -67,11 +67,11 @@ namespace Gecko.DOM
             set { _selectElement.Value.Size = value; }
         }
 
-        public void Add(GeckoHtmlElement element, GeckoHtmlElement before)
+        public void Add(GeckoHtmlElement element, GeckoHtmlElement before = null)
         {
-            // TODO: FIXME: need to be able to use WebIDLUnion to use this method. PORTFF60
-            //DOMHTMLElement.Add(element.DomObject as /* /* nsIDOMHTMLElement*/nsISupports, before.DomObject as nsIVariant);
-            throw new NotImplementedException();
+            var a = new WebIDLUnion<nsISupports, nsISupports>((nsISupports)element.DOMHtmlElement, (nsISupports)element.DOMHtmlElement);
+            var b = new WebIDLUnion<nsISupports, int>((nsISupports)before?.DOMHtmlElement, 0);
+            _selectElement.Value.Add(a, b);
         }
 
         public void Remove(int index)

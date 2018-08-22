@@ -84,7 +84,7 @@ namespace Gecko.WebIDL
             {
                 DisposablCollection disposablCollection;
                 var collection = ConvertTypes(paramObjects, context, out disposablCollection);
-                SpiderMonkey.JS_CallFunctionName(context.ContextPointer, jsObject.JSObject, methodName, collection.ToArray());
+                SpiderMonkey.JS_CallFunctionName(context.ContextPointer, jsObject.JSObject, methodName, collection.ToArray());             
                 disposablCollection.Dispose();
             }
         }
@@ -161,6 +161,23 @@ namespace Gecko.WebIDL
                 else if (p is int)
                 {
                     val = JsVal.FromDouble(Convert.ToDouble(p));
+                }
+                else if (p is WebIDLUnionBase)
+                {
+                    WebIDLUnionBase b = (WebIDLUnionBase) p;
+                    if (b.IsNull())
+                    {
+                        SpiderMonkey.JS_ExecuteScript(context.ContextPointer, "null", out val);
+                    }
+                    else
+                    {
+                        var item = ((WebIDLUnionBase)p).ToComObject();
+                        if (item == null)
+                            throw new NotImplementedException("WebIDLUnion are currently only supported for nsISupport types or null's.");                                        
+                        var jso = context.ConvertCOMObjectToJSObject(item, false);
+                        list.Add(jso);
+                        val = JsVal.FromPtr(jso.JSObject);
+                    }                    
                 }
                 else
                     SpiderMonkey.JS_ExecuteScript(context.ContextPointer, (p ?? "null").ToString(), out val);

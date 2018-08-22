@@ -2,61 +2,53 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoOptionElement : GeckoHtmlElement
     {
-        private /* nsIDOMHTMLOptionElement */ nsIDOMElement DOMHTMLElement;
+        private Lazy<HTMLOptionElement> _optionElement;
 
         internal GeckoOptionElement(nsISupports window, /* nsIDOMHTMLOptionElement */ nsIDOMElement element) : base(window, element)
         {
-            this.DOMHTMLElement = element;
+            _optionElement = new Lazy<HTMLOptionElement>(() => new HTMLOptionElement((mozIDOMWindowProxy)Window, (nsISupports)element));
         }
 
-        public GeckoFormElement Form
-        {
-            get { /*return new GeckoFormElement(DOMHTMLElement.GetFormAttribute());*/throw new NotImplementedException(); }
-        }
+        public GeckoFormElement Form => new GeckoFormElement(Window, (nsIDOMHTMLFormElement)_optionElement.Value.Form);
 
         public bool DefaultSelected
         {
-            get { /*return DOMHTMLElement.GetDefaultSelectedAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetDefaultSelectedAttribute(value);*/throw new NotImplementedException(); }
+            get { return _optionElement.Value.DefaultSelected; }
+            set { _optionElement.Value.DefaultSelected = value; }
         }
 
-        public string Text
-        {
-            get { /*return nsString.Get(DOMHTMLElement.GetTextAttribute);*/throw new NotImplementedException(); }
-        }
+        public string Text => _optionElement.Value.Text;
 
-        public int Index
-        {
-            get { /*return DOMHTMLElement.GetIndexAttribute();*/throw new NotImplementedException(); }
-        }
+        public int Index => _optionElement.Value.Index;
 
         public bool Disabled
         {
-            get { /*return DOMHTMLElement.GetDisabledAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetDisabledAttribute(value);*/throw new NotImplementedException(); }
+            get { return _optionElement.Value.Disabled; }
+            set { _optionElement.Value.Disabled = value; }
         }
 
         public string Label
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetLabelAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetLabelAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _optionElement.Value.Label; }
+            set { _optionElement.Value.Label = value; }
         }
 
         public bool Selected
         {
-            get { /*return DOMHTMLElement.GetSelectedAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetSelectedAttribute(value);*/throw new NotImplementedException(); }
+            get { return _optionElement.Value.Selected; }
+            set { _optionElement.Value.Selected = value; }
         }
 
         public string Value
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetValueAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetValueAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _optionElement.Value.Value; }
+            set { _optionElement.Value.Value = value; }
         }
     }
 }

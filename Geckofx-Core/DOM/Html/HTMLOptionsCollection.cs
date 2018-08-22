@@ -2,34 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoOptionsCollection
     {
-        private /* nsIDOMHTMLOptionsCollection */ nsISupports DOMHTMLElement;
+        private readonly nsISupports _window;
+        private Lazy<NamedNodeMap> _optionsCollection;
 
-        internal GeckoOptionsCollection(/* nsIDOMHTMLOptionsCollection */ nsISupports element)
+        internal GeckoOptionsCollection(nsISupports window, /* nsIDOMHTMLOptionsCollection */ nsISupports element)
         {
-            this.DOMHTMLElement = element;
+            _window = window;
+            _optionsCollection = new Lazy<NamedNodeMap>(() => new NamedNodeMap((mozIDOMWindowProxy)window, element));
         }
 
-        public uint Length
+        public uint Length => _optionsCollection.Value.Length;
+
+        public GeckoOptionElement Item(uint index)
         {
-            get { /*return DOMHTMLElement.GetLengthAttribute();*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetLengthAttribute(value);*/throw new NotImplementedException(); }
+            return new GeckoOptionElement(_window, (nsIDOMElement)_optionsCollection.Value.Item(index));
         }
 
-        public GeckoOptionElement item(uint index)
+        public GeckoOptionElement NamedItem(string name)
         {
-            //return new GeckoOptionElement(DOMHTMLElement.Item(index));
-            throw new NotImplementedException();
-        }
-
-        public GeckoOptionElement namedItem(string name)
-        {
-            //return new GeckoOptionElement(DOMHTMLElement.NamedItem(new nsAString(name)));
-            throw new NotImplementedException();
+            return new GeckoOptionElement(_window, (nsIDOMElement)_optionsCollection.Value.GetNamedItem(name));
         }
     }
 }
