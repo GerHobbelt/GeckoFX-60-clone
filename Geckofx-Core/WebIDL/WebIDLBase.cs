@@ -128,6 +128,13 @@ namespace Gecko.WebIDL
             }
         }
 
+        private static JsVal CreateBoolJsVal(AutoJSContext context, bool b)
+        {
+            JsVal val;
+            SpiderMonkey.JS_ExecuteScript(context.ContextPointer, ((bool)b) ? "true;" : "false;", out val);
+            return val;
+        }
+
         private static List<JsVal> ConvertTypes(object[] paramObjects, AutoJSContext context, out DisposablCollection toDispose)
         {
             List<IDisposable> list = new List<IDisposable>();
@@ -151,7 +158,7 @@ namespace Gecko.WebIDL
                 }
                 else if (p is bool)
                 {
-                    SpiderMonkey.JS_ExecuteScript(context.ContextPointer, ((bool) p) ? "true;" : "false;", out val);
+                    val = CreateBoolJsVal(context, (bool) p);                    
                 }
                 else if (p is double)
                 {
@@ -170,10 +177,15 @@ namespace Gecko.WebIDL
                         SpiderMonkey.JS_ExecuteScript(context.ContextPointer, "null", out val);
                     }
                     else
+                    if (b.IsBool())
+                    {
+                        val = CreateBoolJsVal(context, (bool)b.ToBool());
+                    }
+                    else
                     {
                         var item = ((WebIDLUnionBase)p).ToComObject();
                         if (item == null)
-                            throw new NotImplementedException("WebIDLUnion are currently only supported for nsISupport types or null's.");                                        
+                            throw new NotImplementedException("WebIDLUnion are currently only supported for nsISupport and bool types and null's.");
                         var jso = context.ConvertCOMObjectToJSObject(item, false);
                         list.Add(jso);
                         val = JsVal.FromPtr(jso.JSObject);

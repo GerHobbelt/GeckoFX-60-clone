@@ -38,6 +38,18 @@ namespace Gecko.WebIDL
             return _items.All(x => x == null || x.Equals(GetDefaultValue(x)));
         }
 
+        public bool IsBool()
+        {
+            var item = _items.FirstOrDefault(x => x is bool);
+            return item != null;
+        }
+
+        public bool ToBool()
+        {
+            var item = _items.FirstOrDefault(x => x is bool);
+            return item != null && (bool) item;
+        }
+
         public nsISupports ToComObject()
         {            
             var item = (nsISupports)_items.FirstOrDefault(x => x is nsISupports);

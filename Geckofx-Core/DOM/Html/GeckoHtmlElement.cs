@@ -176,9 +176,8 @@ namespace Gecko
         public GeckoHtmlElement OffsetParent => GeckoHtmlElement.Create(Window, _htmlElement.Value.OffsetParent);
 
         public void ScrollIntoView(bool top)
-        {
-            // TODO: FIXME - PORTFF60 - ignores top param. (don't know how to call other ScrollIntoView overload.)
-            _element.Value.ScrollIntoView();
+        {            
+            _element.Value.ScrollIntoView(new WebIDLUnion<bool, object>(top, null));
         }
 
 
