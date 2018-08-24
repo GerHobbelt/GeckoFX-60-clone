@@ -126,6 +126,7 @@
     <Compile Include="GeckoDocumentTests.cs" />
     <Compile Include="GeckoDomDocumentTests.cs" />
     <Compile Include="GeckoElementTests.cs" />
+    <Compile Include="GeckoFormElementTests.cs" />
     <Compile Include="GeckoInputElementTests.cs" />
     <Compile Include="GeckoMIMEInputStreamTests.cs" />
     <Compile Include="GeckoNodeTests.cs" />

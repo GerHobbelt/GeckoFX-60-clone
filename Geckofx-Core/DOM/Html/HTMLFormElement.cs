@@ -2,74 +2,67 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Gecko.WebIDL;
 
 namespace Gecko.DOM
 {
     public class GeckoFormElement : GeckoHtmlElement
     {
-        private nsIDOMHTMLFormElement DOMHTMLElement;
+        private readonly Lazy<HTMLFormElement> _formElement;
 
         internal GeckoFormElement(nsISupports window, nsIDOMHTMLFormElement element) : base(window, (nsIDOMElement)element)
-        {
-            this.DOMHTMLElement = element;
+        {            
+            _formElement = new Lazy<HTMLFormElement>(() => new HTMLFormElement((mozIDOMWindowProxy)Window, (nsISupports)element));
         }
 
-        public GeckoHtmlElementCollection Elements
-        {
-            get { /*return new GeckoHtmlElementCollection(DOMHTMLElement.GetElementsAttribute());*/throw new NotImplementedException(); }
-        }
+        public GeckoHtmlElementCollection Elements => new GeckoHtmlElementCollection(Window, _formElement.Value.Elements);
 
-        public int Length
-        {
-            get { /*return DOMHTMLElement.GetLengthAttribute();*/throw new NotImplementedException(); }
-        }
+        public int Length => _formElement.Value.Length;
 
         public string Name
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetNameAttribute);*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetNameAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _formElement.Value.Name; }
+            set { _formElement.Value.Name = value; }
         }
 
         public string AcceptCharset
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetAcceptCharsetAttribute);*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetAcceptCharsetAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _formElement.Value.AcceptCharset; }
+            set { _formElement.Value.AcceptCharset = value; }
         }
 
         public string Action
         {
-            get {/* return nsString.Get(DOMHTMLElement.GetActionAttribute);*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetActionAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _formElement.Value.Action; }
+            set { _formElement.Value.Action = value; }
         }
 
         public string Enctype
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetEnctypeAttribute);*/throw new NotImplementedException(); }
-            set {/* DOMHTMLElement.SetEnctypeAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _formElement.Value.Enctype; }
+            set { _formElement.Value.Enctype = value; }
         }
 
         public string Method
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetMethodAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetMethodAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _formElement.Value.Method; }
+            set { _formElement.Value.Method = value; }
         }
 
         public string Target
         {
-            get { /*return nsString.Get(DOMHTMLElement.GetTargetAttribute);*/throw new NotImplementedException(); }
-            set { /*DOMHTMLElement.SetTargetAttribute(new nsAString(value));*/throw new NotImplementedException(); }
+            get { return _formElement.Value.Target; }
+            set { _formElement.Value.Target = value; }
         }
 
-        public void submit()
+        public void Submit()
         {
-            //DOMHTMLElement.Submit();
-            throw new NotImplementedException();
+            _formElement.Value.Submit();            
         }
 
-        public void reset()
+        public void Reset()
         {
-            //DOMHTMLElement.Reset();
-            throw new NotImplementedException();
+            _formElement.Value.Reset();            
         }
     }
 }
