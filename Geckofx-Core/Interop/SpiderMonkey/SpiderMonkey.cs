@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System;
+using System.Text;
 
 // functions are declared like
 // extern JS_PUBLIC_API(JSContextCallback) JS_SetContextCallback(JSRuntime *rt, JSContextCallback cxCallback);
@@ -131,6 +132,22 @@ namespace Gecko
             if (!ToJSValue(cx, str, ref val))
                return default(JsVal);
             return val.Val;
+        }
+
+        // https://stackoverflow.com/a/10773988/361714
+        private static string StringFromNativeUtf8(IntPtr nativeUtf8)
+        {
+            int len = 0;
+            while (Marshal.ReadByte(nativeUtf8, len) != 0) ++len;
+            byte[] buffer = new byte[len];
+            Marshal.Copy(nativeUtf8, buffer, 0, buffer.Length);
+            return Encoding.UTF8.GetString(buffer);
+        }
+
+        public static string JsValToString(IntPtr cx, JsVal jsVal)
+        {
+            IntPtr ptr = SpiderMonkey.ToString(cx, ref jsVal);
+            return StringFromNativeUtf8(ptr);            
         }
 
         public static IntPtr JS_GetClassObject(IntPtr context, IntPtr proto)
@@ -369,6 +386,9 @@ namespace Gecko
         [return: MarshalAs(UnmanagedType.U1)]
         internal static extern bool ToJSValue(IntPtr cx, [MarshalAs(UnmanagedType.LPWStr)] string str,
             ref MutableJSVal jsValue);
+
+        [DllImport("xul", CallingConvention = CallingConvention.Cdecl)]        
+        internal static extern IntPtr ToString(IntPtr cx, ref JsVal jsValue);
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl)]
         public static extern void JS_Free(IntPtr cx, IntPtr p);

@@ -341,34 +341,14 @@ namespace Gecko
 
         internal string ConvertValueToString(JsVal value)
         {
-            if (value.IsString)
-            {
-                var v = Xpcom.XPConnect.Instance.JSValToVariant(ContextPointer, ref value);
-                return nsString.Get(v.GetAsAString);
-            }
+            // OLD SLOW CODE
+            // if (value.IsString)
+            // {
+            //    var v = Xpcom.XPConnect.Instance.JSValToVariant(ContextPointer, ref value);
+            //    return nsString.Get(v.GetAsAString);
+            //}
 
-            // Fallback for non string JsVal's
-            // If the JsVal is not a string convert it to a JSString
-            // then convert the JSString to a utf8 string.
-            // NOTE: This fallback isn't ideal and may cause unicode replacement chars to appear.
-
-            IntPtr jsp = SpiderMonkey.ToStringSlow(ContextPointer, value);
-            var utf8StrPtr = SpiderMonkey.JS_EncodeStringToUTF8(ContextPointer, ref jsp);
-            if (utf8StrPtr != IntPtr.Zero)
-            {
-                try
-                {
-                    var length = SpiderMonkey.JS_GetStringEncodingLength(ContextPointer, jsp);
-                    byte[] result = new byte[length];
-                    Marshal.Copy(utf8StrPtr, result, 0, length);
-                    return Encoding.UTF8.GetString(result, 0, length);
-                }
-                finally
-                {
-                    SpiderMonkey.JS_Free(ContextPointer, utf8StrPtr);
-                }
-            }
-            return null;
+            return SpiderMonkey.JsValToString(this._cx, value);
         }
 
         // TODO: move to own class + file.
