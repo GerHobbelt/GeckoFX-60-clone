@@ -206,9 +206,8 @@ namespace Gecko
         /// Match this up with EndbatchChanges. Will stop ui updates while multiple selection methods are called.
         /// </summary>
         public void StartBatchChanges()
-        {
-            // TODO: renable: https://trello.com/c/Od8VeHVj/38-find-a-replacement-for-startbatchchanges-and-endbatchchanges
-            //((nsISelectionPrivate) Selection).StartBatchChanges();
+        {            
+            ((nsISelectionPrivate)Selection).StartBatchChanges();
 
         }
 
@@ -217,8 +216,7 @@ namespace Gecko
         /// </summary>
         public void EndBatchChanges()
         {
-            // TODO: renable: https://trello.com/c/Od8VeHVj/38-find-a-replacement-for-startbatchchanges-and-endbatchchanges
-            //((nsISelectionPrivate) Selection).EndBatchChanges();            
+            ((nsISelectionPrivate)Selection).EndBatchChanges();            
         }
 
         /// <summary>
