@@ -12,6 +12,7 @@ namespace GeckofxUnitTests
 	// Setting SetDictionaryAttribute ("en-US") throws NS_ERROR_FILE_NOT_FOUND on Linux.
 	[TestFixture]
 	[Platform(Exclude="Linux")]
+    [Ignore("Fails not running against a full firefox build")]
 	public class SpellCheckerEngineTests
 	{
 		const string Language = "en";
