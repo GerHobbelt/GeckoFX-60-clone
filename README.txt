@@ -2,6 +2,12 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.8 ==
+
+1. Renable start/end batchchanges.
+2. Now using vs2017 for FF build. (needed to fixed 64bit) 
+3. ScrollIntoView nolonger ignores argument.
+
 == v60.0-0.7 ==
 
 v60.0-0.6 is very broken.
