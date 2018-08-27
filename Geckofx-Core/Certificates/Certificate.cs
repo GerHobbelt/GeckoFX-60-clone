@@ -14,12 +14,7 @@ namespace Gecko.Certificates
         private Certificate(nsIX509Cert cert)
         {
             _cert = new ComPtr<nsIX509Cert>(cert);
-        }
-
-        public string Nickname
-        {
-            get { /*return nsString.Get(_cert.Instance.GetNicknameAttribute);*/ throw new NotImplementedException(); }
-        }
+        }        
 
         public string EmailAddress
         {

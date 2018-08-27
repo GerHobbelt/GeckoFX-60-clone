@@ -31,14 +31,5 @@ namespace GeckofxUnitTests
 			Assert.NotNull( array );
 			Assert.IsTrue( array.Length > 0 );
 		}
-
-		[Test]
-		[Category(CertificateTestsCategory)]
-		public void CertificateDatabase_GoogleCerts()
-		{
-			var googleCerts = CertificateDatabase.GetCerts().Where( x => x.Nickname.Contains( "Google" ) ).ToArray();
-
-			Assert.NotNull(googleCerts);
-		}
 	}
 }
