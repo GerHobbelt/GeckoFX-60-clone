@@ -19,6 +19,11 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string Item(uint index)
+        {
+            return this.CallMethod<string>("item", index);
+        }
+        
         public bool Contains(string @string)
         {
             return this.CallMethod<bool>("contains", @string);

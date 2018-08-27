@@ -18,5 +18,10 @@ namespace Gecko.WebIDL
                 return this.GetProperty<uint>("length");
             }
         }
+        
+        public int IndexedGetter(uint index)
+        {
+            return this.CallMethod<int>("IndexedGetter", index);
+        }
     }
 }

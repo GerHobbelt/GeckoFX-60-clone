@@ -18,8 +18,7 @@ namespace Gecko.WebIDL
                 return this.GetProperty<uint>("length");
             }
         }
-
-        // Manually added as WEBIDL compiler didn't add this.
+        
         public nsISupports Item(uint index)
         {
             return this.CallMethod<nsISupports>("item", index);

@@ -58,6 +58,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("mozHasItem", uri);
         }
         
+        public string MozItem(uint index)
+        {
+            return this.CallMethod<string>("mozItem", index);
+        }
+        
         public void MozAdd(string uri)
         {
             this.CallVoidMethod("mozAdd", uri);

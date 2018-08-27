@@ -195,6 +195,11 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsIDOMElement Item(uint index)
+        {
+            return this.CallMethod<nsIDOMElement>("item", index);
+        }
+        
         public nsISupports NamedItem(string name)
         {
             return this.CallMethod<nsISupports>("namedItem", name);

@@ -18,12 +18,11 @@ namespace Gecko.WebIDL
                 return this.GetProperty<uint>("length");
             }
         }
-
-        public nsISupports Item(uint index)
+        
+        public nsISupports GetNamedItem(string name)
         {
-            return this.CallMethod<nsISupports>("item", index);
+            return this.CallMethod<nsISupports>("getNamedItem", name);
         }
-
         
         public nsISupports SetNamedItem(nsISupports arg)
         {
@@ -34,12 +33,12 @@ namespace Gecko.WebIDL
         {
             return this.CallMethod<nsISupports>("removeNamedItem", name);
         }
-
-        public nsISupports GetNamedItem(string localName)
+        
+        public nsISupports Item(uint index)
         {
-            return this.CallMethod<nsISupports>("getNamedItem", localName);
+            return this.CallMethod<nsISupports>("item", index);
         }
-
+        
         public nsISupports GetNamedItemNS(string namespaceURI, string localName)
         {
             return this.CallMethod<nsISupports>("getNamedItemNS", namespaceURI, localName);

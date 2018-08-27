@@ -31,6 +31,11 @@ namespace Gecko.WebIDL
             }
         }
         
+        public string Item(uint index)
+        {
+            return this.CallMethod<string>("item", index);
+        }
+        
         public void DeleteMedium(string oldMedium)
         {
             this.CallVoidMethod("deleteMedium", oldMedium);

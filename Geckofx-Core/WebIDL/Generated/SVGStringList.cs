@@ -42,6 +42,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<string>("getItem", index);
         }
         
+        public string IndexedGetter(uint index)
+        {
+            return this.CallMethod<string>("IndexedGetter", index);
+        }
+        
         public string InsertItemBefore(string newItem, uint index)
         {
             return this.CallMethod<string>("insertItemBefore", newItem, index);

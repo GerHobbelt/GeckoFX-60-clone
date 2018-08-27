@@ -30,19 +30,18 @@ namespace Gecko.WebIDL
                 return this.GetProperty<uint>("length");
             }
         }
-
-        // Manually added as WEBIDL compiler didn't add this.
-        public string Item(uint index)
-        {
-            return this.CallMethod<string>("item", index);
-        }
-
+        
         public nsISupports ParentRule
         {
             get
             {
                 return this.GetProperty<nsISupports>("parentRule");
             }
+        }
+        
+        public string Item(uint index)
+        {
+            return this.CallMethod<string>("item", index);
         }
         
         public string GetPropertyValue(string property)

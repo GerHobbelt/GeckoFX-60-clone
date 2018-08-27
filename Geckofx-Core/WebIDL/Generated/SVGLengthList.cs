@@ -37,6 +37,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("initialize", newItem);
         }
         
+        public nsISupports GetItem(uint index)
+        {
+            return this.CallMethod<nsISupports>("getItem", index);
+        }
+        
         public nsISupports InsertItemBefore(nsISupports newItem, uint index)
         {
             return this.CallMethod<nsISupports>("insertItemBefore", newItem, index);

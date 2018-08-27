@@ -31,5 +31,10 @@ namespace Gecko.WebIDL
         {
             return this.CallMethod<string>("key", index);
         }
+        
+        public string GetItem(string key)
+        {
+            return this.CallMethod<string>("getItem", key);
+        }
     }
 }

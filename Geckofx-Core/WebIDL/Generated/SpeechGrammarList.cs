@@ -19,6 +19,11 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsISupports Item(uint index)
+        {
+            return this.CallMethod<nsISupports>("item", index);
+        }
+        
         public void AddFromURI(string src)
         {
             this.CallVoidMethod("addFromURI", src);

@@ -257,6 +257,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<mozIDOMWindowProxy>("open", url, target, features);
         }
         
+        public object NamedGetter(string name)
+        {
+            return this.CallMethod<object>("NamedGetter", name);
+        }
+        
         public void Alert()
         {
             this.CallVoidMethod("alert");

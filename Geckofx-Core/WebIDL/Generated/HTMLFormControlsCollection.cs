@@ -10,5 +10,10 @@ namespace Gecko.WebIDL
                 base(globalWindow, thisObject)
         {
         }
+        
+        public WebIDLUnion<nsISupports,nsIDOMElement> NamedItem(string name)
+        {
+            return this.CallMethod<WebIDLUnion<nsISupports,nsIDOMElement>>("namedItem", name);
+        }
     }
 }

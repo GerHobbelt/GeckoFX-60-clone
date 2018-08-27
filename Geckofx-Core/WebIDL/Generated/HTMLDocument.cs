@@ -187,6 +187,11 @@ namespace Gecko.WebIDL
             }
         }
         
+        public object NamedGetter(string name)
+        {
+            return this.CallMethod<object>("NamedGetter", name);
+        }
+        
         public nsIDOMDocument Open()
         {
             return this.CallMethod<nsIDOMDocument>("open");

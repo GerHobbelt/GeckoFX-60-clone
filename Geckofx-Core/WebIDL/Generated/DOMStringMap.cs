@@ -10,5 +10,10 @@ namespace Gecko.WebIDL
                 base(globalWindow, thisObject)
         {
         }
+        
+        public string NamedGetter(string name)
+        {
+            return this.CallMethod<string>("NamedGetter", name);
+        }
     }
 }

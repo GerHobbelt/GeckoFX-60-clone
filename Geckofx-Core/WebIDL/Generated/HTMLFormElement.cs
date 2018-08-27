@@ -135,6 +135,16 @@ namespace Gecko.WebIDL
             }
         }
         
+        public nsIDOMElement IndexedGetter(uint index)
+        {
+            return this.CallMethod<nsIDOMElement>("IndexedGetter", index);
+        }
+        
+        public nsISupports NamedGetter(string name)
+        {
+            return this.CallMethod<nsISupports>("NamedGetter", name);
+        }
+        
         public void Submit()
         {
             this.CallVoidMethod("submit");

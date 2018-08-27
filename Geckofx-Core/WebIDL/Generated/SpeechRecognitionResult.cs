@@ -26,5 +26,10 @@ namespace Gecko.WebIDL
                 return this.GetProperty<bool>("isFinal");
             }
         }
+        
+        public nsISupports Item(uint index)
+        {
+            return this.CallMethod<nsISupports>("item", index);
+        }
     }
 }

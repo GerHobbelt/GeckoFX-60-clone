@@ -65,6 +65,16 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsISupports>("getColumnFor", element);
         }
         
+        public nsISupports GetNamedColumn(string name)
+        {
+            return this.CallMethod<nsISupports>("getNamedColumn", name);
+        }
+        
+        public nsISupports GetColumnAt(uint index)
+        {
+            return this.CallMethod<nsISupports>("getColumnAt", index);
+        }
+        
         public void InvalidateColumns()
         {
             this.CallVoidMethod("invalidateColumns");

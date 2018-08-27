@@ -18,5 +18,15 @@ namespace Gecko.WebIDL
                 return this.GetProperty<uint>("length");
             }
         }
+        
+        public nsISupports Item(uint index)
+        {
+            return this.CallMethod<nsISupports>("item", index);
+        }
+        
+        public nsISupports NamedItem(string name)
+        {
+            return this.CallMethod<nsISupports>("namedItem", name);
+        }
     }
 }
