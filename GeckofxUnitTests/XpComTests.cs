@@ -1108,6 +1108,14 @@ namespace GeckofxUnitTests
             Assert.IsNotNull(instance);
             Marshal.ReleaseComObject(instance);
 	    }
+
+	    [Test]
+	    public void CreateInstance_CreateTextInputProcessor_ReturnsValidInstance()
+	    {
+	        var instance = Xpcom.CreateInstance<nsITextInputProcessor>("@mozilla.org/text-input-processor;1");
+	        Assert.IsNotNull(instance);
+	        Marshal.ReleaseComObject(instance);
+        }
 #endregion
 
 #region GetService Unittests

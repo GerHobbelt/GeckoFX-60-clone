@@ -87,14 +87,6 @@ namespace GeckofxUnitTests
 
 			browser.Window.WindowUtils.SendMouseEventToWindow("mousedown", 10, 10, GeckoMouseButton.Left, 1, 0, false, 0, 0);
 		}
-
-		[Test]
-		public void SendKeyEvent()
-		{
-			browser.TestLoadHtml("<body>hello world</body>");
-
-			Assert.AreEqual(true, browser.Window.WindowUtils.SendKeyEvent("keypress", 0, 68, 0, false));
-		}
 		
 		[Platform("Win")]
 		[Test]

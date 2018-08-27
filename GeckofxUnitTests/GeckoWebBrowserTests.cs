@@ -123,6 +123,15 @@ namespace GeckofxUnitTests
             Assert.AreEqual(url, _browser.Url.AbsoluteUri);
         }
 
+        public class TestCallback : nsITextInputProcessorCallback
+        {
+            public bool OnNotify(nsITextInputProcessor aTextInputProcessor, nsITextInputProcessorNotification aNotification)
+            {
+                Console.WriteLine("TestCallback:OnNotify");
+                return true;
+            }
+        }
+
         [Test]
         public void DomContentChanged_ChangeContentOfTextInputWithKeyPressAndMoveToSecondInput_DomContentChangedShouldFire()
         {
@@ -146,9 +155,21 @@ namespace GeckofxUnitTests
             _browser.DomContentChanged += (sender, e) => contentChangedEventReceived = true;
 
 
-            // Modify first input by sending a keypress.			
-            nsIDOMWindowUtils utils = Xpcom.QueryInterface<nsIDOMWindowUtils>(_browser.Window.DomWindow);
-            _browser.Window.WindowUtils.SendKeyEvent("keypress", 0, 102, 0, false);
+            // Modify first input by sending a keypress.
+            // This could be refactored but at least it shows how to invoke a keypress using nsITextInputProcessor
+            var instance = Xpcom.CreateInstance<nsITextInputProcessor>("@mozilla.org/text-input-processor;1");
+            using (var context = new AutoJSContext(_browser.Window))
+            {
+                var result = context.EvaluateScript(
+                    @"new KeyboardEvent('', { key: 'a', code: 'KeyA', keyCode: KeyboardEvent.DOM_VK_A });");
+                instance.BeginInputTransaction((mozIDOMWindow) _browser.Document.DefaultView.DomWindow, new TestCallback());
+                nsString.Set(instance.SetPendingCompositionString, "hi");
+                instance.Keyup((nsIDOMEvent)result.ToComObject(context.ContextPointer), 0, 1);
+                result = context.EvaluateScript(
+                    @"new KeyboardEvent('', { key: 'Enter', code: 'Enter' });");
+                instance.FlushPendingComposition(null, 0, 2);
+                instance.CommitComposition((nsIDOMEvent)result.ToComObject(context.ContextPointer), 0, 2);
+            }
 
             // DomContentChanged Event should fire when we move we move to next element.
             _browser.Document.GetHtmlElementById("two").Focus();

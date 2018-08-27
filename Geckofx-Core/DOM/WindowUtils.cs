@@ -236,14 +236,10 @@ namespace Gecko.DOM
         /// default action was taken.
         /// </summary>
         /// 	
+        [Obsolete]
         public bool SendKeyEvent(string aType, int aKeyCode, int aCharCode, int aModifiers, bool aPreventDefault)
         {
-            using (nsAString type = new nsAString(aType))
-            {
-                //return _windowUtils.Instance.SendKeyEvent(type, aKeyCode, aCharCode, aModifiers,
-                //    aPreventDefault ? 1U : 0U);
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException("Use nsITextInputProcessor instead.");
         }
 
         /// <summary>
