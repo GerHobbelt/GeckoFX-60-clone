@@ -12,18 +12,21 @@ namespace GeckofxUnitTests
 	public class JsValTests
 	{
         private GeckoWebBrowser _gwb;
+	    private AutoJSContext _context;
 
-        [SetUp]
+	    [SetUp]
 		public void BeforeEachTestSetup()
 		{
             _gwb = new GeckoWebBrowser();
             _gwb.CreateControl();
-        }
+		    _context = new AutoJSContext(_gwb.Window);
+		}
 
 		[TearDown]
 		public void AfterEachTestTearDown()
 		{
-		}
+		    _context.Dispose();
+        }
 
 		[Test]
 		public void ToString_OnStringJsVal_ReturnsStringContents()

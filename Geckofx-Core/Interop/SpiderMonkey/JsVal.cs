@@ -142,10 +142,11 @@ namespace Gecko
 
         public override string ToString()
         {
-            using (var context = new AutoJSContext())
-            {
-                return context.ConvertValueToString(this);
-            }
+            var context = AutoJSContext.Current;
+            if (context == null)
+                throw new Exception("AutoJSContext not set.");
+
+            return AutoJSContext.Current?.ConvertValueToString(this) ?? string.Empty;
         }
 
         public object ToObject<T>()
@@ -237,7 +238,9 @@ namespace Gecko
         /// <returns></returns>
         private object ToComObjectInternal(IntPtr cx)
         {
-            using (var context = new AutoJSContext(cx))
+            var context = AutoJSContext.Current;
+            if (context == null)
+                throw new Exception("AutoJSContext not set.");
             {
                 var jsObject = SpiderMonkey.JS_ValueToObject(context.ContextPointer, this);
 
@@ -276,10 +279,11 @@ namespace Gecko
         {
             get
             {
-                using (var context = new AutoJSContext())
-                {
-                    return SpiderMonkey.JS_TypeOfValue(context.ContextPointer, ref this);
-                }
+                var context = AutoJSContext.Current;
+                if (context == null)
+                    throw new Exception("AutoJSContext not set.");
+               
+                return SpiderMonkey.JS_TypeOfValue(context.ContextPointer, ref this);               
             }
         }
     }

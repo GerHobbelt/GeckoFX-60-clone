@@ -19,7 +19,7 @@ namespace Gecko.Utils
                 throw new ArgumentException("height");
 
             string data;
-            using (var context = new AutoJSContext())
+            using (var context = new AutoJSContext(element.Window))
             {
                 context.EvaluateScript(string.Format(@"(function(element, canvas, ctx)
 						{{

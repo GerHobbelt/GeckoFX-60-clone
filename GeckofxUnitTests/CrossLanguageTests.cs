@@ -185,7 +185,7 @@ namespace GeckofxUnitTests
 			browser.Navigate(tempfilename);
 			browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
-            using (var context = new AutoJSContext(AutoJSContext.SafeJSContext))
+            using (var context = new AutoJSContext(browser.Window))
 			{
 				string result = String.Empty;				
 				var success = context.EvaluateScript(initialjavascript, out result);				

@@ -29,17 +29,7 @@ namespace GeckofxUnitTests
 			_browser.Dispose();
 		}
 
-		[Test]
-		public void CreateAndDisposeAutoJsContext_NoSuppliedContext_ContextPointerNotNull()
-		{
-			using (var context = new AutoJSContext())
-			{
-				Assert.NotNull(context.ContextPointer);				
-			}
-		}
-
-
-        [Ignore("TODO: I think this may need backstagepass access.")]
+            [Ignore("TODO: I think this may need backstagepass access.")]
 	    [Test]
 	    public void GetComponentsObject_DoesNotReturnNull()
 	    {

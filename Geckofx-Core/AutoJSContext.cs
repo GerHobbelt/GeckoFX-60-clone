@@ -54,10 +54,11 @@ namespace Gecko
     {
         #region fields
 
+        private static Stack<AutoJSContext> _contextStack = new Stack<AutoJSContext>();
+
         private readonly IntPtr _cx;
         private readonly nsISupports _window;
         private JSAutoCompartment _defaultCompartment;
-        private Stack<JSAutoCompartment> _compartmentStack = new Stack<JSAutoCompartment>();
         private nsIXPCComponents _nsIXPCComponents;
         private IntPtr _globalJSObject;
 
@@ -71,6 +72,17 @@ namespace Gecko
         #endregion
 
         #region Properties
+
+        public static AutoJSContext Current
+        {
+            get
+            {
+                if (_contextStack.Count == 0)
+                    return null;
+
+                return _contextStack.Peek();
+            }
+        }
 
         public IntPtr ContextPointer
         {
@@ -115,41 +127,9 @@ namespace Gecko
                 _cx = context;
                 _window = (nsISupports)window;
             }
-        }
 
-        /// <summary>
-        /// Create a AutoJSContext using the SafeJSContext.
-        /// If context is IntPtr.Zero use the SafeJSContext
-        /// (but SafeJSContext doesn't contain a Global object then try the BackstageJSContext instead)
-        /// </summary>
-        /// <param name="context"></param>
-        [ObsoleteAttribute(
-            "This constructor only works if a AutoJSContext(window) has previously been use for the same context.")]
-        public AutoJSContext(IntPtr context)
-        {
-            // We can't just use nsIXPConnect::GetSafeJSContext(); because its marked as [noxpcom, nostdcall]
-            // TODO: Enhance IDL compiler to not generate methods for noxpcom, nostdcall tagged methods.
-            if (context == IntPtr.Zero)
-                context = SafeJSContext;
-
-            _globalJSObject = GetGlobalFromContext(context);
-            if (_globalJSObject == IntPtr.Zero)
-                throw new InvalidOperationException("JSContext don't store their default compartment object on the cx.");
-
-            _defaultCompartment = new JSAutoCompartment(context, _globalJSObject);
-            _cx = context;
-        }
-
-        /// <summary>
-        /// Create a AutoJSContext using the SafeJSContext.
-        /// </summary>
-        [ObsoleteAttribute(
-            "This constructor only works if a AutoJSContext(window) has previously been use for the SafeJSContext")]
-        public AutoJSContext()
-            : this(SafeJSContext)
-        {
-        }
-
+            _contextStack.Push(this);
+        }        
 #endregion
 
 #region EvaluateScriptMethods
@@ -372,7 +352,7 @@ namespace Gecko
                 if (_iunknown == IntPtr.Zero)
                     return;
 
-                Marshal.Release(_iunknown);                
+                Marshal.Release(_iunknown);
             }
 
             ~JSObjectWrapper()
@@ -437,6 +417,12 @@ namespace Gecko
 
         public void Dispose()
         {
+#if DEBUG
+            if (_contextStack.Peek() != this)
+                throw new Exception("Missing dispose.");
+#endif
+            _contextStack.Pop();
+
             if (_defaultCompartment != null)
                 _defaultCompartment.Dispose();
             _defaultCompartment = null;

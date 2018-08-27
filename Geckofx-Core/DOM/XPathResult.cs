@@ -19,7 +19,7 @@ namespace Gecko.DOM
 
         public XPathResultType GetResultType()
         {
-            using (var context = new AutoJSContext())
+            using (var context = new AutoJSContext((nsISupports)_proxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
             {                
                 return
@@ -30,7 +30,7 @@ namespace Gecko.DOM
 
         public double GetNumberValue()
         {
-            using (var context = new AutoJSContext())
+            using (var context = new AutoJSContext((nsISupports)_proxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
             {                
                 return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "numberValue").ToDouble();
@@ -39,7 +39,7 @@ namespace Gecko.DOM
 
         public string GetStringValue()
         {
-            using (var context = new AutoJSContext())
+            using (var context = new AutoJSContext((nsISupports)_proxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
             {                
                 return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "stringValue").ToString();
@@ -48,7 +48,7 @@ namespace Gecko.DOM
 
         public bool GetBooleanValue()
         {
-            using (var context = new AutoJSContext())
+            using (var context = new AutoJSContext((nsISupports)_proxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
             {                
                 return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "booleanValue").ToBoolean();

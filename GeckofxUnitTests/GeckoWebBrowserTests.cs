@@ -16,7 +16,7 @@ namespace GeckofxUnitTests
     [TestFixture]
     internal class GeckoWebBrowserTests
     {
-        private GeckoWebBrowser browser;
+        private GeckoWebBrowser _browser;
 
         [SetUp]
         public void BeforeEachTestSetup()
@@ -26,16 +26,16 @@ namespace GeckofxUnitTests
             GeckoPreferences.User["browser.xul.error_pages.enabled"] = true;
             var f = new Form();
             
-            browser = new GeckoWebBrowser();
-            browser.Dock = DockStyle.Fill;
-            f.Controls.Add(browser);
+            _browser = new GeckoWebBrowser();
+            _browser.Dock = DockStyle.Fill;
+            f.Controls.Add(_browser);
             f.Show();
         }
 
         [TearDown]
         public void AfterEachTestTearDown()
         {
-            browser.Dispose();
+            _browser.Dispose();
         }
 
 
@@ -82,21 +82,21 @@ namespace GeckofxUnitTests
         {
             string innerHtml = "<div id=\"_lv5\">old value</div>";
 
-            browser.LoadHtml("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
+            _browser.LoadHtml("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
 
                              + "<html xmlns=\"http://www.w3.org/1999/xhtml\" >"
 
                              + "<body>" + innerHtml + "</body></html>");
 
-            browser.NavigateFinishedNotifier.NavigateFinished += (sender, e) =>
+            _browser.NavigateFinishedNotifier.NavigateFinished += (sender, e) =>
                                                                      {
-                                                                         Assert.AreEqual(innerHtml, browser.Document.Body.InnerHtml);
+                                                                         Assert.AreEqual(innerHtml, _browser.Document.Body.InnerHtml);
                                                                      };
 
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
 
-            Assert.AreEqual(innerHtml, browser.Document.Body.InnerHtml);
+            Assert.AreEqual(innerHtml, _browser.Document.Body.InnerHtml);
         }
 
         [Test]
@@ -105,56 +105,56 @@ namespace GeckofxUnitTests
             string innerHtml = "<div id=\"_lv5\">old value</div>";
             string url = "http://mydomain.myzone/";
 
-            browser.LoadHtml("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
+            _browser.LoadHtml("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
 
                              + "<html xmlns=\"http://www.w3.org/1999/xhtml\" >"
 
                              + "<body>" + innerHtml + "</body></html>", url);
 
-            browser.NavigateFinishedNotifier.NavigateFinished += (sender, e) =>
+            _browser.NavigateFinishedNotifier.NavigateFinished += (sender, e) =>
             {
-                Assert.AreEqual(innerHtml, browser.Document.Body.InnerHtml);
+                Assert.AreEqual(innerHtml, _browser.Document.Body.InnerHtml);
             };
 
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
-            Assert.AreEqual(innerHtml, browser.Document.Body.InnerHtml);
+            Assert.AreEqual(innerHtml, _browser.Document.Body.InnerHtml);
 
-            Assert.AreEqual(url, browser.Url.AbsoluteUri);
+            Assert.AreEqual(url, _browser.Url.AbsoluteUri);
         }
 
         [Test]
         public void DomContentChanged_ChangeContentOfTextInputWithKeyPressAndMoveToSecondInput_DomContentChangedShouldFire()
         {
             string html = "<input id=\"one\" type=\"text\" value=\"hello\" /><input id=\"two\" type=\"text\"  value=\"world\" />";
-            browser.TestLoadHtml(html);
+            _browser.TestLoadHtml(html);
 
             // Place browser on a form and show it. This is need to make the gecko accept the key press.
             Form f = new Form();
-            f.Controls.Add(browser);
-            browser.Visible = true;
+            f.Controls.Add(_browser);
+            _browser.Visible = true;
             f.Show();
 
             // Focus first input box
-            browser.Document.GetHtmlElementById("one").Focus();
-            GeckoRange range = browser.Document.CreateRange();
-            range.SelectNode(browser.Document.GetHtmlElementById("one"));
-            browser.Window.Selection.AddRange(range);
+            _browser.Document.GetHtmlElementById("one").Focus();
+            GeckoRange range = _browser.Document.CreateRange();
+            range.SelectNode(_browser.Document.GetHtmlElementById("one"));
+            _browser.Window.Selection.AddRange(range);
 
             // record if DomContentChanged event happened.
             bool contentChangedEventReceived = false;
-            browser.DomContentChanged += (sender, e) => contentChangedEventReceived = true;
+            _browser.DomContentChanged += (sender, e) => contentChangedEventReceived = true;
 
 
             // Modify first input by sending a keypress.			
-            nsIDOMWindowUtils utils = Xpcom.QueryInterface<nsIDOMWindowUtils>(browser.Window.DomWindow);
-            browser.Window.WindowUtils.SendKeyEvent("keypress", 0, 102, 0, false);
+            nsIDOMWindowUtils utils = Xpcom.QueryInterface<nsIDOMWindowUtils>(_browser.Window.DomWindow);
+            _browser.Window.WindowUtils.SendKeyEvent("keypress", 0, 102, 0, false);
 
             // DomContentChanged Event should fire when we move we move to next element.
-            browser.Document.GetHtmlElementById("two").Focus();
-            range.SelectNode(browser.Document.GetHtmlElementById("two"));
-            browser.Window.Selection.RemoveAllRanges();
-            browser.Window.Selection.AddRange(range);
+            _browser.Document.GetHtmlElementById("two").Focus();
+            range.SelectNode(_browser.Document.GetHtmlElementById("two"));
+            _browser.Window.Selection.RemoveAllRanges();
+            _browser.Window.Selection.AddRange(range);
 
             Assert.IsTrue(contentChangedEventReceived);
         }
@@ -163,8 +163,8 @@ namespace GeckofxUnitTests
         public void LoadFrameset_RegressionTest_ShouldNotThrowException()
         {
             string innerHtml = "<frame src=\"www.google.com\">";
-            browser.TestLoadFrameset(innerHtml);
-            var frame = browser.Document.GetElementsByTagName("frame")[0] as GeckoFrameElement;
+            _browser.TestLoadFrameset(innerHtml);
+            var frame = _browser.Document.GetElementsByTagName("frame")[0] as GeckoFrameElement;
             Assert.NotNull(frame);
             Assert.NotNull(frame.ContentWindow);
         }
@@ -172,15 +172,15 @@ namespace GeckofxUnitTests
         [Test]
         public void Editor_LoadedReadonlyocument_ReturnsNull()
         {
-            browser.TestLoadHtml("hello world.");
-            Assert.Null(browser.Editor);
+            _browser.TestLoadHtml("hello world.");
+            Assert.Null(_browser.Editor);
         }
 
         [Test]
         public void Editor_LoadedEditableDocument_ReturnsNonNull()
         {
-            browser.TestLoadEditableHtml("hello world.");
-            Assert.NotNull(browser.Editor);
+            _browser.TestLoadEditableHtml("hello world.");
+            Assert.NotNull(_browser.Editor);
         }
 
         [Ignore("JavascriptError need refactoring to the new system (in gecko 33+)")]
@@ -194,7 +194,7 @@ namespace GeckofxUnitTests
 			browser.JavascriptError += (object sender, JavascriptErrorEventArgs e) => errorEventArgs.Add(e);
 #endif
 
-            browser.Navigate("javascript:someRandomFunctionNameThatDoesNotExist(\"2\");");
+            _browser.Navigate("javascript:someRandomFunctionNameThatDoesNotExist(\"2\");");
 
             Application.DoEvents();
 
@@ -224,12 +224,12 @@ namespace GeckofxUnitTests
             ConsoleMessageEventArgs eventArgs = null;
 
             EventHandler<ConsoleMessageEventArgs> eventHandler = (object sender, ConsoleMessageEventArgs e) => eventArgs = e;
-            browser.ConsoleMessage += eventHandler;
+            _browser.ConsoleMessage += eventHandler;
 
             string html = "<p style=\"background: bluse; color: white;\">hello</p>";
-            browser.TestLoadHtml(html);
+            _browser.TestLoadHtml(html);
 
-            browser.ConsoleMessage -= eventHandler;
+            _browser.ConsoleMessage -= eventHandler;
 
             Assert.NotNull(eventArgs);
             Assert.IsNotEmpty(eventArgs.Message);
@@ -242,9 +242,9 @@ namespace GeckofxUnitTests
         {
             string payload = null;
 
-            browser.AddMessageEventListener("callMe", p => payload = p);
+            _browser.AddMessageEventListener("callMe", p => payload = p);
 
-            browser.LoadHtml(
+            _browser.LoadHtml(
                 @"<!DOCTYPE html>
 			                 <html><head>
 			                 <script type='text/javascript'>
@@ -255,7 +255,7 @@ namespace GeckofxUnitTests
 							</script>
 							</head><body></body></html>");
 
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.AreEqual("some data", payload);
         }
 
@@ -264,10 +264,10 @@ namespace GeckofxUnitTests
         {
             string payload = null;
 
-            browser.AddMessageEventListener("callMe", p => payload = p);
-            browser.AddMessageEventListener("callMe", p => payload = "newone " + p);
+            _browser.AddMessageEventListener("callMe", p => payload = p);
+            _browser.AddMessageEventListener("callMe", p => payload = "newone " + p);
 
-            browser.LoadHtml(
+            _browser.LoadHtml(
                 @"<!DOCTYPE html>
 			                 <html><head>
 			                 <script type='text/javascript'>
@@ -278,7 +278,7 @@ namespace GeckofxUnitTests
 							</script>
 							</head><body></body></html>");
 
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.AreEqual("newone some data", payload);
         }
 
@@ -287,10 +287,10 @@ namespace GeckofxUnitTests
         {
             string payload = null;
 
-            browser.AddMessageEventListener("callMe", p => payload = p);
-            browser.RemoveMessageEventListener("callMe");
+            _browser.AddMessageEventListener("callMe", p => payload = p);
+            _browser.RemoveMessageEventListener("callMe");
 
-            browser.LoadHtml(
+            _browser.LoadHtml(
                 @"<!DOCTYPE html>
 			                 <html><head>
 			                 <script type='text/javascript'>
@@ -301,7 +301,7 @@ namespace GeckofxUnitTests
 							</script>
 							</head><body></body></html>");
 
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
             Assert.AreEqual(null, payload);
         }
@@ -311,18 +311,18 @@ namespace GeckofxUnitTests
         {
             string payload = null;
 
-            browser.AddMessageEventListener("callMe", p => payload = p);
+            _browser.AddMessageEventListener("callMe", p => payload = p);
 
-            browser.LoadHtml(
+            _browser.LoadHtml(
                 @"<!DOCTYPE html>
 			                 <html><head>No Content
 			                
 							</head><body></body></html>");
 
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
             var javaScript = @"var event = new MessageEvent('callMe',  { 'view' : window, 'bubbles' : true, 'cancelable' : false, 'data' : 'some data'}); document.dispatchEvent(event);";
-            var executor = new JQueryExecutor(browser.Window);
+            var executor = new JQueryExecutor(_browser.Window);
 
             executor.ExecuteJQuery(javaScript);
 
@@ -334,7 +334,7 @@ namespace GeckofxUnitTests
         {
             string payload = null;
 
-            browser.LoadHtml(
+            _browser.LoadHtml(
                 @"<!DOCTYPE html>
 			                 <html><head>No Content
 			                
@@ -342,13 +342,13 @@ namespace GeckofxUnitTests
 
 
 
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
-            browser.AddMessageEventListener("callMe", p => payload = p);
-            browser.Navigate("about:blank");
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.AddMessageEventListener("callMe", p => payload = p);
+            _browser.Navigate("about:blank");
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
             var javaScript = @"var event = new MessageEvent('callMe',  { 'view' : window, 'bubbles' : true, 'cancelable' : false, 'data' : 'some data'}); document.dispatchEvent(event);";
-            var executor = new JQueryExecutor(browser.Window);
+            var executor = new JQueryExecutor(_browser.Window);
 
             executor.ExecuteJQuery(javaScript);
 
@@ -362,15 +362,15 @@ namespace GeckofxUnitTests
 
             var document = @"<!DOCTYPE html><html><head>No Content</head><body></body></html>";
 
-            browser.AddMessageEventListener("callMe", p => payload = p);
-            browser.LoadHtml(document);
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.AddMessageEventListener("callMe", p => payload = p);
+            _browser.LoadHtml(document);
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
-            browser.LoadHtml(document);
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.LoadHtml(document);
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
             var javaScript = @"var event = new MessageEvent('callMe',  { 'view' : window, 'bubbles' : true, 'cancelable' : false, 'data' : 'some data'}); document.dispatchEvent(event);";
-            var executor = new JQueryExecutor(browser.Window);
+            var executor = new JQueryExecutor(_browser.Window);
 
             executor.ExecuteJQuery(javaScript);
 
@@ -380,9 +380,9 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_SimpleJavascript_ScriptExecutesAndReturnsExpectedResult()
         {
-            browser.TestLoadHtml("");
+            _browser.TestLoadHtml("");
 
-            using (AutoJSContext context = new AutoJSContext(browser.Window))
+            using (AutoJSContext context = new AutoJSContext(_browser.Window))
             {
                 string result;
                 Assert.IsTrue(context.EvaluateScript("3 + 2;", out result));
@@ -396,9 +396,9 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_UnicodeJavascript_ScriptExecutesAndReturnsExpectedResult()
         {
-            browser.TestLoadHtml("");
+            _browser.TestLoadHtml("");
 
-            using (AutoJSContext context = new AutoJSContext(browser.Window))
+            using (AutoJSContext context = new AutoJSContext(_browser.Window))
             {
                 string result;
 
@@ -417,7 +417,7 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_SimpleJavascriptWithoutNormalDocumentSetup_ScriptExecutesAndReturnsExpectedResult()
         {
-            using (AutoJSContext context = new AutoJSContext(browser.Window))
+            using (AutoJSContext context = new AutoJSContext(_browser.Window))
             {
                 string result;
                 Assert.IsTrue(context.EvaluateScript("3 + 2;", out result));
@@ -431,25 +431,25 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_JavascriptAccessExistingGlobalObjects_ScriptExecutesAndReturnsExpectedResult()
         {
-            browser.TestLoadHtml("hello world");
+            _browser.TestLoadHtml("hello world");
 
-            using (AutoJSContext context = new AutoJSContext(browser.Window))
+            using (AutoJSContext context = new AutoJSContext(_browser.Window))
             {
                 string result;
-                Assert.IsTrue(context.EvaluateScript("this", (nsISupports)browser.Window.DomWindow, out result));
+                Assert.IsTrue(context.EvaluateScript("this", (nsISupports)_browser.Window.DomWindow, out result));
                 Assert.AreEqual("[object Window]", result);
 
-                Assert.IsTrue(context.EvaluateScript("this", (nsISupports)browser.Document.DomObject, out result));
+                Assert.IsTrue(context.EvaluateScript("this", (nsISupports)_browser.Document.DomObject, out result));
                 Assert.AreEqual("[object HTMLDocument]", result);
 
-                Assert.IsTrue(context.EvaluateScript("this.defaultView", (nsISupports)browser.Document.DomObject, out result));
+                Assert.IsTrue(context.EvaluateScript("this.defaultView", (nsISupports)_browser.Document.DomObject, out result));
                 Assert.AreEqual("[object Window]", result);
 
-                Assert.IsTrue(context.EvaluateScript("this.body.innerHTML;", (nsISupports)browser.Document.DomObject, out result));
+                Assert.IsTrue(context.EvaluateScript("this.body.innerHTML;", (nsISupports)_browser.Document.DomObject, out result));
                 Assert.AreEqual("hello world", result);
 
-                Assert.IsTrue(context.EvaluateScript("this.body.innerHTML = 'hi';", (nsISupports)browser.Document.DomObject, out result));
-                Assert.IsTrue(context.EvaluateScript("this.body.innerHTML;", (nsISupports)browser.Document.DomObject, out result));
+                Assert.IsTrue(context.EvaluateScript("this.body.innerHTML = 'hi';", (nsISupports)_browser.Document.DomObject, out result));
+                Assert.IsTrue(context.EvaluateScript("this.body.innerHTML;", (nsISupports)_browser.Document.DomObject, out result));
                 Assert.AreEqual("hi", result);
 
                 Assert.IsTrue(context.EvaluateScript("x=10;y=20;x*y;", out result));
@@ -460,14 +460,14 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_JavascriptAccessExistingGlobalObjectsWithoutNormalDocumentSetup_ScriptExecutesAndReturnsExpectedResult()
         {
-            using (AutoJSContext context = new AutoJSContext(browser.Window))
+            using (AutoJSContext context = new AutoJSContext(_browser.Window))
             {
                 string result;
-                var ret = context.EvaluateScript("this", browser.Window.DomWindow);
+                var ret = context.EvaluateScript("this", _browser.Window.DomWindow);
                 Assert.IsFalse(ret.IsUndefined);
                 Assert.AreEqual("[object Window]", ret.ToString());
 
-                var execption = Assert.Throws<GeckoJavaScriptException>(() => context.EvaluateScript("body.innerHTML;", browser.Window.DomWindow));
+                var execption = Assert.Throws<GeckoJavaScriptException>(() => context.EvaluateScript("body.innerHTML;", _browser.Window.DomWindow));
                 Assert.AreEqual("JSError : ReferenceError: body is not defined StackTrace: @script:1:1\n", execption.Message);
 
                 Assert.IsTrue(context.EvaluateScript("x=10;y=20;x*y;", out result));
@@ -478,12 +478,12 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_PassBodyasThis_ThisEqualsBodyObject()
         {
-            browser.TestLoadHtml("hello world");
+            _browser.TestLoadHtml("hello world");
 
-            using (AutoJSContext context = new AutoJSContext(browser.Window))
+            using (AutoJSContext context = new AutoJSContext(_browser.Window))
             {
                 string result;
-                context.EvaluateScript("this;", (nsISupports)browser.Document.Body.DomObject, out result);
+                context.EvaluateScript("this;", (nsISupports)_browser.Document.Body.DomObject, out result);
 
                 Assert.AreEqual("[object HTMLBodyElement]", result);
             }
@@ -492,12 +492,12 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_PassBodysFirstChildAndPassToAInlineFunction_FunctionReturnsExpectedResults()
         {
-            browser.TestLoadHtml("hello <span>world</span>");
+            _browser.TestLoadHtml("hello <span>world</span>");
 
-            using (AutoJSContext context = new AutoJSContext(browser.Window))
+            using (AutoJSContext context = new AutoJSContext(_browser.Window))
             {
                 string result;
-                context.EvaluateScript("function dosomthing(node) { return node.textContent; } dosomthing(this);", (nsISupports)browser.Document.Body.FirstChild.DomObject, out result);
+                context.EvaluateScript("function dosomthing(node) { return node.textContent; } dosomthing(this);", (nsISupports)_browser.Document.Body.FirstChild.DomObject, out result);
 
                 Assert.AreEqual("hello ", result);
             }
@@ -506,9 +506,9 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_Run500Times_DoesNotCrash()
         {
-            browser.TestLoadHtml("");
+            _browser.TestLoadHtml("");
 
-            using (AutoJSContext context = new AutoJSContext(browser.Window))
+            using (AutoJSContext context = new AutoJSContext(_browser.Window))
             {
                 for (int i = 0; i < 500; i++)
                 {
@@ -522,11 +522,11 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_Run500TimesCreatingNewAutoJSContextEachTime_DoesNotCrash()
         {
-            browser.TestLoadHtml("");
+            _browser.TestLoadHtml("");
 
             for (int i = 0; i < 500; i++)
             {
-                using (AutoJSContext context = new AutoJSContext(browser.Window))
+                using (AutoJSContext context = new AutoJSContext(_browser.Window))
                 {
                     string result;
                     context.EvaluateScript("2+3;", out result);
@@ -540,7 +540,7 @@ namespace GeckofxUnitTests
         {
             for (int i = 0; i < 500; i++)
             {
-                using (var safeContext = new AutoJSContext(IntPtr.Zero))
+                using (var safeContext = new AutoJSContext(_browser.Window))
                 {
                     string result;
                     safeContext.EvaluateScript("2+3;", out result);
@@ -554,9 +554,9 @@ namespace GeckofxUnitTests
         {
             for (int i = 0; i < 500; i++)
             {
-                browser.TestLoadHtml(String.Format("{0}", i));
+                _browser.TestLoadHtml(String.Format("{0}", i));
 
-                using (AutoJSContext context = new AutoJSContext(browser.Window))
+                using (AutoJSContext context = new AutoJSContext(_browser.Window))
                 {
                     string result;
                     context.EvaluateScript("2+3;", out result);
@@ -568,7 +568,7 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_ReturingJsVal_ScriptExecutesAndReturnsJsValOfExpectedTypeAndContainingExpectedResult()
         {
-            using (var context = new AutoJSContext(browser.Window))
+            using (var context = new AutoJSContext(_browser.Window))
             {
                 var jsVal = context.EvaluateScript("3 + 2;");
                 Assert.IsTrue(jsVal.IsInt);
@@ -579,7 +579,7 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_SyntacticallyInvalidJavascript_GeckoExceptionIsThrown()
         {
-            using (var context = new AutoJSContext(browser.Window))
+            using (var context = new AutoJSContext(_browser.Window))
             {
                 var exception = Assert.Throws<GeckoException>(() => context.EvaluateScript("2 + _---;"));
                 Assert.AreEqual("Failed to compile script.", exception.Message);
@@ -589,7 +589,7 @@ namespace GeckofxUnitTests
         [Test]
         public void EvaluateScript_JavascriptThatCallsMethodThatDoesNotExist_GeckoExceptionIsThrown()
         {
-            using (var context = new AutoJSContext(browser.Window))
+            using (var context = new AutoJSContext(_browser.Window))
             {
                 var exception = Assert.Throws<GeckoJavaScriptException>(() => context.EvaluateScript("this.mymethodthatdontexist(3);"));
                 Assert.AreEqual("JSError : TypeError: this.mymethodthatdontexist is not a function StackTrace: @script:1:1\n", exception.Message);
@@ -602,10 +602,10 @@ namespace GeckofxUnitTests
         {
             int navigatingCounter = 0;
             int frameNavigatingCounter = 0;
-            browser.Navigating += (sender, args) => navigatingCounter++;
-            browser.FrameNavigating += (sender, args) => frameNavigatingCounter++;
+            _browser.Navigating += (sender, args) => navigatingCounter++;
+            _browser.FrameNavigating += (sender, args) => frameNavigatingCounter++;
 
-            browser.TestLoadHtml(@"<html><body><iframe src='data:text/html,hello world'></iframe></body></html>'");
+            _browser.TestLoadHtml(@"<html><body><iframe src='data:text/html,hello world'></iframe></body></html>'");
 
             Assert.AreEqual(1, navigatingCounter, "Navigating");
             Assert.AreEqual(1, frameNavigatingCounter, "FrameNavigating");
@@ -616,10 +616,10 @@ namespace GeckofxUnitTests
         {
             int navigatingCounter = 0;
             int frameNavigatingCounter = 0;
-            browser.Navigating += (sender, args) => navigatingCounter++;
-            browser.FrameNavigating += (sender, args) => frameNavigatingCounter++;
+            _browser.Navigating += (sender, args) => navigatingCounter++;
+            _browser.FrameNavigating += (sender, args) => frameNavigatingCounter++;
 
-            browser.TestLoadHtml(@"
+            _browser.TestLoadHtml(@"
 <html>
 	<body>
 		<script type='text/javascript'>
@@ -644,9 +644,9 @@ setTimeout(function(){
         public void Navigating_IntialDocumentLoad_NavigatigEventIsCalled()
         {
             int counter = 0;
-            browser.Navigating += (sender, args) => counter++;
+            _browser.Navigating += (sender, args) => counter++;
 
-            browser.TestLoadHtml("hello world");
+            _browser.TestLoadHtml("hello world");
 
             Assert.AreEqual(1, counter);
         }
@@ -655,10 +655,10 @@ setTimeout(function(){
         public void Navigating_TwoDocumentsLoaded_NavigatigEventIsCalledTwice()
         {
             int counter = 0;
-            browser.Navigating += (sender, args) => counter++;
+            _browser.Navigating += (sender, args) => counter++;
 
-            browser.TestLoadHtml("hello world");
-            browser.TestLoadHtml("hello world");
+            _browser.TestLoadHtml("hello world");
+            _browser.TestLoadHtml("hello world");
 
             Assert.AreEqual(2, counter);
         }
@@ -667,11 +667,11 @@ setTimeout(function(){
         public void Navigating_UseJavaScriptToChangeDocument_NavigatigEventIsCalledWhenJavascriptChangesDocument()
         {
             int counter = 0;
-            browser.Navigating += (sender, args) => counter++;
+            _browser.Navigating += (sender, args) => counter++;
 
-            browser.TestLoadHtml("hello world");
-            browser.Navigate("javascript:location.href='http://www.google.com';");
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.TestLoadHtml("hello world");
+            _browser.Navigate("javascript:location.href='http://www.google.com';");
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
             Assert.AreEqual(2, counter);
         }
@@ -683,12 +683,12 @@ setTimeout(function(){
             int counter = 0;
             int shouldNotChangeCounter = 0;
 
-            browser.TestLoadHtml("hello world");
-            browser.Navigating += (sender, args) => { counter++; args.Cancel = true; };
-            browser.Navigated += (sender, args) => shouldNotChangeCounter++;
+            _browser.TestLoadHtml("hello world");
+            _browser.Navigating += (sender, args) => { counter++; args.Cancel = true; };
+            _browser.Navigated += (sender, args) => shouldNotChangeCounter++;
 
-            browser.Navigate("javascript:location.href='http://www.domaindoesnNotExitqwertyuuiasdf.com?helloworld';");
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("javascript:location.href='http://www.domaindoesnNotExitqwertyuuiasdf.com?helloworld';");
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
             Assert.AreEqual(1, counter);
             Assert.AreEqual(0, shouldNotChangeCounter);
@@ -698,32 +698,32 @@ setTimeout(function(){
         [Test]
         public void Navigating_NavigatingIsCanceled_NavigateDoesNotComplete()
         {
-            browser.TestLoadHtml("hello world");
+            _browser.TestLoadHtml("hello world");
             bool navigatingCalled = false;
             bool navigatedCalled = false;
 
-            browser.Navigated += (sender, args) => navigatedCalled = true;
-            browser.Navigating += (sender, args) =>
+            _browser.Navigated += (sender, args) => navigatedCalled = true;
+            _browser.Navigating += (sender, args) =>
                                       {
                                           args.Cancel = true;
                                           navigatingCalled = true;
                                       };
-            browser.Navigate("www.google.com");
+            _browser.Navigate("www.google.com");
 
             while (!navigatingCalled)
                 Application.DoEvents();
 
             Assert.False(navigatedCalled);
-            Assert.AreEqual("hello world", browser.Document.Body.InnerHtml);
+            Assert.AreEqual("hello world", _browser.Document.Body.InnerHtml);
 
             navigatingCalled = false;
-            browser.Navigate("javascript:location.href='http://www.google.co.uk';");
+            _browser.Navigate("javascript:location.href='http://www.google.co.uk';");
 
             while (!navigatingCalled)
                 Application.DoEvents();
 
             Assert.False(navigatedCalled);
-            Assert.AreEqual("hello world", browser.Document.Body.InnerHtml);
+            Assert.AreEqual("hello world", _browser.Document.Body.InnerHtml);
         }
 
         [Test]
@@ -731,21 +731,21 @@ setTimeout(function(){
         public void Navigating_NavigationError_Http()
         {
             int errorCount = 0, completeCount = 0;
-            browser.DocumentCompleted += (sender, e) => ++completeCount;
-            browser.NavigationError += (sender, e) => ++errorCount;
+            _browser.DocumentCompleted += (sender, e) => ++completeCount;
+            _browser.NavigationError += (sender, e) => ++errorCount;
 
-            browser.Navigate("http://localhost:63333");
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("http://localhost:63333");
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 1 && completeCount == 0, "localhost:63333 should have failed.");
             errorCount = completeCount = 0;
 
-            browser.Navigate("http://localhost:25");
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("http://localhost:25");
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 1 && completeCount == 0, "(1) localhost:25 should have failed.");
             errorCount = completeCount = 0;
 
-            browser.Reload();
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Reload();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 1 && completeCount == 0, "(2) localhost:25 should have failed.");
             errorCount = completeCount = 0;
         }
@@ -754,45 +754,45 @@ setTimeout(function(){
         public void Navigating_NavigationError_Chrome()
         {
             int errorCount = 0, completeCount = 0;
-            browser.DocumentCompleted += (sender, e) => ++completeCount;
-            browser.NavigationError += (sender, e) => ++errorCount;
+            _browser.DocumentCompleted += (sender, e) => ++completeCount;
+            _browser.NavigationError += (sender, e) => ++errorCount;
 
-            browser.Navigate("chrome://global/content/bindings/general.xml"); //good url
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/content/bindings/general.xml"); //good url
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 0 && completeCount == 1);
             errorCount = completeCount = 0;
 
-            browser.Navigate("chrome://global/content/aaaa"); //not found
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/content/aaaa"); //not found
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 1 && completeCount == 0);
             errorCount = completeCount = 0;
 
-            Assert.True(browser.CanGoBack);
-            browser.GoBack();
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            Assert.True(_browser.CanGoBack);
+            _browser.GoBack();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 0 && completeCount == 1);
             errorCount = completeCount = 0;
 
-            Assert.True(browser.CanGoForward);
-            browser.GoForward();
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            Assert.True(_browser.CanGoForward);
+            _browser.GoForward();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 1 && completeCount == 0);
             errorCount = completeCount = 0;
 
-            browser.Navigate("chrome://global/bindings/general.xml"); //missing 'content' part
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/bindings/general.xml"); //missing 'content' part
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 1 && completeCount == 0);
             errorCount = completeCount = 0;
 
-            browser.Navigate("chrome://global/content/bindings/general.xml");
-            browser.Stop();
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/content/bindings/general.xml");
+            _browser.Stop();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 1 && completeCount == 0);
             errorCount = completeCount = 0;
 
-            browser.Navigate("chrome://global/content/bindings/general.xml");
-            browser.Navigating += (sender, e) => e.Cancel = true;
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/content/bindings/general.xml");
+            _browser.Navigating += (sender, e) => e.Cancel = true;
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 1 && completeCount == 0);
             errorCount = completeCount = 0;
         }
@@ -801,25 +801,25 @@ setTimeout(function(){
         public void Navigating_NavigationError_History()
         {
             string errorUrl = null;
-            browser.NavigationError += (sender, e) => errorUrl = e.Uri;
+            _browser.NavigationError += (sender, e) => errorUrl = e.Uri;
 
-            browser.Navigate("chrome://global/content/bindings/general.xml"); //good url
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/content/bindings/general.xml"); //good url
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
-            browser.Navigate("chrome://global/content/aaaa"); //not found
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/content/aaaa"); //not found
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
-            Assert.True(browser.CanGoBack);
-            browser.GoBack();
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            Assert.True(_browser.CanGoBack);
+            _browser.GoBack();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
-            Assert.True(browser.CanGoForward);
-            browser.GoForward();
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            Assert.True(_browser.CanGoForward);
+            _browser.GoForward();
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.AreEqual(errorUrl, "chrome://global/content/aaaa");
 
-            browser.Navigate("chrome://global/bindings/general.xml"); //missing 'content' part
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/bindings/general.xml"); //missing 'content' part
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.AreEqual(errorUrl, "chrome://global/bindings/general.xml");
         }
 
@@ -828,20 +828,20 @@ setTimeout(function(){
         public void Navigating_NavigationError_History2()
         {
             string errorUrl = null;
-            browser.NavigationError += (sender, e) => errorUrl = e.Uri;
+            _browser.NavigationError += (sender, e) => errorUrl = e.Uri;
 
-            browser.Navigate("chrome://global/content/bindings/general.xml"); //good url
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/content/bindings/general.xml"); //good url
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
-            browser.Navigate("chrome://global/bindings/general.xml"); //missing 'content' part
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate("chrome://global/bindings/general.xml"); //missing 'content' part
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
 
             // TODO Navigate("chrome://global/bindings/general.xml") failed and the url was not pushed into history stack,
             // so the assertion failed. may be a mozilla's bug
-            Assert.True(browser.GoBack());
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
-            Assert.True(browser.GoForward());
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            Assert.True(_browser.GoBack());
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            Assert.True(_browser.GoForward());
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.AreEqual(errorUrl, "chrome://global/bindings/general.xml");
         }
 
@@ -852,17 +852,17 @@ setTimeout(function(){
             string url = "data:application/zip,xyzuvw";
             GeckoRetargetedEventArgs rte = null;
             string contentType = null;
-            browser.DocumentCompleted += (sender, e) => ++completeCount;
-            browser.NavigationError += (sender, e) => ++errorCount;
-            browser.Retargeted += (sender, e) =>
+            _browser.DocumentCompleted += (sender, e) => ++completeCount;
+            _browser.NavigationError += (sender, e) => ++errorCount;
+            _browser.Retargeted += (sender, e) =>
             {
                 ++retargetCount;
                 rte = e;
                 contentType = (rte.Request as Gecko.Net.Channel).ContentType;
             };
 
-            browser.Navigate(url);
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            _browser.Navigate(url);
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.True(errorCount == 0 && completeCount == 0 && retargetCount == 1, "Unexpected event counts");
             Assert.AreEqual(url, rte.Uri.ToString());
             Assert.AreEqual("application/zip", contentType);
@@ -871,10 +871,10 @@ setTimeout(function(){
         [Test]
         public void LoadContent_ControlHandleCreated_DocumentIsInitalizedWithSpecifiedContent()
         {
-            Assert.AreEqual(true, browser.IsHandleCreated);
-            browser.LoadContent("<body><div id='main'>hello world</div></body>", "http://www.earth.com", "text/html");
-            browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
-            Assert.AreEqual(browser.Document.GetElementById("main").TextContent, "hello world");
+            Assert.AreEqual(true, _browser.IsHandleCreated);
+            _browser.LoadContent("<body><div id='main'>hello world</div></body>", "http://www.earth.com", "text/html");
+            _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+            Assert.AreEqual(_browser.Document.GetElementById("main").TextContent, "hello world");
         }
 
         [Test]

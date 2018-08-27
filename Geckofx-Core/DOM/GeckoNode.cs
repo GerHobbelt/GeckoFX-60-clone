@@ -251,7 +251,7 @@ namespace Gecko
             var r = EvaluateXPathInternal(xpath);
 
             nsIDOMNode singleNode = null;
-            using (var context = new AutoJSContext())
+            using (var context = new AutoJSContext(Window))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)r))
             {
                 // TODO: (Idenally I would generate these calls via a webidl-> C# compiler but for now just do it via manually written spidermonkey calls..)
@@ -289,7 +289,7 @@ namespace Gecko
             var r = EvaluateXPathInternal(xpath);
 
             nsIDOMNode singleNode = null;
-            using (var context = new AutoJSContext())
+            using (var context = new AutoJSContext(Window))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)r))
             {               
                 // TODO: (Idenally I would generate these calls via a webidl-> C# compiler but for now just do it via manually written spidermonkey calls..)
