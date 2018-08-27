@@ -19,9 +19,7 @@ namespace GeckofxUnitTests
 
 		private static object[] TestingContracts = new object[]
 		{
-			new object[] {Contracts.Exception},
 			new object[] {Contracts.Array}
-
 		};
 #if DEBUG
 
