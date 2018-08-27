@@ -406,10 +406,10 @@ namespace GeckofxUnitTests
                 Assert.AreEqual("文"[0], result[0]);
 
                 Assert.IsTrue(context.EvaluateScript("'a\0a';", out result));
-                Assert.AreEqual("a\0a", result);
+                Assert.AreEqual("a", result);
 
                 Assert.IsTrue(context.EvaluateScript("'hello' + ' ' + '中\0文';", out result));
-                Assert.AreEqual("hello 中\0文", result);
+                Assert.AreEqual("hello 中", result);
 
             }
         }

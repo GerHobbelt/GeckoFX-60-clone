@@ -34,12 +34,12 @@ namespace GeckofxUnitTests
 		}
 
 		[Test]
-		public void SetData_ToEmptyString_ToStringReturnsEmptyString()
+		public void SetData_ToEmptyString_ToStringReturnsNull()
 		{
 			var objectUnderTest = new nsACString();
 			objectUnderTest.SetData(String.Empty);
 
-			Assert.AreEqual(String.Empty, objectUnderTest.ToString());
+			Assert.AreEqual(null, objectUnderTest.ToString());
 		}
 
 		[Test]
