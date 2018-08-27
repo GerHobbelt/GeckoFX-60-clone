@@ -24,6 +24,7 @@ namespace GeckofxUnitTests
 		[TearDown]
 		public void AfterEachTestTearDown()
 		{
+            _gwb.Dispose();
 		}
 
 		/// <summary>

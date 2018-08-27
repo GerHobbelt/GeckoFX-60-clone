@@ -19,5 +19,11 @@ namespace GeckofxUnitTests.dom
             var unused = _browser.Handle;
             Assert.IsNotNull(_browser);
         }
+
+        [TearDown]
+        public void AfterEachTest()
+        {
+            _browser.Dispose();
+        }
     }
 }

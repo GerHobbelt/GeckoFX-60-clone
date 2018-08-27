@@ -35,7 +35,8 @@ namespace GeckofxUnitTests
 		[TearDown]
 		public void AfterEachTestTearDown()
 		{
-			Marshal.ReleaseComObject(m_instance);
+		    _browser.Dispose();
+            Marshal.ReleaseComObject(m_instance);
 		}
 	}
 }

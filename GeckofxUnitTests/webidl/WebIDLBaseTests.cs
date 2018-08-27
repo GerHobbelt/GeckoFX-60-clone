@@ -13,16 +13,22 @@ namespace GeckofxUnitTests.webidl
     [TestFixture]
     class WebIDLBaseTests
     {
-        private GeckoWebBrowser browser;
+        private GeckoWebBrowser _browser;
 
         [SetUp]
         public void BeforeEachTestSetup()
         {
             var f = new Form();
 
-            browser = new GeckoWebBrowser {Dock = DockStyle.Fill};
-            f.Controls.Add(browser);
+            _browser = new GeckoWebBrowser {Dock = DockStyle.Fill};
+            f.Controls.Add(_browser);
             f.Show();
+        }
+
+        [TearDown]
+        public void AfterEachTest()
+        {
+            _browser.Dispose();
         }
 
         [TestCase("hello", "hello")]
@@ -35,8 +41,8 @@ llo")]
         [TestCase(@"hello \x hi", @"hello \x hi")]
         public void SetProperty_VariousValues(string val, string expectedResult)
         {
-            browser.TestLoadHtml("hello world.");
-            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy) browser.Window.DomWindow, browser.Window.DomWindow);
+            _browser.TestLoadHtml("hello world.");
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy) _browser.Window.DomWindow, _browser.Window.DomWindow);
 
             objectUnderTest.SetProperty("somethingRandom", val);
 
@@ -46,7 +52,7 @@ llo")]
         [Test]
         public void SetProperty_RegresstionTest_DoesNotThrowException()
         {
-            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);
 
             objectUnderTest.SetProperty("somethingRandom", _testData);
 
@@ -56,7 +62,7 @@ llo")]
         [Test]
         public void SetProperty_RegresstionTest2_DoesNotThrowException()
         {
-            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);
 
             objectUnderTest.SetProperty("somethingRandom", _testData2);
 
@@ -66,7 +72,7 @@ llo")]
         [Test]
         public void GetProperty_ThatDoesntExist_GetsGeckoException()
         {
-            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);
 
             var ex = Assert.Throws<GeckoException>(() => objectUnderTest.GetProperty<string>("propertyDoesNotExists"));
             Assert.AreEqual("Property 'propertyDoesNotExists' of type 'String' does not exist on object", ex.Message);
@@ -75,7 +81,7 @@ llo")]
         [Test]
         public void CallVoidMethod_ThatDoesntExists_GetsGeckoException()
         {
-            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);
 
             var ex = Assert.Throws<GeckoException>(() => objectUnderTest.CallVoidMethod("functionDoesNotExist", null));
             Assert.AreEqual("Calling function 'functionDoesNotExist' failed: 'TypeError: undefined is not a function StackTrace: '", ex.Message);
@@ -84,8 +90,8 @@ llo")]
         [Test]
         public void CallVoidMethod_ThatThrowsAnException_GetsGeckoException()
         {
-            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
-            using (var context = new AutoJSContext(browser.Window))
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);
+            using (var context = new AutoJSContext(_browser.Window))
             {
                 context.EvaluateScript("this.functionThatThrows = function myfunc() { 2+3; someerror(); };");
             }
