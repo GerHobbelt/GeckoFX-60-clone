@@ -1157,7 +1157,6 @@
     <Compile Include="Net\HttpActivityDistributor.cs" />
     <Compile Include="Services\CertOverride.cs" />
     <Compile Include="Services\CertOverrideService.cs" />
-    <Compile Include="Services\RandomGenerator.cs" />
     <Compile Include="Services\SSLStatus.cs" />
     <Compile Include="Services\VersionComparator.cs" />
     <Compile Include="Services\WindowWatcher.cs" />
