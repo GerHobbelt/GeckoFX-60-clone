@@ -1273,26 +1273,46 @@ namespace Gecko
         public sealed class ConsoleListener
             : nsIConsoleListener
         {
-            private GeckoWebBrowser m_browser;
+            private GeckoWebBrowser _browser;
 
             public ConsoleListener(GeckoWebBrowser browser)
             {
-                m_browser = browser;
+                _browser = browser;
             }
 
             public void Observe(nsIConsoleMessage aMessage)
             {
-                if (m_browser.IsDisposed) return;
+                if (_browser.IsDisposed) return;
                 var e = new ConsoleMessageEventArgs(aMessage.GetMessageAttribute());
-                m_browser.OnConsoleMessage(e);
+                _browser.OnConsoleMessage(e);
             }
         }
+
+        /// <summary>
+        /// This must be set BEFORE ConsoleMessage += use or any calls to EnableConsoleMessageNotfication
+        /// </summary>
+        public bool ConsoleMessageEventReceivesConsoleLogCalls { get; set; } = true;
 
         public void EnableConsoleMessageNotfication()
         {
             using (var consoleService = Xpcom.GetService2<nsIConsoleService>(Contracts.ConsoleService))
-            {
                 consoleService.Instance.RegisterListener(new ConsoleListener(this));
+
+            if (!ConsoleMessageEventReceivesConsoleLogCalls)
+                return;
+
+            // console.log JS calls aren't forwarded to the ConsoleListener
+            // so we override the console.log and route the log message automatically.
+            AddMessageEventListener("consoleMessageNotificationLog", value =>
+            {
+                var e = new ConsoleMessageEventArgs(value);
+                OnConsoleMessage(e);
+            });
+
+            using (var context = new AutoJSContext(Window))
+            {
+                context.EvaluateScript("function consoleMessageNotificationLog(str) { var event = new MessageEvent('consoleMessageNotificationLog', { 'view' : window, 'bubbles' : true, 'cancelable' : false, 'data' : str});  document.dispatchEvent (event); };");
+                context.EvaluateScript("console.log = consoleMessageNotificationLog");
             }
         }
 
