@@ -236,8 +236,8 @@ namespace Gecko
                 if (exception != IntPtr.Zero)
                     exceptionJsVal = JsVal.FromPtr(exception);
                 msg += exceptionJsVal.ToString();
-                msg += GetStackTrace(globalObject.JSObject, exceptionJsVal);
-                throw new GeckoJavaScriptException(String.Format("JSError : {0}", msg));
+                msg += SpiderMonkey.GetStackTrace(ContextPointer, globalObject.JSObject, exceptionJsVal);
+                throw new GeckoJavaScriptException($"JSError : {msg}");
             }
         }
 
@@ -429,22 +429,7 @@ namespace Gecko
             }
 
             return _nsIXPCComponents;
-        }
-
-        private string GetStackTrace(IntPtr globalObject, JsVal exceptionJsVal)
-        {
-            if (!exceptionJsVal.IsObject)
-                return String.Empty;
-
-            if (!SpiderMonkey.JS_SetProperty(ContextPointer, ref globalObject, "__RequestedScope", ref exceptionJsVal))
-                throw new GeckoException("Failed to set __RequestedScope Property.");
-
-            const string s = "(function() { " + "return this.stack" + " }).call(this.__RequestedScope)";
-
-            var retJsVal = new JsVal();
-            var success = SpiderMonkey.JS_EvaluateScript(ContextPointer, s, (uint)s.Length, "script", 1, ref retJsVal);
-            return !success ? String.Empty : String.Format(" StackTrace: {0}", retJsVal);
-        }
+        }        
 
 #endregion
 

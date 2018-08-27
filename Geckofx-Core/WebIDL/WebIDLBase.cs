@@ -133,6 +133,9 @@ namespace Gecko.WebIDL
             List<IDisposable> list = new List<IDisposable>();
             toDispose = new DisposablCollection(list);
             var collection = new List<JsVal>();
+            if (paramObjects == null)
+                return collection;
+
             foreach (var p in paramObjects)
             {
                 JsVal val;

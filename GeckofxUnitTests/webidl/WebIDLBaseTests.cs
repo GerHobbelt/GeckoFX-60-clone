@@ -43,7 +43,7 @@ llo")]
             Assert.AreEqual(expectedResult, objectUnderTest.GetProperty<string>("somethingRandom"));       
         }
 
-        [TestCase]
+        [Test]
         public void SetProperty_RegresstionTest_DoesNotThrowException()
         {
             var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
@@ -53,7 +53,7 @@ llo")]
             Assert.AreEqual(_testData, objectUnderTest.GetProperty<string>("somethingRandom"));
         }
 
-        [TestCase]
+        [Test]
         public void SetProperty_RegresstionTest2_DoesNotThrowException()
         {
             var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
@@ -63,6 +63,35 @@ llo")]
             Assert.AreEqual(_testData2, objectUnderTest.GetProperty<string>("somethingRandom"));
         }
 
+        [Test]
+        public void GetProperty_ThatDoesntExist_GetsGeckoException()
+        {
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
+
+            var ex = Assert.Throws<GeckoException>(() => objectUnderTest.GetProperty<string>("propertyDoesNotExists"));
+            Assert.AreEqual("Property 'propertyDoesNotExists' of type 'String' does not exist on object", ex.Message);
+        }
+
+        [Test]
+        public void CallVoidMethod_ThatDoesntExists_GetsGeckoException()
+        {
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
+
+            var ex = Assert.Throws<GeckoException>(() => objectUnderTest.CallVoidMethod("functionDoesNotExist", null));
+            Assert.AreEqual("Calling function 'functionDoesNotExist' failed: 'TypeError: undefined is not a function StackTrace: '", ex.Message);
+        }
+
+        [Test]
+        public void CallVoidMethod_ThatThrowsAnException_GetsGeckoException()
+        {
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)browser.Window.DomWindow, browser.Window.DomWindow);
+            using (var context = new AutoJSContext(browser.Window))
+            {
+                context.EvaluateScript("this.functionThatThrows = function myfunc() { 2+3; someerror(); };");
+            }
+                var ex = Assert.Throws<GeckoException>(() => objectUnderTest.CallVoidMethod("functionThatThrows", null));
+            Assert.AreEqual("Calling function 'functionThatThrows' failed: 'ReferenceError: someerror is not defined StackTrace: myfunc@script:1:52\n'", ex.Message);
+        }
 
         #region TestData
 

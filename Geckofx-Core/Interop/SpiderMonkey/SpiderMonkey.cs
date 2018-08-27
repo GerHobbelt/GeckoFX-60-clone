@@ -23,19 +23,34 @@ namespace Gecko
             return JS_SetProperty(cx, ref jsObject, name, ref value);
         }
 
-        private static void HandleInvokeFailure(IntPtr cx, string name)
+        private static void HandleInvokeFailure(IntPtr cx, IntPtr jsObject, string name)
         {
             var exception = SpiderMonkey.JS_GetPendingException(cx);
             if (exception != IntPtr.Zero)
             {
                 var exceptionJsVal = JsVal.FromPtr(exception);
+                var st = GetStackTrace(cx, jsObject, exceptionJsVal);
                 var msg = exceptionJsVal.ToString();
-                // TODO: add stack trace to exception
-                //msg += GetStackTrace(globalObject.JSObject, exceptionJsVal);
+                msg += st;
                 throw new GeckoException($"Calling function '{name}' failed: '{msg}'");
             }
 
             throw new GeckoException($"Failed to call function '{name}'");
+        }
+
+        internal static string GetStackTrace(IntPtr cx, IntPtr globalObject, JsVal exceptionJsVal)
+        {
+            if (!exceptionJsVal.IsObject)
+                return String.Empty;
+
+            if (!SpiderMonkey.JS_SetProperty(cx, ref globalObject, "__RequestedScope", ref exceptionJsVal))
+                throw new GeckoException("Failed to set __RequestedScope Property.");
+
+            const string s = "(function() { " + "return this.stack" + " }).call(this.__RequestedScope)";
+
+            var retJsVal = new JsVal();
+            var success = SpiderMonkey.JS_EvaluateScript(cx, s, (uint)s.Length, "script", 1, ref retJsVal);
+            return !success ? String.Empty : String.Format(" StackTrace: {0}", retJsVal);
         }
 
         /// <summary>
@@ -52,7 +67,7 @@ namespace Gecko
             int parameterCount = 0;
             var mutableHandle = new MutableHandleValue();
             if (!JS_CallFunctionName(cx, ref jsObject, name, ref parameterCount, ref mutableHandle))
-                HandleInvokeFailure(cx, name);
+                HandleInvokeFailure(cx, jsObject, name);
 
             value = JsVal.FromPtr(mutableHandle.Handle);            
             
@@ -75,7 +90,7 @@ namespace Gecko
             }
 
             if (!result)
-                HandleInvokeFailure(cx, name);
+                HandleInvokeFailure(cx, jsObject, name);
 
             return value;
         }
@@ -89,7 +104,7 @@ namespace Gecko
             if (success)
                 return JsVal.FromPtr(mutableHandle.Handle);
 
-            HandleInvokeFailure(cx, func.ToString());
+            HandleInvokeFailure(cx, jsObject, func.ToString());
 
             throw new Exception("HandleInvokeFailure always throws execption, so this line is never reached.");
         }
