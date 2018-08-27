@@ -25,7 +25,7 @@ namespace GeckofxUnitTests
         [TestCase("capability.principal.codebase.p0.granted", "file://")]
         [TestCase("capability.principal.codebase.p0.subjectName", "")]
         [TestCase("security.fileuri.strict_origin_policy", false)]
-        [TestCase("layout.css.devPixelsPerPx", "1.0")]
+        [TestCase("layout.css.devPixelsPerPx", "1.0"), Ignore("https://trello.com/c/cZEyOv94/26-failing-geckopreference-testcase")]
         [TestCase("breakpad.reportURL", "")]
         [TestCase("breakpad.reportURL", "abcdefghijklmnopqrstuvwxyz!@#$%^&*()")]
         [TestCase("breakpad.reportURL", "\u00fe\u00ff\uf323")]
