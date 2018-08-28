@@ -207,14 +207,14 @@ namespace Gecko.WebIDL
             return this.CallMethod<nsIDOMDocument>("open", type, replace);
         }
         
-        public mozIDOMWindowProxy Open(string url, string name, string features)
+        public mozIDOMWindow Open(string url, string name, string features)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("open", url, name, features);
+            return this.CallMethod<mozIDOMWindow>("open", url, name, features);
         }
         
-        public mozIDOMWindowProxy Open(string url, string name, string features, bool replace)
+        public mozIDOMWindow Open(string url, string name, string features, bool replace)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("open", url, name, features, replace);
+            return this.CallMethod<mozIDOMWindow>("open", url, name, features, replace);
         }
         
         public void Close()

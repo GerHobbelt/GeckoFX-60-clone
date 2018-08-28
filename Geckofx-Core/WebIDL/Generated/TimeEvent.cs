@@ -19,11 +19,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public mozIDOMWindowProxy View
+        public mozIDOMWindow View
         {
             get
             {
-                return this.GetProperty<mozIDOMWindowProxy>("view");
+                return this.GetProperty<mozIDOMWindow>("view");
             }
         }
         

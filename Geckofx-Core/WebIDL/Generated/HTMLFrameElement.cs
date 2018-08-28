@@ -91,11 +91,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public nsIDOMWindow ContentWindow
+        public mozIDOMWindow ContentWindow
         {
             get
             {
-                return this.GetProperty<nsIDOMWindow>("contentWindow");
+                return this.GetProperty<mozIDOMWindow>("contentWindow");
             }
         }
         

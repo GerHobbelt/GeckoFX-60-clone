@@ -41,11 +41,11 @@ namespace Gecko.WebIDL
             return this.CallMethod<bool>("dispatchEvent", @event);
         }
         
-        public mozIDOMWindowProxy OwnerGlobal
+        public mozIDOMWindow OwnerGlobal
         {
             get
             {
-                return this.GetProperty<mozIDOMWindowProxy>("ownerGlobal");
+                return this.GetProperty<mozIDOMWindow>("ownerGlobal");
             }
         }
     }

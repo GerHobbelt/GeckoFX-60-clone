@@ -111,11 +111,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public mozIDOMWindowProxy ContentWindow
+        public mozIDOMWindow ContentWindow
         {
             get
             {
-                return this.GetProperty<mozIDOMWindowProxy>("contentWindow");
+                return this.GetProperty<mozIDOMWindow>("contentWindow");
             }
         }
         

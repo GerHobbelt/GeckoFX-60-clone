@@ -35,11 +35,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public WebIDLUnion<mozIDOMWindowProxy,nsISupports,nsISupports> Source
+        public WebIDLUnion<mozIDOMWindow,nsISupports,nsISupports> Source
         {
             get
             {
-                return this.GetProperty<WebIDLUnion<mozIDOMWindowProxy,nsISupports,nsISupports>>("source");
+                return this.GetProperty<WebIDLUnion<mozIDOMWindow,nsISupports,nsISupports>>("source");
             }
         }
         
@@ -81,12 +81,12 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("initMessageEvent", type, bubbles, cancelable, data, origin, lastEventId);
         }
         
-        public void InitMessageEvent(string type, bool bubbles, bool cancelable, object data, string origin, string lastEventId, WebIDLUnion<mozIDOMWindowProxy,nsISupports,nsISupports> source)
+        public void InitMessageEvent(string type, bool bubbles, bool cancelable, object data, string origin, string lastEventId, WebIDLUnion<mozIDOMWindow,nsISupports,nsISupports> source)
         {
             this.CallVoidMethod("initMessageEvent", type, bubbles, cancelable, data, origin, lastEventId, source);
         }
         
-        public void InitMessageEvent(string type, bool bubbles, bool cancelable, object data, string origin, string lastEventId, WebIDLUnion<mozIDOMWindowProxy,nsISupports,nsISupports> source, nsISupports[] ports)
+        public void InitMessageEvent(string type, bool bubbles, bool cancelable, object data, string origin, string lastEventId, WebIDLUnion<mozIDOMWindow,nsISupports,nsISupports> source, nsISupports[] ports)
         {
             this.CallVoidMethod("initMessageEvent", type, bubbles, cancelable, data, origin, lastEventId, source, ports);
         }

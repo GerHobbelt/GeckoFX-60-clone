@@ -19,7 +19,7 @@ namespace Gecko.WebIDL
             }
         }
         
-        public void PresetOpenerWindow(mozIDOMWindowProxy window)
+        public void PresetOpenerWindow(mozIDOMWindow window)
         {
             this.CallVoidMethod("presetOpenerWindow", window);
         }

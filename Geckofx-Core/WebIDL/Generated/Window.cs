@@ -149,11 +149,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public mozIDOMWindowProxy Frames
+        public mozIDOMWindow Frames
         {
             get
             {
-                return this.GetProperty<mozIDOMWindowProxy>("frames");
+                return this.GetProperty<mozIDOMWindow>("frames");
             }
         }
         
@@ -185,11 +185,11 @@ namespace Gecko.WebIDL
             }
         }
         
-        public mozIDOMWindowProxy Parent
+        public mozIDOMWindow Parent
         {
             get
             {
-                return this.GetProperty<mozIDOMWindowProxy>("parent");
+                return this.GetProperty<mozIDOMWindow>("parent");
             }
         }
         
@@ -237,24 +237,24 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("blur");
         }
         
-        public mozIDOMWindowProxy Open()
+        public mozIDOMWindow Open()
         {
-            return this.CallMethod<mozIDOMWindowProxy>("open");
+            return this.CallMethod<mozIDOMWindow>("open");
         }
         
-        public mozIDOMWindowProxy Open(string url)
+        public mozIDOMWindow Open(string url)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("open", url);
+            return this.CallMethod<mozIDOMWindow>("open", url);
         }
         
-        public mozIDOMWindowProxy Open(string url, string target)
+        public mozIDOMWindow Open(string url, string target)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("open", url, target);
+            return this.CallMethod<mozIDOMWindow>("open", url, target);
         }
         
-        public mozIDOMWindowProxy Open(string url, string target, string features)
+        public mozIDOMWindow Open(string url, string target, string features)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("open", url, target, features);
+            return this.CallMethod<mozIDOMWindow>("open", url, target, features);
         }
         
         public object NamedGetter(string name)
@@ -760,29 +760,29 @@ namespace Gecko.WebIDL
             this.CallVoidMethod("setResizable", resizable);
         }
         
-        public mozIDOMWindowProxy OpenDialog()
+        public mozIDOMWindow OpenDialog()
         {
-            return this.CallMethod<mozIDOMWindowProxy>("openDialog");
+            return this.CallMethod<mozIDOMWindow>("openDialog");
         }
         
-        public mozIDOMWindowProxy OpenDialog(string url)
+        public mozIDOMWindow OpenDialog(string url)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("openDialog", url);
+            return this.CallMethod<mozIDOMWindow>("openDialog", url);
         }
         
-        public mozIDOMWindowProxy OpenDialog(string url, string name)
+        public mozIDOMWindow OpenDialog(string url, string name)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("openDialog", url, name);
+            return this.CallMethod<mozIDOMWindow>("openDialog", url, name);
         }
         
-        public mozIDOMWindowProxy OpenDialog(string url, string name, string options)
+        public mozIDOMWindow OpenDialog(string url, string name, string options)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("openDialog", url, name, options);
+            return this.CallMethod<mozIDOMWindow>("openDialog", url, name, options);
         }
         
-        public mozIDOMWindowProxy OpenDialog(string url, string name, string options, object extraArguments)
+        public mozIDOMWindow OpenDialog(string url, string name, string options, object extraArguments)
         {
-            return this.CallMethod<mozIDOMWindowProxy>("openDialog", url, name, options, extraArguments);
+            return this.CallMethod<mozIDOMWindow>("openDialog", url, name, options, extraArguments);
         }
         
         public object GetInterface(nsISupports iid)
