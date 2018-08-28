@@ -201,19 +201,14 @@ namespace Gecko
         /// <summary>
         /// True if events have been attached to the 'Root' window.
         /// </summary>
-        private bool _eventsAttached;
-
-        // TODO: PORTFF60 - NS_GetPrivateRoot move to geckofx-Core.
-        [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
-            EntryPoint = "NS_GetPrivateRoot")]
-        public static extern nsIDOMEventTarget GetPrivateRoot(nsISupports supports);
+        private bool _eventsAttached;        
         private void AttachEvents()
         {
             if (_eventsAttached)
                 return;
 
             var domWindow = Browser.GetContentDOMWindowAttribute();
-            EventTarget = GetPrivateRoot((nsISupports) domWindow).AsComPtr();
+            EventTarget = Xpcom.GetPrivateRoot((nsISupports) domWindow).AsComPtr();
             foreach (string sEventName in this.DefaultEvents)
             {
                 using (var eventType = new nsAString(sEventName))

@@ -64,11 +64,7 @@ namespace Gecko
 
     public class LauncherDialog : nsIHelperAppLauncherDialog
     {
-        public static event EventHandler<LauncherDialogEvent> Download;
-
-        [DllImport("xul", CharSet = CharSet.Ansi)]
-        private static extern int NS_NewNativeLocalFile(nsACString path, bool followLinks,
-            [MarshalAs(UnmanagedType.IUnknown)] out object result);
+        public static event EventHandler<LauncherDialogEvent> Download;        
 
         public /*nsILocalFile*/nsISupports PromptForSaveToFile(nsIHelperAppLauncher aLauncher, nsISupports aWindowContext,
             string aDefaultFileName, string aSuggestedFileExtension, bool aForcePrompt)

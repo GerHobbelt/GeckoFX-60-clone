@@ -130,6 +130,10 @@ namespace Gecko
         [DllImport("xul", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern int NS_GetComponentRegistrar(
             [MarshalAs(UnmanagedType.Interface)] out nsIComponentRegistrar componentRegistrar);
+        
+        [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
+            EntryPoint = "NS_GetPrivateRoot")]
+        public static extern nsIDOMEventTarget GetPrivateRoot(nsISupports supports);
 
         /// <summary>
         /// XPCOM_API(void*) NS_Alloc(PRSize size);
