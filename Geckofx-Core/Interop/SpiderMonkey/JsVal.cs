@@ -186,7 +186,7 @@ namespace Gecko
 
             if (IsObject)
             {
-                return ToComObjectInternal(IntPtr.Zero);
+                return ToComObjectInternal();
             }
 
             return null;
@@ -225,7 +225,7 @@ namespace Gecko
 
             if (IsObject)
             {
-                return ToComObjectInternal(IntPtr.Zero);
+                return ToComObjectInternal();
             }
 
             return null;
@@ -234,9 +234,8 @@ namespace Gecko
         /// <summary>
         /// Converts to COM object without null check
         /// </summary>
-        /// <param name="cx"></param>
         /// <returns></returns>
-        private object ToComObjectInternal(IntPtr cx)
+        private object ToComObjectInternal()
         {
             var context = AutoJSContext.Current;
             if (context == null)
@@ -272,7 +271,7 @@ namespace Gecko
         {
             if (IsNull) return null;
 
-            return ToComObjectInternal(cx);
+            return ToComObjectInternal();
         }
 
         public JSType Type
