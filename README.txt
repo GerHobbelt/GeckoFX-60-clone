@@ -2,6 +2,14 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.10 ==
+
+This build is an Alpha version.
+
+1. console.log js call now invoke ConsoleMessage handlers.
+2. Include stacktrace in exceptions from webidl calls.
+3. Internal refactoring.
+
 == v60.0-0.9 ==
 
 This build is an Alpha version.
