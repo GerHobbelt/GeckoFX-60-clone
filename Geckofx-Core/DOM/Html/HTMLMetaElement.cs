@@ -7,7 +7,7 @@ namespace Gecko.DOM
 {
     public class GeckoMetaElement : GeckoHtmlElement
     {
-        internal GeckoMetaElement(nsISupports window, /* nsIDOMHTMLMetaElement */ nsIDOMElement element) : base(window, element)
+        internal GeckoMetaElement(mozIDOMWindowProxy window, /* nsIDOMHTMLMetaElement */ nsIDOMElement element) : base(window, element)
         {
         }
 

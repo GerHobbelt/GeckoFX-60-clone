@@ -11,7 +11,7 @@ namespace Gecko.DOM.Svg
     {
         private /* nsIDOMSVGElement */ nsIDOMElement _svgElement;
 
-        protected SvgElement(nsISupports window, /* nsIDOMSVGElement */ nsIDOMElement svgElement)
+        protected SvgElement(mozIDOMWindowProxy window, /* nsIDOMSVGElement */ nsIDOMElement svgElement)
             : base(window, svgElement)
         {
             _svgElement = svgElement;
@@ -33,7 +33,7 @@ namespace Gecko.DOM.Svg
             get { /*return _svgElement.GetViewportElementAttribute().Wrap(CreateSvgElementWrapper);*/throw new NotImplementedException(); }
         }
 
-        public static SvgElement CreateSvgElementWrapper(nsISupports window,/* nsIDOMSVGElement */ nsIDOMElement svgElement)
+        public static SvgElement CreateSvgElementWrapper(mozIDOMWindowProxy window,/* nsIDOMSVGElement */ nsIDOMElement svgElement)
         {
             return svgElement == null ? null : new SvgElement(window, svgElement);
         }

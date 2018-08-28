@@ -11,13 +11,13 @@ namespace Gecko.DOM
     public class GeckoNamedNodeMap
         : IGeckoArray<GeckoNode>, IEnumerable<GeckoNode>
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private readonly Lazy<WebIDL.NamedNodeMap> _namedNodeMap;
 
-        public GeckoNamedNodeMap(nsISupports window, /* nsIDOMMozNamedAttrMap */nsISupports map)
+        public GeckoNamedNodeMap(mozIDOMWindowProxy window, /* nsIDOMMozNamedAttrMap */nsISupports map)
         {
             _window = window;
-            _namedNodeMap = new Lazy<NamedNodeMap>(() => new WebIDL.NamedNodeMap((mozIDOMWindowProxy)_window, map));
+            _namedNodeMap = new Lazy<NamedNodeMap>(() => new WebIDL.NamedNodeMap(_window, map));
         }
 
 

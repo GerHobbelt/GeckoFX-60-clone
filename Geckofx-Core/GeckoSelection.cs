@@ -49,14 +49,14 @@ namespace Gecko
     {
         private readonly Lazy<Selection> _selection;
 
-        private GeckoSelection(nsISupports window, nsISelection selection)
+        private GeckoSelection(mozIDOMWindowProxy window, nsISelection selection)
         {
             _window = window;
             _selection = new Lazy<Selection>(() => new WebIDL.Selection((mozIDOMWindowProxy)_window, (nsISupports)selection));
             this.Selection = selection;
         }
 
-        internal static GeckoSelection Create(nsISupports window, nsISelection selection)
+        internal static GeckoSelection Create(mozIDOMWindowProxy window, nsISelection selection)
         {
             return selection == null ? null : new GeckoSelection(window, selection);
         }
@@ -69,7 +69,7 @@ namespace Gecko
             get { return Selection; }
         }
 
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private nsISelection Selection;
 
         /// <summary>
@@ -271,14 +271,14 @@ namespace Gecko
     /// </summary>
     public class GeckoRange : ICloneable
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private Lazy<Range> _range;
 
-        internal GeckoRange(nsISupports window, nsIDOMRange range)
+        internal GeckoRange(mozIDOMWindowProxy window, nsIDOMRange range)
         {
             _window = window;
             this.DomRange = range;
-            _range = new Lazy<Range>(() => new Range((mozIDOMWindowProxy) _window, (nsISupports) range));
+            _range = new Lazy<Range>(() => new Range(_window, (nsISupports) range));
         }
 
         /// <summary>

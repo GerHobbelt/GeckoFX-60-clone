@@ -13,14 +13,14 @@ namespace Gecko
     {
         private Lazy<NodeList> _nodeList;
 
-        protected GeckoNodeCollection(nsISupports window, nsIDOMNodeList list)
+        protected GeckoNodeCollection(mozIDOMWindowProxy window, nsIDOMNodeList list)
         {
             _window = window;
-            _nodeList = new Lazy<NodeList>(() => new NodeList((mozIDOMWindowProxy) window, (nsISupports) list));
+            _nodeList = new Lazy<NodeList>(() => new NodeList(window, (nsISupports) list));
             this.List = list;
         }
 
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private nsIDOMNodeList List;
 
         public virtual uint Length => List.GetLengthAttribute();
@@ -59,7 +59,7 @@ namespace Gecko
 
 #endregion
 
-        internal static GeckoNodeCollection Create(nsISupports window, nsISupports list)
+        internal static GeckoNodeCollection Create(mozIDOMWindowProxy window, nsISupports list)
         {
             return list == null ? null : new GeckoNodeCollection(window, (nsIDOMNodeList)list);
         }

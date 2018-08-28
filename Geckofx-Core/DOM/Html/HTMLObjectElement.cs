@@ -6,13 +6,11 @@ using System.Text;
 namespace Gecko.DOM
 {
     public class GeckoObjectElement : GeckoHtmlElement
-    {
-        private readonly nsISupports _window;
+    {        
         private /* nsIDOMHTMLObjectElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoObjectElement(nsISupports window, /* nsIDOMHTMLObjectElement */ nsIDOMElement element) : base(window, element)
-        {
-            _window = window;
+        internal GeckoObjectElement(mozIDOMWindowProxy window, /* nsIDOMHTMLObjectElement */ nsIDOMElement element) : base(window, element)
+        {            
             this.DOMHTMLElement = element;
         }
 

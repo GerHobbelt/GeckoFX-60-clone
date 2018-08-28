@@ -12,13 +12,13 @@ namespace Gecko
     {
         private nsIDOMComment DomComment;
 
-        internal GeckoComment(nsISupports window, nsIDOMComment comment)
+        internal GeckoComment(mozIDOMWindowProxy window, nsIDOMComment comment)
             : base(window, comment)
         {
             DomComment = comment;
         }
 
-        internal static GeckoComment CreateCommentWrapper(nsISupports window, nsIDOMComment comment)
+        internal static GeckoComment CreateCommentWrapper(mozIDOMWindowProxy window, nsIDOMComment comment)
         {
             return (comment == null) ? null : new GeckoComment(window, comment);
         }

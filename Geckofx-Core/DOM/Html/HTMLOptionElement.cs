@@ -10,7 +10,7 @@ namespace Gecko.DOM
     {
         private Lazy<HTMLOptionElement> _optionElement;
 
-        internal GeckoOptionElement(nsISupports window, /* nsIDOMHTMLOptionElement */ nsIDOMElement element) : base(window, element)
+        internal GeckoOptionElement(mozIDOMWindowProxy window, /* nsIDOMHTMLOptionElement */ nsIDOMElement element) : base(window, element)
         {
             _optionElement = new Lazy<HTMLOptionElement>(() => new HTMLOptionElement((mozIDOMWindowProxy)Window, (nsISupports)element));
         }

@@ -5,16 +5,16 @@ namespace Gecko.DOM
 {
     public class WindowUtils
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private ComPtr<nsIDOMWindowUtils> _windowUtils;
 
-        internal WindowUtils(nsISupports window, nsIDOMWindowUtils windowUtils)
+        internal WindowUtils(mozIDOMWindowProxy window, nsIDOMWindowUtils windowUtils)
         {
             _window = window;
             _windowUtils = new ComPtr<nsIDOMWindowUtils>(windowUtils);
         }
 
-        public static WindowUtils Create(nsISupports window, nsIDOMWindowUtils windowUtils)
+        public static WindowUtils Create(mozIDOMWindowProxy window, nsIDOMWindowUtils windowUtils)
         {
             return new WindowUtils(window, windowUtils);
         }

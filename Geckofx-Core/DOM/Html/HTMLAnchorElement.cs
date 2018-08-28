@@ -7,18 +7,16 @@ using Gecko.WebIDL;
 namespace Gecko.DOM
 {
     public class GeckoAnchorElement : GeckoHtmlElement
-    {
-        private readonly nsISupports _window;
+    {        
         private /* nsIDOMHTMLAnchorElement */ nsIDOMElement DOMHTMLElement;
         private Lazy<HTMLAnchorElement> _anchorElement;
         private Lazy<HTMLLinkElement> _linkElement;
 
-        internal GeckoAnchorElement(nsISupports window, /* nsIDOMHTMLAnchorElement */ nsIDOMElement element) : base(window, element)
-        {
-            _window = window;
+        internal GeckoAnchorElement(mozIDOMWindowProxy window, /* nsIDOMHTMLAnchorElement */ nsIDOMElement element) : base(window, element)
+        {            
             this.DOMHTMLElement = element;
-            _anchorElement = new Lazy<HTMLAnchorElement>(() => new HTMLAnchorElement((mozIDOMWindowProxy)_window, (nsISupports)element));
-            _linkElement = new Lazy<HTMLLinkElement>(() => new HTMLLinkElement((mozIDOMWindowProxy)_window, (nsISupports)element));
+            _anchorElement = new Lazy<HTMLAnchorElement>(() => new HTMLAnchorElement(Window, (nsISupports)element));
+            _linkElement = new Lazy<HTMLLinkElement>(() => new HTMLLinkElement(Window, (nsISupports)element));
         }
 
         public string Charset

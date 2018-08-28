@@ -10,7 +10,7 @@ namespace Gecko.DOM
     {
         private readonly Lazy<HTMLFormElement> _formElement;
 
-        internal GeckoFormElement(nsISupports window, nsIDOMHTMLFormElement element) : base(window, (nsIDOMElement)element)
+        internal GeckoFormElement(mozIDOMWindowProxy window, nsIDOMHTMLFormElement element) : base(window, (nsIDOMElement)element)
         {            
             _formElement = new Lazy<HTMLFormElement>(() => new HTMLFormElement((mozIDOMWindowProxy)Window, (nsISupports)element));
         }

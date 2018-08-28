@@ -6,8 +6,7 @@ using System.Text;
 namespace Gecko.Interop
 {
     public static class ExtensionMethods
-    {
-        // TODO: FIXME: PORTFF60 - I'm pretty sure that nsISupport window here should be typed mozIDOMWindowProxy
+    {        
         /// <summary>
         /// Function that check if object is null -> then call wrapper creator
         /// </summary>
@@ -16,7 +15,7 @@ namespace Gecko.Interop
         /// <param name="obj"></param>
         /// <param name="wrapper"></param>
         /// <returns></returns>
-        public static TWrapper Wrap<TGeckoObject, TWrapper>(this TGeckoObject obj, nsISupports window, Func<nsISupports, TGeckoObject, TWrapper> wrapper)
+        public static TWrapper Wrap<TGeckoObject, TWrapper>(this TGeckoObject obj, mozIDOMWindowProxy window, Func<mozIDOMWindowProxy, TGeckoObject, TWrapper> wrapper)
             where TGeckoObject : class
             where TWrapper : class
         {

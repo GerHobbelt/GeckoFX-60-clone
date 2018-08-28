@@ -10,10 +10,10 @@ namespace Gecko
     /// </summary>
     internal class GeckoNodeEnumerable : IEnumerable<GeckoNode>
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private readonly WebIDL.XPathResult _xpathResult;
 
-        internal GeckoNodeEnumerable(nsISupports window, WebIDL.XPathResult xpathResult)
+        internal GeckoNodeEnumerable(mozIDOMWindowProxy window, WebIDL.XPathResult xpathResult)
         {
             _window = window;
             _xpathResult = xpathResult;

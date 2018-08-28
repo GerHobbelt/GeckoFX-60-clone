@@ -18,19 +18,19 @@ namespace Gecko
 
         #region ctor
 
-        internal GeckoHtmlElement(nsISupports window, /* nsIDOMHTMLElement */nsIDOMElement element)
+        internal GeckoHtmlElement(mozIDOMWindowProxy window, /* nsIDOMHTMLElement */nsIDOMElement element)
             : base(window, element)
         {
             _domHtmlElement = element;
             _htmlElement = new Lazy<HTMLElement>(() => new WebIDL.HTMLElement((mozIDOMWindowProxy)window, (nsISupports)element));
         }
 
-        internal static GeckoHtmlElement Create(nsISupports window, /* nsIDOMHTMLElement */nsIDOMElement element)
+        internal static GeckoHtmlElement Create(mozIDOMWindowProxy window, /* nsIDOMHTMLElement */nsIDOMElement element)
         {
             return (element == null) ? null : DOM.DOMSelector.GetClassFor(window, element);
         }
 
-        internal static T Create<T>(nsISupports window,/* nsIDOMHTMLElement */nsISupports element) where T : GeckoHtmlElement
+        internal static T Create<T>(mozIDOMWindowProxy window,/* nsIDOMHTMLElement */nsISupports element) where T : GeckoHtmlElement
         {
             return (element == null) ? null : DOM.DOMSelector.GetClassFor<T>(window, element);
         }

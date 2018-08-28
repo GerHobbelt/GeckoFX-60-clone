@@ -7,16 +7,14 @@ using Gecko.WebIDL;
 namespace Gecko.DOM
 {
     public class GeckoSelectElement : GeckoHtmlElement
-    {
-        private readonly nsISupports _window;
+    {        
         private /* nsIDOMHTMLSelectElement */ nsIDOMElement DOMHTMLElement;
         private Lazy<WebIDL.HTMLSelectElement> _selectElement;
 
-        internal GeckoSelectElement(nsISupports window, /* nsIDOMHTMLSelectElement */ nsIDOMElement element) : base(window, element)
-        {
-            _window = window;
+        internal GeckoSelectElement(mozIDOMWindowProxy window, /* nsIDOMHTMLSelectElement */ nsIDOMElement element) : base(window, element)
+        {            
             this.DOMHTMLElement = element;
-            _selectElement = new Lazy<HTMLSelectElement>(() => new HTMLSelectElement((mozIDOMWindowProxy)_window, (nsISupports)element));
+            _selectElement = new Lazy<HTMLSelectElement>(() => new HTMLSelectElement(Window, (nsISupports)element));
         }
 
         public string Type => _selectElement.Value.Type;
@@ -39,9 +37,9 @@ namespace Gecko.DOM
             set { _selectElement.Value.Length = value; }
         }
 
-        public GeckoFormElement Form => new GeckoFormElement(_window, (nsIDOMHTMLFormElement)_selectElement.Value.Form);
+        public GeckoFormElement Form => new GeckoFormElement(Window, (nsIDOMHTMLFormElement)_selectElement.Value.Form);
 
-        public GeckoOptionsCollection Options => new GeckoOptionsCollection(_window, _selectElement.Value.Options);
+        public GeckoOptionsCollection Options => new GeckoOptionsCollection(Window, _selectElement.Value.Options);
 
         public bool Disabled
         {

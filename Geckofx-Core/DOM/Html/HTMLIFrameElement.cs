@@ -9,11 +9,11 @@ namespace Gecko.DOM
 {
     public class GeckoIFrameElement : GeckoHtmlElement
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private /* nsIDOMHTMLIFrameElement */ nsIDOMElement DOMHTMLElement;
         private Lazy<HTMLIFrameElement> _frameElement;
 
-        internal GeckoIFrameElement(nsISupports window, /* nsIDOMHTMLIFrameElement */ nsIDOMElement element) : base(window, element)
+        internal GeckoIFrameElement(mozIDOMWindowProxy window, /* nsIDOMHTMLIFrameElement */ nsIDOMElement element) : base(window, element)
         {
             _window = window;
             this.DOMHTMLElement = element;

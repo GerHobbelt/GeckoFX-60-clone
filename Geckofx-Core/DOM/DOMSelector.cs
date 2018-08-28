@@ -17,7 +17,7 @@ namespace Gecko.DOM
 
             public ObjectCreator CreationMethod { get; set; }
 
-            public delegate GeckoHtmlElement ObjectCreator(nsISupports window, object htmlElementInterface);
+            public delegate GeckoHtmlElement ObjectCreator(mozIDOMWindowProxy window, object htmlElementInterface);
         }
 
         private static void Add(GeckoClassDesc classDesc)
@@ -62,10 +62,6 @@ namespace Gecko.DOM
                 GeckoElement = typeof (GeckoBodyElement),
                 CreationMethod = (window,x) => new GeckoBodyElement(window,(/* nsIDOMHTMLBodyElement */ nsIDOMElement) x)
             });
-#if NO_LONGER_EXISTS_GECKO45
-			Add(new GeckoClassDesc() { TagName = "br", InterfaceType = typeof(nsIDOMHTMLBRElement), GeckoElement = typeof(GeckoBRElement), 
-				CreationMethod = (window,x) => new GeckoBRElement((nsIDOMHTMLBRElement)x) });
-#endif
             Add(new GeckoClassDesc()
             {
                 TagName = "button",
@@ -302,7 +298,7 @@ namespace Gecko.DOM
         private static GeckoWrapperCache</* nsIDOMHTMLElement */nsISupports, GeckoHtmlElement> m_cache =
             new GeckoWrapperCache</* nsIDOMHTMLElement*/nsISupports, GeckoHtmlElement>(CreateDomHtmlElementWrapper);
 
-        internal static GeckoHtmlElement GetClassFor(nsISupports window,  /* nsIDOMHTMLElement*/nsIDOMElement element)
+        internal static GeckoHtmlElement GetClassFor(mozIDOMWindowProxy window,  /* nsIDOMHTMLElement*/nsIDOMElement element)
         {
             GeckoHtmlElement ret = GetClassFor<GeckoHtmlElement>(window, (nsISupports)element);
             if (ret == null)
@@ -310,7 +306,7 @@ namespace Gecko.DOM
             return ret;
         }
 
-        internal static T GetClassFor<T>(nsISupports window, /* /* nsIDOMHTMLElement*/nsISupports element) where T : GeckoHtmlElement
+        internal static T GetClassFor<T>(mozIDOMWindowProxy window, /* /* nsIDOMHTMLElement*/nsISupports element) where T : GeckoHtmlElement
         {
             return (T) m_cache.Get(window, element);
         }
@@ -320,7 +316,7 @@ namespace Gecko.DOM
         /// </summary>
         /// <param name="domObject"></param>
         /// <returns></returns>
-        internal static GeckoNode CreateDomNodeWrapper(nsISupports window, nsIDOMNode domObject)
+        internal static GeckoNode CreateDomNodeWrapper(mozIDOMWindowProxy window, nsIDOMNode domObject)
         {
             // if null -> return null
             if (domObject == null) return null;
@@ -354,7 +350,7 @@ namespace Gecko.DOM
             return new GeckoNode(window, domObject);
         }
 
-        internal static GeckoHtmlElement CreateDomHtmlElementWrapper(nsISupports window, /* /* nsIDOMHTMLElement*/nsISupports instance)
+        internal static GeckoHtmlElement CreateDomHtmlElementWrapper(mozIDOMWindowProxy window, /* /* nsIDOMHTMLElement*/nsISupports instance)
         {
             var lowerTagName = new WebIDL.Element((mozIDOMWindowProxy)window, instance).TagName.ToLowerInvariant();
             GeckoClassDesc desc;

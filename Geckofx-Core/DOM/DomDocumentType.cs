@@ -5,13 +5,13 @@ namespace Gecko.DOM
     {
         private nsIDOMDocumentType _documentType;
 
-        private DomDocumentType(nsISupports window, nsIDOMDocumentType documentType)
+        private DomDocumentType(mozIDOMWindowProxy window, nsIDOMDocumentType documentType)
             : base(window, documentType)
         {
             _documentType = documentType;
         }
 
-        public static DomDocumentType Create(nsISupports window, nsIDOMDocumentType documentType)
+        public static DomDocumentType Create(mozIDOMWindowProxy window, nsIDOMDocumentType documentType)
         {
             return new DomDocumentType(window, documentType);
         }

@@ -14,7 +14,7 @@ namespace Gecko.DOM
             _target = new ComPtr<nsIDOMEventTarget>(target);
         }
 
-        public static DomEventTarget Create(nsISupports window, nsIDOMEventTarget target)
+        public static DomEventTarget Create(mozIDOMWindowProxy window, nsIDOMEventTarget target)
         {
             return new DomEventTarget((mozIDOMWindowProxy)window, target);
         }
@@ -28,7 +28,7 @@ namespace Gecko.DOM
         {
             var domElement = Xpcom.QueryInterface<nsIDOMElement>(_target.Instance);
 
-            return domElement.Wrap((nsISupports)_window, GeckoElement.CreateDomElementWrapper);
+            return domElement.Wrap(_window, GeckoElement.CreateDomElementWrapper);
         }
 
 
@@ -62,7 +62,7 @@ namespace Gecko.DOM
         /// </summary>
         public DomEventTarget TargetForDOMEvent
         {
-            get { return _target.Instance.GetTargetForDOMEvent().Wrap((nsISupports)_target.Instance.GetTargetForDOMEvent(), Create); }
+            get { return _target.Instance.GetTargetForDOMEvent().Wrap((mozIDOMWindowProxy)_target.Instance.GetTargetForDOMEvent(), Create); }
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Gecko.DOM
         /// </summary>
         public DomEventTarget TargetForEventTargetChain
         {
-            get { return _target.Instance.GetTargetForEventTargetChain().Wrap((nsISupports)_target.Instance.GetTargetForDOMEvent(), Create); }
+            get { return _target.Instance.GetTargetForEventTargetChain().Wrap((mozIDOMWindowProxy)_target.Instance.GetTargetForDOMEvent(), Create); }
         }
     }
 }

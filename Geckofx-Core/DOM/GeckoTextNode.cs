@@ -7,13 +7,13 @@ namespace Gecko.DOM
     {
         private nsIDOMText _domText;
 
-        private GeckoTextNode(nsISupports window, nsIDOMText domText)
+        private GeckoTextNode(mozIDOMWindowProxy window, nsIDOMText domText)
             : base(window, domText)
         {
             _domText = domText;
         }
 
-        public static GeckoTextNode CreateTextNodeWrapper(nsISupports window, nsIDOMText domText)
+        public static GeckoTextNode CreateTextNodeWrapper(mozIDOMWindowProxy window, nsIDOMText domText)
         {
             return new GeckoTextNode(window, domText);
         }

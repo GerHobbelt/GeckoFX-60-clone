@@ -12,7 +12,7 @@ namespace Gecko.DOM
         private /* nsIDOMHTMLFrameElement */ nsIDOMElement DOMHTMLElement;
         private Lazy<WebIDL.HTMLFrameElement> _htmlFrame;
 
-        internal GeckoFrameElement(nsISupports window,/* nsIDOMHTMLFrameElement */ nsIDOMElement element) : base(window, element)
+        internal GeckoFrameElement(mozIDOMWindowProxy window,/* nsIDOMHTMLFrameElement */ nsIDOMElement element) : base(window, element)
         {
             _window = (mozIDOMWindowProxy)window;
             this.DOMHTMLElement = element;
@@ -72,7 +72,7 @@ namespace Gecko.DOM
             get
             {
                 var doc = _htmlFrame.Value.ContentDocument;
-                return doc == null ? null : new GeckoDocument((nsISupports)_window, doc);
+                return doc == null ? null : new GeckoDocument(_window, doc);
             }
         }
 

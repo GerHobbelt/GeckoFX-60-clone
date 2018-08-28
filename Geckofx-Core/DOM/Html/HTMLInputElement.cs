@@ -10,7 +10,7 @@ namespace Gecko.DOM
     {
         private nsIDOMHTMLInputElement DOMHTMLElement;
         private Lazy<HTMLInputElement> _inputElement;
-        internal GeckoInputElement(nsISupports window, nsIDOMHTMLInputElement element) : base(window, (nsIDOMElement)element)
+        internal GeckoInputElement(mozIDOMWindowProxy window, nsIDOMHTMLInputElement element) : base(window, (nsIDOMElement)element)
         {
             this.DOMHTMLElement = element;
             _inputElement = new Lazy<HTMLInputElement>(() => new HTMLInputElement((mozIDOMWindowProxy)window, (nsISupports)element));

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Gecko.DOM;
 using Gecko.Interop;
@@ -12,34 +13,29 @@ namespace Gecko
     public class GeckoWindow
         : IEquatable<GeckoWindow>, IDisposable
     {
-        private ComPtr<nsISupports> _domWindowProxy;
+        private ComPtr<mozIDOMWindowProxy> _domWindowProxy;
+        // TODO: change type to mozIDOMWindow
         private ComPtr<nsISupports> _innerWindow;
         private Lazy<WebIDL.Window> _window;
 
         #region ctor & dtor
 
-        public GeckoWindow(mozIDOMWindow window, bool ownRCW = true)
-        {
-            _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
-            _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? _domWindowProxy.Instance));
-        }
-
-        public GeckoWindow(nsIDOMWindow window, bool ownRCW = true)
-        {
-            throw new NotImplementedException();
-        }
-
         public GeckoWindow(mozIDOMWindowProxy window, bool ownRCW = true)
         {
-            _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
-            _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? _domWindowProxy.Instance));
+            _domWindowProxy = new ComPtr<mozIDOMWindowProxy> (window, ownRCW);
+            _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? (nsISupports)_domWindowProxy.Instance));
         }
 
         public GeckoWindow(mozIDOMWindowProxy window, nsISupports innerWindow, bool ownRCW = true)
         {
-            _domWindowProxy = new ComPtr<nsISupports>((nsISupports)window, ownRCW);
+            _domWindowProxy = new ComPtr<mozIDOMWindowProxy> (window, ownRCW);
             _innerWindow = new ComPtr<nsISupports>(innerWindow, ownRCW);
-            _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? _domWindowProxy.Instance));
+            _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? (nsISupports)_domWindowProxy.Instance));
+        }
+
+        public GeckoWindow(mozIDOMWindowProxy window, mozIDOMWindow innerWindow, bool ownRCW = true) :
+            this(window, (nsISupports)innerWindow, ownRCW)
+        {
         }
 
         ~GeckoWindow()
@@ -58,14 +54,14 @@ namespace Gecko
         /// <summary>
         /// Gets the underlying unmanaged DOM object.
         /// </summary>
-        public nsISupports DomWindow => _innerWindow?.Instance ?? _domWindowProxy?.Instance;
+        public nsISupports DomWindow => _innerWindow?.Instance ?? (nsISupports)_domWindowProxy?.Instance;
 
         public WindowUtils WindowUtils
         {
             get
             {
                 var utils = Xpcom.QueryInterface<nsIDOMWindowUtils>(DomWindow);
-                return utils.Wrap(DomWindow, WindowUtils.Create);
+                return utils.Wrap((mozIDOMWindowProxy)DomWindow, WindowUtils.Create);
             }
         }
 
@@ -79,7 +75,7 @@ namespace Gecko
         /// <summary>
         /// Gets the parent window of this one.
         /// </summary>
-        public GeckoWindow Parent => _window.Value.Parent.Wrap(x => new GeckoWindow(x));
+        public GeckoWindow Parent => _window.Value.Parent.Wrap(x => new GeckoWindow(_domWindowProxy.Instance, x));
 
         public double ScrollX => _window.Value.ScrollX;
 
@@ -124,7 +120,7 @@ namespace Gecko
             {
                 return
                     _window.Value.Top.Wrap(_domWindowProxy.Instance,
-                        (x,y) => new GeckoWindow(y));
+                        (global, inner) => new GeckoWindow(global, inner));
             }
         }
 

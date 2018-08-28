@@ -9,7 +9,7 @@ namespace Gecko.DOM
     {
         private /* nsIDOMHTMLHRElement */ nsIDOMElement DOMHTMLElement;
 
-        internal GeckoHRElement(nsISupports window, /* nsIDOMHTMLHRElement */ nsIDOMElement element) : base(window, element)
+        internal GeckoHRElement(mozIDOMWindowProxy window, /* nsIDOMHTMLHRElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
         }

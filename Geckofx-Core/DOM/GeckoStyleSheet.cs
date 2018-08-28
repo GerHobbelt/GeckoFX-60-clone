@@ -10,17 +10,17 @@ namespace Gecko
     public class GeckoStyleSheet
     {
         private Lazy<WebIDL.StyleSheet> _styleSheet;
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private /* nsIDOMCSSStyleSheet */nsISupports _DomStyleSheet;
 
-        private GeckoStyleSheet(nsISupports window,/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
+        private GeckoStyleSheet(mozIDOMWindowProxy window,/* nsIDOMCSSStyleSheet */nsISupports styleSheet)
         {
             _window = window;
             _DomStyleSheet = styleSheet;
             _styleSheet = new Lazy<WebIDL.StyleSheet>(() => new WebIDL.StyleSheet((mozIDOMWindowProxy)_window, styleSheet));
         }
 
-        internal static GeckoStyleSheet Create(nsISupports window, /* nsIDOMCSSStyleSheet */nsISupports styleSheet)
+        internal static GeckoStyleSheet Create(mozIDOMWindowProxy window, /* nsIDOMCSSStyleSheet */nsISupports styleSheet)
         {
             return (styleSheet == null) ? null : new GeckoStyleSheet(window, styleSheet);
         }
@@ -90,20 +90,19 @@ namespace Gecko
         {
             private Lazy<WebIDL.CSSStyleSheet> _styleSheet;
             private Lazy<CSSRuleList> _ruleList;
-            
-            internal StyleRuleCollection(nsISupports window, GeckoStyleSheet styleSheet)
+            private GeckoStyleSheet StyleSheet;
+            private /* nsIDOMCSSRuleList */nsISupports List;
+            private mozIDOMWindowProxy _window;
+
+            internal StyleRuleCollection(mozIDOMWindowProxy window, GeckoStyleSheet styleSheet)
             {
 
                 StyleSheet = styleSheet;
                 _window = window;
-                _styleSheet = new Lazy<WebIDL.CSSStyleSheet>(() => new CSSStyleSheet((mozIDOMWindowProxy)window, styleSheet.DomStyleSheet));
+                _styleSheet = new Lazy<WebIDL.CSSStyleSheet>(() => new CSSStyleSheet(window, styleSheet.DomStyleSheet));
                 _ruleList = new Lazy<CSSRuleList>(() => new CSSRuleList((mozIDOMWindowProxy)_window, _styleSheet.Value.CssRules));
                 this.List = _styleSheet.Value.CssRules;
-            }
-
-            private GeckoStyleSheet StyleSheet;
-            private /* nsIDOMCSSRuleList */nsISupports List;
-            private nsISupports _window;
+            }            
 
             /// <summary>
             /// Attempts to reload the rule list.

@@ -10,16 +10,16 @@ namespace Gecko
     {
         private /* nsIDOMCSSRule */nsISupports _DomStyleRule;
         private Lazy<CSSRule> _cssRule;
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
 
-        private GeckoStyleRule(nsISupports window, /* nsIDOMCSSRule */nsISupports rule)
+        private GeckoStyleRule(mozIDOMWindowProxy window, /* nsIDOMCSSRule */nsISupports rule)
         {
             _window = window;
             _DomStyleRule = rule;
-            _cssRule = new Lazy<CSSRule>(() => new CSSRule((mozIDOMWindowProxy)window, rule));
+            _cssRule = new Lazy<CSSRule>(() => new CSSRule(window, rule));
         }
 
-        internal static GeckoStyleRule Create(nsISupports window, /* nsIDOMCSSRule */nsISupports rule)
+        internal static GeckoStyleRule Create(mozIDOMWindowProxy window, /* nsIDOMCSSRule */nsISupports rule)
         {
             return (rule == null) ? null : new GeckoStyleRule(window, rule);
         }

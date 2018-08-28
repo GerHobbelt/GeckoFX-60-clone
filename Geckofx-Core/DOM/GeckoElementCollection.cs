@@ -10,10 +10,10 @@ namespace Gecko
     public class GeckoElementCollection
         : IGeckoArray<GeckoHtmlElement>, IEnumerable<GeckoHtmlElement>
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private nsIDOMNodeList List;
 
-        internal GeckoElementCollection(nsISupports window, nsIDOMNodeList list)
+        internal GeckoElementCollection(mozIDOMWindowProxy window, nsIDOMNodeList list)
         {
             _window = window;
             this.List = list;

@@ -13,13 +13,13 @@ namespace Gecko
         private /* nsIDOMHTMLDocument */nsIDOMDocument _domHtmlDocument;
         protected Lazy<HTMLDocument> _htmlDocument;
 
-        internal GeckoDocument(nsISupports window,/* nsIDOMHTMLDocument */nsIDOMDocument document) : base(window, document)
+        internal GeckoDocument(mozIDOMWindowProxy window,/* nsIDOMHTMLDocument */nsIDOMDocument document) : base(window, document)
         {
             _domHtmlDocument = document;
-            _htmlDocument = new Lazy<HTMLDocument>(() => new HTMLDocument((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument));
+            _htmlDocument = new Lazy<HTMLDocument>(() => new HTMLDocument(Window, (nsISupports)_domHtmlDocument));
         }
 
-        internal static GeckoDocument Create(nsISupports window, /* nsIDOMHTMLDocument */nsIDOMDocument document)
+        internal static GeckoDocument Create(mozIDOMWindowProxy window, /* nsIDOMHTMLDocument */nsIDOMDocument document)
         {
             return document == null ? null : new GeckoDocument(window, document);
         }
@@ -51,10 +51,10 @@ namespace Gecko
         /// </summary>
         public class StyleSheetCollection : IEnumerable<GeckoStyleSheet>
         {
-            private readonly nsISupports _window;
+            private readonly mozIDOMWindowProxy _window;
             private Lazy<StyleSheetList> _list;
             
-            internal StyleSheetCollection(nsISupports window, GeckoDocument document)
+            internal StyleSheetCollection(mozIDOMWindowProxy window, GeckoDocument document)
             {
                 _window = window;
                 _list = new Lazy<StyleSheetList>(() => new StyleSheetList((mozIDOMWindowProxy)_window, document.DocumentOrShadowRoot.Value.StyleSheets));

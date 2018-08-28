@@ -7,14 +7,12 @@ using Gecko.WebIDL;
 namespace Gecko.DOM
 {
     public class GeckoTextAreaElement : GeckoHtmlElement
-    {
-        private readonly nsISupports _window;
+    {        
         private Lazy<HTMLTextAreaElement> _textArea;
 
-        internal GeckoTextAreaElement(nsISupports window, /* nsIDOMHTMLTextAreaElement */ nsIDOMElement element) : base(window, element)
-        {
-            _window = window;
-            _textArea = new Lazy<HTMLTextAreaElement>(() => new HTMLTextAreaElement((mozIDOMWindowProxy)_window, (nsISupports)element));
+        internal GeckoTextAreaElement(mozIDOMWindowProxy window, /* nsIDOMHTMLTextAreaElement */ nsIDOMElement element) : base(window, element)
+        {            
+            _textArea = new Lazy<HTMLTextAreaElement>(() => new HTMLTextAreaElement(Window, (nsISupports)element));
         }
 
         #region /* nsIDOMHTMLTextAreaElement */ nsISupports members
@@ -37,7 +35,7 @@ namespace Gecko.DOM
             set { _textArea.Value.Disabled = value; }
         }
 
-        public GeckoFormElement Form => new GeckoFormElement(_window, (nsIDOMHTMLFormElement)_textArea.Value.Form);
+        public GeckoFormElement Form => new GeckoFormElement(Window, (nsIDOMHTMLFormElement)_textArea.Value.Form);
 
         public int MaxLength
         {

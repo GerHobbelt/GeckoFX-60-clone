@@ -21,10 +21,10 @@ namespace Gecko
         #region fields
 
         private ComPtr<nsIDOMNode> _domNode;
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         protected Lazy<WebIDL.Node> _node;
 
-        public nsISupports Window => _window;
+        public mozIDOMWindowProxy Window => _window;
 
         // Node name (Tagname) is called a lot and shouldn't change.
         private string _cachedNodeName;
@@ -33,7 +33,7 @@ namespace Gecko
 
         #region ctor & creation methods
 
-        internal GeckoNode(nsISupports window, nsIDOMNode domObject)
+        internal GeckoNode(mozIDOMWindowProxy window, nsIDOMNode domObject)
         {
             //ComDebug.WriteDebugInfo( domObject );
             _domNode = new ComPtr<nsIDOMNode>(domObject);
@@ -52,12 +52,12 @@ namespace Gecko
             GC.SuppressFinalize(this);
         }
 
-        internal static GeckoNode Create(nsISupports window, nsIDOMNode domObject)
+        internal static GeckoNode Create(mozIDOMWindowProxy window, nsIDOMNode domObject)
         {
             return m_nodeCache.Get(window, domObject);
         }
 
-        internal static GeckoNode Create(nsISupports window, nsIDOMElement domObject)
+        internal static GeckoNode Create(mozIDOMWindowProxy window, nsIDOMElement domObject)
         {
             return m_nodeCache.Get(window, domObject);
         }

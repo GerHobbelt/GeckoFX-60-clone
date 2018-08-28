@@ -94,12 +94,17 @@ namespace Gecko
         #region Connstructors
 
         public AutoJSContext(GeckoWindow window) :
-            this((nsISupports)window.DomWindow)
+            this((nsIGlobalObject)window.DomWindow)
+        {
+        }
+
+        public AutoJSContext(mozIDOMWindowProxy window) :
+            this((nsIGlobalObject) window)
         {
         }
 
         public AutoJSContext(nsISupports window) :
-            this((nsIGlobalObject) window)
+            this((nsIGlobalObject)window)
         {
         }
 

@@ -1017,7 +1017,7 @@ namespace Gecko
                         return _Window;
                     _Window.Dispose();
                 }
-                _Window = Browser.GetContentDOMWindowAttribute().Wrap((nsISupports)Browser.GetContentDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
+                _Window = Browser.GetContentDOMWindowAttribute().Wrap(Browser.GetContentDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
                 return _Window;
             }
         }
@@ -1042,7 +1042,7 @@ namespace Gecko
                     // therefore we have to create a new one.
                     _Document.Dispose();
                 }
-                _Document = GeckoDomDocument.CreateDomDocumentWraper(Window.DomWindow, domDocument.Instance);
+                _Document = GeckoDomDocument.CreateDomDocumentWraper((mozIDOMWindowProxy)Window.DomWindow, domDocument.Instance);
                 return _Document;
             }
         }
@@ -1395,7 +1395,7 @@ namespace Gecko
 
                 Uri destUri = null;
                 Uri.TryCreate(request.Name, UriKind.Absolute, out destUri);
-                var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap((nsISupports)aWebProgress.GetDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
+                var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap(aWebProgress.GetDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
 
                 /* This flag indicates that the state transition is for a request, which includes but is not limited to document requests.
 				 * Other types of requests, such as requests for inline content (for example images and stylesheets) are considered normal requests.
@@ -1624,7 +1624,7 @@ namespace Gecko
             if (IsDisposed) return;
 
             Uri uri = new Uri(nsString.Get(aLocation.GetSpecAttribute));
-            using (var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap((nsISupports)aWebProgress.GetDOMWindowAttribute(), (x,y) => new GeckoWindow(y)))
+            using (var domWindow = aWebProgress.GetDOMWindowAttribute().Wrap(aWebProgress.GetDOMWindowAttribute(), (x,y) => new GeckoWindow(y)))
             {
                 bool sameDocument = (flags & nsIWebProgressListenerConstants.LOCATION_CHANGE_SAME_DOCUMENT) != 0;
                 bool errorPage = (flags & nsIWebProgressListenerConstants.LOCATION_CHANGE_ERROR_PAGE) != 0;

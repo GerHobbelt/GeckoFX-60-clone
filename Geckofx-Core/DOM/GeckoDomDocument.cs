@@ -19,7 +19,7 @@ namespace Gecko
         private Lazy<Document> _document;
         private Lazy<DocumentOrShadowRoot> _documentOrShadowRoot;
 
-        internal GeckoDomDocument(nsISupports window, nsIDOMDocument document)
+        internal GeckoDomDocument(mozIDOMWindowProxy window, nsIDOMDocument document)
             : base(window, document)
         {
             _domDocument = document;
@@ -193,7 +193,7 @@ namespace Gecko
         /// The window associated with this document.
         /// <see cref="http://www.whatwg.org/html/#dom-document-defaultview"/>
         /// </summary>
-        public GeckoWindow DefaultView => Doc.Value.DefaultView.Wrap(Window, (window, x) => new GeckoWindow(x));
+        public GeckoWindow DefaultView => Doc.Value.DefaultView.Wrap(Window, (window, x) => new GeckoWindow(window, x));
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-characterset"/>
@@ -346,7 +346,7 @@ namespace Gecko
 
         protected internal Lazy<DocumentOrShadowRoot> DocumentOrShadowRoot => _documentOrShadowRoot;
 
-        public static GeckoDomDocument CreateDomDocumentWraper(nsISupports window, nsIDOMDocument domDocument)
+        public static GeckoDomDocument CreateDomDocumentWraper(mozIDOMWindowProxy window, nsIDOMDocument domDocument)
         {
             // REVIEW: PORTFF60 - should we cache this?
             return new GeckoDocument(window, domDocument);

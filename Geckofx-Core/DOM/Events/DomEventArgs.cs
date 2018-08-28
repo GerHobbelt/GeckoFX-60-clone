@@ -92,7 +92,7 @@ namespace Gecko
 
         public DOM.DomEventTarget CurrentTarget
         {
-            get { return _event.GetCurrentTargetAttribute().Wrap((nsISupports)Window, DOM.DomEventTarget.Create); }
+            get { return _event.GetCurrentTargetAttribute().Wrap(Window, DOM.DomEventTarget.Create); }
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Gecko
         /// </summary>
         public DOM.DomEventTarget Target
         {
-            get { return _event.GetTargetAttribute().Wrap((nsISupports)Window, DOM.DomEventTarget.Create); }
+            get { return _event.GetTargetAttribute().Wrap(Window, DOM.DomEventTarget.Create); }
         }
 
 

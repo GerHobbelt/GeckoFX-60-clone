@@ -8,10 +8,10 @@ namespace Gecko.DOM
 {
     public class GeckoOptionsCollection
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private Lazy<NamedNodeMap> _optionsCollection;
 
-        internal GeckoOptionsCollection(nsISupports window, /* nsIDOMHTMLOptionsCollection */ nsISupports element)
+        internal GeckoOptionsCollection(mozIDOMWindowProxy window, /* nsIDOMHTMLOptionsCollection */ nsISupports element)
         {
             _window = window;
             _optionsCollection = new Lazy<NamedNodeMap>(() => new NamedNodeMap((mozIDOMWindowProxy)window, element));

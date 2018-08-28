@@ -7,14 +7,14 @@ namespace Gecko
     /// </summary>
     public class GeckoAttribute : GeckoNode
     {
-        internal GeckoAttribute(nsISupports window, /*nsIDOMAttr*/ nsIDOMElement attr) : base(window, attr)
+        internal GeckoAttribute(mozIDOMWindowProxy window, /*nsIDOMAttr*/ nsIDOMElement attr) : base(window, attr)
         {
             this.DomAttr = attr;
         }
 
         internal /*nsIDOMAttr*/ nsIDOMElement DomAttr;
 
-        internal static GeckoAttribute CreateAttributeWrapper(nsISupports window,/*nsIDOMAttr*/ nsIDOMElement attr)
+        internal static GeckoAttribute CreateAttributeWrapper(mozIDOMWindowProxy window,/*nsIDOMAttr*/ nsIDOMElement attr)
         {
             return (attr == null) ? null : new GeckoAttribute(window, attr);
         }

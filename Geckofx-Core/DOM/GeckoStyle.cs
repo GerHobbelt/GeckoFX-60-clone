@@ -48,18 +48,18 @@ namespace Gecko
     /// </summary>
     public class GeckoStyle
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private readonly /* /* nsIDOMCSSStyleDeclaration s */nsISupports _styleDelcaration;
         Lazy<CSSStyleDeclaration> _style;
 
-        internal GeckoStyle(nsISupports window, /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
+        internal GeckoStyle(mozIDOMWindowProxy window, /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
         {
             _window = window;
             _styleDelcaration = styleDeclaration;
             _style = new Lazy<CSSStyleDeclaration>(() => new CSSStyleDeclaration((mozIDOMWindowProxy)_window, _styleDelcaration));            
         }
 
-        internal static GeckoStyle Create(nsISupports window, /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
+        internal static GeckoStyle Create(mozIDOMWindowProxy window, /* nsIDOMCSSStyleDeclaration s */nsISupports styleDeclaration)
         {
             return (styleDeclaration == null) ? null : new GeckoStyle(window, styleDeclaration);
         }

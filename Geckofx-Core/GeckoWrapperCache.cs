@@ -22,7 +22,7 @@ namespace Gecko
     /// <typeparam name="WrapperType"></typeparam>
     internal class GeckoWrapperCache<InterfaceType, WrapperType>
     {
-        public delegate WrapperType CreateWrapper(nsISupports window, InterfaceType instance);
+        public delegate WrapperType CreateWrapper(mozIDOMWindowProxy window, InterfaceType instance);
 
         private readonly Dictionary<InterfaceType, WeakReference> m_cache =
             new Dictionary<InterfaceType, WeakReference>();
@@ -34,7 +34,7 @@ namespace Gecko
             m_creator = creator;
         }
 
-        public WrapperType Get(nsISupports window, InterfaceType instance)
+        public WrapperType Get(mozIDOMWindowProxy window, InterfaceType instance)
         {
             if (instance == null)
                 return default(WrapperType);

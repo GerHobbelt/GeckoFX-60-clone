@@ -42,7 +42,7 @@ namespace Gecko.Services
 
         public static GeckoWindow ActiveWindow
         {
-            get { return _watcher.Instance.GetActiveWindowAttribute().Wrap((nsISupports)_watcher.Instance.GetActiveWindowAttribute(), (x,y) => new GeckoWindow(y)); }
+            get { return _watcher.Instance.GetActiveWindowAttribute().Wrap(_watcher.Instance.GetActiveWindowAttribute(), (x,y) => new GeckoWindow(y)); }
             set
             {
                 if (value != null)

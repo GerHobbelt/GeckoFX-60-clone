@@ -19,7 +19,7 @@ namespace Gecko.DOM
 
         public XPathResultType GetResultType()
         {
-            using (var context = new AutoJSContext((nsISupports)_proxy))
+            using (var context = new AutoJSContext(_proxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
             {                
                 return
@@ -30,7 +30,7 @@ namespace Gecko.DOM
 
         public double GetNumberValue()
         {
-            using (var context = new AutoJSContext((nsISupports)_proxy))
+            using (var context = new AutoJSContext(_proxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
             {                
                 return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "numberValue").ToDouble();
@@ -39,7 +39,7 @@ namespace Gecko.DOM
 
         public string GetStringValue()
         {
-            using (var context = new AutoJSContext((nsISupports)_proxy))
+            using (var context = new AutoJSContext(_proxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
             {                
                 return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "stringValue").ToString();
@@ -48,7 +48,7 @@ namespace Gecko.DOM
 
         public bool GetBooleanValue()
         {
-            using (var context = new AutoJSContext((nsISupports)_proxy))
+            using (var context = new AutoJSContext(_proxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject((nsISupports)_xpathResult.Instance))
             {                
                 return SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, "booleanValue").ToBoolean();
@@ -57,13 +57,13 @@ namespace Gecko.DOM
 
         public GeckoNode GetSingleNodeValue()
         {
-            return new WebIDL.XPathResult(_proxy, _xpathResult.Instance as nsISupports).IterateNext().Wrap((nsISupports)_proxy, GeckoNode.Create);
+            return new WebIDL.XPathResult(_proxy, _xpathResult.Instance as nsISupports).IterateNext().Wrap(_proxy, GeckoNode.Create);
         }
 
         public IEnumerable<GeckoNode> GetNodes()
         {
             // TODO: fixme this should return a new copy of the results.
-            return new GeckoNodeEnumerable((nsISupports)_proxy, new WebIDL.XPathResult(_proxy, _xpathResult.Instance as nsISupports));
+            return new GeckoNodeEnumerable(_proxy, new WebIDL.XPathResult(_proxy, _xpathResult.Instance as nsISupports));
         }
     }
 

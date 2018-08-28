@@ -11,7 +11,7 @@ namespace Gecko.DOM
         private /* nsIDOMHTMLCanvasElement */ nsIDOMElement DOMHTMLElement;
         private Lazy<HTMLCanvasElement> _canvasElement;
 
-        internal GeckoCanvasElement(nsISupports window, /* nsIDOMHTMLCanvasElement */ nsIDOMElement element) : base(window, element)
+        internal GeckoCanvasElement(mozIDOMWindowProxy window, /* nsIDOMHTMLCanvasElement */ nsIDOMElement element) : base(window, element)
         {
             this.DOMHTMLElement = element;
             _canvasElement = new Lazy<HTMLCanvasElement>(() => new HTMLCanvasElement((mozIDOMWindowProxy)window, (nsISupports)DOMHTMLElement));

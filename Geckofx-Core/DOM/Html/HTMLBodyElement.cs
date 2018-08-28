@@ -10,7 +10,7 @@ namespace Gecko.DOM
     {
         private /* nsIDOMHTMLBodyElement */ nsIDOMElement _domHtmlBodyElement;
 
-        internal GeckoBodyElement(nsISupports window, /* nsIDOMHTMLBodyElement */ nsIDOMElement element)
+        internal GeckoBodyElement(mozIDOMWindowProxy window, /* nsIDOMHTMLBodyElement */ nsIDOMElement element)
             : base(window, element)
         {
             _domHtmlBodyElement = element;

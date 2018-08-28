@@ -68,7 +68,7 @@ namespace Gecko
             var proxy = (mozIDOMWindowProxy)Xpcom.QueryInterface(_webNav.Instance, typeof(mozIDOMWindowProxy).GUID);
 
             GeckoDomDocument doc = _webNav.Instance.GetDocumentAttribute()
-                .Wrap((nsISupports)proxy, GeckoDomDocument.CreateDomDocumentWraper);
+                .Wrap(proxy, GeckoDomDocument.CreateDomDocumentWraper);
             GeckoElement rootElement = doc.DocumentElement;
             while (rootElement.FirstChild != null)
                 rootElement.RemoveChild(rootElement.FirstChild);

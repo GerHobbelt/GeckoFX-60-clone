@@ -17,25 +17,25 @@ namespace Gecko.Collections
         where TGeckoNode : class, nsIDOMNode
         where TWrapper : class
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private Wrapper _wrapper;
         private uint _position;
         private TGeckoNode _current;
-        private Func<nsISupports, TGeckoNode, TWrapper> _translator;
+        private Func<mozIDOMWindowProxy, TGeckoNode, TWrapper> _translator;
 
-        internal GeckoNodeEnumerator(nsISupports window, nsIDOMNodeList list, Func<nsISupports, TGeckoNode, TWrapper> translator)
+        internal GeckoNodeEnumerator(mozIDOMWindowProxy window, nsIDOMNodeList list, Func<mozIDOMWindowProxy, TGeckoNode, TWrapper> translator)
             : this(window, new Wrapper1(window, list), translator)
         {
             _window = window;
         }
 
 
-        public GeckoNodeEnumerator(nsISupports window,/* nsIDOMHTMLCollection */nsISupports collection, Func<nsISupports, TGeckoNode, TWrapper> translator)
+        public GeckoNodeEnumerator(mozIDOMWindowProxy window,/* nsIDOMHTMLCollection */nsISupports collection, Func<mozIDOMWindowProxy, TGeckoNode, TWrapper> translator)
             : this(window, new Wrapper2(collection), translator)
         {
         }
 
-        private GeckoNodeEnumerator(nsISupports window, Wrapper wrapper, Func<nsISupports, TGeckoNode, TWrapper> translator)
+        private GeckoNodeEnumerator(mozIDOMWindowProxy window, Wrapper wrapper, Func<mozIDOMWindowProxy, TGeckoNode, TWrapper> translator)
         {
             _wrapper = wrapper;
             _translator = translator;
@@ -98,7 +98,7 @@ namespace Gecko.Collections
             private nsIDOMNodeList _list;
             private int _length;
 
-            internal Wrapper1(nsISupports window, nsIDOMNodeList list)
+            internal Wrapper1(mozIDOMWindowProxy window, nsIDOMNodeList list)
             {
                 _list = list;
                 _length = (int) list.GetLengthAttribute();

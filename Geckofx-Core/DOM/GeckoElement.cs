@@ -54,7 +54,7 @@ namespace Gecko
 
         protected Lazy<WebIDL.Element> _element;
 
-        internal GeckoElement(nsISupports window, nsIDOMElement domElement)
+        internal GeckoElement(mozIDOMWindowProxy window, nsIDOMElement domElement)
             : base(window, domElement)
         {
             if (window == null)
@@ -292,7 +292,7 @@ namespace Gecko
         }
 
 
-        public static GeckoElement CreateDomElementWrapper(nsISupports window, nsIDOMElement element)
+        public static GeckoElement CreateDomElementWrapper(mozIDOMWindowProxy window, nsIDOMElement element)
         {
             if (element == null)
                 return null;

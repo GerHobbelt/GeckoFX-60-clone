@@ -17,11 +17,11 @@ namespace Gecko.Collections
         where TWrapper : GeckoNode
         where TGeckoNode : class, nsIDOMNode
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private nsIDOMNodeList _list;
-        private Func<nsISupports, TGeckoNode, TWrapper> _translator;
+        private Func<mozIDOMWindowProxy, TGeckoNode, TWrapper> _translator;
 
-        internal DomNodeList(nsISupports window, nsIDOMNodeList list, Func<nsISupports, TGeckoNode, TWrapper> translator)
+        internal DomNodeList(mozIDOMWindowProxy window, nsIDOMNodeList list, Func<mozIDOMWindowProxy, TGeckoNode, TWrapper> translator)
         {
             _window = window;
             _list = list;
@@ -61,11 +61,11 @@ namespace Gecko.Collections
         where TWrapper : GeckoNode
         where TGeckoNode : class, nsIDOMNode
     {
-        private readonly nsISupports _window;
+        private readonly mozIDOMWindowProxy _window;
         private /*nsIDOMHTMLCollection*/nsIDOMNodeList _collection;
-        private Func<nsISupports, TGeckoNode, TWrapper> _translator;
+        private Func<mozIDOMWindowProxy, TGeckoNode, TWrapper> _translator;
 
-        public DomHtmlCollection(nsISupports window, /*nsIDOMHTMLCollection*/nsIDOMNodeList collection, Func<nsISupports, TGeckoNode, TWrapper> translator)
+        public DomHtmlCollection(mozIDOMWindowProxy window, /*nsIDOMHTMLCollection*/nsIDOMNodeList collection, Func<mozIDOMWindowProxy, TGeckoNode, TWrapper> translator)
         {
             _window = window;
             _collection = collection;

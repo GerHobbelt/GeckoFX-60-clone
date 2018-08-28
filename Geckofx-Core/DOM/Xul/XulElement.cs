@@ -9,13 +9,13 @@ namespace Gecko.DOM.Xul
     public class XulElement
         : GeckoElement
     {
-        protected XulElement(nsISupports window, nsIDOMXULElement xulElement)
+        protected XulElement(mozIDOMWindowProxy window, nsIDOMXULElement xulElement)
             : base(window, xulElement)
         {
         }
 
 
-        public static XulElement CreateXulElementWrapper(nsISupports window, nsIDOMXULElement xulElement)
+        public static XulElement CreateXulElementWrapper(mozIDOMWindowProxy window, nsIDOMXULElement xulElement)
         {
             return xulElement == null ? null : new XulElement(window, xulElement);
         }
