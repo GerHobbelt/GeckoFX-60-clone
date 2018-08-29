@@ -2,6 +2,12 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.11 ==
+
+This build is an Alpha version.
+
+1. Fix scrollintoview
+
 == v60.0-0.10 ==
 
 This build is an Alpha version.
