@@ -50,6 +50,12 @@ namespace Gecko.WebIDL
             return item != null && (bool) item;
         }
 
+        public bool IsComObject()
+        {
+            var item = _items.FirstOrDefault(x => x is nsISupports);
+            return item != null;
+        }
+
         public nsISupports ToComObject()
         {            
             var item = (nsISupports)_items.FirstOrDefault(x => x is nsISupports);
