@@ -2,6 +2,12 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.12 ==
+
+This build is an Alpha version.
+
+1. Fix broken sqllite database. This was preventing cookies from working.
+
 == v60.0-0.11 ==
 
 This build is an Alpha version.
