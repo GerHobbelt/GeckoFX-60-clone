@@ -135,6 +135,10 @@ namespace Gecko
             EntryPoint = "NS_GetPrivateRoot")]
         public static extern nsIDOMEventTarget GetPrivateRoot(nsISupports supports);
 
+        [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
+            EntryPoint = "XRE_GetBootstrap")]
+        public static extern void XRE_GetBootstrap(IntPtr ptr);
+
         /// <summary>
         /// XPCOM_API(void*) NS_Alloc(PRSize size);
         /// </summary>
@@ -340,6 +344,10 @@ namespace Gecko
             Environment.CurrentDirectory = folder;
 
             NS_ProfileInit();
+            var ptr = Marshal.AllocCoTaskMem(IntPtr.Size);
+            Marshal.WriteIntPtr(ptr, IntPtr.Zero);
+            XRE_GetBootstrap(ptr);
+            Marshal.FreeCoTaskMem(ptr);
 
             nsIServiceManager serviceManager;
 
