@@ -2,6 +2,14 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.13 ==
+
+This build is an Alpha version.
+
+1. Implement GeckoElementExtensionMethods.GetBoundingClientRect
+2. Port most of CookieManager
+3. Move NamespaceURI, Prefix + LocalName properties to GeckoElement from GeckoNode
+
 == v60.0-0.12 ==
 
 This build is an Alpha version.
