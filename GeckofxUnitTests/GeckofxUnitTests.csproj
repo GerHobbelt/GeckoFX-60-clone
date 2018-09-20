@@ -140,6 +140,7 @@
     <Compile Include="JsValTests.cs" />
     <Compile Include="ManagedServiceFactoriesTests.cs" />
     <Compile Include="MemoryStressTests.cs" />
+    <Compile Include="Net\CookieManagerTests.cs" />
     <Compile Include="nsACStringTests.cs" />
     <Compile Include="nsAStringTests.cs" />
     <Compile Include="nsIEditorTests.cs" />
