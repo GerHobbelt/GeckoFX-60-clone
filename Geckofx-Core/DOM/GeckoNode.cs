@@ -181,25 +181,7 @@ namespace Gecko
 
             _node.Value.ReplaceChild(newChild._domNode.Instance, oldChild._domNode.Instance);
             return newChild;
-        }
-
-        // TODO: FFPORT60 move NamespaceURI to GeckoElement
-        public string NamespaceURI
-        {
-            get { /*return nsString.Get(_domNode.Instance.GetNamespaceURIAttribute);*/ throw new NotImplementedException(); }
-        }
-
-        // TODO: FFPORT60 move Prefix to GeckoElement
-        public string Prefix
-        {
-            get { /*return nsString.Get(_domNode.Instance.GetPrefixAttribute);*/ throw new NotImplementedException(); }
-        }
-
-        // TODO: FFPORT60 move LocalName to GeckoElement
-        public string LocalName
-        {
-            get { /*return nsString.Get(_domNode.Instance.GetLocalNameAttribute);*/ throw new NotImplementedException(); }
-        }
+        }       
 
         private NodeType m_cachedType;
 

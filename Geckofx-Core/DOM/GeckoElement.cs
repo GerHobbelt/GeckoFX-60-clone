@@ -291,6 +291,13 @@ namespace Gecko
 #endif
         }
 
+        
+        public string NamespaceURI => _element.Value.NamespaceURI;
+        
+        public string Prefix => _element.Value.Prefix;
+        
+        public string LocalName => _element.Value.LocalName;
+
 
         public static GeckoElement CreateDomElementWrapper(mozIDOMWindowProxy window, nsIDOMElement element)
         {
