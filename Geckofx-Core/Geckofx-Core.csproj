@@ -1099,6 +1099,7 @@
     <Compile Include="Interop\HandWrittenInterfaces\nsIGlobalObject.cs" />
     <Compile Include="Interop\HandWrittenInterfaces\nsIScriptContext.cs" />
     <Compile Include="Interop\HandWrittenInterfaces\nsIXPathResult.cs" />
+    <Compile Include="Interop\HandWrittenInterfaces\nsPIDOMWindowOuter.cs" />
     <Compile Include="Interop\SpiderMonkey\JSAutoCompartment.cs" />
     <Compile Include="Interop\SpiderMonkey\MutableHandle.cs" />
     <Compile Include="Interop\SpiderMonkey\MutableJSVal.cs" />

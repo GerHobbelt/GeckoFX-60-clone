@@ -913,17 +913,17 @@ setTimeout(function(){
 
         /// <summary>
         /// UKAC unit test for CreateWindow
-        /// </summary>
-        [Ignore("bug hasn't been fixed yet.")]
+        /// </summary>        
         [Test]
         public void CreateWindow_OnloadEventCallsWindowOpenToCheckCreateWindowSuccess_ShouldReturnWindowObject()
         {
             _browser.CreateWindow += (m, e) =>
             {
                 e.WebBrowser = new GeckoWebBrowser();
+                var h = e.WebBrowser.Handle;
             };
 
-            _browser.LoadHtml("<body onload=\"name='d'window.open('about:blank')\"></body>");
+            _browser.LoadHtml("<body onload=\"name=window.open('about:blank')\"></body>");
             _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.AreEqual("[object Window]", _browser.Window.Name);
         }

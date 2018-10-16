@@ -281,13 +281,7 @@ namespace Gecko
                 bool cancel = false;
                 return DoCreateChromeWindow(parent, chromeFlags, 0, null, ref cancel);
             }
-
-            public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags,
-                uint contextFlags, nsIURI uri,
-                nsITabParent aOpeningTab, ref bool cancel)
-            {
-                return DoCreateChromeWindow(parent, chromeFlags, contextFlags, uri, ref cancel);
-            }
+            
 
             public void SetScreenId(uint aScreenId)
             {
@@ -297,7 +291,7 @@ namespace Gecko
             public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags, nsITabParent aOpeningTab,
                 mozIDOMWindowProxy aOpener, ulong aNextTabParentId, ref bool cancel)
             {
-                throw new NotImplementedException();
+                return DoCreateChromeWindow(parent, chromeFlags, 0, null, ref cancel);
             }
         }
 
@@ -1234,7 +1228,7 @@ namespace Gecko
             // to set the starting url
             if (this.Browser != null)
             {
-                if (uuid == typeof (nsIDOMWindow).GUID)
+                if (uuid == typeof (nsIDOMWindow).GUID || uuid == typeof (nsPIDOMWindowOuter).GUID)
                 {
                     obj = this.Browser.GetContentDOMWindowAttribute();
                 }
