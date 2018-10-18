@@ -6,6 +6,8 @@ namespace Gecko
     // It seems that only GetDocShellAttribute() is required by nsIWindowMediator, so we leave other method not implemented.
     // 
     // It was a bad idea to throw NotImplementedException, because this methods are called in XUL specific urls like about:config
+
+    // UKAC -60 implemented ContextFlags for general use
     public partial class GeckoWebBrowser : nsIXULWindow
     {
         public nsIDocShell GetDocShellAttribute()
@@ -85,24 +87,21 @@ namespace Gecko
 
         public uint GetContextFlagsAttribute()
         {
-            Debug.WriteLine("GetContextFlagsAttribute called");
-            return 0;
+            return ContextFlags;
         }
 
         public void SetContextFlagsAttribute(uint aContextFlags)
         {
-            Debug.WriteLine("SetContextFlagsAttribute called");
+            ContextFlags = aContextFlags;
         }
 
         uint nsIXULWindow.GetChromeFlagsAttribute()
         {
-            Debug.WriteLine("GetChromeFlagsAttribute called");
             return ChromeFlags;
         }
 
         void nsIXULWindow.SetChromeFlagsAttribute(uint aChromeFlags)
         {
-            Debug.WriteLine("SetChromeFlagsAttribute called");
             ChromeFlags = aChromeFlags;
         }
 

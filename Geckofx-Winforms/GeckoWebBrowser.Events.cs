@@ -516,24 +516,6 @@ namespace Gecko
 
         #endregion
 
-        #region public event GeckoCreateWindow2EventHandler CreateWindow2
-
-        [Obsolete("Merged to CreateWindow event, just use it")]
-        public event EventHandler<GeckoCreateWindow2EventArgs> CreateWindow2
-        {
-            add { Events.AddHandler(CreateWindow2Event, value); }
-            remove { Events.RemoveHandler(CreateWindow2Event, value); }
-        }
-
-        /// <summary>Raises the <see cref="CreateWindow"/> event.</summary>
-        /// <param name="e">The data for the event.</param>
-        protected virtual void OnCreateWindow2(GeckoCreateWindow2EventArgs e)
-        {
-            var evnt = (EventHandler<GeckoCreateWindow2EventArgs>) Events[CreateWindow2Event];
-            if (evnt != null) evnt(this, e);
-        }
-
-        #endregion
 
         #region public event GeckoWindowSetBoundsEventHandler WindowSetBounds
 
@@ -1577,19 +1559,16 @@ namespace Gecko
         private GeckoWebBrowser _webBrowser;
 
         public readonly GeckoWindowFlags Flags;
-        public readonly String Uri;
 
         public int InitialWidth = (int) nsIAppShellServiceConsts.SIZE_TO_CONTENT;
         public int InitialHeight = (int) nsIAppShellServiceConsts.SIZE_TO_CONTENT;
 
         /// <summary>Creates a new instance of a <see cref="GeckoCreateWindowEventArgs"/> object.</summary>
         /// <param name="flags"></param>
-        /// <param name="uri"></param>
-        public GeckoCreateWindowEventArgs(GeckoWindowFlags flags, String uri)
+        public GeckoCreateWindowEventArgs(GeckoWindowFlags flags)
             : base(false)
         {
             Flags = flags;
-            Uri = uri;
         }
 
         /// <summary>
@@ -1599,24 +1578,6 @@ namespace Gecko
         {
             get { return _webBrowser; }
             set { _webBrowser = value; }
-        }
-    }
-
-    #endregion
-
-    #region GeckoCreateWindow2EventArgs
-
-    // TODO Merged into GeckoCreateWindowEventArgs, remove GeckoCreateWindow2EventArgs in future
-    /// <summary>Provides data for event.</summary>
-    public class GeckoCreateWindow2EventArgs
-        : GeckoCreateWindowEventArgs
-    {
-        /// <summary>Creates a new instance of a <see cref="GeckoCreateWindowEventArgs"/> object.</summary>
-        /// <param name="flags"></param>
-        /// <param name="uri"></param>
-        public GeckoCreateWindow2EventArgs(GeckoWindowFlags flags, String uri)
-            : base(flags, uri)
-        {
         }
     }
 

@@ -186,7 +186,7 @@ namespace GeckoFxTest
 			DisplayElements(g);
 		}
 
-		protected GeckoWebBrowser AddTab()
+		protected GeckoWebBrowser AddTab(bool IsWindow = false)
 		{
 			var tabPage = new TabPage();
 			tabPage.Text = "blank";
@@ -205,13 +205,16 @@ namespace GeckoFxTest
 		    browser.DomInput += (sender, args) => MessageBox.Show(String.Format("User modified element {0}", (args.Target.CastToGeckoElement() as GeckoHtmlElement).OuterHtml));		    
 
 			AddToolbarAndBrowserToTab(tabPage, browser);
-
 			m_tabControl.TabPages.Add(tabPage);
-			tabPage.Show();
-			m_tabControl.SelectedTab = tabPage;
+
+			if (!IsWindow)
+			{
+				tabPage.Show();
+				m_tabControl.SelectedTab = tabPage;
+			}
 
 			// Uncomment this to stop links from navigating.
-			browser.DomClick += StopLinksNavigating;
+			// browser.DomClick += StopLinksNavigating;
 
 			// Demo use of ReadyStateChange.
 			// For some special page, e.g. about:config browser.Document is null.
@@ -221,30 +224,25 @@ namespace GeckoFxTest
 
 			browser.EnableDefaultFullscreen();
 
-			// Popup window management.
 			browser.CreateWindow += (s, e) =>
 			{
-				// A naive popup blocker, demonstrating popup cancelling.
-				Console.WriteLine("A popup is trying to show: " + e.Uri);
-				if (e.Uri.StartsWith("http://annoying-site.com"))
-				{
-					e.Cancel = true;
-					Console.WriteLine("A popup is blocked: " + e.Uri);
-					return;
-				}
 
 				// For <a target="_blank"> and window.open() without specs(3rd param),
 				// e.Flags == GeckoWindowFlags.All, and we load it in a new tab;
 				// otherwise, load it in a popup window, which is maximized by default.
 				// This simulates firefox's behavior.
 				if (e.Flags == GeckoWindowFlags.All)
-					e.WebBrowser = AddTab();
+					e.WebBrowser = AddTab(true);
 				else
 				{
 					var wa = System.Windows.Forms.Screen.GetWorkingArea(this);
 					e.InitialWidth = wa.Width;
 					e.InitialHeight = wa.Height;
 				}
+
+				// UKAC - ContextFlag 1 for new window (arbitrary user value)
+				e.WebBrowser.SetContextFlagsAttribute(1);
+
 			};
 
 			return browser;
@@ -361,6 +359,23 @@ namespace GeckoFxTest
 			browser.Navigating += (s, e) =>
 			{
 				Console.WriteLine("Navigating: url: " + e.Uri + ", top: " + e.DomWindowTopLevel);
+
+				// ContextFlagAttribute is arbitrary value	
+				if (browser.GetContextFlagsAttribute() == 1)
+				{
+					// UKAC - basic popup blocker after CreateWindow
+					if (MessageBox.Show($"Block popup from: {e.Uri}?","Popup Blocker", MessageBoxButtons.YesNo) == DialogResult.Yes)
+					{
+						e.Cancel = true;
+						m_tabControl.TabPages.Remove(tabPage);
+						return;
+					}
+					else
+					{
+						tabPage.Show();
+						m_tabControl.SelectedTab = tabPage;
+					}
+				}
 			};
 			browser.Navigated += (s, e) =>
 			{

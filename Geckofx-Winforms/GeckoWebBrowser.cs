@@ -101,6 +101,9 @@ namespace Gecko
         private nsICommandParams CommandParams;
 
         private uint ChromeFlags;
+
+        // UKAC - implemented ContextFlags for general use
+        private uint ContextFlags;
         private bool m_javascriptDebuggingEnabled;
 
         private GeckoWindow _Window;
@@ -210,14 +213,9 @@ namespace Gecko
                 // calling this method simply invokes the static ctor
             }
 
-            private nsIWebBrowserChrome DoCreateChromeWindow(nsIWebBrowserChrome parent, uint chromeFlags,
-                uint contextFlags, nsIURI uri, ref bool cancel)
+
+            private nsIWebBrowserChrome DoCreateChromeWindow(nsIWebBrowserChrome parent, uint chromeFlags, ref bool cancel)
             {
-                var url = "";
-                if (uri != null)
-                    url = (nsString.Get(uri.GetSpecAttribute)).ToString();
-                else
-                    url = "about:blank";
 
                 // for chrome windows, we can use the AppShellService to create the window using some built-in xulrunner code
                 GeckoWindowFlags flags = (GeckoWindowFlags) chromeFlags;
@@ -251,9 +249,7 @@ namespace Gecko
                 GeckoWebBrowser browser = parent as GeckoWebBrowser;
                 if (browser != null)
                 {
-                    var e = new GeckoCreateWindow2EventArgs(flags, url);
-                    if (uri != null) // called by CreateChromeWindow2()
-                        browser.OnCreateWindow2(e);
+                    var e = new GeckoCreateWindowEventArgs(flags);
                     browser.OnCreateWindow(e);
 
                     if (e.Cancel)
@@ -279,7 +275,7 @@ namespace Gecko
             public nsIWebBrowserChrome CreateChromeWindow(nsIWebBrowserChrome parent, uint chromeFlags)
             {
                 bool cancel = false;
-                return DoCreateChromeWindow(parent, chromeFlags, 0, null, ref cancel);
+                return DoCreateChromeWindow(parent, chromeFlags, ref cancel);
             }
             
 
@@ -291,7 +287,7 @@ namespace Gecko
             public nsIWebBrowserChrome CreateChromeWindow2(nsIWebBrowserChrome parent, uint chromeFlags, nsITabParent aOpeningTab,
                 mozIDOMWindowProxy aOpener, ulong aNextTabParentId, ref bool cancel)
             {
-                return DoCreateChromeWindow(parent, chromeFlags, 0, null, ref cancel);
+                return DoCreateChromeWindow(parent, chromeFlags,  ref cancel);
             }
         }
 
