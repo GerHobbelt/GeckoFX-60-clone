@@ -915,7 +915,7 @@ setTimeout(function(){
         /// UKAC unit test for CreateWindow
         /// </summary>        
         [Test]
-        public void CreateWindow_OnloadEventCallsWindowOpenToCheckCreateWindowSuccess_ShouldReturnWindowObject()
+        public void CreateWindow_OnloadCallsWindowOpenToCheckCreateWindowSuccess_ShouldReturnWindowObject()
         {
             _browser.CreateWindow += (m, e) =>
             {
@@ -927,5 +927,29 @@ setTimeout(function(){
             _browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
             Assert.AreEqual("[object Window]", _browser.Window.Name);
         }
-    }
+
+		/// <summary>
+		/// UKAC unit test for SetWindowBounds
+		/// </summary>
+		[Test]
+		public void SetWindowBounds_OnloadCallsWindowOpenToCheckWindowBounds_ShouldBeSame()
+		{
+			_browser.CreateWindow += (m, e) =>
+			{
+				e.WebBrowser = new GeckoWebBrowser();
+				e.WebBrowser.WindowSetBounds += (s, v) =>
+				{
+					//e.WebBrowser.FindForm().Bounds = v.Bounds;
+					Assert.AreEqual(254, v.Bounds.Top, "Bounds.Top");
+					Assert.AreEqual(254, v.Bounds.Left, "Bounds.Left");
+				};
+				var h = e.WebBrowser.Handle;
+			};
+
+			_browser.LoadHtml("<body onload=\"name=window.open('about:blank','test','top=254,left=254,width=400,height=300')\"></body>");
+			_browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+		}
+
+
+	}
 }

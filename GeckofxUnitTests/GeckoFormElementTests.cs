@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gecko.DOM;
+﻿using Gecko.DOM;
 using GeckofxUnitTests.dom;
 using NUnit.Framework;
 
@@ -22,5 +17,17 @@ namespace GeckofxUnitTests
 
             Assert.AreEqual("file:///action_page.php", formElement.Action);
         }
-    }
+
+		[Test]
+		public void AccessProperty_AccessingPropertyThatIsNotDefined_ShouldNotCauseError()
+		{
+			_browser.LoadHtml("<html><body><form id=f><input id=i></form></body></html>");
+			_browser.NavigateFinishedNotifier.BlockUntilNavigationFinished();
+
+			((Gecko.GeckoHtmlElement)_browser.Document.GetElementById("i")).Focus();
+
+			var actElem = (GeckoInputElement)_browser.Document.ActiveElement;
+			Assert.AreEqual(actElem.Form.Action, "file:///");
+		}
+	}
 }
