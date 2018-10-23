@@ -67,20 +67,22 @@ namespace Gecko.DOM
         }
     }
 
+
+    /// <summary>
+    /// Regrettable, since the upgrade from geckofx45 -> geckofx60, the generated values for this enum are not longer avaliable.
+    /// </summary>
     public enum XPathResultType
         : ushort
     {
-#if PORTFF60
-        Any = nsIDOMXPathResultConsts.ANY_TYPE,
-        Number = nsIDOMXPathResultConsts.NUMBER_TYPE,
-        String = nsIDOMXPathResultConsts.STRING_TYPE,
-        Boolean = nsIDOMXPathResultConsts.BOOLEAN_TYPE,
-        UnorderedNodeIterator = nsIDOMXPathResultConsts.UNORDERED_NODE_ITERATOR_TYPE,
-        OrderedNodeIterator = nsIDOMXPathResultConsts.ORDERED_NODE_ITERATOR_TYPE,
-        UnorderedNodeSnapshot = nsIDOMXPathResultConsts.UNORDERED_NODE_SNAPSHOT_TYPE,
-        OrderedNodeSnapshot = nsIDOMXPathResultConsts.ORDERED_NODE_SNAPSHOT_TYPE,
-        AnyUnorderedNode = nsIDOMXPathResultConsts.ANY_UNORDERED_NODE_TYPE,
-        FirstOrderedNode = nsIDOMXPathResultConsts.FIRST_ORDERED_NODE_TYPE,
-#endif
+        Any = 0,
+        Number = 1,
+        String = 2,
+        Boolean = 3,
+        UnorderedNodeIterator = 4,
+        OrderedNodeIterator = 5,
+        UnorderedNodeSnapshot = 6,
+        OrderedNodeSnapshot = 7,
+        AnyUnorderedNode = 8,
+        FirstOrderedNode = 9,
     }
 }
