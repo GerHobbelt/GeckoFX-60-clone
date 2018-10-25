@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.14 ==
+
+1. Port XPathResultType
+2. Improvements to CreateWindow event handling.
+
 == v60.0-0.13 ==
 
 This build is an Alpha version.
