@@ -14,7 +14,7 @@ namespace GeckofxUnitTests
 	{
 		public static string XulRunnerLocation 
 		{
-			get { return XULRunnerLocator.GetXULRunnerLocation(XULRunnerLocator.GeckoHintPath("0.5.0")); }
+			get { return XULRunnerLocator.GetXULRunnerLocation(XULRunnerLocator.GeckoHintPath("0.6.0")); }
 		}
 
 		[SetUp]

@@ -28,7 +28,7 @@ namespace GeckoFxTest
 			// PromptFactory.PromptServiceCreator = () => new MyPromptService();
 			// Gecko.PromptService already implements those interfaces, and may be sub-classed.
 
-			string xulrunnerPath = XULRunnerLocator.GetXULRunnerLocation(XULRunnerLocator.GeckoHintPath("0.5.0"));
+			string xulrunnerPath = XULRunnerLocator.GetXULRunnerLocation(XULRunnerLocator.GeckoHintPath("0.6.0"));
             // The Following line is useful to Tom Please don't delete
 		    // xulrunnerPath = @"C:\mozilla-release\obj-i686-pc-mingw32\dist\bin";
 #if GTK		
