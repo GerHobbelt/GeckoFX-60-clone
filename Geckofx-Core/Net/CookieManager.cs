@@ -32,7 +32,7 @@ namespace Gecko
         {
             throw new NotImplementedException("CookieExists requires specifying origin");
             var unused = JsVal.FromDouble(0);
-            return _cookieManager.Instance.CookieExists(cookie._cookie, unused, IntPtr.Zero, 0);
+            return _cookieManager.Instance.CookieExists(cookie._cookie, ref unused, IntPtr.Zero, 0);
         }
 
         public static int CountCookiesFromHost(string host)
@@ -46,7 +46,7 @@ namespace Gecko
             var unused = JsVal.FromDouble(0);
             return
                 new Collections.GeckoEnumerator<Cookie, nsICookie2>(
-                    _cookieManager.Instance.GetCookiesFromHost(new nsAUTF8String(host), unused, IntPtr.Zero, 0),
+                    _cookieManager.Instance.GetCookiesFromHost(new nsAUTF8String(host), ref unused, IntPtr.Zero, 0),
                     x => x != null ? new Cookie(x) : null);
         }
 
