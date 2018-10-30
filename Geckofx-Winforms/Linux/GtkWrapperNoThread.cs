@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using Gdk;
 using Gtk;
+using System.Runtime.InteropServices;
 
 namespace GtkDotNet
 {	
@@ -96,9 +97,13 @@ namespace GtkDotNet
 			get { return m_popupWindow; }	
 		}
 				
+
+		[DllImport("libgdk-3.so.0", EntryPoint = "gdk_pixbuf_get_from_window")]
+		public static extern IntPtr PixBufFromGdkWindow(IntPtr gdk, int x, int y, int width, int height);         
+
 		protected Gdk.Pixbuf GetPixbufOfWebBrowser(int width, int height)
-		{				
-			return Pixbuf.FromDrawable(BrowserWindow.GdkWindow, BrowserWindow.Colormap, 0, 0, 0, 0, width, height);			
+		{
+			return new Pixbuf(PixBufFromGdkWindow(BrowserWindow.GdkWindow.Handle, 0, 0, width, height));
 		}
 		
 		internal Bitmap GetBitmap(int width, int height)

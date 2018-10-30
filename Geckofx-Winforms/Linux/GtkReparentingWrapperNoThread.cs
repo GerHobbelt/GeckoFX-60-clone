@@ -20,10 +20,10 @@ namespace GtkDotNet
 		protected Gdk.Window m_gdkWrapperOfForm;
 		
 		#region XSetInputFocus
-		[DllImport("libgdk-x11-2.0.so.0")]
+		[DllImport("libgdk-3.so")]
 		internal static extern IntPtr gdk_x11_drawable_get_xid(IntPtr gdkDrawable);
 
-		[DllImport("libgdk-x11-2.0.so.0")]
+		[DllImport("libgdk-3.so")]
 		internal static extern IntPtr gdk_x11_display_get_xdisplay(IntPtr display);
 
 		public enum RevertTo
@@ -86,6 +86,9 @@ namespace GtkDotNet
 				m_popupWindow.QueueDraw();
 			}
 		}
+
+		[DllImport("libgdk-3.so.0", EntryPoint = "gdk_x11_window_foreign_new_for_display")]
+		public static extern IntPtr ForeignNewForDisplay(IntPtr display, IntPtr window);
 		
 		protected void EmbedWidgetIntoWinFormPanel()
 		{		
@@ -96,7 +99,9 @@ namespace GtkDotNet
                 return;
 
 			// Wraps the panel native (X) window handle in a GdkWrapper
-			m_gdkWrapperOfForm = Gdk.Window.ForeignNewForDisplay(Gdk.Display.Default, (uint)m_parent.Handle);
+
+			IntPtr gdkHandle = ForeignNewForDisplay(Gdk.Display.Default.Handle, m_parent.Handle);
+			m_gdkWrapperOfForm = new Gdk.Window(gdkHandle);
 			
 			System.Windows.Forms.Application.DoEvents();
 			ProcessPendingGtkEvents();
