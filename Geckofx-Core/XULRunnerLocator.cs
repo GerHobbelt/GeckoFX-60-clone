@@ -120,16 +120,17 @@ namespace Gecko
 			var arch = Xpcom.Is32Bit ? "32" : "64";
 			var platform = Xpcom.IsLinux ? "Linux" : "Windows";
 			var extraInfo = string.Join(".", new[] { arch, platform, version });
+			var folderName = Xpcom.Is32Bit ? "Firefox" : "Firefox64";
 
 			// ReSharper disable once AssignNullToNotNullAttribute
 			var dir = new DirectoryInfo(Path.GetDirectoryName(path));
 			do
 			{
 				dir = dir.Parent;
-				var fullPath = Path.Combine(dir.FullName, Path.Combine("packages", "Geckofx60." + extraInfo, "content", "Firefox"));
+				var fullPath = Path.Combine(dir.FullName, Path.Combine("packages", "Geckofx60." + extraInfo, "content", folderName));
 				if (Directory.Exists(fullPath))
 					return fullPath;
-				fullPath = Path.Combine(dir.FullName, Path.Combine("packages", "Geckofx60." + extraInfo.TrimEnd('0').TrimEnd('.'), "content", "Firefox"));
+				fullPath = Path.Combine(dir.FullName, Path.Combine("packages", "Geckofx60." + extraInfo.TrimEnd('0').TrimEnd('.'), "content", folderName));
 				if (Directory.Exists(fullPath))
 					return fullPath;
 			} while (dir.Parent != null);
