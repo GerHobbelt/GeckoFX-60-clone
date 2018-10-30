@@ -408,7 +408,7 @@ namespace Gecko
                 // However with geckofx on Linux we end up with two Compositors.
                 // So we end up with a ClientLayerManager with an uninitalzied mTransactionIdAllocator
                 // which causes segfault on Paint.
-                GeckoPreferences.User["layers.offmainthreadcomposition.enabled"] = false;
+                GeckoPreferences.User["layers.offmainthreadcomposition.force-disabled"] = true;
             }
 
             // speclative content security pollicy crashes geckofx 60,
