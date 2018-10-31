@@ -133,7 +133,8 @@ namespace Gecko
         
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
             EntryPoint = "NS_GetPrivateRoot")]
-        public static extern nsIDOMEventTarget GetPrivateRoot(nsISupports supports);
+        [return: MarshalAs(UnmanagedType.Interface)]
+        public static extern nsIDOMEventTarget GetPrivateRoot([MarshalAs(UnmanagedType.Interface)]nsISupports supports);
 
         [DllImport("xul", CallingConvention = CallingConvention.Cdecl, ExactSpelling = false,
             EntryPoint = "XRE_GetBootstrap")]
