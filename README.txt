@@ -2,6 +2,12 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.15 ==
+
+1. Fix 64bit problems when working is jsvals
+2. Implement DomHtmlcollection length property.
+3. Linux: General porting work and upgrade to gtk3 (ff59+ no longer supports gtk2)
+
 == v60.0-0.14 ==
 
 1. Port XPathResultType
