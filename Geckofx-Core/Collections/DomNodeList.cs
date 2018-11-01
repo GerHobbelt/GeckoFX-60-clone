@@ -72,22 +72,16 @@ namespace Gecko.Collections
             _translator = translator;
         }
 
-        public uint Length
-        {
-            get {/* return (int) _collection.GetLengthAttribute();*/ throw new NotImplementedException(); }
-        }
+        public uint Length => _collection.GetLengthAttribute();
 
         public TWrapper this[uint index]
         {
             get
             {
-                //var item = _collection.Item((uint) index);
-                //if (item is TGeckoNode)
-                //{
-                //    return ((TGeckoNode) item).Wrap(_translator);
-                //}
-                //return null;
-                throw new NotImplementedException();
+
+                var item = _collection.Item(index);
+                var node = item as TGeckoNode;
+                return node?.Wrap(_window, _translator);
             }
         }
 

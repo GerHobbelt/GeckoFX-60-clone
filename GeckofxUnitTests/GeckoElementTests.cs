@@ -132,5 +132,17 @@ namespace GeckofxUnitTests
             var div = browser.Document.GetHtmlElementById("abc");
             Assert.AreEqual("123px", div.ComputedStyle.GetPropertyValue("height"));
         }
-	}
+
+	    [Test]
+	    public void GetElementsByTagName_ReturnsExpectedNumberOfElements()
+	    {
+	        browser.TestLoadHtml(@"<div><span>hi</span><span>world</span></div>");
+
+	        var elements = browser.Document.Body.GetElementsByTagName("span");
+            Assert.AreEqual(2, elements.Length);
+	        Assert.AreEqual("SPAN", elements[0].TagName);
+	        Assert.AreEqual("SPAN", elements[1].TagName);
+        }
+
+    }
 }
