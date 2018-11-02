@@ -49,6 +49,6 @@
    <file src="$firefoxdir$/*.ini" target="content/Firefox-Linux64" />
    <file src="$firefoxdir$/*.ja" target="content/Firefox-Linux64" />
    <file src="$firefoxdir$/plugin-*" target="content/Firefox-Linux64" />
-   <file src="Geckofx45.64.Linux.targets" target="build" />
+   <file src="Geckofx60.64.Linux.targets" target="build" />
   </files>
 </package>
