@@ -13,11 +13,11 @@
 	
 	Example Usage:
 
-	// set env var LD_LIBRARY_PATH to $(ProjectDir)/Firefox
-	// set env var LD_PRELOAD to $(ProjectDir)/Firefox/libgeckofix.so
+	// set env var LD_LIBRARY_PATH to $(ProjectDir)/Firefox-Linux64
+	// set env var LD_PRELOAD to $(ProjectDir)/Firefox-Linux64/libgeckofix.so
 	// add using Gecko
 	
-	[STAThread]
+        [STAThread]
         static void Main(string[] args)
         {
             Xpcom.Initialize("Firefox");
