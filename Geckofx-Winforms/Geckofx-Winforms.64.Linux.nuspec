@@ -44,7 +44,7 @@
    <file src="bin/Debug_Linux/*.dll" target="lib/net40" />
    <file src="bin/Debug_Linux/*.mdb" target="lib/net40" />
    <file src="bin/Debug_Linux/*.config" target="build" />
-   <file src="$firefoxdir$/*.so" target="content/Firefox-Linux64" />
+   <file src="$firefoxdir$/*.so*" target="content/Firefox-Linux64" />
    <file src="$firefoxdir$/*.chk" target="content/Firefox-Linux64" />
    <file src="$firefoxdir$/*.ini" target="content/Firefox-Linux64" />
    <file src="$firefoxdir$/*.ja" target="content/Firefox-Linux64" />
