@@ -21,7 +21,7 @@ namespace GtkDotNet
 		
 		#region XSetInputFocus
 		[DllImport("libgdk-3.so")]
-		internal static extern IntPtr gdk_x11_drawable_get_xid(IntPtr gdkDrawable);
+		internal static extern IntPtr gdk_x11_window_get_xid(IntPtr gdkDrawable);
 
 		[DllImport("libgdk-3.so")]
 		internal static extern IntPtr gdk_x11_display_get_xdisplay(IntPtr display);
@@ -164,7 +164,7 @@ namespace GtkDotNet
 			if (m_xDisplayPointer == IntPtr.Zero)
 				throw new ArgumentNullException("m_xDisplayPointer");
 			
-			IntPtr xWindow = gdk_x11_drawable_get_xid(m_popupWindow.GdkWindow.Handle);
+			IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.GdkWindow.Handle);
 			XSetInputFocus(m_xDisplayPointer, xWindow, RevertTo.Parent, IntPtr.Zero);
 		}
 		
@@ -181,7 +181,7 @@ namespace GtkDotNet
 			if (m_xDisplayPointer == IntPtr.Zero)
 				return false;
 						
-			IntPtr xWindow = gdk_x11_drawable_get_xid(m_popupWindow.GdkWindow.Handle);
+			IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.GdkWindow.Handle);
 			if (xWindow == IntPtr.Zero)
 				return false;
 						
