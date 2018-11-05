@@ -1259,7 +1259,7 @@
     <Compile Include="WebIDL\Generated\CommandEvent.cs" />
     <Compile Include="WebIDL\Generated\Comment.cs" />
     <Compile Include="WebIDL\Generated\CompositionEvent.cs" />
-    <Compile Include="WebIDL\Generated\console.cs" />
+    <Compile Include="WebIDL\Generated\Console.cs" />
     <Compile Include="WebIDL\Generated\ConsoleInstance.cs" />
     <Compile Include="WebIDL\Generated\ConstantSourceNode.cs" />
     <Compile Include="WebIDL\Generated\ContainerBoxObject.cs" />
