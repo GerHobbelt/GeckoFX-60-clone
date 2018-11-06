@@ -2,6 +2,10 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.16 ==
+
+1. Fix crash when tab removes focus from html control.
+
 == v60.0-0.15 ==
 
 1. Fix 64bit problems when working is jsvals
