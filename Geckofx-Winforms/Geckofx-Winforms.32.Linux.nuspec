@@ -11,6 +11,9 @@
     <summary>library that allows embeding gecko in C# applications.</summary>
     <description>library that allows embeding gecko in C# applications.
 	
+ Depends on Gtk3
+ ubuntu packages: libgtk-3-0, libgtk3.0-cil
+
 	Example Usage:
 
 	// set env var LD_LIBRARY_PATH to $(ProjectDir)/Firefox-Linux64
