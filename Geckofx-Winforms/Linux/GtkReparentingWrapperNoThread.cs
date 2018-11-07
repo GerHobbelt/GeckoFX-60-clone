@@ -20,10 +20,10 @@ namespace GtkDotNet
 		protected Gdk.Window m_gdkWrapperOfForm;
 		
 		#region XSetInputFocus
-		[DllImport("libgdk-3.so")]
+		[DllImport("libgdk-3-0.dll")]
 		internal static extern IntPtr gdk_x11_window_get_xid(IntPtr gdkDrawable);
 
-		[DllImport("libgdk-3.so")]
+		[DllImport("libgdk-3-0.dll")]
 		internal static extern IntPtr gdk_x11_display_get_xdisplay(IntPtr display);
 
 		public enum RevertTo
