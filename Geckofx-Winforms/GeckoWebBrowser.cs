@@ -1992,25 +1992,27 @@ namespace Gecko
         /// <param name="action"></param>
         /// <param name="useCapture"></param>
         /// <example>AddMessageEventListener("callMe", (message=>MessageBox.Show(message)));</example>
-        public void AddMessageEventListener(string eventName, Action<string> action, bool useCapture)
+        /// <returns>true if successful, otherwise false</returns>
+        public bool AddMessageEventListener(string eventName, Action<string> action, bool useCapture)
         {
+            if (Window?.DomWindow == null)
+                return false;
+
             var target = Xpcom.QueryInterface<nsIDOMEventTarget>(Window.DomWindow);
             if (target == null)
-            {
-                return;
-            }
+                return false;
+
             // the argc parameter is the number of optionial argumetns we are passing. 
             // (useCapture and wantsUntrusted are specified as optional so we always pass 2 when calling interface from C#)
             target.AddEventListener(new nsAString(eventName), this, /*Review*/ useCapture, true, 2);
 
+            var kvp = new KeyValuePair<Action<string>, bool>(action, useCapture);
             if (_messageEventListeners.ContainsKey(eventName))
-            {
-                _messageEventListeners[eventName] = new KeyValuePair<Action<string>, bool>(action, useCapture);
-            }
+                _messageEventListeners[eventName] = kvp;
             else
-            {
-                _messageEventListeners.Add(eventName, new KeyValuePair<Action<string>, bool>(action, useCapture));
-            }
+                _messageEventListeners.Add(eventName, kvp);
+
+            return true;
         }
 
         /// <summary>

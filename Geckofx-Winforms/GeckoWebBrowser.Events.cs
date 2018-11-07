@@ -1283,18 +1283,30 @@ namespace Gecko
             if (!ConsoleMessageEventReceivesConsoleLogCalls)
                 return;
 
-            // console.log JS calls aren't forwarded to the ConsoleListener
-            // so we override the console.log and route the log message automatically.
-            AddMessageEventListener("consoleMessageNotificationLog", value =>
+            EventHandler setup = (s,a) =>
             {
-                var e = new ConsoleMessageEventArgs(value);
-                OnConsoleMessage(e);
-            });
+                // console.log JS calls aren't forwarded to the ConsoleListener
+                // so we override the console.log and route the log message automatically.
+                AddMessageEventListener("consoleMessageNotificationLog", value =>
+                {
+                    var e = new ConsoleMessageEventArgs(value);
+                    OnConsoleMessage(e);
+                });
 
-            using (var context = new AutoJSContext(Window))
+                using (var context = new AutoJSContext(Window))
+                {
+                    context.EvaluateScript(
+                        "function consoleMessageNotificationLog(str) { var event = new MessageEvent('consoleMessageNotificationLog', { 'view' : window, 'bubbles' : true, 'cancelable' : false, 'data' : str});  document.dispatchEvent (event); };");
+                    context.EvaluateScript("console.log = consoleMessageNotificationLog");
+                }
+            };
+
+            if (IsHandleCreated)
+                setup(null, null);
+            else
             {
-                context.EvaluateScript("function consoleMessageNotificationLog(str) { var event = new MessageEvent('consoleMessageNotificationLog', { 'view' : window, 'bubbles' : true, 'cancelable' : false, 'data' : str});  document.dispatchEvent (event); };");
-                context.EvaluateScript("console.log = consoleMessageNotificationLog");
+                HandleCreated -= setup;
+                HandleCreated += setup;
             }
         }
 
