@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.17 ==
+
+1. change AddMessageEventListener sig to return bool to indicate success/failure.
+2. Linux changes.
+
 == v60.0-0.16 ==
 
 1. Fix crash when tab removes focus from html control.
