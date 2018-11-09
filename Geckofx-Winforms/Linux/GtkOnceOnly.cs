@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+#if GTK
 using Gdk;
 
-#if GTK
 namespace GtkDotNet
 {
 	public static class GtkOnceOnly
