@@ -165,6 +165,9 @@
     <Compile Include="Utils\WindowsImageCreator.cs" />
     <Compile Include="Interop\GeckoWebBrowserWeakRef.cs" />
     <Compile Include="Linux\GtkReparentingWrapperNoThread.cs" />
+    <None Include="Geckofx-Winforms.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dialogs\ChromeDialog.resx">

@@ -82,7 +82,7 @@ namespace GtkDotNet
             }
         }
 
-		[DllImport("libgdk-3.so.0", EntryPoint = "gdk_x11_window_foreign_new_for_display")]
+        [DllImport("libgdk-3-0.dll", EntryPoint = "gdk_x11_window_foreign_new_for_display")]
 		public static extern IntPtr ForeignNewForDisplay(IntPtr display, IntPtr window);
 		
         protected void EmbedWidgetIntoWinFormPanel()
