@@ -29,7 +29,17 @@ namespace Gecko
             if (exception != IntPtr.Zero)
             {
                 var exceptionJsVal = JsVal.FromPtr(exception);
-                var st = GetStackTrace(cx, jsObject, exceptionJsVal);
+
+                string st = string.Empty;
+                try
+                {
+                    st = GetStackTrace(cx, jsObject, exceptionJsVal);
+                }
+                catch
+                {
+                    // ignored
+                    // we failed to get stack trace info, but still want to continue reporting exception.
+                }
                 var msg = exceptionJsVal.ToString();
                 msg += st;
                 throw new GeckoException($"Calling function '{name}' failed: '{msg}'");
