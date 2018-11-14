@@ -1014,9 +1014,24 @@ namespace Gecko
                 if (_Window != null)
                 {
                     var window = Browser.GetContentDOMWindowAttribute();
-                    if (_Window.DomWindow == window)
-                        return _Window;
-                    _Window.Dispose();
+                    try
+                    {
+                        if (_Window.DomWindow == window)
+                            return _Window;
+                    }
+                    catch(InvalidComObjectException)
+                    { 
+                        // ignored                       
+                    }
+
+                    try
+                    {
+                        _Window.Dispose();
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
                 _Window = Browser.GetContentDOMWindowAttribute().Wrap(Browser.GetContentDOMWindowAttribute(), (x,y) => new GeckoWindow(y));
                 return _Window;
@@ -1048,10 +1063,7 @@ namespace Gecko
             }
         }
 
-        public GeckoDocument Document
-        {
-            get { return DomDocument as GeckoDocument; }
-        }
+        public GeckoDocument Document => DomDocument as GeckoDocument;
 
         /// <summary>
         /// NullOp on windows.

@@ -56,10 +56,7 @@ namespace Gecko.Interop
             _instance = null;
         }
 
-        public T Instance
-        {
-            get { return _instance; }
-        }
+        public T Instance => _instance;
 
         #region Equality
 
