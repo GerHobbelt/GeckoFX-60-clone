@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.19 ==
+
+1. https://bitbucket.org/geckofx/geckofx-60.0/issues/23/using-geckofx-in-a-ntlm-sso-environment
+2. Fix stale RCW exception when accessing GeckoWebBrowser::Window property.
+
 == v60.0-0.18 ==
 
 1. Handle exceptions in HandleInvokeFailure better.
