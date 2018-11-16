@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using Gecko.Interop;
 
 namespace Gecko.DOM
@@ -49,9 +50,14 @@ namespace Gecko.DOM
         public void RemoveEventListener(string type, nsIDOMEventListener listener, bool useCapture)
         {
             using (var nType = new nsAString(type))
-            {
-                _target.Instance.RemoveEventListener(nType, listener, useCapture);
-            }
+                try
+                {
+                    _target.Instance.RemoveEventListener(nType, listener, useCapture);
+                }
+                catch(InvalidComObjectException)
+                {
+                    // Ignore
+                }
         }
 
         /// <summary>
