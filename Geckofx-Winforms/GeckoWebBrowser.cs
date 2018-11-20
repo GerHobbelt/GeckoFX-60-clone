@@ -128,14 +128,28 @@ namespace Gecko
 #if GTK
             if (Xpcom.IsMono)
             {
+		var xposString = Environment.GetEnvironmentVariable("GECKOFX_POPUPXPOS") ?? "50000";
+		var yposString = Environment.GetEnvironmentVariable("GECKOFX_POPUPYPOS") ?? "50000";
+		var widthString = Environment.GetEnvironmentVariable("GECKOFX_POPUPWIDTH") ?? "5";
+		var heightString = Environment.GetEnvironmentVariable("GECKOFX_POPUPHEIGHT") ?? "5";
+		var hidePopupWindow = Environment.GetEnvironmentVariable("GECKOFX_HIDEPOPUPWINDOW") != null;
+		int xpos = 50000;
+		int ypos = 50000;
+		int width = 5;
+		int height = 5;
+		Int32.TryParse(xposString, out xpos);
+		Int32.TryParse(yposString, out ypos);
+		Int32.TryParse(widthString, out width);
+		Int32.TryParse(heightString, out height);
+
                 GtkDotNet.GtkOnceOnly.Init();
                 var topLevelWindow = new Gtk.Window(Gtk.WindowType.Toplevel);
                 topLevelWindow.Decorated = false;
                 topLevelWindow.CanFocus = true;
                 topLevelWindow.TypeHint = Gdk.WindowTypeHint.PopupMenu;
-                topLevelWindow.SetSizeRequest(5, 5);
-                topLevelWindow.Move(50000, 50000);
-                topLevelWindow.Visible = false;
+                topLevelWindow.SetSizeRequest(width, height);
+                topLevelWindow.Move(xpos, ypos);
+                topLevelWindow.Visible = hidePopupWindow ? false : true;
 
                 if (Gecko.GeckoWebBrowser.GtkDontUseSetInputFocus)
                     m_wrapper = new GtkDotNet.GtkKeyboardAwareReparentingWrapperNoThread(topLevelWindow, this);

@@ -42,6 +42,8 @@ namespace GtkDotNet
         IntPtr m_xDisplayPointer;
 
         bool _filterAdded;
+
+        Gdk.Window _originalParent = null;
         #endregion
         
         /// <summary>
@@ -83,7 +85,7 @@ namespace GtkDotNet
         }
 
         [DllImport("libgdk-3-0.dll", EntryPoint = "gdk_x11_window_foreign_new_for_display")]
-		public static extern IntPtr ForeignNewForDisplay(IntPtr display, IntPtr window);
+        public static extern IntPtr ForeignNewForDisplay(IntPtr display, IntPtr window);
 		
         protected void EmbedWidgetIntoWinFormPanel()
         {       
@@ -102,6 +104,7 @@ namespace GtkDotNet
             ProcessPendingGtkEvents();
 
             // embed m_popupWindow into winform (m_parent)
+            _originalParent = m_popupWindow.GdkWindow.Parent;
             m_popupWindow.GdkWindow.Reparent(m_gdkWrapperOfForm, 0, 0);
             ProcessPendingGtkEvents();
             
@@ -130,8 +133,9 @@ namespace GtkDotNet
         
         protected override void Cleanup()
         {
-            if (m_gdkWrapperOfForm != null)
-                m_gdkWrapperOfForm.Reparent(m_popupWindow.GdkWindow, 0, 0);
+            m_popupWindow.GdkWindow.Reparent(_originalParent, 0, 0);
+            ProcessPendingGtkEvents();
+
             if (m_popupWindow.GdkWindow != null)
             {
                 if (_filterAdded)
