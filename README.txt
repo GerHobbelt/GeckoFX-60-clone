@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.21 ==
+
+1. Linux: Fix geckofx opening as black windows on some window managers.
+2. update firefox files dep nuget package to version 0.8.0 (this provides a icuoverrides.txt feature)
+
 == v60.0-0.20 ==
 
 1. Another Fix stale RCW exception when accessing GeckoWebBrowser::Window property.
