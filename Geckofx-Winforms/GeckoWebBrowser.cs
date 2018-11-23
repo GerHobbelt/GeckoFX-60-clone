@@ -1066,11 +1066,27 @@ namespace Gecko
 
                 if (_Document != null)
                 {
-                    if (_Document.NativeDomDocument == domDocument.Instance)
-                        return _Document;
-                    // In some situations when ajax is used dom document wrapper is 1 per page,
-                    // therefore we have to create a new one.
-                    _Document.Dispose();
+                    try
+                    {
+                        if (_Document.NativeDomDocument == domDocument.Instance)
+                            return _Document;
+                    }
+                    catch (InvalidComObjectException)
+                    {
+                        // Ignored
+                    }
+
+                    try
+                    {
+                        // In some situations when ajax is used dom document wrapper is 1 per page,
+                        // therefore we have to create a new one.
+                        _Document.Dispose();
+                    }
+                    catch
+                    {
+                        // Ignored
+                    }
+
                 }
                 _Document = GeckoDomDocument.CreateDomDocumentWraper((mozIDOMWindowProxy)Window.DomWindow, domDocument.Instance);
                 return _Document;
