@@ -1926,7 +1926,7 @@ namespace Gecko
             // REVIEW: PORTFF60 - nsIDOMMessageEvent/DomMessageEventArgs type no longer exists so we have to check every event. - is this a performance problem?
             KeyValuePair<Action<string>, bool> pair;
             if ( _messageEventListeners.TryGetValue(e.Type, out pair))
-                pair.Key.Invoke((string)new WebIDL.MessageEvent((mozIDOMWindowProxy)Window.DomWindow, (nsISupports)e.DomEvent).Data);
+                pair.Key.Invoke((string)new WebIDL.MessageEvent((mozIDOMWindowProxy)Window.DomWindow, (nsISupports)e.DomEvent).GetProperty<object>("data", true));
 
             if (e.Cancelable && e.Handled)
                 e.PreventDefault();

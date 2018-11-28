@@ -40,11 +40,26 @@ namespace Gecko.WebIDL
             _thisObject = thisObject;
         }
 
+        /// <summary>
+        /// Throws GeckoException if property doesn't exist.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
         public T GetProperty<T>(string propertyName)
+        {
+            return GetProperty<T>(propertyName, false);
+        }
+
+        public T GetProperty<T>(string propertyName, bool checkIfExists)
         {
             using (var context = new AutoJSContext(_globalWindowProxy))
             using (var jsObject = context.ConvertCOMObjectToJSObject(_thisObject, true))
             {
+                if (checkIfExists)
+                    if (!SpiderMonkey.JS_HasProperty(context.ContextPointer, jsObject.JSObject, propertyName))
+                        return default(T);
+
                 var result = SpiderMonkey.JS_GetProperty(context.ContextPointer, jsObject.JSObject, propertyName);
                 if (result.IsUndefined)
                     throw new GeckoException(String.Format("Property '{0}' of type '{1}' does not exist on object",

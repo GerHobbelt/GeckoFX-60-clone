@@ -199,9 +199,7 @@ namespace Gecko
             JS_HasProperty(cx, ref jsObject, name, out hasProperty);
             return hasProperty;
         }
-
-      
-
+     
         public static IntPtr JS_GetPendingException(IntPtr cx)
         {
             var mutableHandle = new MutableHandle();
