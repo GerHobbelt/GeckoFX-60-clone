@@ -2,6 +2,12 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.23 ==
+
+1. Supports icuoverrides.txt CSV (codepoint,lang)
+2. Fix some InvalidComObjectException, due to stale RCW's
+3. Fix exception when AddMessageListener is used on 'system' events. (eg. 'resize')
+
 == v60.0-0.21 ==
 
 1. Linux: Fix geckofx opening as black windows on some window managers.
