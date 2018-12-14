@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Gecko.DOM;
 using Gecko.WebIDL;
 
@@ -42,9 +43,26 @@ namespace Gecko
         /// <summary>
         /// Gets the HTML body element.
         /// </summary>
-        public GeckoHtmlElement Body => (_domHtmlDocument == null)
-            ? null
-            : GeckoHtmlElement.Create<GeckoHtmlElement>(Window, new Document((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument).Body);
+        public GeckoHtmlElement Body
+        {
+            get
+            {
+                try
+                {
+                    return (_domHtmlDocument == null)
+                        ? null
+                        : GeckoHtmlElement.Create<GeckoHtmlElement>(Window,
+                            new Document((mozIDOMWindowProxy)Window, (nsISupports)_domHtmlDocument).Body);
+                }
+                catch (InvalidComObjectException e)
+                {
+                    // seen this when Window is casted to nsISupport.
+                    // Not sure what causes this.
+                    return null;
+                }
+                
+            }
+        }
 
         /// <summary>
         /// Represents a collection of style sheets in a <see cref="GeckoDocument"/>.
