@@ -2,6 +2,10 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.24 ==
+
+1. Fix InvalidComObjectException, due to stale RCW's
+
 == v60.0-0.23 ==
 
 1. Supports icuoverrides.txt CSV (codepoint,lang)
