@@ -2,6 +2,10 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.25 ==
+
+1. Add Xpcom.GCFreesRCWsByDefault property.
+
 == v60.0-0.24 ==
 
 1. Fix InvalidComObjectException, due to stale RCW's
