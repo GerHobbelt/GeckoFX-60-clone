@@ -187,7 +187,6 @@ namespace Gecko
             _isMono = Type.GetType("Mono.Runtime") != null;
             _is64Bit = IntPtr.Size == 8;
             _is32Bit = IntPtr.Size == 4;
-            EnableProfileMonitoring = false;
         }
 
         #region Events
@@ -269,13 +268,21 @@ namespace Gecko
 
         internal static ChromeContext ChromeContext { get; private set; }
 
-        public static bool EnableProfileMonitoring { get; set; }
+        public static bool EnableProfileMonitoring { get; set; } = false;
+
+        /// <summary>
+        /// If this is set to true, default to allowing the GC to free RCWs, rather than doing it explicitly.
+        /// This field defaults to false, however if you are getting InvalidComObjectException with message 
+        /// "COM object that has been separated from its underlying RCW cannot be used", then you could try 
+        /// setting it to true.
+        /// </summary>
+        public static bool GCFreesRCWsByDefault { get; set; } = false;
 
         public static nsIComponentManager ComponentManager;
         public static nsIComponentRegistrar ComponentRegistrar;
         public static nsIServiceManager ServiceManager;
 
-        #region Init & shudown
+        #region Init & shutdown
 
         /// <summary>
         /// Initializes XPCOM using the current directory as the XPCOM directory.

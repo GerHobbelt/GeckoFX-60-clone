@@ -20,20 +20,20 @@ namespace Gecko
 
         #region ctor & dtor
 
-        public GeckoWindow(mozIDOMWindowProxy window, bool ownRCW = true)
+        public GeckoWindow(mozIDOMWindowProxy window, bool? ownRCW = null)
         {
-            _domWindowProxy = new ComPtr<mozIDOMWindowProxy> (window, ownRCW);
+            _domWindowProxy = new ComPtr<mozIDOMWindowProxy> (window, ownRCW ?? !Xpcom.GCFreesRCWsByDefault);
             _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? (nsISupports)_domWindowProxy.Instance));
         }
 
-        public GeckoWindow(mozIDOMWindowProxy window, nsISupports innerWindow, bool ownRCW = true)
+        public GeckoWindow(mozIDOMWindowProxy window, nsISupports innerWindow, bool? ownRCW = null)
         {
-            _domWindowProxy = new ComPtr<mozIDOMWindowProxy> (window, ownRCW);
-            _innerWindow = new ComPtr<nsISupports>(innerWindow, ownRCW);
+            _domWindowProxy = new ComPtr<mozIDOMWindowProxy> (window, ownRCW ?? !Xpcom.GCFreesRCWsByDefault);
+            _innerWindow = new ComPtr<nsISupports>(innerWindow, ownRCW ?? !Xpcom.GCFreesRCWsByDefault);
             _window = new Lazy<Window>(() => new WebIDL.Window(_domWindowProxy.Instance, _innerWindow?.Instance ?? (nsISupports)_domWindowProxy.Instance));
         }
 
-        public GeckoWindow(mozIDOMWindowProxy window, mozIDOMWindow innerWindow, bool ownRCW = true) :
+        public GeckoWindow(mozIDOMWindowProxy window, mozIDOMWindow innerWindow, bool? ownRCW = null) :
             this(window, (nsISupports)innerWindow, ownRCW)
         {
         }
