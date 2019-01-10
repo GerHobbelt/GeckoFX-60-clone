@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.26 ==
+
+1. A bunch of memory related fixes. 
+Most important being a fix to prevent a double RCW Release in GeckoDomDocument DomDocument.
+
 == v60.0-0.25 ==
 
 1. Add Xpcom.GCFreesRCWsByDefault property.
