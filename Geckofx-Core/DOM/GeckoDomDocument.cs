@@ -193,7 +193,7 @@ namespace Gecko
         /// The window associated with this document.
         /// <see cref="http://www.whatwg.org/html/#dom-document-defaultview"/>
         /// </summary>
-        public GeckoWindow DefaultView => Doc.Value.DefaultView.Wrap(Window, (window, x) => new GeckoWindow(window, x));
+        public GeckoWindow DefaultView => Doc.Value.DefaultView.Wrap(Window, (window, x) => new GeckoWindow(window, x, false));
 
         /// <summary>
         /// <see cref="http://www.whatwg.org/html/#dom-document-characterset"/>

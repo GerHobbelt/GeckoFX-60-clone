@@ -75,7 +75,7 @@ namespace Gecko
         /// <summary>
         /// Gets the parent window of this one.
         /// </summary>
-        public GeckoWindow Parent => _window.Value.Parent.Wrap(x => new GeckoWindow(_domWindowProxy.Instance, x));
+        public GeckoWindow Parent => _window.Value.Parent.Wrap(x => new GeckoWindow(_domWindowProxy.Instance, x, false));
 
         public double ScrollX => _window.Value.ScrollX;
 
@@ -120,7 +120,7 @@ namespace Gecko
             {
                 return
                     _window.Value.Top.Wrap(_domWindowProxy.Instance,
-                        (global, inner) => new GeckoWindow(global, inner));
+                        (global, inner) => new GeckoWindow(global, inner, false));
             }
         }
 

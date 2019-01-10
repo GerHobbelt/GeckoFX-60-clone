@@ -94,7 +94,7 @@ namespace Gecko.DOM
             get
             {
                 var window = _frameElement.Value.ContentWindow;
-                return window == null ? null : new GeckoWindow((mozIDOMWindowProxy)_window, (nsISupports)window);
+                return window == null ? null : new GeckoWindow((mozIDOMWindowProxy)_window, (nsISupports)window, false);
             }
         }
     }

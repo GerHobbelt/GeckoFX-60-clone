@@ -81,7 +81,7 @@ namespace Gecko.DOM
             get
             {
                 var window = _htmlFrame.Value.ContentWindow;
-                return window == null ? null : new GeckoWindow(_window, (nsISupports)window);               
+                return window == null ? null : new GeckoWindow(_window, (nsISupports)window, false);               
             }
         }
     }

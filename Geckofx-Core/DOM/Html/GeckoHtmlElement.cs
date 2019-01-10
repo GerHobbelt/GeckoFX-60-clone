@@ -59,8 +59,7 @@ namespace Gecko
                 using (var element = new ComPtr<nsIDOMElement>(Xpcom.QueryInterface<nsIDOMElement>(this.DomObject)))
                 using (var defaultView = OwnerDocument.DefaultView)
                 {
-                    var window = new WebIDL.Window(defaultView.DomWindow,
-                        defaultView.DomWindow);
+                    var window = new WebIDL.Window(defaultView.DomWindow, defaultView.DomWindow);
                     style = window.GetComputedStyle(element.Instance);
                 }
                 return GeckoStyle.Create(Window, style);
