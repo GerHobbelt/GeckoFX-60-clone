@@ -1062,13 +1062,13 @@ namespace Gecko
             {
                 if (Browser == null)
                     return null;
-                var domDocument = new WebIDL.Window(Window.DomWindow, (nsISupports) Window.DomWindow).Document.AsComPtr();
+                var domDocument = new WebIDL.Window(Window.DomWindow, (nsISupports) Window.DomWindow).Document;
 
                 if (_Document != null)
                 {
                     try
                     {
-                        if (_Document.NativeDomDocument == domDocument.Instance)
+                        if (_Document.NativeDomDocument == domDocument)
                             return _Document;
                     }
                     catch (InvalidComObjectException)
@@ -1088,7 +1088,7 @@ namespace Gecko
                     }
 
                 }
-                _Document = GeckoDomDocument.CreateDomDocumentWraper((mozIDOMWindowProxy)Window.DomWindow, domDocument.Instance);
+                _Document = GeckoDomDocument.CreateDomDocumentWraper((mozIDOMWindowProxy)Window.DomWindow, domDocument);
                 return _Document;
             }
         }
