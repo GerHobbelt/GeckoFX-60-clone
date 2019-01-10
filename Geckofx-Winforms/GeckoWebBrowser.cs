@@ -1923,6 +1923,10 @@ namespace Gecko
                     break;
             }
 
+            // If disposed.
+            if (_messageEventListeners == null)
+                return;
+
             // REVIEW: PORTFF60 - nsIDOMMessageEvent/DomMessageEventArgs type no longer exists so we have to check every event. - is this a performance problem?
             KeyValuePair<Action<string>, bool> pair;
             if ( _messageEventListeners.TryGetValue(e.Type, out pair))
