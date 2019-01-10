@@ -1819,8 +1819,10 @@ namespace Gecko
             if (e == null) return;
 
             var domEventArg = DomEventArgs.Create(e);
-            domEventArg.Window = Browser.GetContentDOMWindowAttribute();
+            var comObj = Browser.GetContentDOMWindowAttribute();;
+            domEventArg.Window = comObj;
             OnHandleDomEvent(domEventArg);
+            Xpcom.FreeComObject(ref comObj);
         }
 
         protected virtual void OnHandleDomEvent(DomEventArgs e)
