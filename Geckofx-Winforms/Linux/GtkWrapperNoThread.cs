@@ -127,7 +127,7 @@ namespace GtkDotNet
 			}
 		}
 
-		internal void ProcessPendingGtkEvents()
+		public static void ProcessPendingGtkEvents()
 		{
 			try
 			{

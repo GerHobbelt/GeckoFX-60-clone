@@ -120,6 +120,10 @@ namespace Gecko
 
         #endregion
 
+#if GTK
+        Gtk.Window _topLevelWindow;
+#endif
+
         /// <summary>
         /// Initializes a new instance of <see cref="GeckoWebBrowser"/>.
         /// </summary>
@@ -128,33 +132,42 @@ namespace Gecko
 #if GTK
             if (Xpcom.IsMono)
             {
-		var xposString = Environment.GetEnvironmentVariable("GECKOFX_POPUPXPOS") ?? "50000";
-		var yposString = Environment.GetEnvironmentVariable("GECKOFX_POPUPYPOS") ?? "50000";
-		var widthString = Environment.GetEnvironmentVariable("GECKOFX_POPUPWIDTH") ?? "5";
-		var heightString = Environment.GetEnvironmentVariable("GECKOFX_POPUPHEIGHT") ?? "5";
-		var hidePopupWindow = Environment.GetEnvironmentVariable("GECKOFX_HIDEPOPUPWINDOW") != null;
-		int xpos = 50000;
-		int ypos = 50000;
-		int width = 5;
-		int height = 5;
-		Int32.TryParse(xposString, out xpos);
-		Int32.TryParse(yposString, out ypos);
-		Int32.TryParse(widthString, out width);
-		Int32.TryParse(heightString, out height);
+                var xposString = Environment.GetEnvironmentVariable("GECKOFX_POPUPXPOS") ?? "50000";
+                var yposString = Environment.GetEnvironmentVariable("GECKOFX_POPUPYPOS") ?? "50000";
+                var widthString = Environment.GetEnvironmentVariable("GECKOFX_POPUPWIDTH") ?? "5";
+                var heightString = Environment.GetEnvironmentVariable("GECKOFX_POPUPHEIGHT") ?? "5";
+                var hidePopupWindow = Environment.GetEnvironmentVariable("GECKOFX_HIDEPOPUPWINDOW") != null;
+                int xpos = 50000;
+                int ypos = 50000;
+                int width = 5;
+                int height = 5;
+                Int32.TryParse(xposString, out xpos);
+                Int32.TryParse(yposString, out ypos);
+                Int32.TryParse(widthString, out width);
+                Int32.TryParse(heightString, out height);
 
                 GtkDotNet.GtkOnceOnly.Init();
-                var topLevelWindow = new Gtk.Window(Gtk.WindowType.Toplevel);
-                topLevelWindow.Decorated = false;
-                topLevelWindow.CanFocus = true;
-                topLevelWindow.TypeHint = Gdk.WindowTypeHint.PopupMenu;
-                topLevelWindow.SetSizeRequest(width, height);
-                topLevelWindow.Move(xpos, ypos);
-                topLevelWindow.Visible = hidePopupWindow ? false : true;
+                _topLevelWindow = new Gtk.Window(Gtk.WindowType.Toplevel);
+                _topLevelWindow.Decorated = false;
+                _topLevelWindow.CanFocus = true;
+                var hintTypeString = Environment.GetEnvironmentVariable("GECKOFX_HINTTYPE") ?? "0";
+                int hintType = 0;
+                Int32.TryParse(hintTypeString, out hintType);
+                _topLevelWindow.TypeHint = (Gdk.WindowTypeHint)hintType;
+                _topLevelWindow.SkipPagerHint = true;
+                _topLevelWindow.SetSizeRequest(width, height);
+                _topLevelWindow.Move(xpos, ypos);
+                _topLevelWindow.Visible = hidePopupWindow ? false : true;
+
+                GtkDotNet.GtkWrapperNoThread.ProcessPendingGtkEvents();
+
+                // This *needs* to be last after ProcessPendingGtkEvents.
+                _topLevelWindow.SkipTaskbarHint = true;
 
                 if (Gecko.GeckoWebBrowser.GtkDontUseSetInputFocus)
-                    m_wrapper = new GtkDotNet.GtkKeyboardAwareReparentingWrapperNoThread(topLevelWindow, this);
+                    m_wrapper = new GtkDotNet.GtkKeyboardAwareReparentingWrapperNoThread(_topLevelWindow, this);
                 else
-                    m_wrapper = new GtkDotNet.GtkReparentingWrapperNoThread(topLevelWindow, this);
+                    m_wrapper = new GtkDotNet.GtkReparentingWrapperNoThread(_topLevelWindow, this);
             }
 #endif
             NavigateFinishedNotifier = new NavigateFinishedNotifier(this);

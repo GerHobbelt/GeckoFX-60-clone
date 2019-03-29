@@ -120,8 +120,6 @@ namespace Gecko
     			if (Xpcom.IsMono)
     			{
     				base.OnHandleCreated(e);
-    				if (m_wrapper != null)
-    					m_wrapper.Init();
     			}
 #endif
                 if (!this.DesignMode)
@@ -139,12 +137,27 @@ namespace Gecko
 
                     Browser.SetContainerWindowAttribute(this);
 #if GTK
-    				if (Xpcom.IsMono && m_wrapper != null)
-    					BaseWindow.InitWindow(m_wrapper.BrowserWindow.Handle, IntPtr.Zero, 0, 0, this.Width, this.Height);
-    				else
+                    var drawn = false;
+                    Gtk.DrawnHandler drawnHandler = null;
+                    drawnHandler = (object o, Gtk.DrawnArgs args) => 
+                    {
+                        _topLevelWindow.Drawn -= drawnHandler;
+                        drawn = true;
+                    };
+                    _topLevelWindow.Drawn += drawnHandler;
+
+                    if (Xpcom.IsMono && m_wrapper != null)
+                        BaseWindow.InitWindow(m_wrapper.BrowserWindow.Handle, IntPtr.Zero, 0, 0, this.Width, this.Height);
+                    else
 #endif
                     BaseWindow.InitWindow(this.Handle, IntPtr.Zero, 0, 0, this.Width, this.Height);
+#if GTK                                                                             
+                    if (m_wrapper != null)
+                        m_wrapper.Init();
 
+                    while (Gtk.Application.EventsPending() || !drawn)
+                        Gtk.Application.RunIteration(false);
+#endif
 
                     BaseWindow.Create();
 
