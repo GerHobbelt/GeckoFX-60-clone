@@ -155,8 +155,14 @@ namespace Gecko
                     if (m_wrapper != null)
                         m_wrapper.Init();
 
-                    while (Gtk.Application.EventsPending() || !drawn)
+                    // Only wait for a max of 300ms. (To prevent possiblty of a hang)
+                    DateTime d = DateTime.Now;
+                    while (Gtk.Application.EventsPending() && !drawn)
+                    {
                         Gtk.Application.RunIteration(false);
+                        if ((DateTime.Now - d).TotalMilliseconds > 300)
+                            break;
+                    }                    
 #endif
 
                     BaseWindow.Create();
