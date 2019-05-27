@@ -146,8 +146,12 @@ namespace Gecko
                     };
                     _topLevelWindow.Drawn += drawnHandler;
 
-                    if (Xpcom.IsMono && m_wrapper != null)
+                    if (Xpcom.IsMono)
+                    {
+                        if (m_wrapper == null)
+                            throw new InvalidOperationException("If GTK window is null we can't continue.");
                         BaseWindow.InitWindow(m_wrapper.BrowserWindow.Handle, IntPtr.Zero, 0, 0, this.Width, this.Height);
+                    }
                     else
 #endif
                     BaseWindow.InitWindow(this.Handle, IntPtr.Zero, 0, 0, this.Width, this.Height);
