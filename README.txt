@@ -2,7 +2,7 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
-== v60.0-0.28 ==
+== v60.0-0.29 ==
 
 Linux build. 
 
