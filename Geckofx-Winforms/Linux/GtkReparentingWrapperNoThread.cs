@@ -133,22 +133,22 @@ namespace GtkDotNet
         
         protected override void Cleanup()
         {
-            m_popupWindow.GdkWindow.Reparent(_originalParent, 0, 0);
+            m_popupWindow?.Window?.Reparent(_originalParent, 0, 0);
             ProcessPendingGtkEvents();
 
-            if (m_popupWindow.GdkWindow != null)
+            if (m_popupWindow?.Window != null)
             {
                 if (_filterAdded)
-                    m_popupWindow.GdkWindow.RemoveFilter(FilterFunc);
+                    m_popupWindow.Window.RemoveFilter(FilterFunc);
                 _filterAdded = false;
-                m_popupWindow.GdkWindow.Destroy();
+                m_popupWindow.Window.Destroy();
             }
             m_parent.HandleCreated -= HandleParentCreated;
             m_parent.Resize -= HandleParentResize;
 
             m_parent = null;
-            m_popupWindow.Destroy();
-            m_popupWindow.Dispose();
+            m_popupWindow?.Destroy();
+            m_popupWindow?.Dispose();
             m_popupWindow = null;
             m_xDisplayPointer = IntPtr.Zero;
 
