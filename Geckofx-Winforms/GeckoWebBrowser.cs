@@ -2037,6 +2037,11 @@ namespace Gecko
             if (true.Equals(GeckoPreferences.User["browser.chrome.toolbar_tips"]))
             {
                 ToolTip = new ToolTipWindow();
+
+                // Mono throws null ref when showing tooltip for window with null TopLevelControl prop.
+                if (this.TopLevelControl == null && Xpcom.IsMono)
+                    return;
+
                 ToolTip.Show(aTipText, this, new Point(aXCoords, aYCoords + 24));
             }
         }
