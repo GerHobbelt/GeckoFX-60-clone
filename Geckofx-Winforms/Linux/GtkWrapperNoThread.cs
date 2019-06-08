@@ -46,7 +46,9 @@ namespace GtkDotNet
 			try
 			{
 				Init();
-				ProcessPendingGtkEvents();
+				ProcessPendingGtkEvents(5);
+				m_popupWindow?.GdkWindow?.ProcessUpdates(true);
+
 			}
 			catch(ObjectDisposedException)
 			{
@@ -127,18 +129,22 @@ namespace GtkDotNet
 			}
 		}
 
-		public static void ProcessPendingGtkEvents()
+		public static void ProcessPendingGtkEvents(int max = 2048)
 		{
 			try
 			{
+				int counter = 0;
 				while (Gtk.Application.EventsPending()) {
 					Gtk.Application.RunIteration(false);
+				counter++;
+				if (counter > max)
+					break;
 				}
 			}catch(Exception e)
 			{
 				// Ignore any exceptions to improve stablity.
 				Debug.WriteLine(e);
-			}			
+			}		
 		}
 
 		protected void CreatePopWindowOffScreen()

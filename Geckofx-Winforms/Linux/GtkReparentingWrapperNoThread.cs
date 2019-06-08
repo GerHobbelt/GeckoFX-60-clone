@@ -18,6 +18,10 @@ namespace GtkDotNet
         /// Gdk wrapper created from m_parent handle.
         /// </summary>
         protected Gdk.Window m_gdkWrapperOfForm;
+
+        private bool _resizeHasHappened;
+
+        private System.Windows.Forms.Timer _refreshTimer;
         
         #region XSetInputFocus
 		[DllImport("libgdk-3-0.dll")]
@@ -39,6 +43,12 @@ namespace GtkDotNet
         [DllImport ("libX11")]
         public extern static int XGetInputFocus(IntPtr display, out IntPtr focus_return, out RevertTo revert_to_return);
 
+        [DllImport("libX11")]
+        public extern static int XResizeWindow(IntPtr display, IntPtr window, uint width, uint height);
+
+        [DllImport("libX11")]
+        public extern static int XFlush(IntPtr display);
+ 
         IntPtr m_xDisplayPointer;
 
         bool _filterAdded;
@@ -74,14 +84,37 @@ namespace GtkDotNet
         }
         
         void HandleParentResize(object sender, EventArgs e)
-        {               
-            m_parent.Invalidate(true);
+        {      
+            _refreshTimer?.Stop();
 
-            if (m_popupWindow != null)
+            if (_resizeHasHappened)
             {
-                m_popupWindow.SetSizeRequest(m_parent.Width, m_parent.Height);
-                m_popupWindow.QueueDraw();
+                IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.GdkWindow.Handle);
+                XResizeWindow(m_xDisplayPointer, xWindow, (uint)m_parent.Width, (uint)m_parent.Height);
+                return;
             }
+
+            // The general idea here is to delay the reparenting of the GTK window until after last Resize event.
+            _refreshTimer = new System.Windows.Forms.Timer();
+            var reparentDelayString = Environment.GetEnvironmentVariable("GECKOFX_REPARENTDELAY") ?? "5";
+            int reparentDelay = 5;
+            Int32.TryParse(reparentDelayString, out reparentDelay);
+            _refreshTimer.Interval = reparentDelay;
+            int counter = 0;
+            _refreshTimer.Tick += (a,b) =>
+            { 
+               // On a heavy loaded system these WM_TIMER messages will likely be delayed. (which is what we want)
+               // This is why we are doing N * 10 (instead of just making N 10 times larger)
+               counter++; 
+               if (counter == 10 && !_resizeHasHappened) 
+               { 
+                   m_popupWindow?.Resize(m_parent.Width, m_parent.Height); 
+                   _resizeHasHappened = true; 
+                 _refreshTimer.Stop();
+               }
+            };
+            if (!_resizeHasHappened)
+              _refreshTimer.Start();
         }
 
         [DllImport("libgdk-3-0.dll", EntryPoint = "gdk_x11_window_foreign_new_for_display")]
@@ -95,11 +128,13 @@ namespace GtkDotNet
             if (m_parent == null)
                 return;
 
+            if (!_resizeHasHappened)
+                return;
+
             // Wraps the panel native (X) window handle in a GdkWrapper
 
-			IntPtr gdkHandle = ForeignNewForDisplay(Gdk.Display.Default.Handle, m_parent.Handle);
-			m_gdkWrapperOfForm = new Gdk.Window(gdkHandle);
-            
+            IntPtr gdkHandle = ForeignNewForDisplay(Gdk.Display.Default.Handle, m_parent.Handle);
+            m_gdkWrapperOfForm = new Gdk.Window(gdkHandle);
             System.Windows.Forms.Application.DoEvents();
             ProcessPendingGtkEvents();
 
