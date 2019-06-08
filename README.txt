@@ -2,6 +2,12 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.30 ==
+
+Linux build. 
+
+1. Fix some black windows problems on 18.04 systems.
+
 == v60.0-0.29 ==
 
 Linux build. 
