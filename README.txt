@@ -2,6 +2,13 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.31 ==
+
+Linux build. 
+
+1. Only set Opacity if window is hidden.
+2. add pthread dep to libgeckofix.so
+
 == v60.0-0.30 ==
 
 Linux build. 
