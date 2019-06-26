@@ -82,8 +82,19 @@ namespace GtkDotNet
         {           
             System.Windows.Forms.Application.Idle += HandleSystemWindowsFormsApplicationIdle;
         }
-        
+
         void HandleParentResize(object sender, EventArgs e)
+        {
+            try
+            {
+                HandleParentResizeInternal(sender, e);
+            }
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
+            catch { }
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
+        }
+
+        void HandleParentResizeInternal(object sender, EventArgs e)
         {      
             _refreshTimer?.Stop();
 
