@@ -158,7 +158,7 @@ namespace Gecko
                 _topLevelWindow.SetSizeRequest(width, height);
                 _topLevelWindow.Move(xpos, ypos);
                 _topLevelWindow.Visible = hidePopupWindow ? false : true;
-                if (hidePopupWindow)
+                if (!hidePopupWindow)
                     _topLevelWindow.GdkWindow.Opacity = 0.0;
 
                 GtkDotNet.GtkWrapperNoThread.ProcessPendingGtkEvents();
