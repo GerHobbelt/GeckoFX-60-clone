@@ -44,9 +44,9 @@
 	</frameworkAssemblies>
   </metadata>
   <files>
-   <file src="bin/Debug_Linux/*.dll" target="lib/net40" />
-   <file src="bin/Debug_Linux/*.mdb" target="lib/net40" />
-   <file src="bin/Debug_Linux/*.config" target="build" />
+   <file src="bin/x86/Debug_Linux/*.dll" target="lib/net40" />
+   <file src="bin/x86/Debug_Linux/*.mdb" target="lib/net40" />
+   <file src="bin/x86/Debug_Linux/*.config" target="build" />
    <file src="$firefoxdir$/*.so*" target="content/Firefox-Linux32" />
    <file src="$firefoxdir$/*.chk" target="content/Firefox-Linux32" />
    <file src="$firefoxdir$/*.ini" target="content/Firefox-Linux32" />
