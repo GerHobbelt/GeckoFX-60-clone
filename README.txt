@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.33 ==
+
+Linux build.
+1. Fix use of gtk2 api when GtkDontUseSetInputFocus is set to true.
+
 == v60.0-0.32 ==
 
 Linux build. 
