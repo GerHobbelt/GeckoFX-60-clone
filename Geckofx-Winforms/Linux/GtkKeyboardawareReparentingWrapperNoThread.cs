@@ -30,10 +30,10 @@ namespace GtkDotNet
         protected Gdk.Window m_gdkWrapperOfForm;
 
         #region XSetInputFocus
-        [DllImport("libgdk-x11-2.0.so.0")]
-        internal static extern IntPtr gdk_x11_drawable_get_xid(IntPtr gdkDrawable);
+        [DllImport("libgdk-3-0.dll")]
+        internal static extern IntPtr gdk_x11_window_get_xid(IntPtr gdkDrawable);
 
-        [DllImport("libgdk-x11-2.0.so.0")]
+        [DllImport("libgdk-3-0.dll")]
         internal static extern IntPtr gdk_x11_display_get_xdisplay(IntPtr display);
 
         public enum RevertTo
@@ -272,7 +272,7 @@ namespace GtkDotNet
                     if (GtkOnceOnly.Filter.Active != null)
                     {
                         // These lines are important!
-                        keyEvent.window = gdk_x11_drawable_get_xid(GtkOnceOnly.Filter.Active.m_popupWindow.GdkWindow.Handle);
+                        keyEvent.window = gdk_x11_window_get_xid(GtkOnceOnly.Filter.Active.m_popupWindow.GdkWindow.Handle);
                         Marshal.StructureToPtr(keyEvent, xevent, true);
                     }
                 }
