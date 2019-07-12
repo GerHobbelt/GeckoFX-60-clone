@@ -11,43 +11,14 @@ namespace GtkDotNet
 {
     // A GtkReparentingWrapperNoThread implementation that doesn't use XSetInputFocus
     // (XSetInputFocus was breaking things badly on gnome 3)
-    public class GtkKeyboardAwareReparentingWrapperNoThread : GtkWrapperNoThread
+    public class GtkKeyboardAwareReparentingWrapperNoThread : GtkReparentingWrapperNoThreadBase
     {
-
         static GtkKeyboardAwareReparentingWrapperNoThread()
         {
             Gdk.Window.AddFilterForAll(FilterFunc);
         }
 
-        /// <summary>
-        /// The Winform control that m_popupWindow is reparented into.
-        /// </summary>
-        protected Control m_parent;
-
-        /// <summary>
-        /// Gdk wrapper created from m_parent handle.
-        /// </summary>
-        protected Gdk.Window m_gdkWrapperOfForm;
-
-        #region XSetInputFocus
-        [DllImport("libgdk-3-0.dll")]
-        internal static extern IntPtr gdk_x11_window_get_xid(IntPtr gdkDrawable);
-
-        [DllImport("libgdk-3-0.dll")]
-        internal static extern IntPtr gdk_x11_display_get_xdisplay(IntPtr display);
-
-        public enum RevertTo
-        {
-            None = 0,
-            PointerRoot = 1,
-            Parent = 2
-        }
-
-        [DllImport("libX11")]
-        public extern static int XSetInputFocus(IntPtr display, IntPtr window, RevertTo revert_to, IntPtr time);
-
-        [DllImport("libX11")]
-        public extern static int XGetInputFocus(IntPtr display, out IntPtr focus_return, out RevertTo revert_to_return);
+        #region PInvokes
 
         [DllImport("libX11")]
         public extern static int XGrabKey(IntPtr display, int keycode, uint modifiers, IntPtr grab_window, int owner_events, int pointer_mode, int keyboard_mode);
@@ -55,29 +26,15 @@ namespace GtkDotNet
         [DllImport("libX11")]
         public extern static void XUngrabKey(IntPtr display, int keycode, uint modifiers, IntPtr grab_window);
 
-        [DllImport("libX11")]
-        public extern static IntPtr XDefaultRootWindow(IntPtr display);
-
-        static IntPtr m_xDisplayPointer;
-
         #endregion
 
         /// <summary>
         /// popupWindow must be a Gtk.Window of type WindowType.Popup
         /// parent is winform control which the popupWindow is embeded into.
         /// </summary>
-        public GtkKeyboardAwareReparentingWrapperNoThread(Gtk.Window popupWindow, System.Windows.Forms.Control parent)
+        public GtkKeyboardAwareReparentingWrapperNoThread(Gtk.Window popupWindow, System.Windows.Forms.Control parent) : base(parent)
         {
-            m_parent = parent;
             m_popupWindow = popupWindow;
-            m_parent.HandleCreated += HandleParentCreated;
-            m_parent.Resize += HandleParentResize;
-
-            if (m_xDisplayPointer == IntPtr.Zero)
-            {
-                Gdk.Display display = Gdk.Display.Default;
-                m_xDisplayPointer = gdk_x11_display_get_xdisplay(display.Handle);
-            }
         }
 
         public override void Init()
@@ -85,22 +42,6 @@ namespace GtkDotNet
             base.Init();
 
             EmbedWidgetIntoWinFormPanel();
-        }
-
-        void HandleParentCreated(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Application.Idle += HandleSystemWindowsFormsApplicationIdle;
-        }
-
-        void HandleParentResize(object sender, EventArgs e)
-        {
-            m_parent.Invalidate(true);
-
-            if (m_popupWindow != null)
-            {
-                m_popupWindow.SetSizeRequest(m_parent.Width, m_parent.Height);
-                m_popupWindow.QueueDraw();
-            }
         }
 
         private static Assembly _monoWinFormsAssembly;
@@ -196,27 +137,6 @@ namespace GtkDotNet
             _sendMessage.Invoke(null, new object[] { hWnd, (int)Msg, (IntPtr)wParam, (IntPtr)lParam });
         }
 
-        protected void EmbedWidgetIntoWinFormPanel()
-        {
-            if (m_gdkWrapperOfForm != null)
-                return;
-
-            if (m_parent == null)
-                return;
-
-            // Wraps the panel native (X) window handle in a GdkWrapper
-            IntPtr gdkHandle = GtkReparentingWrapperNoThread.ForeignNewForDisplay(Gdk.Display.Default.Handle, m_parent.Handle);
-            m_gdkWrapperOfForm = new Gdk.Window(gdkHandle);
-
-            System.Windows.Forms.Application.DoEvents();
-            ProcessPendingGtkEvents();
-
-            // embed m_popupWindow into winform (m_parent)
-            m_popupWindow.GdkWindow.Reparent(m_gdkWrapperOfForm, 0, 0);
-
-            ProcessPendingGtkEvents();
-        }
-
         private static FilterReturn FilterFunc(IntPtr xevent, Event evnt)
         {
             if (xevent == IntPtr.Zero)
@@ -272,7 +192,7 @@ namespace GtkDotNet
                     if (GtkOnceOnly.Filter.Active != null)
                     {
                         // These lines are important!
-                        keyEvent.window = gdk_x11_window_get_xid(GtkOnceOnly.Filter.Active.m_popupWindow.GdkWindow.Handle);
+                        keyEvent.window = gdk_x11_window_get_xid(GtkOnceOnly.Filter.Active.m_popupWindow.Window.Handle);
                         Marshal.StructureToPtr(keyEvent, xevent, true);
                     }
                 }
@@ -289,13 +209,10 @@ namespace GtkDotNet
         {
             RemoveInputFocus();
             if (m_gdkWrapperOfForm != null)
-                m_gdkWrapperOfForm.Reparent(m_popupWindow.GdkWindow, 0, 0);
-            if (m_popupWindow.GdkWindow != null)
-                m_popupWindow.GdkWindow.Destroy();
-            
-            m_parent.HandleCreated -= HandleParentCreated;
-            m_parent.Resize -= HandleParentResize;
-            m_parent = null;
+                m_gdkWrapperOfForm.Reparent(m_popupWindow.Window, 0, 0);
+            if (m_popupWindow.Window != null)
+                m_popupWindow.Window.Destroy();
+
             m_popupWindow.Destroy();
             m_popupWindow.Dispose();
             m_popupWindow = null;

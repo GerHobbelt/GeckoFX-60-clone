@@ -7,132 +7,72 @@ using Gdk;
 
 namespace GtkDotNet
 {
-    public class GtkReparentingWrapperNoThread : GtkWrapperNoThread
+    public abstract class GtkReparentingWrapperNoThreadBase : GtkWrapperNoThread
     {
+        #region fields
+
         /// <summary>
-        /// The Winform control that m_popupWindow is reparented into.
+        /// Use to help figure out what is the last Resize event.
         /// </summary>
-        protected Control m_parent;
-        
+        private Timer _refreshTimer;
+
+        /// <summary>
+        /// The window we have reparented from.
+        /// </summary>
+        private Gdk.Window _originalParent;
+
         /// <summary>
         /// Gdk wrapper created from m_parent handle.
         /// </summary>
         protected Gdk.Window m_gdkWrapperOfForm;
 
-        private bool _resizeHasHappened;
+        /// <summary>
+        /// X Display Ptr.
+        /// Need to call various X11 functions.
+        /// </summary>
+        protected IntPtr m_xDisplayPointer;
 
-        private System.Windows.Forms.Timer _refreshTimer;
-        
-        #region XSetInputFocus
-		[DllImport("libgdk-3-0.dll")]
-		internal static extern IntPtr gdk_x11_window_get_xid(IntPtr gdkDrawable);
+        /// <summary>
+        /// Creating windows generates a bunch of resize events
+        /// This is set to true when we thing we have received the last resize event.
+        /// </summary>
+        protected bool _resizeHasHappened;
 
-		[DllImport("libgdk-3-0.dll")]
-        internal static extern IntPtr gdk_x11_display_get_xdisplay(IntPtr display);
+        #endregion fields
 
-        public enum RevertTo
+        /// <summary>
+        /// The Winform control that m_popupWindow is reparented into.
+        /// </summary>
+        protected Control m_parent;
+
+        public GtkReparentingWrapperNoThreadBase(Control m_parent)
         {
-            None = 0,
-            PointerRoot = 1,
-            Parent = 2
+            Gdk.Display display = Gdk.Display.Default;
+            m_xDisplayPointer = gdk_x11_display_get_xdisplay(display.Handle);
+
+            this.m_parent = m_parent;
+            m_parent.HandleCreated += HandleParentCreated;
+            m_parent.Resize += HandleParentResize;
         }
-    
-        [DllImport ("libX11")]
-        public extern static int XSetInputFocus(IntPtr display, IntPtr window, RevertTo revert_to, IntPtr time);
-        
-        [DllImport ("libX11")]
-        public extern static int XGetInputFocus(IntPtr display, out IntPtr focus_return, out RevertTo revert_to_return);
+
+        #region PInvokes
 
         [DllImport("libX11")]
         public extern static int XResizeWindow(IntPtr display, IntPtr window, uint width, uint height);
 
-        [DllImport("libX11")]
-        public extern static int XFlush(IntPtr display);
- 
-        IntPtr m_xDisplayPointer;
+        [DllImport("libgdk-3-0.dll")]
+        internal static extern IntPtr gdk_x11_window_get_xid(IntPtr gdkDrawable);
 
-        bool _filterAdded;
-
-        Gdk.Window _originalParent = null;
-        #endregion
-        
-        /// <summary>
-        /// popupWindow must be a Gtk.Window of type WindowType.Popup
-        /// parent is winform control which the popupWindow is embeded into.
-        /// </summary>
-        public GtkReparentingWrapperNoThread(Gtk.Window popupWindow, System.Windows.Forms.Control parent)
-        {
-            m_parent = parent;
-            m_popupWindow = popupWindow;
-            m_parent.HandleCreated += HandleParentCreated;
-            m_parent.Resize += HandleParentResize;
-            
-            Gdk.Display display = Gdk.Display.Default;  
-            m_xDisplayPointer = gdk_x11_display_get_xdisplay(display.Handle);
-        }
-        
-        public override void Init()
-        {
-            base.Init();
-                        
-            EmbedWidgetIntoWinFormPanel();
-        }
-        
-        void HandleParentCreated(object sender, EventArgs e)
-        {           
-            System.Windows.Forms.Application.Idle += HandleSystemWindowsFormsApplicationIdle;
-        }
-
-        void HandleParentResize(object sender, EventArgs e)
-        {
-            try
-            {
-                HandleParentResizeInternal(sender, e);
-            }
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-            catch { }
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-        }
-
-        void HandleParentResizeInternal(object sender, EventArgs e)
-        {      
-            _refreshTimer?.Stop();
-
-            if (_resizeHasHappened)
-            {
-                IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.GdkWindow.Handle);
-                XResizeWindow(m_xDisplayPointer, xWindow, (uint)m_parent.Width, (uint)m_parent.Height);
-                return;
-            }
-
-            // The general idea here is to delay the reparenting of the GTK window until after last Resize event.
-            _refreshTimer = new System.Windows.Forms.Timer();
-            var reparentDelayString = Environment.GetEnvironmentVariable("GECKOFX_REPARENTDELAY") ?? "5";
-            int reparentDelay = 5;
-            Int32.TryParse(reparentDelayString, out reparentDelay);
-            _refreshTimer.Interval = reparentDelay;
-            int counter = 0;
-            _refreshTimer.Tick += (a,b) =>
-            { 
-               // On a heavy loaded system these WM_TIMER messages will likely be delayed. (which is what we want)
-               // This is why we are doing N * 10 (instead of just making N 10 times larger)
-               counter++; 
-               if (counter == 10 && !_resizeHasHappened) 
-               { 
-                   m_popupWindow?.Resize(m_parent.Width, m_parent.Height); 
-                   _resizeHasHappened = true; 
-                 _refreshTimer.Stop();
-               }
-            };
-            if (!_resizeHasHappened)
-              _refreshTimer.Start();
-        }
+        [DllImport("libgdk-3-0.dll")]
+        internal static extern IntPtr gdk_x11_display_get_xdisplay(IntPtr display);
 
         [DllImport("libgdk-3-0.dll", EntryPoint = "gdk_x11_window_foreign_new_for_display")]
         public static extern IntPtr ForeignNewForDisplay(IntPtr display, IntPtr window);
-		
-        protected void EmbedWidgetIntoWinFormPanel()
-        {       
+
+        #endregion
+
+        protected virtual void EmbedWidgetIntoWinFormPanel()
+        {
             if (m_gdkWrapperOfForm != null)
                 return;
 
@@ -150,14 +90,132 @@ namespace GtkDotNet
             ProcessPendingGtkEvents();
 
             // embed m_popupWindow into winform (m_parent)
-            _originalParent = m_popupWindow.GdkWindow.Parent;
-            m_popupWindow.GdkWindow.Reparent(m_gdkWrapperOfForm, 0, 0);
+            _originalParent = m_popupWindow.Window.Parent;
+            m_popupWindow.Window.Reparent(m_gdkWrapperOfForm, 0, 0);
             ProcessPendingGtkEvents();
-            
-            m_popupWindow.GdkWindow.AddFilter(FilterFunc);
+        }
+
+        void HandleParentCreated(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Application.Idle += HandleSystemWindowsFormsApplicationIdle;
+        }
+
+        void HandleParentResize(object sender, EventArgs e)
+        {
+            try
+            {
+                HandleParentResizeInternal(sender, e);
+            }
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
+            catch { }
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
+        }
+
+        void HandleParentResizeInternal(object sender, EventArgs e)
+        {
+            _refreshTimer?.Stop();
+
+            if (_resizeHasHappened)
+            {
+                IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.Window.Handle);
+                XResizeWindow(m_xDisplayPointer, xWindow, (uint)m_parent.Width, (uint)m_parent.Height);
+                return;
+            }
+
+            // The general idea here is to delay the reparenting of the GTK window until after last Resize event.
+            _refreshTimer = new Timer();
+            var reparentDelayString = Environment.GetEnvironmentVariable("GECKOFX_REPARENTDELAY") ?? "5";
+            int reparentDelay = 5;
+            Int32.TryParse(reparentDelayString, out reparentDelay);
+            _refreshTimer.Interval = reparentDelay;
+            int counter = 0;
+            _refreshTimer.Tick += (a, b) =>
+            {
+                // On a heavy loaded system these WM_TIMER messages will likely be delayed. (which is what we want)
+                // This is why we are doing N * 10 (instead of just making N 10 times larger)
+                counter++;
+                if (counter == 10 && !_resizeHasHappened)
+                {
+                    m_popupWindow?.Resize(m_parent.Width, m_parent.Height);
+                    _resizeHasHappened = true;
+                    _refreshTimer.Stop();
+                }
+            };
+            if (!_resizeHasHappened)
+                _refreshTimer.Start();
+        }
+
+        protected override void Cleanup()
+        {
+            m_parent.HandleCreated -= HandleParentCreated;
+            m_parent.Resize -= HandleParentResize;
+            m_parent = null;
+
+            m_popupWindow?.Window?.Reparent(_originalParent, 0, 0);
+            ProcessPendingGtkEvents();
+
+            base.Cleanup();
+        }
+    }
+
+    public class GtkReparentingWrapperNoThread : GtkReparentingWrapperNoThreadBase
+    {           
+        #region XSetInputFocus
+
+        public enum RevertTo
+        {
+            None = 0,
+            PointerRoot = 1,
+            Parent = 2
+        }
+    
+        [DllImport ("libX11")]
+        public extern static int XSetInputFocus(IntPtr display, IntPtr window, RevertTo revert_to, IntPtr time);
+        
+        [DllImport ("libX11")]
+        public extern static int XGetInputFocus(IntPtr display, out IntPtr focus_return, out RevertTo revert_to_return);
+
+        [DllImport("libX11")]
+        public extern static int XFlush(IntPtr display);
+
+        #endregion
+
+        #region fields
+
+        private bool _filterAdded;
+
+        #endregion
+
+
+        /// <summary>
+        /// popupWindow must be a Gtk.Window of type WindowType.Popup
+        /// parent is winform control which the popupWindow is embeded into.
+        /// </summary>
+        public GtkReparentingWrapperNoThread(Gtk.Window popupWindow, System.Windows.Forms.Control parent) : base(parent)
+        {
+            m_popupWindow = popupWindow;
+        }
+        
+        public override void Init()
+        {
+            base.Init();
+                        
+            EmbedWidgetIntoWinFormPanel();
+        }
+        
+        void HandleParentCreated(object sender, EventArgs e)
+        {           
+            System.Windows.Forms.Application.Idle += HandleSystemWindowsFormsApplicationIdle;
+        }
+
+        protected override void EmbedWidgetIntoWinFormPanel()
+        {
+            base.EmbedWidgetIntoWinFormPanel();
+
+            m_popupWindow.Window.AddFilter(FilterFunc);
             _filterAdded = true;
         }
-                                
+
         private FilterReturn FilterFunc (IntPtr xevent, Event evnt)
         {
             if (xevent == IntPtr.Zero)
@@ -179,9 +237,6 @@ namespace GtkDotNet
         
         protected override void Cleanup()
         {
-            m_popupWindow?.Window?.Reparent(_originalParent, 0, 0);
-            ProcessPendingGtkEvents();
-
             if (m_popupWindow?.Window != null)
             {
                 if (_filterAdded)
@@ -190,7 +245,6 @@ namespace GtkDotNet
                 m_popupWindow.Window.Destroy();
             }
             m_parent.HandleCreated -= HandleParentCreated;
-            m_parent.Resize -= HandleParentResize;
 
             m_parent = null;
             m_popupWindow?.Destroy();
@@ -209,7 +263,7 @@ namespace GtkDotNet
             if (m_xDisplayPointer == IntPtr.Zero)
                 throw new ArgumentNullException("m_xDisplayPointer");
             
-			IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.GdkWindow.Handle);
+            IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.Window.Handle);
             XSetInputFocus(m_xDisplayPointer, xWindow, RevertTo.Parent, IntPtr.Zero);
         }
         
@@ -226,7 +280,7 @@ namespace GtkDotNet
             if (m_xDisplayPointer == IntPtr.Zero)
                 return false;
                         
-			IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.GdkWindow.Handle);
+            IntPtr xWindow = gdk_x11_window_get_xid(m_popupWindow.Window.Handle);
             if (xWindow == IntPtr.Zero)
                 return false;
                         
