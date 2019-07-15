@@ -2,6 +2,11 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.34 ==
+
+Linux build.
+1. Port GtkKeyboardAwareReparentingWrapperNoThread so that it works with GTK3
+
 == v60.0-0.33 ==
 
 Linux build.
