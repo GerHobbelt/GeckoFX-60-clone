@@ -29,21 +29,7 @@ namespace GtkDotNet
 
         #endregion
 
-        /// <summary>
-        /// popupWindow must be a Gtk.Window of type WindowType.Popup
-        /// parent is winform control which the popupWindow is embeded into.
-        /// </summary>
-        public GtkKeyboardAwareReparentingWrapperNoThread(Gtk.Window popupWindow, System.Windows.Forms.Control parent) : base(parent)
-        {
-            m_popupWindow = popupWindow;
-        }
-
-        public override void Init()
-        {
-            base.Init();
-
-            EmbedWidgetIntoWinFormPanel();
-        }
+        #region fields
 
         private static Assembly _monoWinFormsAssembly;
 
@@ -60,6 +46,24 @@ namespace GtkDotNet
 
         // internal mono WinForms type
         private static Type _xplatUI;
+
+        #endregion
+
+        /// <summary>
+        /// popupWindow must be a Gtk.Window of type WindowType.Popup
+        /// parent is winform control which the popupWindow is embeded into.
+        /// </summary>
+        public GtkKeyboardAwareReparentingWrapperNoThread(Gtk.Window popupWindow, System.Windows.Forms.Control parent) : base(parent)
+        {
+            _popupWindow = popupWindow;
+        }
+
+        public override void Init()
+        {
+            base.Init();
+
+            EmbedWidgetIntoWinFormPanel();
+        }
 
         internal static Assembly MonoWinFormsAssembly
         {
@@ -192,7 +196,7 @@ namespace GtkDotNet
                     {
                         // Consume keypress/keyrelease and process the event on the active window.
 
-                        var active = GtkOnceOnly.Filter.Active.m_popupWindow.Window;
+                        var active = GtkOnceOnly.Filter.Active._popupWindow.Window;
                         // Create a Gdk event from an X11 event.
                         EventKey duplicateEvent = (EventKey)EventHelper.New(e.type == X11.XEventName.KeyPress ? EventType.KeyPress : EventType.KeyRelease);
                         duplicateEvent.Time = Gtk.Global.CurrentEventTime;
@@ -206,6 +210,11 @@ namespace GtkDotNet
                         Gtk.Main.DoEvent(duplicateEvent);
                         // Make sure the effect of the keypress is drawn on screen.
                         active?.ProcessUpdates(true);
+
+                        // Calling EventHelper.Free(duplicateEvent) here breaks the GDK window.
+                        // Looking at the source for gtk_main_do_event (Gtk.Main.DoEvent) shows that
+                        // it frees the event before returning.
+
                         return FilterReturn.Remove;
                     }
                 }
@@ -220,14 +229,14 @@ namespace GtkDotNet
         protected override void Cleanup()
         {
             RemoveInputFocus();
-            if (m_gdkWrapperOfForm != null)
-                m_gdkWrapperOfForm.Reparent(m_popupWindow.Window, 0, 0);
-            if (m_popupWindow.Window != null)
-                m_popupWindow.Window.Destroy();
+            if (_gdkWrapperOfForm != null)
+                _gdkWrapperOfForm.Reparent(_popupWindow.Window, 0, 0);
+            if (_popupWindow.Window != null)
+                _popupWindow.Window.Destroy();
 
-            m_popupWindow.Destroy();
-            m_popupWindow.Dispose();
-            m_popupWindow = null;
+            _popupWindow.Destroy();
+            _popupWindow.Dispose();
+            _popupWindow = null;
 
            base.Cleanup();
         }
@@ -237,7 +246,7 @@ namespace GtkDotNet
             if (IsDisposed)
                 throw new ObjectDisposedException("GtkReparentingWrapperNoThread");
 
-            if (m_xDisplayPointer == IntPtr.Zero)
+            if (_xDisplayPointer == IntPtr.Zero)
                 throw new ArgumentNullException("m_xDisplayPointer");
 
             if (GtkOnceOnly.Filter.Active != null)
@@ -250,13 +259,13 @@ namespace GtkDotNet
             if (activeForm != null)
             {
                 GtkOnceOnly.Filter.LastActiveForm = activeForm;
-                XGrabKey(m_xDisplayPointer, 0, 1 << 15, MonoGetX11Window(activeForm.Handle), 0, 1, 1);
+                XGrabKey(_xDisplayPointer, 0, 1 << 15, MonoGetX11Window(activeForm.Handle), 0, 1, 1);
             }
         }
 
         public override void RemoveInputFocus()
         {
-            if (m_xDisplayPointer == IntPtr.Zero)
+            if (_xDisplayPointer == IntPtr.Zero)
                 return;
 
             if (GtkOnceOnly.Filter.Active != null)
@@ -264,7 +273,7 @@ namespace GtkDotNet
             GtkOnceOnly.Filter.Active = null;
             var activeForm = Form.ActiveForm;
             if (activeForm != null)
-                XUngrabKey(m_xDisplayPointer, 0, 1 << 15, MonoGetX11Window(activeForm.Handle));
+                XUngrabKey(_xDisplayPointer, 0, 1 << 15, MonoGetX11Window(activeForm.Handle));
         }
 
         public override bool HasInputFocus()
