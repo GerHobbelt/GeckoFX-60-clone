@@ -210,7 +210,16 @@ namespace GtkDotNet
 
         protected override void EmbedWidgetIntoWinFormPanel()
         {
+            if (_gdkWrapperOfForm != null)
+                return;
+
             base.EmbedWidgetIntoWinFormPanel();
+
+            if (_parent == null)
+                return;
+
+            if (!_resizeHasHappened)
+                return;
 
             _popupWindow.Window.AddFilter(FilterFunc);
             _filterAdded = true;
@@ -246,7 +255,6 @@ namespace GtkDotNet
             }
             _parent.HandleCreated -= HandleParentCreated;
 
-            _parent = null;
             _popupWindow?.Destroy();
             _popupWindow?.Dispose();
             _popupWindow = null;
