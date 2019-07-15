@@ -47,7 +47,7 @@ namespace GtkDotNet
 			{
 				Init();
 				ProcessPendingGtkEvents(5);
-				m_popupWindow?.GdkWindow?.ProcessUpdates(true);
+				m_popupWindow?.Window?.ProcessUpdates(true);
 
 			}
 			catch(ObjectDisposedException)

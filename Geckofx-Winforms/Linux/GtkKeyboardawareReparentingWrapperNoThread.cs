@@ -1,6 +1,7 @@
 
 #if GTK
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -157,16 +158,14 @@ namespace GtkDotNet
             if (GtkOnceOnly.Filter.Active == null && e.type == X11.XEventName.FocusIn)
             {
                 if (GtkOnceOnly.Filter.LastActiveForm != null)
-                {
-                    GtkOnceOnly.Filter.LastActiveForm.BringToFront();                    
-                }
+                    GtkOnceOnly.Filter.LastActiveForm.BringToFront();
             }
 
             if (e.type == X11.XEventName.KeyPress || e.type == X11.XEventName.KeyRelease)
             {
                 var keyEvent = e.KeyEvent;
 #if LOGGING
-                Console.WriteLine($"event = {evnt}");
+                Console.WriteLine($"event = {evnt} {e.type}");
                 Console.WriteLine($"keyEvent.same_screen = {keyEvent.same_screen}");
                 Console.WriteLine($"keyEvent.time = {keyEvent.time}");
                 Console.WriteLine($"keyEvent.state = {keyEvent.state}");
@@ -191,14 +190,27 @@ namespace GtkDotNet
                 {
                     if (GtkOnceOnly.Filter.Active != null)
                     {
-                        // These lines are important!
-                        keyEvent.window = gdk_x11_window_get_xid(GtkOnceOnly.Filter.Active.m_popupWindow.Window.Handle);
-                        Marshal.StructureToPtr(keyEvent, xevent, true);
+                        // Consume keypress/keyrelease and process the event on the active window.
+
+                        var active = GtkOnceOnly.Filter.Active.m_popupWindow.Window;
+                        // Create a Gdk event from an X11 event.
+                        EventKey duplicateEvent = (EventKey)EventHelper.New(e.type == X11.XEventName.KeyPress ? EventType.KeyPress : EventType.KeyRelease);
+                        duplicateEvent.Time = Gtk.Global.CurrentEventTime;
+                        duplicateEvent.HardwareKeycode = (ushort)keyEvent.keycode;
+                        duplicateEvent.State = (Gdk.ModifierType)keyEvent.state;
+                        duplicateEvent.Window = active;
+                        // Just pick the first Input device (may or may not be correct but supresses the no device warning)
+                        var device = Gdk.Display.Default.ListDevices().FirstOrDefault();
+                        Gdk.EventHelper.SetDevice(duplicateEvent, device);
+                        // Process the event.
+                        Gtk.Main.DoEvent(duplicateEvent);
+                        // Make sure the effect of the keypress is drawn on screen.
+                        active?.ProcessUpdates(true);
+                        return FilterReturn.Remove;
                     }
                 }
 
                 return FilterReturn.Continue;
-
             }
 
             // Everything else just process as normal
