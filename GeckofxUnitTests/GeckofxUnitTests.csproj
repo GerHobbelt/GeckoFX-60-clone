@@ -112,6 +112,7 @@
     <Compile Include="dom\GeckoElementTests.cs" />
     <Compile Include="dom\GeckoFrameElementTests.cs" />
     <Compile Include="dom\GeckoIFrameElementTests.cs" />
+    <Compile Include="dom\GeckoScriptElementTests.cs" />
     <Compile Include="dom\GeckoSelectElementTests.cs" />
     <Compile Include="dom\GeckoStyleSheetTests.cs" />
     <Compile Include="ExtensionMethods\GeckoWebBrowserExtensions.cs" />
