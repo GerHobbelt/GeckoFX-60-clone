@@ -2,6 +2,13 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.36 ==
+
+Linux build.
+1. Implement GeckoScriptElement
+2. Null checks
+3. Fix some keyboarding problems on Gnome 3 desktops.
+
 == v60.0-0.35 ==
 
 Linux build.
