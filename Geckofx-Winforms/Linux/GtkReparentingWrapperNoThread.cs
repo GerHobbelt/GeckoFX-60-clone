@@ -82,6 +82,9 @@ namespace GtkDotNet
             if (!_resizeHasHappened)
                 return;
 
+            if (_popupWindow?.Window == null)
+                return;
+
             // Wraps the panel native (X) window handle in a GdkWrapper
 
             IntPtr gdkHandle = ForeignNewForDisplay(Gdk.Display.Default.Handle, _parent.Handle);
@@ -151,7 +154,8 @@ namespace GtkDotNet
             _parent.Resize -= HandleParentResize;
             _parent = null;
 
-            _popupWindow?.Window?.Reparent(_originalParent, 0, 0);
+            if (_originalParent != null)
+                _popupWindow?.Window?.Reparent(_originalParent, 0, 0);
             ProcessPendingGtkEvents();
 
             base.Cleanup();
