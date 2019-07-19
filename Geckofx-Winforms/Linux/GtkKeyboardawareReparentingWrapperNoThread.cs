@@ -202,6 +202,16 @@ namespace GtkDotNet
                         duplicateEvent.Time = Gtk.Global.CurrentEventTime;
                         duplicateEvent.HardwareKeycode = (ushort)keyEvent.keycode;
                         duplicateEvent.State = (Gdk.ModifierType)keyEvent.state;
+
+                        // Translate from hardware code to the KeyValue.
+                        // ENHANCE: Currently just specifiying 0 for the active group.
+                        uint keyval;
+                        int unusedEffectiveGroup;
+                        int unusedLevel;
+                        ModifierType unusedModifierType;
+                        Gdk.Keymap.Default.TranslateKeyboardState((uint)keyEvent.keycode, (ModifierType)keyEvent.state, 0, out keyval, out unusedEffectiveGroup, out unusedLevel, out unusedModifierType);
+
+                        duplicateEvent.KeyValue = keyval;
                         duplicateEvent.Window = active;
                         // Just pick the first Input device (may or may not be correct but supresses the no device warning)
                         var device = Gdk.Display.Default.ListDevices().FirstOrDefault();
