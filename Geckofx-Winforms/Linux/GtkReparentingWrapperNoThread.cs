@@ -121,7 +121,13 @@ namespace GtkDotNet
             if (_resizeHasHappened)
             {
                 IntPtr xWindow = gdk_x11_window_get_xid(_popupWindow.Window.Handle);
-                XResizeWindow(_xDisplayPointer, xWindow, (uint)_parent.Width, (uint)_parent.Height);
+                uint newWidth = 0;
+                uint newHeight = 0;
+                if (_parent.Width > 0)
+                    newWidth = (uint)_parent.Width;
+                if (_parent.Height > 0)
+                    newHeight = (uint)_parent.Height;
+                XResizeWindow(_xDisplayPointer, xWindow, newWidth, newHeight);
                 return;
             }
 
