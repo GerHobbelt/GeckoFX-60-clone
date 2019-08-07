@@ -2,6 +2,9 @@ Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
 
+== v60.0-0.37 ==
+1. Fix GetProperty<double> type conversion bug.
+
 == v60.0-0.36 ==
 
 Linux build.
