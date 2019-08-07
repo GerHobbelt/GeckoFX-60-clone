@@ -79,6 +79,40 @@ llo")]
         }
 
         [Test]
+        public void GetProperty_IntType_ReturnsExpectedIntValue()
+        {
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);
+
+            objectUnderTest.SetProperty("myfield", 501);
+
+            Assert.AreEqual(501, objectUnderTest.GetProperty<int>("myfield"));
+        }
+
+        [Test]
+        public void GetProperty_DoubleType_ReturnsExpectedDoubleValue()
+        {
+            const double doubleTestValue = 886.93334909375;
+
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);
+
+            objectUnderTest.SetProperty("someval", doubleTestValue);
+
+            Assert.AreEqual(doubleTestValue, objectUnderTest.GetProperty<double>("someval"));
+        }
+
+        [Test]
+        public void GetProperty_GetDoubleTypeAsInt_ReturnsExpectedIntValue()
+        {
+            const double doubleTestValue = 886.93334909375;
+
+            var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);
+
+            objectUnderTest.SetProperty("someval", doubleTestValue);
+
+            Assert.AreEqual(887, objectUnderTest.GetProperty<int>("someval"));
+        }
+
+        [Test]
         public void CallVoidMethod_ThatDoesntExists_GetsGeckoException()
         {
             var objectUnderTest = new WebIDLBase((mozIDOMWindowProxy)_browser.Window.DomWindow, _browser.Window.DomWindow);

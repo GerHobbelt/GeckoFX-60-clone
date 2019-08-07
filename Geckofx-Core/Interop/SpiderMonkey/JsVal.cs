@@ -161,15 +161,15 @@ namespace Gecko
                     return ToBoolean();
                 }
 
-                if (IsInt)
-                {
-                    return ToInteger();
-                }
-
                 if (IsDouble)
                 {
                     return ToDouble();
                 }
+
+                if (IsInt)
+                {
+                    return ToInteger();
+                }                
             }
 
             if (IsNull)
