@@ -2,6 +2,9 @@ IMPORTANT NOTE: this repo is only an archive of (by now VERY) OLD work done by M
 
 Any modern work should consider using either webview or CEF (or any derivative thereof).
 
+webview: https://github.com/webview/webview
+CEF: https://github.com/chromiumembedded/cef
+
 --------------------------------------------------------------------
 
 
