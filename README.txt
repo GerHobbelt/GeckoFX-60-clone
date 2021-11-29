@@ -1,3 +1,10 @@
+IMPORTANT NOTE: this repo is only an archive of (by now VERY) OLD work done by Mozilla.
+
+Any modern work should consider using either webview or CEF (or any derivative thereof).
+
+--------------------------------------------------------------------
+
+
 Geckofx is licensed under the Mozilla Public License Version.
 
 == Changelog ==
